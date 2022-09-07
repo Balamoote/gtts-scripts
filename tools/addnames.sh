@@ -1,0 +1,59 @@
+#!/bin/bash
+# Добавить новые слова в базы: основной и оверрайда
+# Последняя версия файла тут: https://github.com/Balamoote/gtts-scripts 
+
+#set -e
+export LC_COLLATE=C
+key="$1"
+
+# Функции
+
+grp2namebase () { grep "g$" "$1" | grep "'" | grep -v \" | gzip; }
+
+grp2override () { grep "g$" "$1" | grep "'" | sed -r "s/^0.+=(.+)'(.*)=g$/0\1\2=\1'\2=g/g; s/(0[^=]*[аяеэиыоёуюь])[ьъ]/\1/g" | gzip; }
+
+grp2lexx ()  { grep -v "^0" "$1" | grep "'" | grep -v "[=g]$"; }
+
+grp2process  () { sed -r "s/([^0]=[^=]*[аяеэиыоёуюь'])ь/\1\\\xcc\\\xa3/g; s/([^0]=[^=]*[аяеэиыоёуюь'])ъ/\1\\\xcc\\\xa4/g;
+    s/ъ=g/\\\xcc\\\xa4=g/g" <(zcat "$1") | sort -u | gzip > "$1.tmp"; mv -f "$1.tmp" "$1"; } 
+
+# Если в файлах 00-02 строка имеет: (1) "0" в начале строки, (2) "'" (ударение), (3) "g" в конце строки (00 по умолчанию её НЕ имеет), то записать строку в namebase0
+grp2namebase 00_wrd_newdic_nl_*.list >> scriptdb/namebase0.txt.gz
+grp2namebase 01_nom_newsur_nl_*.list >> scriptdb/namebase0.txt.gz
+grp2namebase 02_nom_newany_nl_*.list >> scriptdb/namebase0.txt.gz
+# Если файлы 03-10 строка имеет "g" в конце строки, то записать в nameoverride (запись должна иметь служебный символ ИЛИ новое ударение ДО ударения по словарю lexx
+grp2override 03_nom_surlex_dq_*.list >> scriptdb/nameoverride.txt.gz
+grp2override 04_nom_surlex_si_*.list >> scriptdb/nameoverride.txt.gz
+grp2override 05_nom_anylex_dq_*.list >> scriptdb/nameoverride.txt.gz
+grp2override 06_nom_anylex_si_*.list >> scriptdb/nameoverride.txt.gz
+grp2override 07_nom_surbas_dq_*.list >> scriptdb/nameoverride.txt.gz
+grp2override 08_nom_surbas_si_*.list >> scriptdb/nameoverride.txt.gz
+grp2override 09_nom_anybas_dq_*.list >> scriptdb/nameoverride.txt.gz
+grp2override 10_nom_anybas_si_*.list >> scriptdb/nameoverride.txt.gz
+# Если строка в 00-02 НЕ имеет "0" в начале строки, записать в файл "кандидатов в lexx" 
+grp2lexx 00_wrd_newdic_nl*.list >> gw_wordsin2lexx.list
+grp2lexx 01_nom_newsur_nl*.list >> gw_wordsin2lexx.list
+grp2lexx 02_nom_newany_nl*.list >> gw_wordsin2lexx.list
+
+# Обработать базы имён и заменить служебные символы
+grp2process scriptdb/namebase0.txt.gz
+grp2process scriptdb/nameoverride.txt.gz
+
+sort -u -o gw_wordsin2lexx.list gw_wordsin2lexx.list
+
+printf '\e[32m%s\e[0m\n' "Имена добавлены в базы."
+
+if [ -s gw_wordsin2lexx.list ]; then
+    printf '\e[32m%s \e[0;93m%s\n' "Строк для добавления в lexx:" $(wc -l < gw_wordsin2lexx.list)
+    if [[ $key != "-a" ]]; then printf '\e[32m%s \e[93m%s\e[0m\n' "Запустите" "./add2lexx.sh"i; fi
+else
+    printf '\e[33m%s\e[0m\n' "Строк для добавления в lexx не найдено."
+    rm gw_wordsin2lexx.list
+    key=""
+fi
+
+if [[ $key = "-a" ]]; then
+    ./add2lexx.sh
+    ./check-lexx.sh
+fi
+
