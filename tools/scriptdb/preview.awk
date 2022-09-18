@@ -20,7 +20,6 @@ BEGIN {
     totallen = int((twd-4)/2); # Общая длина вывода, должна полность умещаться на половину экрана ("быстрый просмотр" в mc, т.е. еще -2), зависит от файлового менеджера
     maxwidth = twd - rightpad; # максимальная ширина вывода строки омографов во время создания превью
 
-    headr   = sprintf ( "%s\n       %s\n", "#!/bin/bash", "var=$1; case \"$var\" in");
     unxy    = "[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
     unxn    = "[^\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
     isword  = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
@@ -35,19 +34,20 @@ BEGIN {
     omoqty = split(readfile("omo-luc.lst"), omlst, "\n"); delete omlst[omoqty];
     for (i in omlst) { #b1
         le = split (omlst[i], arr, " ");
-        om[i] = arr[1]; lcm = tolower(om[i]); oml = length(lcm);
+        om[i] = arr[1]; lcm = tolower(om[i]); oml = length(lcm); ompad = sprintf("%" oml+5 "s", "" );
+	headr = sprintf ( "%s\n%s%s\n", "#!/bin/bash", ompad, "var=$1; case \"$var\" in");
         sedpart = ""; vimpart = ""; lexxpart = ""; riphead = ""; vpat = arr[2];
         for (s = 2; s <= le; s++ ) { #b2 Сборка опций для sed
-            sedline = sprintf ( "       %s%s%s%s%s%s%s%s%s%s%s %s\n", "sed -ri \"$2 s/(", unxn, ")\\b", arr[1], "\\b(", unxn, ")/\\1", arr[s], "\\2/g", "\" ../", obook, ";;" );
-            sedhead = sprintf ( "%s%s %s %s %s %s%s%s %s %s\n", s-1, "#", arr[s], "<=", arr[1], ": ./", arr[1], ".sh", s-1, "[номер строки]" );
+            sedline = ompad sprintf ( "%s%s%s%s%s%s%s%s%s%s%s %s\n", "sed -ri \"$2 s/(", unxn, ")\\b", arr[1], "\\b(", unxn, ")/\\1", arr[s], "\\2/g", "\" ../", obook, ";;" );
+            sedhead = sprintf ( "%s%s %s %s %s %s%s%s %s %s\n", s-1, ")#", arr[s], "<=", arr[1], ": ./", arr[1], ".sh", s-1, "[номер строки]" );
             sedpart = sedpart sedhead sedline }; #b2
             # Сборка заголовка для ./stripper.sh
-            ripline = sprintf ( "       %s %s %s %s %s", "cd .. && ./stripper.sh", obook, "-w", arr[1], ";;"  );
-            riphead = sprintf ( "%s %s %s %s %s\n%s\n", "0#", arr[1], "<=", arr[1], "очистить слово от служебных и ударения!", ripline );
+            ripline = ompad sprintf ( "%s %s %s %s %s", "cd .. && ./stripper.sh", obook, "-w", arr[1], ";;"  );
+            riphead = sprintf ( "%s %s %s %s %s\n%s\n", "0)#", arr[1], "<=", arr[1], "очистить слово от служебных и ударения!", ripline );
             # Сборка заголовка для vim/neovim, переменная editor задаётся в scriptdb/settings.ini
         for (v = 3; v <= le; v++) { vpat = vpat "/" arr[v] };
-            vimline = sprintf ( "       %s %s%s%s%s%s%s%s%s%s%s\n", editor, "-c \"set hls | %SubstituteChoice /", unxn, "\\zs\\<", arr[1], "\\>\\ze", unxn, "/", vpat, "/gc\" ../", obook );
-            vimhead = sprintf ( "%s %s%s%s%s%s%" totallen "s\n", "*# Изменить вручную в", editor, ": ./", arr[1], ".sh\n", vimline, ";; esac; exit 0" );
+            vimline = sprintf ( "   %s %s%s%s%s%s%s%s%s%s%s\n", editor, "-c \"set hls | %SubstituteChoice /", unxn, "\\zs\\<", arr[1], "\\>\\ze", unxn, "/", vpat, "/gc\" ../", obook );
+            vimhead = sprintf ( "%s %s%s%s%s%s%" totallen "s\n", "*)# Изменить вручную в", editor, ": ./", arr[1], ".sh\n", vimline, ";; esac; exit 0" );
 
 
     for ( x in omolexx ) { lx = length(x);
@@ -61,6 +61,7 @@ BEGIN {
         } #b1
     } { # Читаем файл книги в массив
 
+    gsub("</?p>", "", $0)
     num++; book[num] = $0;
 
 } END { #e1 Для каждого омографа из сканируем каждую строку книги
