@@ -171,19 +171,19 @@ done
 sed -ri "s=([АБВГДЕЁЖЗИЙКЛМНОПРСТУФЦЧШЩЪЫЬЭЮЯ])хх([АБВГДЕЁЖЗИЙКЛМНОПРСТУФЦЧШЩЪЫЬЭЮЯ])=\1ХХ\2=g" gwt-"$book"/text-book.txt
 
 # Список обычных слов (только с маленькой буквы)
-sed -r 's/^/ /g' gwt-"$book"/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$rulc$unxe]+" | grep -Ev "[$unxe]" | sed -r "s/^.+$/0\0=/g" | \
-	grep -Fvf <(zcat scriptaux/lexx.pat.gz) | sort -u | sed -r "s/^0(.+)=$/0\1=\1=/g" > 00_wrd_newdic_nl.list
+sed -r 's/^/ /g' gwt-"$book"/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$rulc$unxe]+" | grep -Ev "[$unxe]" | sed -r "s/^.+$/_\0=/g" | \
+	grep -Fvf <(zcat scriptaux/lexx.pat.gz) | sort -u | sed -r "s/^_(.+)=$/_\1=\1=/g" > 00_wrd_newdic_nl.list
 
 # Список слов с заглавной буквы НЕ в начале предложения
 grep -Po "(?<=[A-Za-zА-Яа-яёЁ0-9,}):;$unxe$unxs])[ ’(«$qtsd–—-]+[$RUUC$unxe][$rulc$unxe]+" gwt-"$book"/text-book.txt | grep -Ev "[$unxe]" | \
-	sed -r "s/^[ ’(«\x22\x27–—-]+(.*)$/0\l\1=/g" | sort -u > gwt-"$book"/surcap-all.pat
+	sed -r "s/^[ ’(«\x22\x27–—-]+(.*)$/_\l\1=/g" | sort -u > gwt-"$book"/surcap-all.pat
 
 # Фамилия после инициала
-grep -Po "\b(?<=[$RUUC][$fkdt.])\s*[$RUUC$unxe][$rulc$unxe]+" gwt-"$book"/text-book.txt| grep -Ev "[$unxe]" | sed -r "s/^\s*(.*)$/0\l\1=/g" | \
+grep -Po "\b(?<=[$RUUC][$fkdt.])\s*[$RUUC$unxe][$rulc$unxe]+" gwt-"$book"/text-book.txt| grep -Ev "[$unxe]" | sed -r "s/^\s*(.*)$/_\l\1=/g" | \
 	sort -u >> gwt-"$book"/surcap-all.pat
 
 # Список всех слов с заглавной буквы, без учёта позиции
-sed -r 's/^/ /g' gwt-"$book"/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$RUUC$unxe][$rulc$unxe]+" | grep -Ev "[$unxe]" | sed -r "s/^.+$/0\l\0=/g" | \
+sed -r 's/^/ /g' gwt-"$book"/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$RUUC$unxe][$rulc$unxe]+" | grep -Ev "[$unxe]" | sed -r "s/^.+$/_\l\0=/g" | \
 	sort -u > gwt-"$book"/anycap-all.pat
 
 # Список известных имён собственных, которые подлежат обработке, за вычетом омографов
@@ -204,14 +204,14 @@ grep -Fvf <(zcat scriptaux/wdb0.gz) gwt-"$book"/surcap-raw.pat > gwt-"$book"/sur
 grep -Ff  <(zcat scriptaux/wdb0.gz) gwt-"$book"/surcap-raw.pat > gwt-"$book"/surcap-bas.pat
 
 # Список неизвестных имён
-grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/surcap-lex.pat | sed -r 's/^0(.*=)$/0\1\1g/g' > 01_nom_newsur_nl.list
-grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/anycap-lex.pat | sed -r 's/^0(.*=)$/0\1\1g/g' > 02_nom_newany_nl.list
+grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/surcap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 01_nom_newsur_nl.list
+grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/anycap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 02_nom_newany_nl.list
 
 # Делаем списки слов, обработанных словарем lexx blchk 0
 if [[ "$2" != "biglist" ]]; then
 	
-  sedz-dp () { zgrep -Ff <(grep -Fof <(zcat "$1") "$2" | sort -u) scriptaux/tts0.txt.gz | sed -nr 's/^0(.+)\"=\"\s(.+)\"$/s=0\1=0\1\\\=\2=gp/gp'; }
-  sedz-si () { zgrep -Ff <(grep -Fof <(zcat "$1") "$2" | sort -u) scriptaux/tts0.txt.gz | sed -nr 's/^0(.+)=(.+)$/s=0\1\\\b=0\1\\\=\2=gp/gp'; }
+  sedz-dp () { zgrep -Ff <(grep -Fof <(zcat "$1") "$2" | sort -u) scriptaux/tts0.txt.gz | sed -nr 's/^_(.+)\"=\"\s(.+)\"$/s=_\1=_\1\\\=\2=gp/gp'; }
+  sedz-si () { zgrep -Ff <(grep -Fof <(zcat "$1") "$2" | sort -u) scriptaux/tts0.txt.gz | sed -nr 's/^_(.+)=(.+)$/s=_\1\\\b=_\1\\\=\2=gp/gp'; }
 
   sedz-dp scriptaux/tts-dq.pat.gz gwt-"$book"/anycap-bas.pat > gwt-"$book"/anybas-in-dq.sed
   sedz-si scriptaux/tts-si.pat.gz gwt-"$book"/anycap-bas.pat > gwt-"$book"/anybas-in-si.sed
@@ -244,8 +244,8 @@ if [[ $key != "wonly" ]]; then
 #s=(\w)<strong>([$RVUC$rvlc])<\/strong>=\1\2\xcc\x81=g
 #s=<strong>([$RVUC$rvlc])<\/strong>(\w)=\1\xcc\x81\2=g
 
-zgrep -Ff gwt-"$book"/namebase0-proc-list.pat scriptdb/namebase0.txt.gz   | sed -r "s/^0(.+)=(.+=g)$/s=\\\b\u\1\\\b=\u\2/g; s/([$RVUC$rvlc])'/\1\xcc\x81/g" >> gwt-"$book"/names-proc.sed
-zgrep -Ff gwt-"$book"/override-proc-list.pat scriptdb/nameoverride.txt.gz | sed -r "s/^0(.+)=(.+=g)$/s=\\\b\u\1\\\b=\u\2/g; s/([$RVUC$rvlc])'/\1\xcc\x81/g" >> gwt-"$book"/names-proc.sed
+zgrep -Ff gwt-"$book"/namebase0-proc-list.pat scriptdb/namebase0.txt.gz   | sed -r "s/^_(.+)=(.+=g)$/s=\\\b\u\1\\\b=\u\2/g; s/([$RVUC$rvlc])'/\1\xcc\x81/g" >> gwt-"$book"/names-proc.sed
+zgrep -Ff gwt-"$book"/override-proc-list.pat scriptdb/nameoverride.txt.gz | sed -r "s/^_(.+)=(.+=g)$/s=\\\b\u\1\\\b=\u\2/g; s/([$RVUC$rvlc])'/\1\xcc\x81/g" >> gwt-"$book"/names-proc.sed
 
 sort -u -o gwt-"$book"/names-proc.sed gwt-"$book"/names-proc.sed
 
@@ -309,7 +309,7 @@ if [[ ! -d nomo-"$book" ]]; then
 	sort -u -o nomo-"$book"/nomo-all.pat nomo-"$book"/nomo-all.pat
 
 	zgrep -Fif nomo-"$book"/nomo-all.pat <(zcat scriptdb/nomo.txt.gz) | sed -r "\
-		s/^0(.+)=/\1/g
+		s/^_(.+)=/\1/g
 		s/([АЕЁИОУЫЭЮЯаеёиоуыэюя])\x27/\1\xcc\x81/g
 		s/\\\xcc\\\xa0/\xcc\xa0/g
 		s/\\\xcc\\\xa3/\xcc\xa3/g
@@ -331,8 +331,8 @@ if [[ -s omo-luc.lst ]]; then # Проверка найдены ли имена-
 printf '\e[32m%s\n' "Создание дискретных скриптов обработки имён-омографов:"
 twd=$(tput cols)
 
-zgrep -Ff <(grep -Fof <(zcat ../scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/0\l\1=/g' omo-luc.lst | sort -u)) ../scriptaux/tts0.$suf.gz |\
-       	sed -r 's/0([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/0([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > omo-lexx.txt
+zgrep -Ff <(grep -Fof <(zcat ../scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' omo-luc.lst | sort -u)) ../scriptaux/tts0.$suf.gz |\
+       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > omo-lexx.txt
 
 sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" ../gwt-"$book"/text-book.txt | \
     awk -v obook=$obook -v twd=$twd -v preview=$preview -v termcor=$termcor -v editor=$edi -f ../scriptdb/preview.awk
@@ -377,18 +377,18 @@ if [[ $key = "-ld" ]] || [[ $key = "-old" ]] ; then
 #	sed -n '/<binary/,$p' "$book" > gwt-"$book"/binary-book.txt
 
 # Создание списка обрабатываемых шаблонов: " слово"=" сло'во" и слово=сло'во, шаблоны других типов могут добавляться без обработки
-	sed -nr 's/^(\" )([^ "]+)(\"=.+)$/0\2 #\1\2\3/gp' tts.txt > gwt-"$book"/q_wq.txt
-	sed -nr 's/^([^"=]+)(=.+)$/0\1= #\1\2/gp'         tts.txt > gwt-"$book"/w.txt
+	sed -nr 's/^(\" )([^ "]+)(\"=.+)$/_\2 #\1\2\3/gp' tts.txt > gwt-"$book"/q_wq.txt
+	sed -nr 's/^([^"=]+)(=.+)$/_\1= #\1\2/gp'         tts.txt > gwt-"$book"/w.txt
 
 # Создаем список слов в книге
-	grep -Po "(?<=[^$RUUC$rulc])[$RUUC$rulc]+" gwt-"$book"/text-book.txt | sed -r 's/^.+$/0\L\0=/g' | sort -u > gwt-"$book"/book-words.txt
+	grep -Po "(?<=[^$RUUC$rulc])[$RUUC$rulc]+" gwt-"$book"/text-book.txt | sed -r 's/^.+$/_\L\0=/g' | sort -u > gwt-"$book"/book-words.txt
 	printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36%sm\e[0m\n' "Книга" "$book" "содержит" $(wc -l < gwt-"$book"/book-words.txt) "словоформ."
 # Находим сработавшие шаблоны
 	grep -Fof <(zcat scriptaux/tts.pat.gz) gwt-"$book"/book-words.txt > gwt-"$book"/book-words-o.pat
 
 # Формируем локальный словарь lexx, 2 типа шаблонов на основе списка слов из книги
-	grep -Ff gwt-"$book"/book-words-o.pat gwt-"$book"/q_wq.txt | sed -r 's/0.+#//g' >  gwt-"$book"/booklexx.txt
-	grep -Ff gwt-"$book"/book-words-o.pat gwt-"$book"/w.txt    | sed -r 's/0.+#//g' >> gwt-"$book"/booklexx.txt
+	grep -Ff gwt-"$book"/book-words-o.pat gwt-"$book"/q_wq.txt | sed -r 's/_.+#//g' >  gwt-"$book"/booklexx.txt
+	grep -Ff gwt-"$book"/book-words-o.pat gwt-"$book"/w.txt    | sed -r 's/_.+#//g' >> gwt-"$book"/booklexx.txt
 	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Найдено сработавших шаблонов" $(wc -l < gwt-"$book"/booklexx.txt) "Добавляем опциональные шаблоны."	
 
 

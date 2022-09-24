@@ -98,13 +98,13 @@ sed "/<binary/Q" "$book" | sed -r "s/\xc2\xa0/ /g" > jot-"$book"/text-book.txt
 sed -n '/<binary/,$p' "$book" > jot-"$book"/binary-book.txt
 
 # Список слов всех, в нижнем регистре, затем в верхем
-#grep -Po "(?<=[^$RUUC$rulc])[$RUUC$rulc]+" jot-"$book"/text-book.txt | sed -r 's/^.+$/0\L\0=/g' | sort -u > jot-"$book"/words-all.pat
+#grep -Po "(?<=[^$RUUC$rulc])[$RUUC$rulc]+" jot-"$book"/text-book.txt | sed -r 's/^.+$/_\L\0=/g' | sort -u > jot-"$book"/words-all.pat
 
-grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" jot-"$book"/text-book.txt | grep -v "[$unxc]" | sed -r 's/^.+$/0\0=/g' | sort -u > jot-"$book"/words-all-lc.pat
+grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" jot-"$book"/text-book.txt | grep -v "[$unxc]" | sed -r 's/^.+$/_\0=/g' | sort -u > jot-"$book"/words-all-lc.pat
 
-grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" jot-"$book"/text-book.txt | grep -v "[$unxc]" | sed -r 's/^.+$/0\0=/g' | sort -u > jot-"$book"/words-all-uc.pat
+grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" jot-"$book"/text-book.txt | grep -v "[$unxc]" | sed -r 's/^.+$/_\0=/g' | sort -u > jot-"$book"/words-all-uc.pat
 
-cat <(sed -r "s/0(.)/0\l\1/g" jot-"$book"/words-all-uc.pat) jot-"$book"/words-all-lc.pat | sort -u > jot-"$book"/words-all.pat
+cat <(sed -r "s/_(.)/_\l\1/g" jot-"$book"/words-all-uc.pat) jot-"$book"/words-all-lc.pat | sort -u > jot-"$book"/words-all.pat
 
 # Список всех слов, однозначно ёфицируемых, ё не на первом месте
 grep -Ff <(zcat scriptaux/yodef0.pat.gz) jot-"$book"/words-all.pat | sort -u > jot-"$book"/yo-def0.pat
@@ -117,10 +117,10 @@ grep -Ff scriptaux/yolc.pat jot-"$book"/words-all.pat | sort -u > jot-"$book"/yo
 
 if [[ $fixomo -eq "1" ]]; then # fimomochk 0
 # Генерируем скрипт sed для однозначной ёфикации
-zgrep -Ff jot-"$book"/yo-def0.pat scriptdb/yodef0.txt.gz | sed -r "s/^0(.)(.+)=(.)(.+)$/s=\\\b(\1)\2\\\b=\\\1\4=gI/g" > jot-"$book"/yodef-proc.sed
-zgrep -Ff jot-"$book"/yo-def1.pat scriptdb/yodef1.txt.gz | sed -r "s/^0(.+)=(.+)$/s=\\\b\1\\\b=\2=g/g" >> jot-"$book"/yodef-proc.sed
-zgrep -Ff jot-"$book"/yo-def1.pat scriptdb/yodef1.txt.gz | sed -r "s/^0(.)(.+)=(.)(.+)$/s=\\\b\u\1\2\\\b=\u\3\4=g/g" >> jot-"$book"/yodef-proc.sed
-grep -Ff jot-"$book"/yolc-def.pat scriptdb/yolc.txt | sed -r "s/^0(.+)=(.+)$/s=\\\b\1\\\b=\2=g/g" >> jot-"$book"/yodef-proc.sed
+zgrep -Ff jot-"$book"/yo-def0.pat scriptdb/yodef0.txt.gz | sed -r "s/^_(.)(.+)=(.)(.+)$/s=\\\b(\1)\2\\\b=\\\1\4=gI/g" > jot-"$book"/yodef-proc.sed
+zgrep -Ff jot-"$book"/yo-def1.pat scriptdb/yodef1.txt.gz | sed -r "s/^_(.+)=(.+)$/s=\\\b\1\\\b=\2=g/g" >> jot-"$book"/yodef-proc.sed
+zgrep -Ff jot-"$book"/yo-def1.pat scriptdb/yodef1.txt.gz | sed -r "s/^_(.)(.+)=(.)(.+)$/s=\\\b\u\1\2\\\b=\u\3\4=g/g" >> jot-"$book"/yodef-proc.sed
+grep -Ff jot-"$book"/yolc-def.pat scriptdb/yolc.txt | sed -r "s/^_(.+)=(.+)$/s=\\\b\1\\\b=\2=g/g" >> jot-"$book"/yodef-proc.sed
 
 sort -u -o jot-"$book"/yodef-proc.sed jot-"$book"/yodef-proc.sed
 
@@ -153,7 +153,7 @@ if [[ ! -d jomo-"$book" ]]; then
 
 	cd jomo-"$book"
 
-        sed -r "s/^0(.+)=/\1/g
+        sed -r "s/^_(.+)=/\1/g
 		s/\x27/\xcc\x81/g
 		s/\\xcc\\xa0/\xcc\xa0/g
 		s/\\xcc\\xa3/\xcc\xa3/g
@@ -173,8 +173,8 @@ if [[ -s omo-luc.lst ]]; then # Проверка найдены ли ё-омог
 printf '\e[32m%s\n' "Создание дискретных скриптов обработки ё-омографов:"
 twd=$(tput cols)
 
-zgrep -Ff <(grep -Fof <(zcat ../scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/0\l\1=/g' omo-luc.lst | sort -u)) ../scriptaux/tts0.$suf.gz |\
-       	sed -r 's/0([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/0([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > omo-lexx.txt
+zgrep -Ff <(grep -Fof <(zcat ../scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' omo-luc.lst | sort -u)) ../scriptaux/tts0.$suf.gz |\
+       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > omo-lexx.txt
 
 sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" ../jot-"$book"/text-book.txt | \
     awk -v obook=$obook -v twd=$twd -v preview=$preview -v termcor=$termcor -v editor=$edi -f ../scriptdb/preview.awk

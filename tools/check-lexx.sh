@@ -36,7 +36,7 @@ case "$1" in
 esac; fi
 
 # Массив со списком обязательных файлов
-pack="add2lexx.sh addnames.sh all-in-one.sh check-lexx.sh dic.sh get-words.sh lexx2txt.sh momo.sh omofix.sh scriptdb/omo-index.sed scriptdb/exclusion.pat.gz scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/names-okbd.pat.gz scriptdb/nomo.txt.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/vse.sed scriptdb/wordbase0.gz scriptdb/yoall-ok.pat.gz scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptdb/yomodef.sed scriptomo/00-on.sed scriptomo/01-yo.sed scriptomo/11-num.sed scriptomo/20-index.sed scriptomo/41-1_eo-ast.sed scriptomo/41-2_eo.sed scriptomo/99-fin.sed stripper.sh txt2lexx.sh yofik.sh"
+pack="add2lexx.sh addnames.sh all-in-one.sh check-lexx.sh dic.sh get-words.sh lexx2txt.sh momo.sh omofix.sh scriptdb/omo-index.sed scriptdb/exclusion.pat.gz scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/vse.sed scriptdb/wordbase0.gz scriptdb/yoall-ok.pat.gz scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptdb/yomodef.sed scriptomo/00-on.sed scriptomo/01-yo.sed scriptomo/11-num.sed scriptomo/20-index.sed scriptomo/41-1_eo-ast.sed scriptomo/41-2_eo.sed scriptomo/99-fin.sed stripper.sh txt2lexx.sh yofik.sh"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -77,36 +77,36 @@ printf '\e[32m%s \e[93m%s ' "DoQuo:" $(grep '^"' tts.txt| wc -l)
 printf '\e[32m%s \e[93m%s ' "Simpl:" $(grep -v \" tts.txt| wc -l)
 printf '\e[32m%s \e[93m%s\e[0m\n' "Строк:" $(wc -l < tts.txt)
 
-# Создание паттернов 0.*= для grep -F; ниже выдается ошибка на нестандартые шаблоны
+# Создание паттернов _.*= для grep -F; ниже выдается ошибка на нестандартые шаблоны
 sed -r '/^regex.+$/d
-	s/^\"\s([^ ]*)\"=\"\s[^ ]*\"$/0\1/g
-	s/^\"\s(.*)\s\"=\"\s.*\s\"$/0\1=/g
+	s/^\"\s([^ ]*)\"=\"\s[^ ]*\"$/_\1/g
+	s/^\"\s(.*)\s\"=\"\s.*\s\"$/_\1=/g
 	s/^\"([^ ].*)\s\"=\"[^ ].*\s\"$/\1=/g
-	s/^\"\s(.*[^ ])\"=\"\s.*[^ ]\"$/0\1/g
+	s/^\"\s(.*[^ ])\"=\"\s.*[^ ]\"$/_\1/g
 	s/^\"(\S+)\"=\"\S+\"$/\1/g
 	s/^\"([^ ]*)\s\"=\"[^ ]*\s\"$/\1=/g
-	s/^([^\" ]+)=[^\" ]+$/0\1=/g
-	s/^\"\s([^ ]*)\-\"=\"\s[^ ]*\s\"$/0\1=/g
-	s/^\"\-([^ ]*)\"=\"\s[^ ]*\"$/0\1/g' tts.txt | sort -u | gzip > scriptaux/tts.pat.gz
+	s/^([^\" ]+)=[^\" ]+$/_\1=/g
+	s/^\"\s([^ ]*)\-\"=\"\s[^ ]*\s\"$/_\1=/g
+	s/^\"\-([^ ]*)\"=\"\s[^ ]*\"$/_\1/g' tts.txt | sort -u | gzip > scriptaux/tts.pat.gz
 
 	# Описание шаблонов в команде выше
 
 	# Удалить regex'ы 		/^regex.+$/d
-	# " слово"=" сло'во"		s/^"\s([^ ]*)"="\s[^ ]*"$/0\1/g
-	# " два слова "=" два сло'ва "	s/^"\s(.*)\s"="\s.*\s"$/0\1=/g
+	# " слово"=" сло'во"		s/^"\s([^ ]*)"="\s[^ ]*"$/_\1/g
+	# " два слова "=" два сло'ва "	s/^"\s(.*)\s"="\s.*\s"$/_\1=/g
 	# "два слова "="два сло'ва "	s/^"([^ ].*)\s"="[^ ].*\s"$/\1=/g
-	# " два слова"=" два сло'ва"	s/^"\s(.*[^ ])"="\s.*[^ ]"$/0\1/g
+	# " два слова"=" два сло'ва"	s/^"\s(.*[^ ])"="\s.*[^ ]"$/_\1/g
 	# "слово"="сло'во"		s/^"(\S+)"="\S+"$/\1/g
 	# "слово "="сло'во "		s/^"([^ ]*)\s"="[^ ]*\s"$/\1=/g
-	# слово=сло'во			s/^([^" ]+)=[^" ]+$/0\1=/g
-	# " слово-"=" сло'во "		s/^"\s([^ ]*)\-"="\s[^ ]*\s"$/0\1=/g
-	# "-слово"=" сло'во"		s/^"\-([^ ]*)"="\s[^ ]*"$/0\1/g
+	# слово=сло'во			s/^([^" ]+)=[^" ]+$/_\1=/g
+	# " слово-"=" сло'во "		s/^"\s([^ ]*)\-"="\s[^ ]*\s"$/_\1=/g
+	# "-слово"=" сло'во"		s/^"\-([^ ]*)"="\s[^ ]*"$/_\1/g
 
 # поиск потерянных слов в базовом списке и наложение списка исключений
 zgrep -Fvf <(zcat scriptaux/tts.pat.gz) scriptdb/wordbase0.gz | grep -Fvf <(zcat scriptdb/exclusion.pat.gz) > _lost.txt
 
 # создание списка "двойных кавычек" с 1-м полем из правой части шаблона
-sed -nr 's/(^"[^"]+)("=" )([^"]+)(")$/0\3=\1\2\3\4/gp' tts.txt > scriptaux/_quo2.tmp
+sed -nr 's/(^"[^"]+)("=" )([^"]+)(")$/_\3=\1\2\3\4/gp' tts.txt > scriptaux/_quo2.tmp
 
 # находим строки совпадений/поиска: срабатывания на правую часть шаблонов, сортируем
 grep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/_quo2.tmp | sort > scriptaux/_tts-o.tmp
@@ -119,7 +119,7 @@ uniq -D scriptaux/_tts-o.tmp > scriptaux/_tts-od.tmp
 
 # Выводим полные конфликтные шаблоны по строке поиска (конфликт правой части шаблонов)
 # НЕ работает на всех шаблонах, но быстро! Для полного сканирования использовать ./check-lexx.sh -a
-grep -Ff scriptaux/_tts-od.tmp scriptaux/_quo2.tmp | sed -r 's/0([^=]+)=/\1 /g' > _2x-right-quick.txt
+grep -Ff scriptaux/_tts-od.tmp scriptaux/_quo2.tmp | sed -r 's/_([^=]+)=/\1 /g' > _2x-right-quick.txt
 
 # создаем сортированный по первой букве список шаблонов, первая кавычка удалена
 sed -r 's/^" //g' tts.txt | sort | gzip > scriptaux/_tts-noq.txt.gz
@@ -194,7 +194,7 @@ elif [[ -s _err-msg.md5 ]]; then rm _err-msg.md5; fi;
 if [[ $wdb -eq 1 ]]; then
 	printf '\e[36m%s \e[32m%s ' "WDB:" "старый" 
 else
-	zcat scriptdb/wordbase0.gz | sed -r "s/([^0]=).+$/\1/g; s/^.+-.+\n//g" | gzip > scriptaux/wdb0.gz
+	zcat scriptdb/wordbase0.gz | sed -r "s/([^_]=).+$/\1/g; s/^.+-.+\n//g" | gzip > scriptaux/wdb0.gz
 	printf '\e[36m%s \e[93m%s ' "WDB:" "новый" 
 	md5sum scriptdb/wordbase0.gz scriptaux/wdb0.gz > zwdb.md5; fi
 
@@ -202,9 +202,9 @@ if [[ $lexxdb -eq 1 ]]; then
 	printf '\e[36m%s \e[32m%s ' "GW:" "старые"
 else
         # Служебный список поисковых строк из базы lexx
-        zgrep -Pv "0.+=$" scriptaux/tts.pat.gz | gzip > scriptaux/tts-dq.pat.gz
-        zgrep -P "0.+=$" scriptaux/tts.pat.gz | gzip > scriptaux/tts-si.pat.gz
-        sed -r 's/^\" /0/g; s/^([^0r"]+)/0\1/g; s/^\"//g' tts.txt | gzip > scriptaux/tts0.txt.gz
+        zgrep -Pv "_.+=$" scriptaux/tts.pat.gz | gzip > scriptaux/tts-dq.pat.gz
+        zgrep -P "_.+=$" scriptaux/tts.pat.gz | gzip > scriptaux/tts-si.pat.gz
+        sed -r 's/^\" /_/g; s/^([^_r"]+)/_\1/g; s/^\"//g' tts.txt | gzip > scriptaux/tts0.txt.gz
         ## паттерны известных и исключений в lexx
         cat scriptaux/tts.pat.gz scriptdb/exclusion.pat.gz scriptdb/yoall-ok.pat.gz > scriptaux/lexx.pat.gz
        	printf '%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' X1Ъ X0Ъ X3Ъ X4Ъ X5Ъ X6Ъ X8Ъ X7Ъ ъъъ ЪЪЪ | gzip -c >> scriptaux/lexx.pat.gz
@@ -220,11 +220,11 @@ if [[ $ndb -eq 1 ]]; then
 else
 	sed -r 's/=.+$/=/g' <(zcat scriptdb/namebase0.txt.gz) | gzip > scriptaux/namebase0.pat.gz
 	sed -r 's/=.+$/=/g' <(zcat scriptdb/nameoverride.txt.gz) | gzip > scriptaux/override.pat.gz
-	sed -r 's/0(.+)=.+$/0\l\1=/g' <(zcat scriptdb/nomo.txt.gz) | sort -u | gzip > scriptaux/nomo.pat.gz
-	zcat scriptaux/namebase0.pat.gz scriptaux/override.pat.gz scriptdb/names-okbd.pat.gz | sort -u | gzip > scriptaux/names-all.pat.gz
+	sed -r 's/_(.+)=.+$/_\l\1=/g' <(zcat scriptdb/nomo.txt.gz) | sort -u | gzip > scriptaux/nomo.pat.gz
+	zcat scriptaux/namebase0.pat.gz scriptaux/override.pat.gz | sort -u | gzip > scriptaux/names-all.pat.gz
 	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/nomo.pat.gz | sort -u | gzip > scriptaux/ttspat.nam.gz
 	zgrep -Ff <(zcat scriptaux/ttspat.nam.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.nam.gz
-        md5sum tts.txt scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/names-okbd.pat.gz scriptaux/namebase0.pat.gz \
+        md5sum tts.txt scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptaux/namebase0.pat.gz \
 		scriptaux/override.pat.gz scriptaux/nomo.pat.gz scriptaux/names-all.pat.gz scriptaux/ttspat.nam.gz scriptaux/tts0.nam.gz > zndb.md5
        	printf '\e[36m%s \e[93m%s ' "NDB:" "новые"
 fi
@@ -238,7 +238,7 @@ else
 	sed -r "s/=.+$/=/g" <(zcat scriptdb/mano-uc0.txt.gz) | gzip > scriptaux/mano-uc.pat.gz
 	sed -r "s/=.+$/=/g" <(zcat scriptdb/mano-lc0.txt.gz) | gzip > scriptaux/mano-lc.pat.gz
 	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/mano-lc.pat.gz | gzip > scriptaux/ttspat.mant.gz
-	sed -r 's/0(.)/0\l\1/' <(zcat scriptaux/mano-uc.pat.gz) | grep -Fof <(zcat scriptaux/tts.pat.gz) | gzip >> scriptaux/ttspat.mant.gz
+	sed -r 's/_(.)/_\l\1/' <(zcat scriptaux/mano-uc.pat.gz) | grep -Fof <(zcat scriptaux/tts.pat.gz) | gzip >> scriptaux/ttspat.mant.gz
 	zcat scriptaux/ttspat.mant.gz | sort -u | gzip > scriptaux/ttspat.man.gz
 	rm scriptaux/ttspat.mant.gz
 	zgrep -Ff <(zcat scriptaux/ttspat.man.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.man.gz
@@ -260,7 +260,7 @@ else
 	sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-uc0.txt.gz) | gzip > scriptaux/yomo-uc0.pat.gz
 	sed -r "s/=.+$/=/g" scriptdb/yolc.txt > scriptaux/yolc.pat
 	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/yomo-lc0.pat.gz > scriptaux/ttspat.yoyt
-	sed -r 's/0(.)/0\l\1/' <(zcat scriptaux/yomo-uc0.pat.gz) | grep -Fof <(zcat scriptaux/tts.pat.gz) >> scriptaux/ttspat.yoyt
+	sed -r 's/_(.)/_\l\1/' <(zcat scriptaux/yomo-uc0.pat.gz) | grep -Fof <(zcat scriptaux/tts.pat.gz) >> scriptaux/ttspat.yoyt
 	grep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/yolc.pat >> scriptaux/ttspat.yoyt
     sort -u scriptaux/ttspat.yoyt | gzip > scriptaux/ttspat.yoy.gz
 	rm scriptaux/ttspat.yoyt

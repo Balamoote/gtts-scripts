@@ -10,14 +10,14 @@ key="$1"
 
 grp2namebase () { grep "g$" "$1" | grep "'" | grep -v \" | gzip; }
 
-grp2override () { grep "g$" "$1" | grep "'" | sed -r "s/^0.+=(.+)'(.*)=g$/0\1\2=\1'\2=g/g; s/(0[^=]*[аяеэиыоёуюь])[ьъ]/\1/g" | gzip; }
+grp2override () { grep "g$" "$1" | grep "'" | sed -r "s/^_.+=(.+)'(.*)=g$/_\1\2=\1'\2=g/g; s/(_[^=]*[аяеэиыоёуюь])[ьъ]/\1/g" | gzip; }
 
-grp2lexx ()  { grep -v "^0" "$1" | grep "'" | grep -v "[=g]$"; }
+grp2lexx ()  { grep -v "^_" "$1" | grep "'" | grep -v "[=g]$"; }
 
-grp2process  () { sed -r "s/([^0]=[^=]*[аяеэиыоёуюь'])ь/\1\\\xcc\\\xa3/g; s/([^0]=[^=]*[аяеэиыоёуюь'])ъ/\1\\\xcc\\\xa4/g;
+grp2process  () { sed -r "s/([^_]=[^=]*[аяеэиыоёуюь'])ь/\1\\\xcc\\\xa3/g; s/([^_]=[^=]*[аяеэиыоёуюь'])ъ/\1\\\xcc\\\xa4/g;
     s/ъ=g/\\\xcc\\\xa4=g/g" <(zcat "$1") | sort -u | gzip > "$1.tmp"; mv -f "$1.tmp" "$1"; } 
 
-# Если в файлах 00-02 строка имеет: (1) "0" в начале строки, (2) "'" (ударение), (3) "g" в конце строки (00 по умолчанию её НЕ имеет), то записать строку в namebase0
+# Если в файлах 00-02 строка имеет: (1) "_" в начале строки, (2) "'" (ударение), (3) "g" в конце строки (00 по умолчанию её НЕ имеет), то записать строку в namebase0
 grp2namebase 00_wrd_newdic_nl_*.list >> scriptdb/namebase0.txt.gz
 grp2namebase 01_nom_newsur_nl_*.list >> scriptdb/namebase0.txt.gz
 grp2namebase 02_nom_newany_nl_*.list >> scriptdb/namebase0.txt.gz
@@ -30,7 +30,7 @@ grp2override 07_nom_surbas_dq_*.list >> scriptdb/nameoverride.txt.gz
 grp2override 08_nom_surbas_si_*.list >> scriptdb/nameoverride.txt.gz
 grp2override 09_nom_anybas_dq_*.list >> scriptdb/nameoverride.txt.gz
 grp2override 10_nom_anybas_si_*.list >> scriptdb/nameoverride.txt.gz
-# Если строка в 00-02 НЕ имеет "0" в начале строки, записать в файл "кандидатов в lexx" 
+# Если строка в 00-02 НЕ имеет "_" в начале строки, записать в файл "кандидатов в lexx" 
 grp2lexx 00_wrd_newdic_nl*.list >> gw_wordsin2lexx.list
 grp2lexx 01_nom_newsur_nl*.list >> gw_wordsin2lexx.list
 grp2lexx 02_nom_newany_nl*.list >> gw_wordsin2lexx.list

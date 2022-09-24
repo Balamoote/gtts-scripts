@@ -139,10 +139,10 @@ fi
 
 # Списки слов всех омографов с маленькой и с Большой буквы
 
-grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" mano-"$book"/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/0\0=/g' | grep -Ff <(zcat scriptaux/mano-lc.pat.gz) | \
+grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" mano-"$book"/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-lc.pat.gz) | \
 	sort -u > mano-"$book"/manofi-lc.pat
 
-grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" mano-"$book"/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/0\0=/g' | grep -Ff <(zcat scriptaux/mano-uc.pat.gz) | \
+grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" mano-"$book"/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-uc.pat.gz) | \
 	sort -u > mano-"$book"/manofi-uc.pat
 
 # Список всех омографов в обоих регистрах
@@ -151,7 +151,7 @@ zgrep -Ff mano-"$book"/manofi-lc.pat scriptdb/mano-lc0.txt.gz >> mano-"$book"/ma
 
 cd mano-"$book"/
 if [[ -s mano-luc.txt ]]; then # Проверяем найдено ли хоть что-то… discretchk 0
-sed -r "s/^0(.+)=/\1/g
+sed -r "s/^_(.+)=/\1/g
 	s/\x27/\xcc\x81/g
 	s/\\\xcc\\\xa0/\xcc\xa0/g
 	s/\\\xcc\\\xa3/\xcc\xa3/g
@@ -169,8 +169,8 @@ if [[ $preview -eq 1 ]]; then printf '\e[32m%s\n' "Превью текста в�
 else printf '\e[36m%s\n' "Превью текста выключено."; fi
 twd=$(tput cols)
 
-zgrep -Ff <(grep -Fof <(zcat ../scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/0\l\1=/g' omo-luc.lst | sort -u)) ../scriptaux/tts0.$suf.gz |\
-       	sed -r 's/0([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/0([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > omo-lexx.txt
+zgrep -Ff <(grep -Fof <(zcat ../scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' omo-luc.lst | sort -u)) ../scriptaux/tts0.$suf.gz |\
+       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > omo-lexx.txt
 
 sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" text-book.txt | \
     awk -v obook=$obook -v twd=$twd -v preview=$preview -v termcor=$termcor -v editor=$edi -f ../scriptdb/preview.awk

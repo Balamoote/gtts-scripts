@@ -18,8 +18,8 @@ fi
 printf '\e[32m%s \e[96m%s \e[93m%s \e[96m%s\e[0m\n' "Looking up:" ">>>" $wrd "<<<"
 
 # Ударения отмечены знаком ударения и цветом или только цветом
-zcat scriptdb/wordbase0.gz | sed "s/^0//" | grep $wrd | sed "s/.'/`printf "\e[32m&\e[0m"`/g" | sed "s/'/\xcc\x81/g" | \
-#zcat scriptdb/wordbase0.gz | sed "s/^0//" | grep $wrd | sed "s/.'/`printf "\e[32m&\e[0m"`/g" | sed "s/'//g" | \
+zcat scriptdb/wordbase0.gz | sed "s/^_//" | grep $wrd | sed "s/.'/`printf "\e[32m&\e[0m"`/g" | sed "s/'/\xcc\x81/g" | \
+#zcat scriptdb/wordbase0.gz | sed "s/^_//" | grep $wrd | sed "s/.'/`printf "\e[32m&\e[0m"`/g" | sed "s/'//g" | \
 	awk -v pad=$pad -F "[ =]" '{format = "%-" pad "s %s\n"; printf(format, $1, $2)}';
 
 if [[ -z "$str" ]]; then
@@ -28,8 +28,8 @@ else
 	printf '\e[91m%s \e[96m%s \e[92m%s \e[96m%s \e[93m%s \e[96m%s\e[0m\n' "Variants:" "NOT >>>" $str\' "<<< IN >>>" $wrd "<<<"
 
 # Ударения отмечены знаком ударения и цветом или только цветом
-zcat scriptdb/wordbase0.gz | sed "s/^0//" | grep $wrd | grep -v $str\' | sed "s/.'/`printf "\e[91m&\e[0m"`/g" | sed "s/'/\xcc\x81/g" | \
-#zcat scriptdb/wordbase0.gz | sed "s/^0//" | grep $wrd | grep -v $str\' | sed "s/.'/`printf "\e[91m&\e[0m"`/g" | sed "s/'//g" | \
+zcat scriptdb/wordbase0.gz | sed "s/^_//" | grep $wrd | grep -v $str\' | sed "s/.'/`printf "\e[91m&\e[0m"`/g" | sed "s/'/\xcc\x81/g" | \
+#zcat scriptdb/wordbase0.gz | sed "s/^_//" | grep $wrd | grep -v $str\' | sed "s/.'/`printf "\e[91m&\e[0m"`/g" | sed "s/'//g" | \
 	awk -v pad=$pad -F "[ =]" '{format = "%-" pad "s %s\n"; printf(format, $1, $2)}';
 
 	printf '\e[95m%s\e[0m\n' "==>> end of variants!"
