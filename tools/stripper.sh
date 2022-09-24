@@ -59,7 +59,7 @@ if [[ -n $sset ]]; then
 fi
 
 if [[ -n $wrd ]]; then
-	seden=[$st]?$(echo $wrd | sed -r "s/./\0[$st]?/g")
+	seden=[$st]?$(echo $wrd | sed -r "s/./\0[$st]*/g")
 	sed -ri "s=([^$RUCl])$seden([^$rulc])=\1$wrd\2=g" trip-"$book"/text-book.txt
 	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Слово" $wrd "очищено."
 fi
