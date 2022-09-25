@@ -45,7 +45,7 @@ printf '\e[32m%s\e[0m\n' "Имена добавлены в базы."
 
 if [ -s gw_wordsin2lexx.list ]; then
     printf '\e[32m%s \e[0;93m%s\n' "Строк для добавления в lexx:" $(wc -l < gw_wordsin2lexx.list)
-    if [[ $key != "-a" ]]; then printf '\e[32m%s \e[93m%s\e[0m\n' "Запустите" "./add2lexx.sh"i; fi
+    if [[ $key != "-a" ]]; then printf '\e[32m%s \e[93m%s\e[0m\n' "Запустите" "./add2lexx.sh"; fi
 else
     printf '\e[33m%s\e[0m\n' "Строк для добавления в lexx не найдено."
     rm gw_wordsin2lexx.list
