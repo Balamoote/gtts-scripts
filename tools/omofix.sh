@@ -101,7 +101,7 @@ fi
 sed -i -rf scriptomo/00-on.sed oft-"$book"/text-book.txt
 
 pre_time=$(date +%s.%N); duration=$( echo $pre_time - $start_time | bc )
-LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предварительная подготовка заняла:" $duration "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предварительная подготовка заняла:" $duration "сек"
 
 printf '\e[36m%s\e[0m\n' "Работа скриптов. Подождите..."
 
@@ -111,7 +111,7 @@ if [[ chisla -eq 1 ]]; then
 	sedroll scriptomo/11-num.sed oft-"$book"/text-book.txt
 
 	num11_time=$(date +%s.%N); duration=$( echo $num11_time - $nume_time0 | bc )
-	LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[33m%s \e[32m%s \e[93m%.2f \e[36m%s\e[0m\n' "Скрипт Числа:" "11-num.sed" "ОК:" $duration "сек"
+	LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[33m%s \e[32m%s \e[93m%.2f \e[36m%s\e[0m\n' "Скрипт Числа:" "11-num.sed" "ОК:" $duration "сек"
 fi
 
 if [[ vsevso -eq 1 ]]; then
@@ -120,12 +120,12 @@ if [[ vsevso -eq 1 ]]; then
 	sedroll scriptomo/01-yo.sed oft-"$book"/text-book.txt
 
 	yo1_time=$(date +%s.%N); duration=$( echo $yo1_time - $yo_time0 | bc )
-	LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[33m%s \e[32m%s \e[93m%.2f \e[36m%s\e[0m\n' "все --> всё:" "01-yo.sed" "ОК:" $duration "сек"
+	LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[33m%s \e[32m%s \e[93m%.2f \e[36m%s\e[0m\n' "все --> всё:" "01-yo.sed" "ОК:" $duration "сек"
 
 	sedroll scriptomo/41-1_eo-ast.sed oft-"$book"/text-book.txt
 
 	yo411_time=$(date +%s.%N); duration=$( echo $yo411_time - $yo1_time | bc )
-	LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[33m%s \e[32m%s \e[93m%.2f \e[36m%s\e[0m\n' "все --> всё:" "41-1_eo-ast.sed" "ОК:" $duration "сек"
+	LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[33m%s \e[32m%s \e[93m%.2f \e[36m%s\e[0m\n' "все --> всё:" "41-1_eo-ast.sed" "ОК:" $duration "сек"
 fi
 
 
@@ -137,7 +137,7 @@ if [[ omoall -eq 1 ]]; then
 	sedroll oft-"$book"/book-index.sed oft-"$book"/text-book.txt
 
     whole20_time=$(date +%s.%N); duration=$( echo $whole20_time - $omo20_time0 | bc )
-	LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[32m%s \e[93m%.2f \e[36m%s\e[0m\n' "Обработка омографов." "OK:" $duration "сек"
+	LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[32m%s \e[93m%.2f \e[36m%s\e[0m\n' "Обработка омографов." "OK:" $duration "сек"
 fi
 
 sed -i -rf scriptomo/99-fin.sed oft-"$book"/text-book.txt
@@ -193,6 +193,6 @@ end_time=$(date +%s.%N)
 
 duration=$( echo $end_time - $start_time | bc )
 
-LC_NUMERIC="en_US.UTF-8" printf '\e[32;1m%s\e[0m \e[32m%s \e[93m%.2f \e[32m%s\e[0m\n' "\"Омографы…\"" "Общее время обработки:" $duration "сек. ОБРАБОТКА ЗАВЕРШЕНА!"
+LC_ALL="en_US.UTF-8" printf '\e[32;1m%s\e[0m \e[32m%s \e[93m%.2f \e[32m%s\e[0m\n' "\"Омографы…\"" "Общее время обработки:" $duration "сек. ОБРАБОТКА ЗАВЕРШЕНА!"
 printf '\e[35m%s \e[93m%s\e[0m\n' "Готовая книга в файле:" "$book"
 

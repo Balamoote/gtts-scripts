@@ -263,7 +263,7 @@ s=X7Ъ=\xe2\x80\xa7=g
 s=(\xcc\x81)+=\xcc\x81=g" >> gwt-"$book"/names-proc.sed
 
 gw_pre=$(date +%s.%N); duration=$( echo $gw_pre - $gw_time0 | bc )
-LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предварительная подготовка заняла:" $duration "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предварительная подготовка заняла:" $duration "сек"
 
 # Применяем шаблоны
 printf '\e[36m%s\e[0m ' "Расстановка ударений в именах собственных …"
@@ -272,7 +272,7 @@ inc=100
 sedroll gwt-"$book"/names-proc.sed gwt-"$book"/text-book.txt
 
 gw_sed=$(date +%s.%N); duration=$( echo $gw_sed - $gw_pre | bc )
-LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "выполнена за" $duration "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "выполнена за" $duration "сек"
 
 fi; fi # blchk 1 wochk 1
 
@@ -357,8 +357,8 @@ rm -rf gwt-"$book"
 
 gw_proc=$(date +%s.%N); duration=$( echo $gw_proc - $gw_sed | bc ); tot_dur=$( echo $gw_proc - $gw_time0 | bc )
 
-LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Создание дискретных скриптов   :" $duration "сек"
-LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Общее время работы скрипта имён:" $tot_dur "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Создание дискретных скриптов   :" $duration "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Общее время работы скрипта имён:" $tot_dur "сек"
 printf '\e[32;4;1m%s\e[0m \e[32m%s \e[33m%s \e[36m%s \e[33m%s\e[0m\n' "\"Имена:\"" "Обработка книги" "$book" "завершена. Бэкап:" "$backup"
 
 

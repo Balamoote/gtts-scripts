@@ -179,7 +179,7 @@ if ( err > 0 ) printf "\033[1;31m%s \033[1;31;5m%s \033[0;93m%s \033[1;31;5m%s\0
 else printf "\033[36m%s \033[32m%s \033[32;4;1m%s\033[0m ", "Полная проверка правой части шаблонов.", "Ошибок не найдено -", "ОК!" }' <(zcat scriptaux/_4awk-dq-rules.txt.gz)
 
 cl_rawk1=$(date +%s.%N); duration=$( echo $cl_rawk1 - $cl_rawk0 | bc )
-LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Проверка заняла:" $duration "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Проверка заняла:" $duration "сек"
 
 if [[ -e scriptaux/_awk_doubles-right.log ]]; then rm scriptaux/_awk_doubles-right.log ; fi; fi # rawkchk 1
 

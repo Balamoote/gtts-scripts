@@ -118,7 +118,7 @@ printf '\e[36m%s \e[93m%s %s%s%s\e[0m … ' "Омографов для авто�
 sedroll mano-"$book"/book-index.sed mano-"$book"/text-book.txt
 
 mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
-LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "обработано за" $duration "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "обработано за" $duration "сек"
 
 # Проверить наличие необработанных "все" и подключить vse в полном объёме
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" mano-"$book"/text-book.txt| wc -l)
@@ -132,7 +132,7 @@ if [[ ! $yop -eq 0 ]]; then
 
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" mano-"$book"/text-book.txt| wc -l)
 mo_uni2=$(date +%s.%N); duration=$( echo $mo_uni2 - $mo_uni1 | bc )
-LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "обработано за" $duration "сек. Остаток:" $yop
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "обработано за" $duration "сек. Остаток:" $yop
 fi
 
 fi
@@ -161,7 +161,7 @@ sed -r "s/^_(.+)=/\1/g
 
 
 mo_pre=$(date +%s.%N); duration=$( echo $mo_pre - $mo_time0 | bc )
-LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Всего предварительная подготовка:" $duration "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Всего предварительная подготовка:" $duration "сек"
 
 # Формируем дискретные скрипты пословно
 printf '\e[32m%s ' "Идет поиск омографов … подождите."
@@ -178,7 +178,7 @@ sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" text-book.txt | \
 printf '\e[36m%s \e[093m%s\e[36m%s\e[0m ' "Создано дискретных скриптов:" $(ls -l *.sh | wc -l)
 
 mo_disc=$(date +%s.%N); duration=$( echo $mo_disc - $mo_pre | bc )
-LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Создание дискретных скриптов:" $duration "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Создание дискретных скриптов:" $duration "сек"
 
 chmod +x *.sh
 # Собираем книгу и удаляем временные файлы
@@ -247,7 +247,7 @@ fi # dbgchk 0
 
 mo_proc=$(date +%s.%N); tot_dur=$( echo $mo_proc - $mo_time0 | bc )
 
-LC_NUMERIC="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Общее время работы скрипта:" $tot_dur "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Общее время работы скрипта:" $tot_dur "сек"
 if [[ ! $noomo -eq 1 ]]; then printf '\e[36m%s \e[33m%s \e[36m%s \e[33m%s\e[0m\n' "Дискретные скрипты в" "mano-$book" "обрабатывают файл:" "$obook" ; fi
 printf '\e[32;4;1m%s\e[0m \e[36m%s \e[33m%s \e[36m%s \e[36m%s \e[33m%s\e[0m\n' "\"Ручные омографы:\"" "Файл" "$book" "обработан." "Бэкап:" "$backup"
 
