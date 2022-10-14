@@ -163,7 +163,8 @@ fi # lexxchk 1
 # Полная проверка конфликных "кавычных" справа, только вида " слово"=" сло'во"
 # Работает медленно: результат может быть получен через несколько минут.
 # Включается переменной rawk=1, ключом -a или -f 
-if [[ $rawk -eq 1 ]] && [[ ! $lexxerr -eq 1 ]]; then cl_rawk0=$(date +%s.%N); # rawkchk 0
+if [[ $rawk -eq 1 ]]; then 
+if [[ -z $lexxerr ]]; then cl_rawk0=$(date +%s.%N); # rawkchk 0
 
 printf '\e[36m%s\e[0m\n' "Запущена полная проверка правой части шаблонов. Это может занять несколько минут … "
 
@@ -182,7 +183,7 @@ cl_rawk1=$(date +%s.%N); duration=$( echo $cl_rawk1 - $cl_rawk0 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Проверка заняла:" $duration "сек"
 
 if [[ -e scriptaux/_awk_doubles-right.log ]]; then rm scriptaux/_awk_doubles-right.log ; fi
-else printf '\e[93m%s \e[33m%s\e[0m\n' "Полная проверка правой части шаблонов невозможна. Сначала исправьте ошибки в" "tts.txt" ;fi # rawkchk 1
+else printf '\e[93m%s \e[33m%s\e[0m\n' "Полная проверка правой части шаблонов невозможна. Сначала исправьте ошибки в" "tts.txt" ;fi; fi # rawkchk 1
 
 if [[ -s _2x-right-full.txt ]]; then printf '\e[36m%s \e[93m%s \e[33m%s\e[0m\n' "Конфликтных справа, по́лно :" $(wc -l _2x-right-full.txt); md5sum tts.txt > _err-msg.md5; lexxerr=1
 elif [[ -e _2x-right-full.txt ]]; then rm _2x-right-full.txt; fi
