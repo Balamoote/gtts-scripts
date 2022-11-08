@@ -223,7 +223,7 @@ else
 	sed -r 's/=.+$/=/g' <(zcat scriptdb/namebase0.txt.gz) | gzip > scriptaux/namebase0.pat.gz
 	sed -r 's/=.+$/=/g' <(zcat scriptdb/nameoverride.txt.gz) | gzip > scriptaux/override.pat.gz
 	sed -r 's/_(.+)=.+$/_\l\1=/g' <(zcat scriptdb/nomo.txt.gz) | sort -u | gzip > scriptaux/nomo.pat.gz
-	zcat scriptaux/namebase0.pat.gz scriptaux/override.pat.gz | sort -u | gzip > scriptaux/names-all.pat.gz
+	zcat scriptaux/namebase0.pat.gz scriptaux/override.pat.gz scriptaux/nomo.pat.gz | sort -u | gzip > scriptaux/names-all.pat.gz
 	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/nomo.pat.gz | sort -u | gzip > scriptaux/ttspat.nam.gz
 	zgrep -Ff <(zcat scriptaux/ttspat.nam.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.nam.gz
         md5sum tts.txt scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptaux/namebase0.pat.gz \
@@ -274,6 +274,34 @@ else
 fi
 
 printf '\e[32;4;1m%s\e[0m\n' "Всё ОК!"
+
+# Проверка баз имён на обрабатываемость основным словарём
+
+zgrep -Ff <(zcat scriptaux/tts.pat.gz) scriptdb/namebase0.txt.gz | sort > _err_namebase0.txt
+zgrep -Fvf <(zcat scriptaux/tts.pat.gz) scriptdb/nameoverride.txt.gz | sort > _err_nameoverride.txt
+zgrep "'" scriptaux/namebase0.pat.gz >> _err_namebase0.txt
+zgrep "'" scriptaux/override.pat.gz >> _err_nameoverride.txt
+
+zgrep -Ff <(zcat scriptaux/mano-uc.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/namebase0.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > _omo_namebase0_err.txt
+zgrep -Ff <(zcat scriptaux/yomo-uc0.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/namebase0.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >> _omo_namebase0_err.txt
+zgrep -Ff <(zcat scriptaux/nomo.pat.gz) scriptdb/namebase0.txt.gz | sort >> _omo_namebase0_err.txt
+
+if [[ -s _omo_namebase0_err.txt ]]; then sort -u -o _omo_namebase0_err.txt _omo_namebase0_err.txt; fi
+
+zgrep -Ff <(zcat scriptaux/mano-uc.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/nameoverride.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > _omo_nameoverride_err.txt
+zgrep -Ff <(zcat scriptaux/yomo-uc0.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/nameoverride.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >> _omo_nameoverride_err.txt
+zgrep -Ff <(zcat scriptaux/nomo.pat.gz) scriptdb/nameoverride.txt.gz | sort >> _omo_nameoverride_err.txt
+
+if [[  -s _omo_nameoverride_err.txt ]]; then sort -u -o _omo_nameoverride_err.txt _omo_nameoverride_err.txt; fi
+
+if [[ -s _err_namebase0.txt ]]; then printf '\e[93m%s \e[36m%3s \e[93m%s \e[33m%s\e[0m\n' \
+	"ВНИМАНИЕ:" "имена в базе обрабатываются словарём lexx:" $(wc -l _err_namebase0.txt); else rm _err_namebase0.txt; fi
+if [[ -s _err_nameoverride.txt ]]; then printf '\e[93m%s \e[36m%3s \e[93m%s \e[33m%s\e[0m\n' \
+	"ВНИМАНИЕ:" "в базе override слов, не в словаре lexx:" $(wc -l _err_nameoverride.txt); else rm _err_nameoverride.txt; fi
+if [[ -s _omo_namebase0_err.txt ]]; then printf '\e[93m%s \e[36m%3s \e[93m%s \e[33m%s\e[0m\n' \
+	"ВНИМАНИЕ:" "в базе имён найдены омографы:" $(wc -l _omo_namebase0_err.txt); else rm _omo_namebase0_err.txt; fi
+if [[ -s _omo_nameoverride_err.txt ]]; then printf '\e[93m%s \e[36m%3s \e[93m%s \e[33m%s\e[0m\n' \
+	"ВНИМАНИЕ:" "в базе override найдены омографы:" $(wc -l _omo_nameoverride_err.txt); else rm _omo_nameoverride_err.txt; fi
 
 # Cозданиe локального словаря. Работает только при сообщении скрипту имени файла книги. Например:
 # ./check-lexx.sh book.fb2
