@@ -184,6 +184,7 @@ chmod +x *.sh
 # Собираем книгу и удаляем временные файлы
 cat text-book.txt binary-book.txt > ../"$book"
 rm *.txt *.pat *.sed
+#rm *.txt *.pat
 cd ..
 
 
