@@ -55,11 +55,11 @@ function sv(m, n, pu,    k, rett)                 # разделители в д
 function pv(m, n, pu,    k, rett)                 # разделители в диапазоне НЕ содержат препинания pu
                 { for (k=m; k<=n; k++) { if (sep[i+k] ~ pu) {rett=0; break} else {rett=1}; }; return rett }
 function vv(n,    k, rett)                        # выдать границы вводного предложения: , и —, n= первая запятая
-                { vvn=""; if(sep[i+n]~","){for(k=n+1;k<=n+7;k++){ if(sep[i+k]!~"[….:;!?]"){if(sep[i+k]~","){rett=1;vvn=k;break}else{rett=0};}else{rett=0};};}else{rett=0};return rett}
+                {vvn="";rett=0; if(sep[i+n] ~ "[,—]"){for(k=n+1;k<=n+7;k++){if(sep[i+k] !~ "[….:;!?]"){if(sep[i+k] ~ ","){rett=1;vvn=k;break};};};}; return rett}
 function phs(n, wl,    wrds, k, lk, cnt, rett)    # кусок фразы ДО слова
-                { lk = split(wl, wrds, " "); for (k=1; k<=lk; k++) {if (tolower(l[i-lk+k+n])==wrds[k]) {cnt++} else {cnt=0; break};}; if(cnt==lk){rett=1} else {rett=0}; return rett }
+                {hsn="";lk=split(wl,wrds," "); for(k=1;k<=lk;k++){if(tolower(l[i-lk+k+n])==wrds[k]){cnt++}else{cnt=0; break};};if(cnt==lk){rett=1;hsn=n+lk}else{rett=0}; return rett}
 function phf(n, wl,    wrds, k, lk, cnt, rett)    # кусок фразы ПОСЛЕ слова
-                { lk = split(wl, wrds, " "); for (k=1; k<=lk; k++) {if (tolower(l[i+n+k-1])==wrds[k])  {cnt++} else {cnt=0; break};}; if(cnt==lk){rett=1} else {rett=0}; return rett }
+                {hfn="";lk=split(wl,wrds," "); for(k=1;k<=lk;k++){if(tolower(l[i+n+k-1]) ==wrds[k]){cnt++}else{cnt=0; break};};if(cnt==lk){rett=1;hfn=n+lk}else{rett=0}; return rett}
 function ar(n, array,   i, rett)                  # устранить пропуск в массиве
                 { rett = length(array); for (i=n; i<=rett; i++) {array[i] = array[i+1]}; delete array[rett+1]; return rett }
 
@@ -77,29 +77,40 @@ BEGIN {
     
     # части слов с дефисом для склейки
     cst = "где докуда зачем из как когда кое кто кому кого кем куда откуда отчего по потому почему что сколько чего чему чье чьё чьем чьём чью"; 
-    stoar(cst,hyp1," ")
+        stoar(cst,hyp1," ")
     cst = "где за зачем когда кое куда либо над нибудь никак откуда отчего под подо почему то что";
-    stoar(cst,hyp2," ")
+        stoar(cst,hyp2," ")
     # расширенное "это"
-    cst = "это то се сие оно сё"; stoar(cst,mest_it," ");
+    cst = "это то се сие оно сё";
+        stoar(cst,mest_it," ");
 
 
-
-    cmd = "zcat basedic.gz glquv.gz glgov.gz";
+    cmd = "zcat basedic.gz glquv.gz glgov.gz gldvi.gz geo.gz";
    while ((cmd|getline) > 0) {
 
    if (substr($2,1,3) == "gl_") {
         if($2~  /^gl_чув_/ && $2~ /_ср_ед/               ){  gl_quvedsr [$1];                           };
         if($2~  /^gl_гов_/ && $2~ /_ср_ед/               ){  gl_quvedsr [$1];                           };
+        if($2~  /^gl_дви_/ && $2~ /_ср_ед/               ){  gl_dviedsr [$1];                           };
+        if($2~  /^gl_гов_/ && $2~ /_пов/                 ){  gl_govpo   [$1];                           };
+        if($2~  /^gl_чув_/ && $2~ /_пов/                 ){  gl_quvpo   [$1];                           };
+        if($2~  /^gl_дви_/ && $2~ /_пов/                 ){  gl_dvipo   [$1];                           };
         if($2~  /^gl_чув_/ && $2~ /_ед/                  ){  gl_quved   [$1];  gl_quv   [$1];  continue };
         if($2~  /^gl_чув_/ && $2~ /_мн/                  ){  gl_quvmn   [$1];  gl_quv   [$1];  continue };
         if($2~  /^gl_чув_/ && $2~ /_инф/                 ){  gl_quvin   [$1];  gl_quv   [$1];  continue };
         if($2~  /^gl_гов_/ && $2~ /_ед/                  ){  gl_goved   [$1];  gl_gov   [$1];  continue };
         if($2~  /^gl_гов_/ && $2~ /_мн/                  ){  gl_govmn   [$1];  gl_gov   [$1];  continue };
         if($2~  /^gl_гов_/ && $2~ /_инф/                 ){  gl_govin   [$1];  gl_gov   [$1];  continue };
+        if($2~  /^gl_дви_/ && $2~ /_ед/                  ){  gl_dvied   [$1];  gl_dvi   [$1];  continue };
+        if($2~  /^gl_дви_/ && $2~ /_мн/                  ){  gl_dvimn   [$1];  gl_dvi   [$1];  continue };
+        if($2~  /^gl_дви_/ && $2~ /_инф/                 ){  gl_dviin   [$1];  gl_dvi   [$1];  continue };
+   };
+   if (substr($2,1,3) == "geo_") {
+        if($2~  /^geo_ед_ср_им$/                         ){  geo_edsrim [$1];                  continue };
+        if($2~  /^geo_мн_им$/                            ){  geo_mnim   [$1];                  continue };
    };
 
-   if (substr($2,1,3) == "гл_") {                            gl_        [$1];
+   if (substr($2,1,3) == "гл_") {
         if($2~  /_прош_ед_ср$/                           ){  gl_edsr    [$1];                           };
 
       if (substr($2,1,13) == "гл_сов_непер_") {
@@ -322,7 +333,7 @@ BEGIN {
     };
     if (substr($2,1,4) == "нар_") {
 
-        if($2~  /^нар_вопр$/                             ){  nar_vop    [$1];                   continue };
+        if($2~  /^нар_вопр$/                             ){  nar_vopr   [$1];                   continue };
         if($2~  /^нар_обст_врем$/                        ){  nar_obvr   [$1];                   continue };
         if($2~  /^нар_обст_места$/                       ){  nar_obme   [$1];                   continue };
         if($2~  /^нар_обст_напр$/                        ){  nar_obna   [$1];                   continue };
@@ -332,7 +343,7 @@ BEGIN {
         if($2~  /^нар_опред_спос$/                       ){  nar_opsp   [$1];                   continue };
         if($2~  /^нар_опред_степ$/                       ){  nar_opst   [$1];                   continue };
         if($2~  /^нар_прев$/                             ){  nar_prev   [$1];                   continue };
-        if($2~  /^нар_мест$/                             ){  nar_mest   [$1];                  continue };
+        if($2~  /^нар_мест$/                             ){  nar_mest   [$1];                   continue };
         if($2~  /^нар_сравн$/                            ){  nar_srav   [$1];                   continue };
     };
     if (substr($2,1,6) == "предл_") {
@@ -478,6 +489,7 @@ BEGIN {
     delete suw_edim ["его"]; delete suw_odmnim ["его"]; delete suw_nomniv ["его"]
     delete suw_edvi ["сто"]; delete suw_edim ["сто"]; delete suw_edsrvi ["сто"]; delete suw_edsrim ["сто"];
 
+#print (length(gl_dvimn))
 
  }  {
  nf=patsplit($0, l, patword, sep)
@@ -498,1523 +510,1663 @@ BEGIN {
  if (s(0,0) && (w(1,"же")||w(1,"равно")) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[2]++; print "R2"}; continue;};
 
- #v всё в (порядке)
- if (q(1,qast) &&
-      w(2,"в") &&
-       w(3,"порядке порядок норме норму ажуре шоколаде целом") && s(0,2) && (p(3)||w(4,"и с")||q(3,gl_edsr)) )
+ # География
+ if ( (q(1,geo_edsrim)||l[i+1]~/([ео]во|[иы]но)$/) && s(0,0) && cap(1) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[3]++; print "R3"}; continue;};
- if (w(1,"в") &&
-      (q(2,prl_edpr)||q(2,prl_edpr)) &&
-       w(3,"порядке порядок норме норму ажуре шоколаде") && s(0,2) && (p(3)||w(4,"и с")||q(3,gl_edsr)) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[4]++; print "R4"}; continue;};
- if (w(1,"в") &&
-      w(2,"порядке порядок норме норму ажуре шоколаде целом") && s(0,1) && (p(2)||w(3,"и с")||q(3,gl_edsr)) )
+ if ( q(1,geo_mnim) && s(0,0) && cap(1) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[4]++; print "R4"}; continue;};
+
+
+ #v всё в (порядке)
+ if ( w(1,"ли уже") &&
+       q(2,nar_obme) &&
+        w(3,"в") &&
+         w(4,"порядке норме ажуре шоколаде") && s(0,3) && (p(4)||w(5,"и с")||q(4,gl_edsr)) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[5]++; print "R5"}; continue;};
+ if ( (phf(1,"как будто")||phf(1,"вроде бы")) &&
+        w(hfn,"в") &&
+         w(hfn+1,"порядке норме ажуре шоколаде") && s(0,hfn) && (p(hfn+1)||w(hfn+2,"и с")||q(hfn+1,gl_edsr)) )
+ { sub(/[ее]/, "ё", l[i]); if(dbg){r[5]++; print "r5"}; continue;};
+ if ( (q(1,qast)||q(1,nar_obme)) &&
+        w(2,"в") &&
+         w(3,"порядке норме ажуре шоколаде") && s(0,2) && (p(3)||w(4,"и с")||q(3,gl_edsr)) )
+ { sub(/[ее]/, "ё", l[i]); if(dbg){r[5]++; print "r5"}; continue;};
+ if ( w(1,"в") &&
+      (q(2,prl_edpr)||q(2,prl_edpr)) &&
+        w(3,"порядке порядок норме норму ажуре шоколаде") && s(0,2) && (p(3)||w(4,"и с")||q(3,gl_edsr)) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[6]++; print "R6"}; continue;};
+ if ( w(1,"в") &&
+       w(2,"порядке порядок норме норму ажуре шоколаде целом") && s(0,1) && (p(2)||w(3,"и с")||q(3,gl_edsr)) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[7]++; print "R7"}; continue;};
  if ( q(1,qast) &&
        w(2,"на") &&
         w(3,"мази") && s(0,2) && (p(3)||w(4,"и")) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[6]++; print "R6"}; continue;};
- if (w(1,"на") &&
-      w(2,"мази") && s(0,1) && (p(2)||w(3,"и")) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[7]++; print "R7"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[8]++; print "R8"}; continue;};
+ if ( w(1,"на") &&
+       w(2,"мази") && s(0,1) && (p(2)||w(3,"и")) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[9]++; print "R9"}; continue;};
 
  #v всё ещё
  if ( w(1,"ещё еще") && s(0,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[8]++; print "R8"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[10]++; print "R10"}; continue;};
 
  #v всё ещё
  if ( w(1,"и") &&
        w(2,"вся") && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[9]++; print "R9"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[11]++; print "R11"}; continue;};
  if ( w(1,"и") &&
        w(2,"всяческие") && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[10]++; print "R10"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[12]++; print "R12"}; continue;};
 
  #v всё так и
  if ( phf(1,"так и") &&
-       (q(3,gl_edsr)||w(3,"есть")) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[11]++; print "R11"}; continue;};
- if ( phf(1,"так и") &&
-       (q(3,gl_nemn)||q(3,gl_pemn)||q(3,gl_pnmn)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[12]++; print "R12"}; continue;};
- if ( phf(1,"и так") &&
-       (q(3,gl_ed)||w(3,"есть")) && s(0,2) )
+      (q(3,gl_edsr)||w(3,"есть")) && s(0,2) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[13]++; print "R13"}; continue;};
+ if ( phf(1,"так и") &&
+      (q(3,gl_nemn)||q(3,gl_pemn)||q(3,gl_pnmn)) && s(0,2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[14]++; print "R14"}; continue;};
+ if ( phs(-1,"и так") && Q(-3,mest_mn) &&
+      (q(1,gl_nemn)||q(1,gl_pemn)||q(1,gl_pnmn)) && s(-2,0) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[15]++; print "R15"}; continue;};
+ if ( phf(1,"и так") &&
+      (q(3,gl_ed)||w(3,"есть")) && s(0,2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[16]++; print "R16"}; continue;};
 
 
  # фразы
  
  if ( phf(1,"бы ничего") && sc(2,",") && s(0,1) &&
        w(3,"только но да однако") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[14]++; print "R14"}; continue;};
- if ( w(-1,"на") && (phf(1,"про все")||phf(1,"про всё")) && s(-1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[15]++; print "R15"}; continue;};
- if ( (phs(-1,"на всё про")||phs(-1,"на все про")) && s(-3,-1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[16]++; print "R16"}; continue;};
- if ( phf(1,"одно и то же") && s(0,3) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[17]++; print "R17"}; continue;};
- if ( phf(1,"потому что") && s(0,0) && sc(1,",") )
+ if ( w(-1,"на") && (phf(1,"про все")||phf(1,"про всё")) && s(-1,1) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[18]++; print "R18"}; continue;};
- if ( phs(-1,"ну вот и") && s(-3,-1) && p(0) )
+ if ( (phs(-1,"на всё про")||phs(-1,"на все про")) && s(-3,-1) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[19]++; print "R19"}; continue;};
- if ( phs(-1,"вот и") && s(-2,-1) && p(0) )
+ if ( phf(1,"одно и то же") && s(0,3) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[20]++; print "R20"}; continue;};
- if ( phf(1,"раз и навсегда") && s(0,2) )
+ if ( phf(1,"потому что") && s(0,0) && sc(1,",") )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[21]++; print "R21"}; continue;};
- if ( phf(1,"точно так") && s(0,1) )
+ if ( phf(1,"тип топ") && s(0,0) && se(1,"-") )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[22]++; print "R22"}; continue;};
- if ( phf(1,"или ничего") && s(0,1) )
+ if ( phs(-1,"ну вот и") && s(-3,-1) && p(0) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[23]++; print "R23"}; continue;};
+ if ( phs(-1,"вот и") && s(-2,-1) && p(0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[24]++; print "R24"}; continue;};
+ if ( phf(1,"раз и навсегда") && s(0,2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[25]++; print "R25"}; continue;};
+ if ( phf(1,"точно так") && s(0,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[26]++; print "R26"}; continue;};
+ if ( phf(1,"или ничего") && s(0,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[27]++; print "R27"}; continue;};
  if ( phf(1,"под богом ходим") && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[24]++; print "R24"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[28]++; print "R28"}; continue;};
  if ( phf(1,"за и против") && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[25]++; print "R25"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[29]++; print "R29"}; continue;};
  if ( phf(1,"только и") &&
        (q(3,gl_pnmn)||q(3,gl_pemn)||q(3,gl_nemn)) &&
          w(4,"что") && s(0,2) && sc(3,",") )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[26]++; print "R26"}; continue;};
- if ( phf(1,"как один") && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[27]++; print "R27"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[30]++; print "R30"}; continue;};
+ if ( w(1,"как") &&
+       w(2,"один одна") && s(0,1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[31]++; print "R31"}; continue;};
  if ( phf(1,"это само по себе") && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[28]++; print "R28"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[32]++; print "R32"}; continue;};
  if ( phf(1,"не так уж") &&
        q(4,prl_kred_sr) && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[29]++; print "R29"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[33]++; print "R33"}; continue;};
+ if ( phf(1,"так уж") &&
+       q(hfn,prl_kred_sr) && s(0,hfn-1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[34]++; print "R34"}; continue;};
  if ( phf(1,"не так уж") &&
        w(4,"и") &&
         q(5,prl_kred_sr) && s(0,4) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[30]++; print "R30"}; continue;};
- if ( phf(1,"не так") && p(2) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[31]++; print "R31"}; continue;};
- if ( phf(1,"совсем не так") && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[32]++; print "R32"}; continue;};
- if ( w(-1,"и") && p(0) && pv(0,0,",") && s(-1,-1) && (w(-2,"p")||p(-2)) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[33]++; print "R33"}; continue;};
- if ( phf(1,"в том же") && w(4,"роде духе разрезе виде смысле") && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[34]++; print "R34"}; continue;};
- if ( phf(1,"в таком") && w(3,"роде духе разрезе виде смысле") && s(0,2) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[35]++; print "R35"}; continue;};
+ if ( phf(1,"не так") && p(2) && s(0,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[36]++; print "R36"}; continue;};
+ if ( phf(1,"совсем не так") && s(0,2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[37]++; print "R37"}; continue;};
+ if ( w(-1,"и") && p(0) && pv(0,0,",") && s(-1,-1) && (w(-2,"p")||p(-2)) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[38]++; print "R38"}; continue;};
+ if ( phf(1,"в том же") && w(4,"роде духе разрезе виде смысле") && s(0,3) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[39]++; print "R39"}; continue;};
+ if ( phf(1,"в таком") && w(3,"роде духе разрезе виде смысле") && s(0,2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[40]++; print "R40"}; continue;};
  if ( phs(-1,"всё равно") && 
        q(1,gl_pnmn) &&
        (q(2,mest_ed)||q(2,mest_mn)) && s(-1,0) && sc(1,",") )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[36]++; print "R36"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[41]++; print "R41"}; continue;};
 
 
  if ( w(1,"позади понапрасну") && s(0,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[37]++; print "R37"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[42]++; print "R42"}; continue;};
   if ( wf(5,"до") &&
        w(wfn+1,"одного единого") && s(0,wfn) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[385]++; print "R385"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[43]++; print "R43"}; continue;};
 
 
  # Это
 
  # все + сущ.мн.
  if ( q(1,mest_it) && !(qf(5,gl_pemn)||qf(5,gl_pnmn)||qf(5,gl_in)) && s(0,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[38]++; print "R38"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[44]++; print "R44"}; continue;};
  if ( q(1,mest_it) &&
       (q(2,gl_vzmn)||q(2,gl_nemn)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[39]++; print "R39"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[45]++; print "R45"}; continue;};
  if ( q(-4,mest_it) &&
        phs(-1,"ещё далеко не") && s(-4,-1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[40]++; print "R40"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[46]++; print "R46"}; continue;};
  if ( q(-3,mest_it) &&
        phs(-1,"ещё не") && s(-3,-1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[41]++; print "R41"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[47]++; print "R47"}; continue;};
  if ( q(1,mest_it) &&
        phf(2,"не более чем") && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[42]++; print "R42"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[48]++; print "R48"}; continue;};
  if ( q(-3,mest_it) &&
        phs(-1,"далеко не") && s(-3,-1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[43]++; print "R43"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[49]++; print "R49"}; continue;};
  if ( q(1,mest_it) &&
        phf(2,"не в счёт") && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[44]++; print "R44"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[50]++; print "R50"}; continue;};
  if ( q(1,mest_it) &&
        phf(2,"и в самом деле") &&
         q(6,nar_opst) &&
          q(7,prl_kred_sr) && s(0,6) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[45]++; print "R45"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[51]++; print "R51"}; continue;};
  if ( q(1,mest_it) &&
        w(2,"никак") &&
         w(3,"не") &&
          q(4,gl_in) && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[46]++; print "R46"}; continue;};
- # все + сущ.мн.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[52]++; print "R52"}; continue;};
  if ( q(-1,mest_it) &&
       (q(1,suw_odmnim)||q(1,suw_nomniv)) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[47]++; print "R47"}; continue;};
- # это + всё + сущ.мн.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[53]++; print "R53"}; continue;};
  if ( q(-1,mest_it) &&
       (q(1,suw_odmnim)||q(1,suw_nomniv)) && s(-1,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[48]++; print "R48"}; continue;};
- # это + всё + сущ.ед.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[54]++; print "R54"}; continue;};
+ if ( q(1,mest_it) &&
+       q(2,mest_im) &&
+        q(3,mest_da) && s(0,2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[55]++; print "R55"}; continue;};
  if ( q(1,mest_it) &&
       (q(2,mest_mn)||q(2,mest_ed)) &&
        (q(3,gl_quv)||q(3,gl_gov)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[49]++; print "R49"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[56]++; print "R56"}; continue;};
  if ( q(1,mest_it) &&
        q(2,mest_da) &&
        (q(3,nar_obvr)||q(3,nar_opst)) &&
          q(4,prl_kred_sr) && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[50]++; print "R50"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[57]++; print "R57"}; continue;};
  if ( q(1,mest_it) &&
        q(2,mest_da) &&
        (q(3,nar_obvr)||q(3,nar_opst)) &&
          w(4,"не") &&
           q(5,gl_ed) && s(0,4) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[51]++; print "R51"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[58]++; print "R58"}; continue;};
  if ( q(-1,mest_da) &&
        q(1,mest_it) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[52]++; print "R52"}; continue;};
- # это + всё + сущ.ед.
- if ( q(-2,nar_vop) &&
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[59]++; print "R59"}; continue;};
+ if ( q(-2,nar_vopr) &&
        q(-1,mest_it) && s(-2,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[53]++; print "R53"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[60]++; print "R60"}; continue;};
  if ( q(-1,mest_it) &&
        q(1,suw_edim) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[54]++; print "R54"}; continue;};
- # через всё + это
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[61]++; print "R61"}; continue;};
  if ( (q(-1,pre_vi)||q(-1,pre_ro)||q(-1,pre_da)) &&
        q(1,gl_nemn) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[55]++; print "R55"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[62]++; print "R62"}; continue;};
  if ( (q(-1,pre_vi)||q(-1,pre_ro)||q(-1,pre_da)) &&
        q(1,mest_it) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[56]++; print "R56"}; continue;};
- # это + всё + сущ.ед.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[63]++; print "R63"}; continue;};
  if ( q(1,mest_it) &&
        q(2,suw_edim) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[57]++; print "R57"}; continue;};
- # все + это + ... + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[64]++; print "R64"}; continue;};
  if ( q(1,qast) &&
        q(2,mest_it) && s(0,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[58]++; print "R58"}; continue;};
- # все + ... + сущ.мн.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[65]++; print "R65"}; continue;};
  if ( q(1,mest_it) &&
        (q(2,suw_odmnim)||q(2,suw_nomniv)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[59]++; print "R59"}; continue;};
- # все + это + ... + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[66]++; print "R66"}; continue;};
  if ( q(1,mest_it) &&
       (q(2,nar_opka)||q(2,nar_opsp)||q(2,mest_ed)) && s(0,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[60]++; print "R60"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[67]++; print "R67"}; continue;};
  if ( q(1,mest_it) &&
        q(2,pre_ro) &&
        (q(3,mest_ro)||q(3,suw_edro)||q(3,suw_mnro)||q(3,suw_odmnvr)) && s(0,2) && p(3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[61]++; print "R61"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[68]++; print "R68"}; continue;};
  if ( q(-1,mest_it) &&
        q(1,pre_ro) &&
        (q(2,mest_ro)||q(2,suw_edro)||q(2,suw_mnro)||q(2,suw_odmnvr)) && s(0,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[62]++; print "R62"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[69]++; print "R69"}; continue;};
  if ( q(1,mest_it) &&
        q(2,qast) &&
         q(3,pre_ro) &&
         (q(2,mest_ro)||q(2,suw_edro)||q(2,suw_mnro)||q(2,suw_odmnvr)) && s(0,3) && p(4) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[63]++; print "R63"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[70]++; print "R70"}; continue;};
  if ( q(-1,mest_it) &&
        q(1,mest_da) && s(-1,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[64]++; print "R64"}; continue;};
- # все + мест.мн + [….,;:!?]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[71]++; print "R71"}; continue;};
  if ( q(1,mest_mn) &&
        q(2,mest_it) &&
        (q(3,gl_pnmn)||q(3,gl_nemn)) && s(0,2) && p(3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[65]++; print "R65"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[72]++; print "R72"}; continue;};
+ if ( q(-1,mest_it) &&
+       q(1,mest_ed) &&
+        q(2,gl_ed) && s(-1,1) && p(2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[73]++; print "R73"}; continue;};
  if ( q(-1,mest_it) &&
        q(1,mest_mn) &&
        (q(2,gl_pnmn)||q(2,gl_nemn)) && s(-1,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[66]++; print "R66"}; continue;};
- # всё + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[74]++; print "R74"}; continue;};
+
+
+ # глагол в единственном числе
  if ( q(-1,mest_it) &&
       (q(1,nar_obvr)||q(1,nar_obme)||q(1,nar_opsp)||q(1,nar_opst)||q(1,nar_srav)||q(1,nar_opka)) &&
        (q(2,gl_ed)||q(2,gl_in)) && s(-1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[67]++; print "R67"}; continue;};
- # всё + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[75]++; print "R75"}; continue;};
  if ( q(1,mest_it) &&
       (q(2,nar_obvr)||q(2,nar_obme)||q(2,nar_opsp)||q(2,nar_opst)||q(2,nar_srav)||q(2,nar_opka)) &&
        (q(3,gl_ed)||q(3,gl_in)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[68]++; print "R68"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[76]++; print "R76"}; continue;};
  if ( q(1,mest_it) &&
       (q(2,nar_obvr)||q(2,nar_obme)||q(2,nar_opsp)||q(2,nar_opst)||q(2,nar_srav)||q(2,nar_opka)) && s(0,2) && (p(2)||w(3,"и")) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[69]++; print "R69"}; continue;};
- # всё, ввод, гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[77]++; print "R77"}; continue;};
  if ( q(1,mest_it) && s(0,0) && sc(1,",") &&
        q(2,vvod) && sc(2,",") &&
        (q(3,gl_ed)||q(3,gl_in)) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[70]++; print "R70"}; continue;};
- # всё, ввод, гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[78]++; print "R78"}; continue;};
  if ( q(1,mest_it) && s(0,0) && sc(1,",") &&
        q(2,vvod) && sc(2,",") &&
        (q(3,gl_nemn)||q(3,gl_pnmn)) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[71]++; print "R71"}; continue;};
- # всё, ввод, гл.ед
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[79]++; print "R79"}; continue;};
  if ( sc(0,",") &&
        q(1,vvod) && sc(1,",") &&
        (q(2,gl_ed)||q(2,gl_in)) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[72]++; print "R72"}; continue;};
- # всё, ввод, гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[80]++; print "R80"}; continue;};
  if ( sc(0,",") &&
        q(1,vvod) && sc(1,",") &&
        (q(2,gl_nemn)||q(2,gl_pnmn)) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[73]++; print "R73"}; continue;};
- # все + это + ... + нар[….,:;!?—]
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[81]++; print "R81"}; continue;};
  if ( q(1,mest_it) &&
        q(2,mest_da) &&
         q(3,prl_kred_sr) && s(0,2) && p(3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[74]++; print "R74"}; continue;};
- # все + это + ... + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[82]++; print "R82"}; continue;};
  if ( q(1,mest_it) &&
        q(2,qast) &&
         q(3,prq_kred_sr) && s(0,2) && p(3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[75]++; print "R75"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[83]++; print "R83"}; continue;};
  if ( q(1,mest_it) &&
        q(2,prl_kred_sr) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[76]++; print "R76"}; continue;};
- # Это всё надо
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[84]++; print "R84"}; continue;};
  if ( q(-1,mest_it) &&
        q(1,predik) && s(-1,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[77]++; print "R77"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[85]++; print "R85"}; continue;};
  if ( q(-2,gl_in) &&
        q(-1,mest_it) && s(-2,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[78]++; print "R78"}; continue;};
- # Это всё из-за
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[86]++; print "R86"}; continue;};
+ if ( q(-1,mest_it) &&
+       q(1,mest_im) &&
+        q(2,suw_edim) && s(-1,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[87]++; print "R87"}; continue;};
  if ( q(-1,mest_it) &&
        q(1,pre_ro) &&
        (q(2,mest_ro)||q(2,mest_vi)||q(2,prl_edro)||q(2,prl_edvr)||q(2,prl_mniv)||q(2,prl_mnvr)) &&
         (q(3,suw_edro)||q(3,suw_odmnvr)||q(3,suw_mnro)) && s(-1,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[79]++; print "R79"}; continue;};
- # Это всё из-за
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[88]++; print "R88"}; continue;};
  if ( q(-1,mest_it) &&
        w(1,"что чтобы") && s(-1,-1) && sc(0,",") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[80]++; print "R80"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[89]++; print "R89"}; continue;};
  if ( q(-1,mest_it) &&
        w(1,"кто") && s(-1,-1) && sc(0,",") )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[81]++; print "R81"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[90]++; print "R90"}; continue;};
  if ( q(-1,mest_it) &&
        q(1,pre_ro) &&
         w(2,"того") &&
          w(3,"что чтобы") && s(-1,1) && sc(2,",") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[82]++; print "R82"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[91]++; print "R91"}; continue;};
  if ( q(1,mest_it) &&
        q(2,pre_ro) &&
         w(3,"того") &&
          w(4,"что чтобы") && s(0,2) && sc(3,",") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[83]++; print "R83"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[92]++; print "R92"}; continue;};
  if ( q(1,mest_it) &&
        q(2,mest_da) &&
         q(3,nar_opka) &&
          q(4,gl_edsr) && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[84]++; print "R84"}; continue;};
- # все + это (мест.ед) + ...
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[93]++; print "R93"}; continue;};
  if ( q(1,mest_it) &&
       (q(2,prl_ediv)||q(2,prl_edvr)||q(2,prl_mniv)||q(2,prq_mniv)||q(2,prl_mnvr)||q(2,prq_mnvr)) &&
        (q(3,suw_edim)||q(3,suw_odmnim)||q(3,suw_nomniv)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[85]++; print "R85"}; continue;};
- # все + это (мест.ед) + ...
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[94]++; print "R94"}; continue;};
  if ( q(1,mest_it) &&
        q(2,pre_pr) &&
        (q(3,suw_edpr)||q(3,suw_mnpr)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[86]++; print "R86"}; continue;};
- # все + это (мест.ед) + ...
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[95]++; print "R95"}; continue;};
  if ( q(1,mest_it) &&
        q(2,pre_ro) &&
        (q(3,mest_ro)||q(3,suw_edro)||q(3,suw_odmnvr)||q(3,suw_mnro)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[87]++; print "R87"}; continue;};
- # все + это (мест.ед) + ...
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[96]++; print "R96"}; continue;};
  if ( q(1,mest_it) && s(0,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[88]++; print "R88"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[97]++; print "R97"}; continue;};
  if ( (q(-1,gl_quv)||q(-1,gl_gov)) &&
         q(1,mest_it) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[89]++; print "R89"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[98]++; print "R98"}; continue;};
  if ( q(-1,mest_it) && cap(-1) &&
        (q(1,mest_ed)||q(1,mest_mn)) && s(-1,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[90]++; print "R90"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[99]++; print "R99"}; continue;};
 
  # Все как и
  if ( phs(-1,"как и") && s(-2,0) &&
        q(1,mest_mn) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[91]++; print "R91"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[100]++; print "R100"}; continue;};
  if ( phs(-2,"как и") && s(-3,-1) &&
        q(-1,mest_mn) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[92]++; print "R92"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[101]++; print "R101"}; continue;};
  if ( phs(-1,"как и") &&
        (q(1,mest_im)||q(1,prl_mniv)) && s(-2,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[93]++; print "R93"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[102]++; print "R102"}; continue;};
  if ( phs(-1,"как и") &&
        q(1,pre_ro) &&
         q(2,mest_ro) && s(-2,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[94]++; print "R94"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[103]++; print "R103"}; continue;};
 
  # как все
  if ( (q(-2,gl_in)||q(-2,prl_ediv)||q(-2,prl_mniv)||q(-2,prl_edtv)||q(-2,prl_mntv)) &&
         w(-1,"как") && s(-1,-1) && sc(-2,",") && p(0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[95]++; print "R95"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[104]++; print "R104"}; continue;};
+ if ( q(-2,gl_in) &&
+        w(-1,"как") && s(-2,-1) && p(0) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[105]++; print "R105"}; continue;};
  if ( w(1,"как") &&
        w(2,"будто") &&
         q(3,gl_edsr) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[96]++; print "R96"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[106]++; print "R106"}; continue;};
 
  # все как
  if ( w(1,"как") &&
        w(2,"надо нужно есть было дома") && s(0,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[97]++; print "R97"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[107]++; print "R107"}; continue;};
  if ( q(1,gl_pemn) &&
        w(2,"как") &&
         w(3,"надо нужно есть было дома") && s(0,2) && p(3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[98]++; print "R98"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[108]++; print "R108"}; continue;};
 
  # Все то же
  if ( q(1,prl_kred_sr) &&
       (q(2,mest_it)||w(2,"эти те той ту того тех тем")) &&
         w(3,"же ж") && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[99]++; print "R99"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[109]++; print "R109"}; continue;};
  if ( (q(1,mest_it)||w(1,"эти та те той ту того тех так такой таком такого таким такими")) &&
         w(2,"же ж") && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[100]++; print "R100"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[110]++; print "R110"}; continue;};
  if ( w(1,"тем им ей") &&
        w(2,"же ж") && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[101]++; print "R101"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[111]++; print "R111"}; continue;};
 
  #v Все + предлог
- if (!(q(-1,mest_mn)||q(-1,mest_ed)||q(-1,gl_)) &&
+ if (!(q(-1,mest_mn)||q(-1,mest_ed)||q(-1,gl_ed)||q(-1,gl_in)||q(-1,gl_vzmn)||q(-1,gl_nemn)||q(-1,gl_pemn)||q(-1,gl_pnmn)||q(-1,gl_poed)||q(-1,gl_ponemn)||q(-1,gl_popemn)||q(-1,gl_popnmn)) &&
         q(1,pre_da) &&
         (q(2,suw_edda)||q(2,suw_mnda)) && s(0,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[102]++; print "R102"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[112]++; print "R112"}; continue;};
  if ( q(-1,pre_da) && s(0,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[103]++; print "R103"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[113]++; print "R113"}; continue;};
+ if ( q(-1,pre_vi) &&
+       w(1,"чтобы") && s(-1,-1) && sc(0,",") )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[114]++; print "R114"}; continue;};
  if ( q(1,pre_ro) &&
        q(2,mest_ro) &&
         q(3,prq_ediv) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[104]++; print "R104"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[115]++; print "R115"}; continue;};
  if ( q(-1,gl_in) &&
        q(1,pre_ro) &&
        (q(2,suw_odmnvr)||q(2,suw_mnro)||cap(2)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[105]++; print "R105"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[116]++; print "R116"}; continue;};
  if ( (q(-1,gl_ponemn)||q(-1,gl_popnmn)||q(-1,gl_popemn)) &&
         q(1,pre_da) &&
         (q(2,suw_edda)||q(2,suw_mnda)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[106]++; print "R106"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[117]++; print "R117"}; continue;};
  if ( q(1,pre_ro) &&
        (q(2,suw_odmnvr)||q(2,suw_mnro)||cap(2)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[107]++; print "R107"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[118]++; print "R118"}; continue;};
  if ( q(1,pre_ro) && sc(0,",") &&
        (q(2,suw_odmnvr)||q(2,suw_mnro)||cap(2)) && s(1,1) && p(2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[108]++; print "R108"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[119]++; print "R119"}; continue;};
  if ( q(1,mest_mnim) && sc(0,",") &&
       (q(2,pre_ro)||q(2,pre_vi)) &&
         w(3,"кого") && s(1,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[109]++; print "R109"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[120]++; print "R120"}; continue;};
  if ( (q(1,pre_ro)||q(1,pre_vi)) && sc(0,",") &&
        w(2,"кого" ) && s(1,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[110]++; print "R110"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[121]++; print "R121"}; continue;};
  if ( (q(-1,pre_ro)||q(-1,pre_tv)) && !(q(-1,pre_im)||q(-1,pre_vi)||q(-1,pre_da)||q(-1,pre_pr)||q(-1,suw_edro)) && s(-1,-1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[111]++; print "R111"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[122]++; print "R122"}; continue;};
  if ( (q(-1,pre_ro)||q(-1,pre_tv)) && s(-1,-1) && p(0) && pv(0,0,",") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[112]++; print "R112"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[123]++; print "R123"}; continue;};
  if ( w(1,"за") &&
        q(2,mest_vi) &&
         w(3,"горой") && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[113]++; print "R113"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[124]++; print "R124"}; continue;};
  if ( w(-1,"со ко") && s(-1,-1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[114]++; print "R114"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[125]++; print "R125"}; continue;};
  if ( w(1,"до") &&
        w(2,"конца") && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[115]++; print "R115"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[126]++; print "R126"}; continue;};
  if ( w(1,"до") &&
        w(2,"единого") && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[116]++; print "R116"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[127]++; print "R127"}; continue;};
  if ( q(-3,pre_pr) &&
       (q(-2,prl_edpr)||q(-2,prl_mnpr)||q(-2,mest_pr)) &&
        (q(-1,suw_edpr)||q(-1,suw_mnpr)) && s(-3,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[117]++; print "R117"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[128]++; print "R128"}; continue;};
 
  # все что
  if ( w(1,"что") &&
        q(2,gl_ed) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[118]++; print "R118"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[129]++; print "R129"}; continue;};
 
  # всё, на что
  if ( sc(0,",") &&
        q(1,pre_vi) &&
         w(2,"что") && s(1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[119]++; print "R119"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[130]++; print "R130"}; continue;};
  if ( sc(0,",") &&
        q(1,pre_vi) &&
         w(2,"кого") && s(1,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[120]++; print "R120"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[131]++; print "R131"}; continue;};
  if ( q(-1,pre_vi) &&
        q(1,gl_vzmn) &&
        (q(2,mest_im)||q(2,prl_ediv)||q(2,prl_mniv)) && s(-1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[121]++; print "R121"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[132]++; print "R132"}; continue;};
  if ( sc(0,",") &&
        q(1,pre_da) &&
         w(2,"чему") && s(1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[122]++; print "R122"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[133]++; print "R133"}; continue;};
  if ( sc(0,",") &&
        q(1,pre_da) &&
         w(2,"кому") && s(1,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[123]++; print "R123"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[134]++; print "R134"}; continue;};
  if ( sc(0,",") &&
        q(1,pre_pr) &&
         w(2,"чём чем") && s(1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[124]++; print "R124"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[135]++; print "R135"}; continue;};
  if ( sc(0,",") &&
        q(1,pre_pr) &&
         w(2,"ком") && s(1,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[125]++; print "R125"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[136]++; print "R136"}; continue;};
  if ( sc(0,",") &&
        q(1,pre_pr) &&
         w(2,"чём чем") && s(1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[126]++; print "R126"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[137]++; print "R137"}; continue;};
  if ( q(1,pre_pr) &&
       (q(2,mest_pr)||q(2,suw_edpr)||q(2,suw_mnpr)) &&
         q(3,gl_edsr) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[127]++; print "R127"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[138]++; print "R138"}; continue;};
  if ( q(-2,pre_pr) &&
       (q(-1,mest_pr)||q(2,suw_edtv)||q(2,suw_mntv)) && s(-2,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[128]++; print "R128"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[139]++; print "R139"}; continue;};
 
  # всё так же
  if ( phf(1,"так же") &&
        (q(3,prl_kred)||q(3,gl_ed)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[129]++; print "R129"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[140]++; print "R140"}; continue;};
 
  # предикат
  if ( q(1,predik) && sc(0,",") && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[130]++; print "R130"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[141]++; print "R141"}; continue;};
  if ( q(1,predik) && sc(0,",") && s(1,1) &&
        q(2,gl_in) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[131]++; print "R131"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[142]++; print "R142"}; continue;};
  if ( q(1,predik) &&
        w(2,"и") &&
         q(3,predik) && s(0,2) && qq(1,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[132]++; print "R132"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[143]++; print "R143"}; continue;};
 
  # обращение
  if ( cap(1) && sc(0,",") && sc(1,",") &&
        q(2,nar_opst) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[133]++; print "R133"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[144]++; print "R144"}; continue;};
 
 
- # Все + ... + глагол восприятия, говорения =====================================
+ # глагол говорения -----------------------------------------------------
  if ( (q(-2,suw_oded)||q(-2,suw_odmn)) &&
-       (q(-1,gl_quv)||q(-1,gl_gov)) && s(-2,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[134]++; print "R134"}; continue;};
- if ( (q(-2,mest_vi)||q(-2,suw_edvi)||q(-2,suw_odmniv)||q(-2,suw_nomnvr)) &&
-        q(-1,gl_quvmn) && s(-2,-1) && p(0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[135]++; print "R135"}; continue;};
- if ( (q(-2,gl_quv)||q(-2,gl_gov)) &&
+       q(-1,gl_gov) && s(-2,-1) && p(0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[145]++; print "R145"}; continue;};
+ if ( q(-2,gl_gov) &&
         q(-1,pre_vi) && s(-2,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[136]++; print "R136"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[146]++; print "R146"}; continue;};
  if ( q(-2,nar_obvr) &&
       (q(-1,mest_ed)||q(-1,mest_mn)) &&
-       (q(1,gl_quv)||q(1,gl_gov)) && s(-2,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[137]++; print "R137"}; continue;};
+        q(1,gl_gov) && s(-2,0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[147]++; print "R147"}; continue;};
  if ( (q(-2,mest_ed)||q(-2,mest_mn)) &&
         w(-1,"же") &&
          q(1,mest_it) &&
-         (q(2,gl_quv)||q(2,gl_gov)) && s(-2,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[138]++; print "R138"}; continue;};
+          q(2,gl_gov) && s(-2,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[148]++; print "R148"}; continue;};
  if ( q(-1,mest_it) &&
-      (q(1,gl_quvmn)||q(1,gl_govmn)) && s(-1,0) && p(1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[139]++; print "R139"}; continue;};
+       q(1,gl_govmn) && s(-1,0) && p(1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[149]++; print "R149"}; continue;};
  if ( (q(-1,mest_ed)||q(-1,mest_mn)) &&
-       (q(1,gl_quv)||q(1,gl_gov)) && s(-1,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[140]++; print "R140"}; continue;};
+        q(1,gl_gov) && s(-1,0) && p(1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[150]++; print "R150"}; continue;};
  if ( q(1,mest_mn) &&
        q(2,gl_govmn) && s(0,1) )
- { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[141]++; print "R141"}; continue;};
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[151]++; print "R151"}; continue;};
  if ( q(1,mest_da) &&
-      (q(2,gl_quv)||q(2,gl_gov)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[142]++; print "R142"}; continue;};
+       q(2,gl_gov) && s(0,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[152]++; print "R152"}; continue;};
  if ( q(1,nar_opka) &&
-      (q(2,gl_quvmn)||q(2,gl_govmn)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[143]++; print "R143"}; continue;};
+       q(2,gl_govmn) && s(0,1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[153]++; print "R153"}; continue;};
  if ( q(1,mest_mn) &&
        q(2,nar_opka) &&
-       (q(3,gl_quvmn)||q(3,gl_govmn)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[144]++; print "R144"}; continue;};
- if ( (q(1,mest_ed)||q(1,mest_mn)) &&
-       (q(2,gl_quv)||q(2,gl_gov)) && s(0,1) && sc(2,",") &&
-         w(3,"что как насколько") )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[145]++; print "R145"}; continue;};
- if ( (q(-1,mest_ed)||q(-1,mest_mn)) &&
-        phf(1,"не так") &&
-         q(3,gl_quv) && s(-1,2) && p(3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[146]++; print "R146"}; continue;};
- if ( q(1,mest_mn) &&
-       q(2,gl_quvmn) && s(0,1) && p(2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[147]++; print "R147"}; continue;};
- if ( (q(-1,mest_ed)||q(-1,mest_mn)) &&
-        q(1,gl_quv) && s(-1,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[148]++; print "R148"}; continue;};
- if ( (q(1,mest_ed)||q(1,mest_mn)) &&
-       (q(2,gl_quved)||q(2,gl_goved)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[149]++; print "R149"}; continue;};
- if ( (q(-1,gl_quv)||q(-1,gl_gov)) &&
-        w(1,"что") && s(-1,-1) && sc(0,",") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[150]++; print "R150"}; continue;};
- if ( (q(1,gl_quvmn)||q(1,gl_govmn)) &&
-        w(2,"кто что как насколько") && s(0,0) && sc(1,",") )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[151]++; print "R151"}; continue;};
- if ( q(-1,mest_ed) &&
-      (q(1,gl_quved)||q(1,gl_goved)) &&
-        q(2,pre_vi) && s(-1,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[152]++; print "R152"}; continue;};
- if ( (q(1,gl_quvmn)||q(1,gl_govmn)) &&
-        q(2,pre_vi) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[153]++; print "R153"}; continue;};
- if ( (q(-2,gl_quvmn)||q(-2,gl_govmn)) &&
-        q(-1,mest_da) &&
-         q(1,nar_opsp) && s(-2,0) && p(1) )
+        q(3,gl_govmn) && s(0,2) )
  { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[154]++; print "R154"}; continue;};
- if ( (q(-1,gl_quv)||q(-1,gl_gov)) &&
-       (q(1,pre_pr)||q(1,pre_vi)) && s(-1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[155]++; print "R155"}; continue;};
- if ( (q(-3,gl_quv)||q(-3,gl_gov)) &&
-        w(-2,"о об про") && s(-3,-1) && p(0) )
+ if ( (q(1,mest_ed)||q(1,mest_mn)) &&
+        q(2,gl_gov) && s(0,1) && sc(2,",") &&
+         w(3,"что как насколько") )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[155]++; print "R155"}; continue;};
+ if ( (q(1,mest_ed)||q(1,mest_mn)) &&
+        q(2,gl_goved) && s(0,1) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[156]++; print "R156"}; continue;};
+ if ( q(-1,gl_gov) &&
+       w(1,"что") && s(-1,-1) && sc(0,",") )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[157]++; print "R157"}; continue;};
+ if ( q(1,gl_govmn) &&
+       w(2,"кто что как насколько") && s(0,0) && sc(1,",") )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[158]++; print "R158"}; continue;};
+ if ( phf(1,"в один голос") &&
+       q(4,gl_gov) && s(0,3) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[159]++; print "R159"}; continue;};
+ if ( q(-1,mest_ed) &&
+       q(1,gl_goved) &&
+        q(2,pre_vi) && s(-1,2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[160]++; print "R160"}; continue;};
+ if ( q(1,gl_govmn) &&
+       q(2,pre_pr) &&
+       (q(3,mest_pr)||q(3,suw_edpr)||q(3,suw_mnpr)||q(3,prl_mnvr)||cap(3)) && s(0,2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[161]++; print "R161"}; continue;};
+ if ( q(1,gl_govmn) &&
+       q(2,pre_vi) &&
+       (q(3,mest_vi)||q(3,suw_edvi)||q(3,suw_odmnvr)||q(3,suw_nomniv)||q(3,prl_mniv)||q(3,prl_mnvr)) && s(0,2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[162]++; print "R162"}; continue;};
+ if ( q(-2,gl_govmn) &&
+       q(-1,mest_da) &&
+        q(1,nar_opsp) && s(-2,0) && p(1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[163]++; print "R163"}; continue;};
+ if ( q(-1,gl_gov) &&
+      (q(1,pre_pr)||q(1,pre_vi)) && s(-1,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[164]++; print "R164"}; continue;};
+ if ( q(-1,gl_gov) &&
+      (q(1,suw_edda)||q(1,suw_mnda)||cap(1)) && s(-1,0) && p(1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[165]++; print "R165"}; continue;};
+ if ( q(-3,gl_gov) &&
+       w(-2,"о об про") && s(-3,-1) && p(0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[166]++; print "R166"}; continue;};
  if ( q(1,pre_tv) &&
       (q(2,mest_tv)||q(2,suw_edtv)||q(2,suw_mntv)) &&
         q(3,gl_gov) && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[157]++; print "R157"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[167]++; print "R167"}; continue;};
  if ( q(1,pre_pr) &&
       (q(2,mest_pr)||q(2,suw_edpr)||q(2,suw_mnpr)) &&
-       (q(3,gl_quvmn)||q(3,gl_govmn)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[158]++; print "R158"}; continue;};
- if ( (q(-1,gl_quv)||q(-1,gl_gov)) &&
-       (q(1,suw_edda)||q(1,suw_mnda)) && s(-1,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[159]++; print "R159"}; continue;};
- if ( (q(-1,gl_quv)||q(-1,gl_gov)) &&
-       (q(1,prl_edtv)||q(1,prl_mntv)) &&
-        (q(2,suw_edtv)||q(2,suw_mntv)) && s(-1,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[160]++; print "R160"}; continue;};
+        q(3,gl_govmn) && s(0,2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[168]++; print "R168"}; continue;};
+ if ( q(-1,gl_gov) &&
+      (q(1,prl_edtv)||q(1,prl_mntv)) &&
+       (q(2,suw_edtv)||q(2,suw_mntv)) && s(-1,1) && p(2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[169]++; print "R169"}; continue;};
+ if ( w(-2,"некоторое какое-то") &&
+       w(-1,"время") &&
+        q(1,gl_govmn) && s(-2,0) && p(1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[170]++; print "R170"}; continue;};
  if ( (q(-2,suw_noed)||q(-2,suw_nomn)) &&
-       (q(-1,gl_quvmn)||q(-1,gl_govmn)) && s(-2,-1) && p(0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[161]++; print "R161"}; continue;};
- if ( (q(-1,gl_quv)||q(-1,gl_gov)) && s(-1,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[162]++; print "R162"}; continue;};
+        q(-1,gl_govmn) && s(-2,-1) && p(0) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[171]++; print "R171"}; continue;};
+ if ( q(-1,nar_mest) &&
+       q(1,gl_govmn) && s(-1,0) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[172]++; print "R172"}; continue;};
+ #--------------------------------------------------------------------
+ if ( q(-1,gl_gov) && s(-1,-1) && p(0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[173]++; print "R173"}; continue;};
+ if ( q(1,gl_goved) && s(0,0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[174]++; print "R174"}; continue;};
+
+
+ # глагол восприятия, чувствования, думания =====================================
+ if ( (q(-2,suw_oded)||q(-2,suw_odmn)) &&
+        q(-1,gl_quv) && s(-2,-1) && p(0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[175]++; print "R175"}; continue;};
+ if ( (q(-2,mest_vi)||q(-2,suw_edvi)||q(-2,suw_odmniv)||q(-2,suw_nomnvr)) &&
+        q(-1,gl_quvmn) && s(-2,-1) && p(0) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[176]++; print "R176"}; continue;};
+ if ( q(-2,gl_quv) &&
+        q(-1,pre_vi) && s(-2,-1) && p(0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[177]++; print "R177"}; continue;};
+ if ( q(-2,nar_obvr) &&
+      (q(-1,mest_ed)||q(-1,mest_mn)) &&
+        q(1,gl_quv) && s(-2,0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[178]++; print "R178"}; continue;};
+ if ( (q(-2,mest_ed)||q(-2,mest_mn)) &&
+        w(-1,"же") &&
+         q(1,mest_it) &&
+          q(2,gl_quv) && s(-2,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[179]++; print "R179"}; continue;};
+ if ( q(1,gl_quvmn) &&
+      (q(2,nar_obna)||q(2,mest_vi)) && s(0,1) && p(2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[180]++; print "R180"}; continue;};
+ if ( q(-1,mest_it) &&
+       q(1,gl_quvmn) && s(-1,0) && p(1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[181]++; print "R181"}; continue;};
+ if ( (q(-1,mest_ed)||q(-1,mest_mn)) &&
+        q(1,gl_quv) && s(-1,0) && p(1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[182]++; print "R182"}; continue;};
+ if ( q(1,mest_da) &&
+       q(2,gl_quv) && s(0,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[183]++; print "R183"}; continue;};
+ if ( q(1,nar_opka) &&
+       q(2,gl_quvmn) && s(0,1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[184]++; print "R184"}; continue;};
+ if ( q(1,mest_mn) &&
+      (q(2,nar_opka)||q(2,mest_vi)||q(2,mest_it)) &&
+        q(3,gl_quvmn) && s(0,2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[185]++; print "R185"}; continue;};
+ if ( q(1,mest_mn) &&
+       q(2,nar_opka) &&
+        q(3,gl_quvmn) && s(0,2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[186]++; print "R186"}; continue;};
+ if ( (q(1,mest_ed)||q(1,mest_mn)) &&
+        q(2,gl_quv) && s(0,1) && sc(2,",") &&
+         w(3,"что как насколько") )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[187]++; print "R187"}; continue;};
+ if ( (q(-1,mest_ed)||q(-1,mest_mn)) &&
+        phf(1,"не так") &&
+         q(3,gl_quv) && s(-1,2) && p(3) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[188]++; print "R188"}; continue;};
+ if ( q(1,mest_mn) &&
+       q(2,gl_quvmn) && s(0,1) && p(2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[189]++; print "R189"}; continue;};
+ if ( (q(-1,mest_ed)||q(-1,mest_mn)) &&
+        q(1,gl_quv) && s(-1,0) && p(1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[190]++; print "R190"}; continue;};
+ if ( (q(1,mest_ed)||q(1,mest_mn)) &&
+        q(2,gl_quved) && s(0,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[191]++; print "R191"}; continue;};
+ if ( q(-1,gl_quv) &&
+       w(1,"что") && s(-1,-1) && sc(0,",") )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[192]++; print "R192"}; continue;};
+ if ( q(1,gl_quvmn) &&
+       w(2,"кто что как насколько") && s(0,0) && sc(1,",") )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[193]++; print "R193"}; continue;};
+ if ( q(-1,mest_ed) &&
+       q(1,gl_quved) &&
+        q(2,pre_vi) && s(-1,2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[194]++; print "R194"}; continue;};
+ if ( q(1,gl_quvmn) &&
+       q(2,pre_pr) &&
+       (q(3,mest_pr)||q(3,suw_edpr)||q(3,suw_mnpr)||q(3,prl_mnvr)||cap(3)) && s(0,2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[195]++; print "R195"}; continue;};
+ if ( q(1,gl_quvmn) &&
+       q(2,pre_vi) &&
+       (q(3,mest_vi)||q(3,suw_edvi)||q(3,suw_odmnvr)||q(3,suw_nomniv)||q(3,prl_mniv)||q(3,prl_mnvr)) && s(0,2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[196]++; print "R196"}; continue;};
+ if ( q(1,gl_quvmn) &&
+       (q(2,suw_odmnim)||q(2,suw_nomniv)||q(2,prl_mniv)) && s(0,1) )
+ { sub(/([Ее])/, "ё", l[i]); if(dbg){r[197]++; print "R197"}; continue;};
+ if ( q(-2,gl_quvmn) &&
+       q(-1,mest_da) &&
+        q(1,nar_opsp) && s(-2,0) && p(1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[198]++; print "R198"}; continue;};
+ if ( q(-1,gl_quvpo) && sc(0,",") &&
+      (q(1,gl_edpo)||q(1,gl_povzmn)||q(1,gl_popemn)||q(1,gl_popnmn)||q(1,gl_ponemn)) && s(-1,-1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[199]++; print "R199"}; continue;};
+ if ( q(-1,gl_quv) &&
+      (q(1,pre_pr)||q(1,pre_vi)) && s(-1,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[200]++; print "R200"}; continue;};
+ if ( w(-2,"о об") &&
+      (q(-1,suw_edpr)||q(-1,suw_mnpr)) &&
+        q(1,gl_quv) && s(-2,0) && p(1) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[201]++; print "R201"}; continue;};
+ if ( q(-3,gl_quv) &&
+       w(-2,"о об про") && s(-3,-1) && p(0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[202]++; print "R202"}; continue;};
+ if ( q(1,pre_pr) &&
+      (q(2,mest_pr)||q(2,suw_edpr)||q(2,suw_mnpr)) &&
+        q(3,gl_quvmn) && s(0,2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[203]++; print "R203"}; continue;};
+ if ( q(-1,gl_quv) &&
+      (q(1,suw_edda)||q(1,suw_mnda)) && s(-1,0) && p(1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[204]++; print "R204"}; continue;};
+ if ( q(-1,gl_quv) &&
+      (q(1,prl_edtv)||q(1,prl_mntv)) &&
+       (q(2,suw_edtv)||q(2,suw_mntv)) && s(-1,1) && p(2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[205]++; print "R205"}; continue;};
+ if ( (q(-2,suw_noed)||q(-2,suw_nomn)) &&
+        q(-1,gl_quvmn) && s(-2,-1) && p(0) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[206]++; print "R206"}; continue;};
  if ( q(-1,gl_quv) &&
        q(1,pre_ro) &&
        (q(2,suw_edro)||q(2,suw_mnro)) && s(-1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[163]++; print "R163"}; continue;};
- if ( q(-1,nar_mest) &&
-       q(1,gl_govmn) && s(-1,0) )
- { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[164]++; print "R164"}; continue;};
- if ( q(1,gl_goved) && s(0,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[164]++; print "R164"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[207]++; print "R207"}; continue;};
+ if ( cap(0) &&
+       q(1,gl_quvmn) && s(0,0) && p(1) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[208]++; print "R208"}; continue;};
+ if ( cap(-2) &&
+       q(-1,gl_quvmn) && s(-2,-1) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[209]++; print "R209"}; continue;};
+ if ( cap(-3) &&
+       w(-2,"и с") &&
+        cap(-1) &&
+         q(1,gl_quvmn) && s(-3,0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[210]++; print "R210"}; continue;};
+ #--------------------------------------------------------------------
+ if ( q(-1,gl_quv) && s(-1,-1) && p(0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[211]++; print "R211"}; continue;};
 
+ # глаголы движения
+ if ( q(-2,gl_dvimn) &&
+       q(-1,mest_mn) && s(-2,-1) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[212]++; print "R212"}; continue;};
+ if ( q(1,gl_dvimn) && s(0,0) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[213]++; print "R213"}; continue;};
+ if ( q(1,gl_dvied) && s(0,0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[214]++; print "R214"}; continue;};
 
  # Все + ... + причастие =====================================
- # всё + прч.
- if ( q(1,nar_obme) &&
-       q(2,prq_kred_sr) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[165]++; print "R165"}; continue;};
+ if ( w(1,"уже") &&
+      (q(2,nar_obme)||q(2,nar_opst)) &&
+        q(3,prq_kred_sr) && s(0,2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[215]++; print "R215"}; continue;};
+ if ( (q(1,nar_obme)||q(1,nar_opst)) &&
+        q(2,prq_kred_sr) && s(0,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[216]++; print "R216"}; continue;};
  if ( q(1,qast) &&
        q(2,prq_kred_sr) && s(0,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[166]++; print "R166"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[217]++; print "R217"}; continue;};
  if ( q(1,pre_ro) &&
       (q(2,suw_odmnvr)||q(2,suw_mnro)||q(2,suw_edro)) &&
         q(3,prq_kred_sr) && s(0,2) && (p(3)||w(4,"и")) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[167]++; print "R167"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[218]++; print "R218"}; continue;};
  if ( q(-2,prq_kred_sr) &&
        q(-1,nar_opst) && s(-2,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[168]++; print "R168"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[219]++; print "R219"}; continue;};
  if ( q(-1,prq_kred_sr) && s(-1,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[169]++; print "R169"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[220]++; print "R220"}; continue;};
  if ( (q(1,prq_ediv)||q(1,prq_kred)) && s(0,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[170]++; print "R170"}; continue;};
- # всё + прч.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[221]++; print "R221"}; continue;};
  if ( q(1,mest_ed) &&
       (q(2,prq_ediv)||q(2,prq_kred)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[171]++; print "R171"}; continue;};
- # всё + прч.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[222]++; print "R222"}; continue;};
  if ( q(-1,pre_tv) &&
        (q(1,prq_edtv)||q(1,prq_mntv)) &&
         (q(2,suw_edtv)||q(2,suw_mntv)) && s(-1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[172]++; print "R172"}; continue;};
- # всё + прч.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[223]++; print "R223"}; continue;};
  if ( (q(-1,prq_edtv)||q(-1,prq_mntv)||q(-1,prl_edtv)||q(-1,prl_mntv)) && sc(-1,",") &&
        (q(1,prq_edtv)||q(1,prq_mntv)) &&
         (q(2,suw_edtv)||q(2,suw_mntv)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[173]++; print "R173"}; continue;};
-
- # все + прч.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[224]++; print "R224"}; continue;};
  if ((q(1,nar_obvr)||q(1,qast)) &&
        q(2,nar_opka) &&
        (q(3,prq_ediv)||q(3,prq_kred)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[174]++; print "R174"}; continue;};
- # все + прч.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[225]++; print "R225"}; continue;};
  if ( (q(1,prq_mniv)||q(1,prq_krmn)) && s(0,0) && p(1) && pv(1,1",") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[175]++; print "R175"}; continue;};
- # все + прч.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[226]++; print "R226"}; continue;};
+ if ( q(1,prq_mniv) &&
+       q(2,pre_ro) && s(0,1) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[227]++; print "R227"}; continue;};
+ if ( w(1,"не") &&
+       q(2,prq_mniv) &&
+        q(3,pre_ro) && s(0,2) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[228]++; print "R228"}; continue;};
  if ( q(1,mest_vi) &&
       (q(2,prq_mniv)||q(2,prq_krmn)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[176]++; print "R176"}; continue;};
- # всё + прч.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[229]++; print "R229"}; continue;};
  if ( q(1,prl_srav) &&
       (q(2,prq_edvr)||q(2,prq_edro)||q(2,prq_mnvr)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[177]++; print "R177"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[230]++; print "R230"}; continue;};
  if ( (q(1,prq_edvr)||q(1,prq_edro)||q(1,prq_mnvr)) && s(0,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[178]++; print "R178"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[231]++; print "R231"}; continue;};
 
 
 
  # Все + ... + прилагательное =====================================
- # все + прл + и + прл.
  if ( (q(1,prl_mniv)||q(1,prq_mniv)||q(1,prl_mnvr)||q(1,prq_mnvr)||q(1,prl_krmn)) &&
         w(2,"и или") &&
         (q(3,prl_mniv)||q(3,prq_mniv)||q(3,prl_mnvr)||q(3,prq_mnvr)||q(3,prl_krmn)) && s(0,2) && qq(1,3)  )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[179]++; print "R179"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[232]++; print "R232"}; continue;};
  if ( (q(1,prl_mniv)||q(1,prq_mniv)||q(1,prl_mnvr)||q(1,prq_mnvr)||q(1,prl_krmn)) &&
         w(2,"и или") &&
         (q(3,prl_mniv)||q(3,prq_mniv)||q(3,prl_mnvr)||q(3,prq_mnvr)||q(3,prl_krmn)) &&
          (q(4,suw_odmnim)||q(4,suw_nomniv)) &&
            q(5,gl_nemn) && s(0,4)  )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[180]++; print "R180"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[233]++; print "R233"}; continue;};
  if ( (q(1,prl_mniv)||q(1,prq_mniv)||q(1,prl_mnvr)||q(1,prq_mnvr)||q(1,prl_krmn)) &&
         w(2,"и или") &&
         (q(3,prl_mniv)||q(3,prq_mniv)||q(3,prl_mnvr)||q(3,prq_mnvr)||q(3,prl_krmn)) &&
          (q(4,suw_odmnim)||q(4,suw_nomniv)) && s(0,3)  )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[181]++; print "R181"}; continue;};
- # все + ... + прл.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[234]++; print "R234"}; continue;};
  if ( (q(1,prl_mniv)||q(1,prq_mniv)||q(1,prl_mnvr)||q(1,prq_mnvr)||q(1,prl_krmn)) &&
        (q(2,prl_mniv)||q(2,prq_mniv)||q(2,prl_mnvr)||q(2,prq_mnvr)||q(2,prl_krmn)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[182]++; print "R182"}; continue;};
- # все + ... + прл.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[235]++; print "R235"}; continue;};
  if ( w(1,"и") &&
       (q(2,prl_mniv)||q(2,prq_mniv)||q(2,prl_mnvr)||q(2,prq_mnvr)||q(2,prl_krmn)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[183]++; print "R183"}; continue;};
- # все + прл.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[236]++; print "R236"}; continue;};
  if ( (q(-2,prl_mniv)||q(-2,prl_mnvr)) &&
        w(-1,"и") &&
        (q(1,prq_mniv)||q(1,prq_mnvr)) && p(1) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[184]++; print "R184"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[237]++; print "R237"}; continue;};
  if ( (q(1,prl_mniv)||q(1,prq_mniv)||q(1,prl_mnvr)||q(1,prq_mnvr)||q(1,prl_krmn)) && p(1) && s(0,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[185]++; print "R185"}; continue;};
- # все + прл.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[238]++; print "R238"}; continue;};
  if ( q(1,mest_tv) &&
        q(2,prl_krmn) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[186]++; print "R186"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[239]++; print "R239"}; continue;};
  if ( q(1,prl_krmn) && s(0,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[187]++; print "R187"}; continue;};
- # все + прл.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[240]++; print "R240"}; continue;};
  if ( (q(1,prl_mniv)||q(1,prq_mniv)||q(1,prl_mnvr)||q(1,prq_mnvr)||q(1,prl_krmn)) &&
        (q(2,suw_odmnim)||q(2,suw_nomniv)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[188]++; print "R188"}; continue;};
- # всё + прл.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[241]++; print "R241"}; continue;};
  if ( (q(1,prl_ediv)||q(1,prl_edvr)||q(1,prl_kred)) &&
        (q(2,suw_edim)||q(2,suw_edvi)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[189]++; print "R189"}; continue;};
- # всё + прл.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[242]++; print "R242"}; continue;};
  if ( (q(1,prl_pvedtv)||q(1,prl_pvmntv)) &&
        (q(2,suw_edtv)||q(2,suw_mntv)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[190]++; print "R190"}; continue;};
- # всё + же совершенно очевидно
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[243]++; print "R243"}; continue;};
  if ( (q(1,qast)||q(1,nar_opka)) &&
        (q(2,nar_opka)||q(2,nar_opst)) &&
          q(3,prl_kred_sr) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[191]++; print "R191"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[244]++; print "R244"}; continue;};
  if ( (q(1,nar_opka)||q(1,nar_opst)) &&
         q(2,prl_kred_sr) &&
          q(3,gl_quvmn) && sc(3,",") &&
           w(4,"что кто") && s(0,2) )
- { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[192]++; print "R192"}; continue;};
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[245]++; print "R245"}; continue;};
+ if ( w(1,"ли") &&
+      (q(2,suw_odmnim)||q(2,suw_nomniv)) &&
+        q(3,prl_krmn) && s(0,2) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[246]++; print "R246"}; continue;};
+ if ( (q(1,suw_odmnim)||q(1,suw_nomniv)) &&
+        q(2,prl_krmn) && s(0,1) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[247]++; print "R247"}; continue;};
+ if ( (q(-1,mest_da)||q(-1,suw_edda)||q(-1,suw_mnda)) &&
+        q(1,prl_kred_sr) && s(-1,0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[248]++; print "R248"}; continue;};
  if ( (q(1,nar_opka)||q(1,nar_opst)) &&
         q(2,prl_kred_sr) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[192]++; print "R192"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[249]++; print "R249"}; continue;};
+ if ( w(1,"так") &&
+        q(2,prl_krmn) && s(0,1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[250]++; print "R250"}; continue;};
  if ( (q(1,nar_opka)||q(1,nar_opst)) &&
         q(2,prl_krmn) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[193]++; print "R193"}; continue;};
- # мне все + ... + прил.крт[….,:;!?—]
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[251]++; print "R251"}; continue;};
  if ( q(-2,pre_tv) &&
       (q(-1,suw_edtv)||q(-1,suw_mntv)) &&
         q(1,prl_kred_sr) && s(-2,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[194]++; print "R194"}; continue;};
- # мне все + ... + прил.крт[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[252]++; print "R252"}; continue;};
  if ( w(1,"вроде как") &&
-       w(2,"бы") &&
+       w(2,"бы как") &&
         q(3,prl_kred_sr) && s(0,2) && p(3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[195]++; print "R195"}; continue;};
- # все + это + ... + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[253]++; print "R253"}; continue;};
+ if ( w(1,"так настолько") &&
+       q(2,prl_kred_sr) &&
+        w(3,"и") &&
+         q(4,prl_kred_sr) && s(0,3) && p(4) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[254]++; print "R254"}; continue;};
+ if ( (w(1,"именно")||q(1,prl_kred_sr)) &&
+        w(2,"так") && sc(2,",") &&
+         w(3,"как чтобы") && s(0,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[255]++; print "R255"}; continue;};
+ if ( (w(1,"именно")||q(1,prl_kred_sr)) &&
+        w(2,"так") && s(0,1) && p(2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[256]++; print "R256"}; continue;};
+ if ( w(1,"вроде как так") &&
+       q(2,prl_kred_sr) && s(0,1) && p(2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[257]++; print "R257"}; continue;};
  if ( q(1,mest_ed) &&
        q(2,nar_opst) &&
         (q(3,prl_kred_sr)||q(3,prl_edsrim)) && s(0,2) && p(3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[196]++; print "R196"}; continue;};
- # все + это + ... + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[258]++; print "R258"}; continue;};
  if ( q(1,mest_ed) &&
        (q(2,prl_kred_sr)||q(2,prl_edsrim)) &&
         (q(3,mest_da)||q(3,suw_edda)||q(3,suw_mnda)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[197]++; print "R197"}; continue;};
- # все + прл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[259]++; print "R259"}; continue;};
  if ( (q(1,nar_obme)||q(1,nar_obvr)) &&
        (q(2,prl_edsrim)||q(2,prl_edsrvi)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[198]++; print "R198"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[260]++; print "R260"}; continue;};
  if ( (q(1,prl_edsrim)||q(1,prl_edsrvi)) && s(0,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[199]++; print "R199"}; continue;};
- # все + это + ... + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[261]++; print "R261"}; continue;};
  if ( q(-1,vvod) &&
       (q(1,prl_kred_sr)||q(1,prl_edsrim)) && sc(-1,",") && s(0,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[200]++; print "R200"}; continue;};
- # все + это + ... + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[262]++; print "R262"}; continue;};
  if ( (q(-2,gl_nemn)||q(-2,gl_pnmn)||q(-2,gl_pemn)||q(-2,gl_in)) &&
         q(-1,mest_mn) &&
         (q(1,prl_kred_sr)||q(1,prl_edsrim)) && s(-2,0) && p(1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[201]++; print "R201"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[263]++; print "R263"}; continue;};
  if ( (q(-1,gl_nemn)||q(-1,gl_pnmn)||q(-1,gl_pemn)) &&
        (q(1,prl_kred_sr)||q(1,prl_edsrim)) && s(-1,0) && p(1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[202]++; print "R202"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[264]++; print "R264"}; continue;};
+ if ( (q(1,prl_kred_sr)||q(1,prl_edsrim)) &&
+        q(2,pre_ro) && s(0,2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[265]++; print "R265"}; continue;};
  if ( (q(1,prl_kred_sr)||q(1,prl_edsrim)) && s(0,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[203]++; print "R203"}; continue;};
- # все + это + ... + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[266]++; print "R266"}; continue;};
  if ( q(-2,gl_vzmn) &&
       (q(-1,prl_kred_sr)||q(-1,nar_opka)) && s(-2,-1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[204]++; print "R204"}; continue;};
- # все + это + ... + нар[….,:;!?—]
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[267]++; print "R267"}; continue;};
  if ( (q(-1,prl_kred_sr)||q(-1,nar_opka)) &&
         w(1,"кто кого кому кем") && sc(0,",") && s(-1,-1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[205]++; print "R205"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[268]++; print "R268"}; continue;};
  if (  w(1,"кто кого кому кем") && sc(0,",") )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[206]++; print "R206"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[269]++; print "R269"}; continue;};
  if ( (q(-1,prl_kred_sr)||q(-1,nar_opka)) &&
         q(1,pre_ro) &&
         (q(2,suw_edro)||q(2,suw_odmnro)||q(2,suw_nomnvr)) && s(-1,1) && p(2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[207]++; print "R207"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[270]++; print "R270"}; continue;};
  if ( (q(-1,prl_kred_sr)||q(-1,nar_opka)) && s(-1,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[208]++; print "R208"}; continue;};
- # все + это + ... + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[271]++; print "R271"}; continue;};
  if ( (q(1,mest_ed)||q(1,nar_opka)||q(1,nar_obvr)) &&
         (q(2,prl_kred_sr)||q(2,prl_edsrim)) && s(0,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[209]++; print "R209"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[272]++; print "R272"}; continue;};
  if ( q(1,pre_pr) &&
       (q(2,mest_pr)||q(2,suw_edpr)||q(2,suw_mnpr)) &&
         q(3,prl_kred_sr) && s(0,2) && p(3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[210]++; print "R210"}; continue;};
- # все + прл.мн и/или прл.мн
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[273]++; print "R273"}; continue;};
  if ( (q(3,prl_edtv)||q(3,prl_mntv)) &&
         w(2,"и") &&
         (q(3,prl_edtv)||q(3,prl_mntv)) && s(0,2) && qq(1,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[211]++; print "R211"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[274]++; print "R274"}; continue;};
  if ( (q(1,prl_mniv)||q(1,prl_mnvr)) &&
         w(2,"и или") &&
         (q(3,prl_mniv)||q(3,prl_mnvr)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[212]++; print "R212"}; continue;};
- # всё + прл.срав и/или прл.срав
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[275]++; print "R275"}; continue;};
  if ( (q(1,prl_srav)||q(1,nar_opst)||q(1,nar_opka)||q(1,nar_srav)) &&
         w(2,"и или") &&
         (q(3,prl_srav)||q(3,nar_opst)||q(3,nar_opka)||q(3,nar_srav)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[213]++; print "R213"}; continue;};
- # всё прл.срав, прл.срав
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[276]++; print "R276"}; continue;};
  if ( q(1,prl_srav) && se(1,", ") &&
        q(2,prl_srav) && s(0,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[214]++; print "R214"}; continue;};
- # всё проще пареной репы
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[277]++; print "R277"}; continue;};
  if ( q(1,prl_srav) &&
       (q(2,prl_edro)||q(2,prl_edvr)) &&
         q(3,suw_edro) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[215]++; print "R215"}; continue;};
- # всё проще пареной репы
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[278]++; print "R278"}; continue;};
  if ( q(1,prl_srav) &&
        (q(2,suw_odmnvr)||q(2,suw_nomniv)||q(2,suw_mnro)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[216]++; print "R216"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[279]++; print "R279"}; continue;};
  if ( q(1,prl_srav) &&
        (q(2,suw_edim)||q(2,suw_nomniv)||q(2,suw_odmnim)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[217]++; print "R217"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[280]++; print "R280"}; continue;};
 
  # Все + ... + существительное =====================================
   if ( w(1,"нет") &&
        (q(2,suw_odmnvr)||q(2,suw_edro)||q(2,suw_mnro)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[218]++; print "R218"}; continue;};
- # все + ... + сущ.мн.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[281]++; print "R281"}; continue;};
  if ( (q(1,suw_edim)||q(1,suw_edne)) &&
        (q(2,suw_edro)||q(2,mnro)||q(2,nomniv)) && 
          q(3,gl_edsr) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[219]++; print "R219"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[282]++; print "R282"}; continue;};
  if ( (q(1,mest_ed)||q(1,mest_mn)) &&
        (q(2,suw_odmnim)||q(2,suw_nomniv)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[220]++; print "R220"}; continue;};
- # все + [...]-сущ.мн.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[283]++; print "R283"}; continue;};
  if ( q(1,suw_edim) && se(1,"-") &&
       (q(2,suw_odmnim)||q(2,suw_nomniv)) && s(0,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[221]++; print "R221"}; continue;};
- # всё + мест + прл + сущ.ед.
- if ( (q(1,mest_ed)||q(1,mest_mn)) &&
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[284]++; print "R284"}; continue;};
+ if ( (q(1,prl_mniv)||q(1,prq_mniv)||q(1,prl_mnvr)||q(1,prq_mnvr)) &&
+        q(2,mest_da) &&
+        (q(3,suw_odmnim)||q(3,suw_nomniv)) && s(0,2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[285]++; print "R285"}; continue;};
+ if ( (q(1,mest_ed)||q(1,mest_mn)||q(1,prl_kred_sr)) &&
        (q(2,prl_mniv)||q(2,prq_mniv)||q(2,prl_mnvr)||q(2,prq_mnvr)) &&
         (q(3,suw_odmnim)||q(3,suw_nomniv)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[222]++; print "R222"}; continue;};
- # все + сущ.мн.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[286]++; print "R286"}; continue;};
  if ( (q(1,suw_odmnim)||q(1,suw_nomniv)) &&
        (q(2,gl_nemn)||q(2,gl_pemn)||q(2,gl_pnmn)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[223]++; print "R223"}; continue;};
- # все + сущ.мн.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[287]++; print "R287"}; continue;};
  if ( (q(-1,suw_odmnim)||q(-1,suw_nomniv)) &&
         q(1,prl_krmn) && s(-1,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[224]++; print "R224"}; continue;};
- # все + сущ.мн.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[288]++; print "R288"}; continue;};
  if ( (q(1,suw_odmnim)||q(1,suw_nomniv)) && !(q(1,prl_mniv)||q(1,prl_mnvr)) && s(0,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[225]++; print "R225"}; continue;};
- # всё + мест + част+ сущ.ед.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[289]++; print "R289"}; continue;};
  if ( (q(1,mest_ed)||q(1,mest_mn)||q(1,nar_opka)) &&
        (q(2,prl_mniv)||q(2,prq_mniv)||q(2,prl_mnvr)||q(2,prq_mnvr)) &&
          q(3,suw_edim) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[226]++; print "R226"}; continue;};
- # всё + мест + сущ.ед.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[290]++; print "R290"}; continue;};
  if ( (q(1,mest_ed)||q(1,mest_mn)) &&
         q(2,suw_edsrim) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[227]++; print "R227"}; continue;};
- # все + его + метр + восемьдесят
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[291]++; print "R291"}; continue;};
  if ( (q(1,mest_ed)||q(1,mest_mn)) &&
         q(2,suw_edim) &&
          q(3,qisl) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[228]++; print "R228"}; continue;};
- # всё + мест + част+ сущ.ед.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[292]++; print "R292"}; continue;};
  if ( q(1,mest_ed) &&
        q(2,qast) &&
         q(3,suw_edim) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[229]++; print "R229"}; continue;};
- # всё + сущ.ед.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[293]++; print "R293"}; continue;};
  if ( (q(1,suw_edsrim)||q(1,suw_edsrvi)) && s(0,0)  )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[230]++; print "R230"}; continue;};
- # всё + сущ.ед.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[294]++; print "R294"}; continue;};
+ if ( (q(1,prl_mniv)||l[i+1]~"ские$") &&
+       (q(2,suw_edro)||q(2,suw_mnro)||q(2,suw_odmnvr)) && s(0,1) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[295]++; print "R295"}; continue;};
+ if ( w(1,"ли же") &&
+      (q(2,prl_mniv)||l[i+2]~"ские$") &&
+       (q(3,suw_odmnim)||q(3,suw_nomniv)) && s(0,2) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[296]++; print "R296"}; continue;};
  if ( q(1,suw_edim) &&
        (q(2,suw_edro)||q(2,suw_mnro)||q(2,suw_odmnvr)) && s(0,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[231]++; print "R231"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[297]++; print "R297"}; continue;};
  if ( q(1,suw_edim) && s(0,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[232]++; print "R232"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[298]++; print "R298"}; continue;};
+ if ( q(-1,mest_mn) && s(-1,-1) &&
+       q(1,prl_ediv) &&
+        q(2,suw_edim) && se(0," — ") && s(1,1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[299]++; print "R299"}; continue;};
  if ( q(1,mest_mn) && s(0,0) &&
       (q(2,suw_edim)||q(2,suw_odmnim)||q(2,suw_nomniv)) && se(1," — ") )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[233]++; print "R233"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[300]++; print "R300"}; continue;};
  if ( (q(1,mest_im)||q(1,mest_vi)) && s(1,1) &&
         q(2,suw_edim) && se(0," — ") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[234]++; print "R234"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[301]++; print "R301"}; continue;};
  if ( q(1,suw_edim) && se(0," — ") && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[235]++; print "R235"}; continue;};
- # всё + сущ.ед.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[302]++; print "R302"}; continue;};
  if ( q(1,suw_edim) &&
       (q(2,suw_edro)||q(2,suw_mnro)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[236]++; print "R236"}; continue;};
- # всё + сущ.мн.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[303]++; print "R303"}; continue;};
 
 
- # Наречия =============================================
- # всё гораздо проще[….,:;!?—]
+ # наречия =============================================
  if ( q(1,nar_opst) &&
        q(2,nar_srav) && s(0,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[237]++; print "R237"}; continue;};
- # всё гораздо проще[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[304]++; print "R304"}; continue;};
+ if ( (w(1,"куда")||q(1,prl_kred_sr)) &&
+        q(2,nar_srav) && s(0,1) && p(2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[305]++; print "R305"}; continue;};
  if ( q(1,nar_srav) && s(0,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[238]++; print "R238"}; continue;};
- # все  + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[306]++; print "R306"}; continue;};
  if ( (q(1,nar_opka)||q(1,nar_obvr)||q(1,mest_ed)) && s(0,0) && p(1) && cap(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[239]++; print "R239"}; continue;};
- # все  + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[307]++; print "R307"}; continue;};
  if ( (q(-1,gl_vzmn)||q(-1,gl_nemn)) &&
         q(1,prl_srav) &&
          (q(2,prl_mniv)||q(2,prl_mntv)) && s(-1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[240]++; print "R240"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[308]++; print "R308"}; continue;};
  if ( q(1,nar_opst) &&
       (q(2,prl_mntv)||q(2,prl_edtv)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[241]++; print "R241"}; continue;};
- # все  + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[309]++; print "R309"}; continue;};
  if ( (q(-1,gl_vzmn)||q(-1,gl_nemn)) &&
        (q(1,nar_opsp)||q(1,nar_obna)||q(1,nar_opst)) && s(-1,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[242]++; print "R242"}; continue;};
- # все  + нар[….,:;!?—]
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[310]++; print "R310"}; continue;};
  if ( (q(1,nar_opsp)||q(1,nar_obna)||q(1,nar_opst)) && s(0,0) && p(1) && cap(0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[243]++; print "R243"}; continue;};
- # все  + нар[….,:;!?—]
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[311]++; print "R311"}; continue;};
  if ( (q(1,nar_opsp)||q(1,nar_opst)||q(1,prl_kred_sr)) &&
         (q(2,prl_kred_sr)||q(2,prl_krmn)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[244]++; print "R244"}; continue;};
- # все + более + 
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[312]++; print "R312"}; continue;};
  if ( q(1,nar_opst) &&
       (q(2,prl_mniv)||q(prl_edim)) &&
        (q(3,suw_odmnvr)||q(3,suw_nomniv)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[245]++; print "R245"}; continue;};
- # все + ... + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[313]++; print "R313"}; continue;};
  if ( (q(1,qast)||q(1,nar_opst)) &&
         q(2,nar_opka) && s(0,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[246]++; print "R246"}; continue;};
- # все + это + ... + нар[….,:;!?—]
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[314]++; print "R314"}; continue;};
  if ( q(1,nar_mest) &&
        w(2,"не") &&
         q(3,gl_ed) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[247]++; print "R247"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[315]++; print "R315"}; continue;};
  if ( q(-1,mest_da) &&
        q(1,nar_mest) && s(-1,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[248]++; print "R248"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[316]++; print "R316"}; continue;};
+
  # всё не так плохо
  if ( w(1,"не") &&
        w(2,"так") &&
        (q(3,nar_obvr)||q(3,nar_obme)||q(3,nar_opsp)||q(3,nar_srav)||q(3,nar_opka)||q(3,suw_edvi)||q(3,mest_ed)) && s(0,2) && p(3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[249]++; print "R249"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[317]++; print "R317"}; continue;};
 
  # Все + ... + числительное =====================================
  # все + числ.
  if ( (q(1,qisl)||l[i+1]~/^[0-9]+$/) && s(0,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[250]++; print "R250"}; continue;};
-
- # Все + ... + глагол ============================================
- # все + ... + гл.мн.
- if ( (q(1,qast)||q(1,nar_obme)||q(1,nar_opka)||q(1,nar_obvr)||q(1,nar_opsp)) &&
-       (q(2,gl_vzmn)||q(2,gl_nemn)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[251]++; print "R251"}; continue;};
- if ( q(1,nar_obvr) &&
-       q(2,nar_obvr) &&
-       (q(3,gl_vzmn)||q(3,gl_nemn)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[252]++; print "R252"}; continue;};
- # все + гл.мн
- if ( (q(-1,gl_vzed)||q(-1,gl_vzmn)||q(-1,gl_nemn)) &&
-        q(1,prl_srav) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[253]++; print "R253"}; continue;};
- # все + гл.мн
- if ( q(1,nar_srav) &&
-      (q(2,gl_vzmn)||q(2,gl_nemn)||q(2,gl_pemn)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[254]++; print "R254"}; continue;};
- # все + гл.мн
- if ( (q(-1,suw_odmnim)||q(-1,nomniv)) && cap(-1) &&
-       (q(1,gl_vzmn)||q(1,gl_nemn)) && s(0,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[255]++; print "R255"}; continue;};
- if ( (q(-1,suw_edim)||q(-1,suw_nomniv)) &&
-       (q(1,gl_vzmn)||q(1,gl_nemn)) && s(-1,0) && p(1) )
- { sub(/([Ее])/, "ё", l[i]); if(dbg){r[256]++; print "R256"}; continue;};
- if ( (q(1,gl_vzmn)||q(1,gl_nemn)) && s(0,0) && p(1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[256]++; print "R256"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[318]++; print "R318"}; continue;};
 
  # все + местоимения =============================================
  # все + мест.мн
+ if ( q(-3,mest_mn) && sc(-3,",") &&
+       w(-2,"а но") &&
+        w(-1,"не") && s(-2,-1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[319]++; print "R319"}; continue;};
+ if ( w(-1,"не") && s(-1,-1) &&
+       w(1,"а но") && sc(0,",") &&
+       (q(2,mest_mn)||q(2,prl_mniv)) && s(1,1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[320]++; print "R320"}; continue;};
+ if ( q(1,mest_mn) &&
+       q(2,nar_opsp) &&
+        q(3,prq_mniv) && s(0,2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[321]++; print "R321"}; continue;};
  if ( q(1,mest_mn) &&
        q(2,qast) &&
        (q(3,gl_vzmn)||q(3,gl_nemn)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[257]++; print "R257"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[322]++; print "R322"}; continue;};
  if ( q(-1,mest_mn) &&
       (q(1,gl_pnmn)||q(1,gl_nemn)) &&
         q(2,prl_kred_sr) &&
         (q(3,prl_mniv)||q(3,prl_krmn)) && s(-1,2) )
- { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[258]++; print "R258"}; continue;};
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[323]++; print "R323"}; continue;};
+ if ( q(-1,mest_mn) &&
+       q(1,gl_povzmn) && s(-1,0) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[324]++; print "R324"}; continue;};
+ if ( q(-1,mest_mn) &&
+       q(1,pre_tv) &&
+        q(2,mest_tv) &&
+         q(3,prl_krmn) && s(-1,2) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[325]++; print "R325"}; continue;};
  if ( q(-1,mest_mn) &&
       (q(1,gl_pnmn)||q(1,gl_nemn)) &&
         q(2,prl_kred_sr) && s(-1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[258]++; print "R258"}; continue;};
- # все + мест.мн
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[326]++; print "R326"}; continue;};
  if ( q(1,mest_mn) &&
       (q(2,nar_opst)||q(2,prl_kred_sr)) &&
         q(3,prl_krmn) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[259]++; print "R259"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[327]++; print "R327"}; continue;};
+ if ( q(1,mest_mn) &&
+      (q(2,prl_krmn)||q(2,mest_mn)||q(2,prl_mniv)) && s(0,1) && p(2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[328]++; print "R328"}; continue;};
+ if ( q(1,mest_mn) &&
+       q(2,prl_mniv) &&
+        q(3,prl_mniv) &&
+        (q(4,suw_odmnim)||q(4,suw_nomniv)) && s(0,3) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[329]++; print "R329"}; continue;};
  if ( q(1,mest_mn) &&
        q(2,pre_pr) &&
        (q(3,suw_edpr)||q(3,suw_mnpr)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[260]++; print "R260"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[330]++; print "R330"}; continue;};
  if ( q(1,mest_mn) &&
        phf(2,"друг друга") && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[261]++; print "R261"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[331]++; print "R331"}; continue;};
  if ( (q(1,mest_ed)||q(1,mest_mn)) &&
         q(2,qisl) &&
         (q(3,suw_mnro)||q(2,suw_odmnvr)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[262]++; print "R262"}; continue;};
- if ( q(1,mest_im) &&
-       (q(2,gl_vzmn)||q(2,gl_nemn)||q(2,prl_krmn)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[263]++; print "R263"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[332]++; print "R332"}; continue;};
+ if ( q(1,mest_mnim) &&
+       (q(2,gl_vzmn)||q(2,gl_nemn)||q(2,gl_pemn)||q(2,gl_pnmn)||q(2,prl_krmn)) && s(0,1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[333]++; print "R333"}; continue;};
  # все + мест.мн + [….,;:!?]
  if ( q(1,mest_ed) &&
       (q(2,nar_mest)||q(2,nar_obpr)) && s(0,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[264]++; print "R264"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[334]++; print "R334"}; continue;};
  # все + это (мест.ед) + ..
+ if ( q(1,mest_ed) &&
+       q(2,pre_tv) &&
+       (q(3,mest_tv)||q(3,suw_edtv)||q(3,suw_mntv)||q(3,prl_edtv)||q(3,prl_mntv)) && s(0,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[335]++; print "R335"}; continue;};
  if ( q(1,mest_ed) &&
        q(2,nar_opst) &&
         q(3,nar_opka) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[265]++; print "R265"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[336]++; print "R336"}; continue;};
  # все + это (мест.ед) + .. + гл
  if ( q(1,mest_ed) &&
       (q(2,nar_opka)||q(2,nar_opst)||q(2,nar_opsp)) &&
        (q(3,gl_ed)||q(3,gl_in)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[266]++; print "R266"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[337]++; print "R337"}; continue;};
  # все + это (мест.ед) + .. + не гл
  if ( q(1,mest_ed) &&
       (q(2,nar_opka) || q(2,nar_opst)) &&
         q(3,qast) &&
         (q(4,gl_ed)||q(4,gl_in)) && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[267]++; print "R267"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[338]++; print "R338"}; continue;};
  if ( q(1,mest_mn) && cap(0) && s(0,0) && p(1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[268]++; print "R268"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[339]++; print "R339"}; continue;};
 
  # Местоимения + все
  # мест.да
  if ( q(-2,mest_mn) &&
        q(-1,prl_kred_sr) &&
         q(1,gl_quv) && s(-2,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[269]++; print "R269"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[340]++; print "R340"}; continue;};
  if ( q(-1,mest_da) &&
        q(1,nar_mest) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[270]++; print "R270"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[341]++; print "R341"}; continue;};
 
  # Мест + все + ... + глагол ============================================
  # все + ... + гл.мн.
+ if ( qb(-5,mest_mn) &&
+      (q(-1,suw_edim)||q(-1,suw_nomniv)) &&
+       (q(1,gl_vzmn)||q(1,gl_nemn)) && s(-1,0) && p(1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[342]++; print "R342"}; continue;};
  if ( q(-3,mest_mn) &&
        w(-2,"не") &&
         q(-1,gl_nemn) &&
          q(1,gl_in) && s(-2,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[271]++; print "R271"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[343]++; print "R343"}; continue;};
  if ( q(-2,mest_mn) &&
        q(-1,gl_nemn) &&
         q(1,gl_in) && s(-2,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[272]++; print "R272"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[344]++; print "R344"}; continue;};
  if ( q(-1,gl_in) &&
        q(1,pre_pr) &&
        (q(2,suw_edpr)||q(2,suw_mnpr)) &&
          q(3,prl_edtv) && s(-1,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[273]++; print "R273"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[345]++; print "R345"}; continue;};
  if ( q(-1,mest_mn) &&
       (q(1,qast)||q(1,nar_obme)||q(1,nar_opka)||q(1,nar_obvr)||q(1,nar_opsp)||q(1,mest_mn)) &&
        (q(2,gl_pnmn)||q(2,gl_pemn)) && s(-1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[274]++; print "R274"}; continue;};
- # все + гл.мн + сущ
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[346]++; print "R346"}; continue;};
  if ( q(-1,mest_mn) &&
       (q(1,gl_pnmn)||q(1,gl_pemn)) &&
        (q(2,suw_nomniv)||q(2,suw_odmnvr)) && s(-1,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[275]++; print "R275"}; continue;};
- # все + гл.мн + сущ
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[347]++; print "R347"}; continue;};
  if ( q(1,mest_mn) &&
        q(2,nar_mest) &&
         q(3,gl_vzmn) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[276]++; print "R276"}; continue;};
- # все + гл.мн + сущ
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[348]++; print "R348"}; continue;};
  if ( q(1,mest_mn) &&
       (q(2,gl_pnmn)||q(2,gl_pemn)) &&
        (q(3,suw_nomniv)||q(3,suw_odmnvr)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[277]++; print "R277"}; continue;};
- # все + гл.мн
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[349]++; print "R349"}; continue;};
  if ( (q(1,gl_pnmn)||q(1,gl_pemn)) &&
        (q(2,prl_mniv)||q(2,prq_mniv)||q(2,prl_mnvr)||q(2,prq_mnvr)||q(2,prl_ediv)||q(2,prl_edvr)) &&
         (q(3,suw_nomniv)||q(3,suw_odmnvr)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[278]++; print "R278"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[350]++; print "R350"}; continue;};
  # оглядывающий + все + вокруг + всех
  if ( q(-1,nar_obme) &&
        w(1,"как") &&
         q(2,pre_ro) &&
          (q(3,mest_ro)||q(3,suw_edro)||q(3,suw_mnro)||q(3,prl_edro)||q(3,prl_mnvr)||q(3,prq_edro)||q(3,prq_mnvr)) && s(-1,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[279]++; print "R279"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[351]++; print "R351"}; continue;};
  if ( (q(-1,prq_ediv)||q(-1,prq_mniv)) &&
         q(1,pre_ro) &&
         (q(2,mest_ro)||q(2,suw_edro)||q(2,suw_mnro)||q(2,prl_edro)||q(2,prl_mnvr)||q(2,prq_edro)||q(2,prq_mnvr)) && s(-1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[280]++; print "R280"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[352]++; print "R352"}; continue;};
  # все + против + всех
  if ( q(-1,gl_in) &&
        q(1,pre_ro) &&
        (q(2,mest_ro)||q(2,mest_vi)||q(2,prl_edro)||q(2,prl_edvr)||q(2,prl_mniv)||q(2,prl_mnvr)) && s(-1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[281]++; print "R281"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[353]++; print "R353"}; continue;};
  if ( w(1,"для ради") && Q(-1,gl_vzed) &&
       (q(2,mest_ro)||q(2,suw_edro)||q(2,suw_mnro)||q(2,prl_edro)||q(2,prl_mnvr)||q(2,prq_edro)||q(2,prq_mnvr)) && s(-1,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[282]++; print "R282"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[354]++; print "R354"}; continue;};
  if ( q(-1,gl_ed) &&
        q(1,pre_ro) &&
        (q(2,mest_ro)||q(2,suw_edro)||q(2,suw_mnro)||q(2,prl_edro)||q(2,prl_mnvr)||q(2,prq_edro)||q(2,prq_mnvr)) && s(-1,1) && p(2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[283]++; print "R283"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[355]++; print "R355"}; continue;};
  if ( q(1,pre_ro) &&
       (q(2,mest_ro)||q(2,suw_edro)||q(2,suw_mnro)||q(2,prl_edro)||q(2,prl_mnvr)||q(2,prq_edro)||q(2,prq_mnvr)) &&
         w(3,"так слишком") &&
          q(4,prl_kred_sr) && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[284]++; print "R284"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[356]++; print "R356"}; continue;};
  if ( q(1,pre_ro) && !(q(-1,gl_vzed)||q(-1,gl_ed)||q(3,gl_ed)) &&
       (q(2,mest_ro)||q(2,suw_edro)||q(2,suw_mnro)||q(2,prl_edro)||q(2,prl_mnvr)||q(2,prq_edro)||q(2,prq_mnvr)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[285]++; print "R285"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[357]++; print "R357"}; continue;};
+ if ( w(1,"кроме") && sc(0,",") &&
+         cap(2) && s(1,1) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[358]++; print "R358"}; continue;};
 
 
  # дееп =============================================================
- # всё + дееп.
  if ( (q(1,prl_srav)||q(1,nar_opst)) &&
         q(2,deep) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[286]++; print "R286"}; continue;};
- # все + дееп.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[359]++; print "R359"}; continue;};
  if ( q(1,deep) &&
       (q(2,gl_nemn)||q(2,gl_pnmn)||q(2,gl_pemn)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[287]++; print "R287"}; continue;};
- # дееп + всё
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[360]++; print "R360"}; continue;};
  if ( q(-2,deep) &&
        q(-1,mest_vi) &&
         q(1,prl_srav) && s(-2,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[288]++; print "R288"}; continue;};
- # дееп + всё
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[361]++; print "R361"}; continue;};
  if ( q(-1,deep) &&
        q(1,pre_pr) && 
        (q(2,prl_edpr)||q(2,prl_mnpr)||q(2,suw_edpr)||q(2,suw_mnpr)) && s(-1,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[289]++; print "R289"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[362]++; print "R362"}; continue;};
  if ( q(-1,deep) &&
        q(1,prl_srav) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[290]++; print "R290"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[363]++; print "R363"}; continue;};
  if ( q(-1,deep) &&
        q(1,gl_nepm) && s(-1,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[291]++; print "R291"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[364]++; print "R364"}; continue;};
  if ( q(-1,deep) && s(-1,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[292]++; print "R292"}; continue;};
- # всё + дееп.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[365]++; print "R365"}; continue;};
  if ( q(1,deep) && s(0,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[293]++; print "R293"}; continue;};
- # гл.мн + все + прл.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[366]++; print "R366"}; continue;};
  if ( q(-1,gl_nemn) && 
       (q(1,prl_mniv)||q(1,prq_mniv)||q(1,prl_mnvr)||q(1,prq_mnvr)||q(1,prl_krmn)) &&
         q(2,deep) && s(-1,0) && sc(1,",") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[294]++; print "R294"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[367]++; print "R367"}; continue;};
+
+ # Все + ... + глагол ============================================
+ # все + ... + гл.мн.
+ if ( (q(1,qast)||q(1,nar_obme)||q(1,nar_opka)||q(1,nar_obvr)||q(1,nar_opsp)) &&
+       (q(2,gl_vzmn)||q(2,gl_nemn)) && s(0,1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[368]++; print "R368"}; continue;};
+ if ( q(1,nar_obvr) &&
+       q(2,nar_obvr) &&
+       (q(3,gl_vzmn)||q(3,gl_nemn)) && s(0,2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[369]++; print "R369"}; continue;};
+ if ( (q(-1,gl_vzed)||q(-1,gl_vzmn)||q(-1,gl_nemn)) &&
+        q(1,prl_srav) && s(-1,0) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[370]++; print "R370"}; continue;};
+ if ( q(1,nar_srav) &&
+      (q(2,gl_vzmn)||q(2,gl_nemn)||q(2,gl_pemn)) && s(0,1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[371]++; print "R371"}; continue;};
+ if ( (q(-1,suw_odmnim)||q(-1,nomniv)) && cap(-1) &&
+       (q(1,gl_vzmn)||q(1,gl_nemn)) && s(0,0) && p(1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[372]++; print "R372"}; continue;};
+ if ( (q(-1,suw_edim)||q(-1,suw_nomniv)) &&
+       (q(1,gl_vzmn)||q(1,gl_nemn)) && s(-1,0) && p(1) )
+ { sub(/([Ее])/, "ё", l[i]); if(dbg){r[373]++; print "R373"}; continue;};
+ if ( (q(-3,suw_edim)||q(-3,suw_odmnim)||q(-3,suw_nomniv)) &&
+        q(-2,pre_pr) &&
+        (q(-1,suw_edpr)||q(-1,suw_mnpr)) &&
+         (q(1,gl_vzmn)||q(1,gl_nemn)) && s(0,0) && p(1) )
+ { sub(/([Ее])/, "ё", l[i]); if(dbg){r[374]++; print "R374"}; continue;};
+ if ( (q(1,gl_vzmn)||q(1,gl_nemn)) && s(0,0) && p(1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[375]++; print "R375"}; continue;};
 
 
  # Всё + ... + глагол.мн + дополнение ============================
  if ( q(1,gl_nemn) &&
        q(2,nar_opka) &&
         q(3,prq_krmn) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[295]++; print "R295"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[376]++; print "R376"}; continue;};
  if ( q(1,gl_nemn) &&
        q(2,prl_krmn) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[296]++; print "R296"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[377]++; print "R377"}; continue;};
  if ( (q(1,gl_pemn)||q(1,gl_pnmn)) &&
        (q(2,suw_edro)||q(2,suw_mnro)||q(2,suw_odmnvr)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[297]++; print "R297"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[378]++; print "R378"}; continue;};
 
  if ( (q(1,gl_pemn)||q(1,gl_pnmn)) &&
        (q(2,suw_edtv)||q(2,suw_mntv)||q(2,suw_edda)||q(2,suw_mnda)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[298]++; print "R298"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[379]++; print "R379"}; continue;};
 
  # все + гл.мн и/или гл.мн
  if ( (q(1,gl_pemn)||q(1,gl_nemn)||q(1,gl_pnmn)||q(1,gl_vzmn)) &&
         w(2,"и") &&
         (q(3,gl_pemn)||q(3,gl_nemn)||q(3,gl_pnmn)||q(3,gl_vzmn)) && s(0,2) && qq(1,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[299]++; print "R299"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[380]++; print "R380"}; continue;};
  if ( (q(1,gl_pemn)||q(1,gl_nemn)||q(1,gl_pnmn)||q(1,gl_vzmn)) && Q(1,gl_govmn) &&
         w(2,"и") &&
         (q(3,gl_pemn)||q(3,gl_nemn)||q(3,gl_pnmn)||q(3,gl_vzmn)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[300]++; print "R300"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[381]++; print "R381"}; continue;};
 
  # гл.ед + ... + всё
  if ( (q(-1,gl_ed)||q(-1,gl_in)) &&
        (q(1,nar_obvr)||q(1,nar_obme)||q(1,nar_opsp)||q(1,nar_srav)||q(1,nar_opka)||q(1,suw_edvi)) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[301]++; print "R301"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[382]++; print "R382"}; continue;};
  # гл.ед + всё
  if ( (q(-2,gl_ed)||q(-2,gl_in)) &&
         q(-1,mest_da) &&
          q(1,pre_pr) &&
          (q(2,prl_edpr)||q(2,prl_mnvr)||q(2,suw_edpr)||q(2,suw_mnpr)) && s(-2,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[302]++; print "R302"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[383]++; print "R383"}; continue;};
  # гл.ед + всё
  if ( (q(-1,gl_ed)||q(-1,gl_in)) &&
        (q(1,suw_nomniv)||q(1,suw_odmnvr)) && s(-1,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[303]++; print "R303"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[384]++; print "R384"}; continue;};
 
  # Всё + ... + глагол.ед ============================================
- # всё + ... + гл.ед.ср
  if ( (q(1,nar_obvr)||q(1,nar_obme)||q(1,nar_opsp)||q(1,nar_srav)||q(1,nar_opka)||q(3,nar_opst)) &&
         q(2,gl_edsr) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[304]++; print "R304"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[385]++; print "R385"}; continue;};
  if ( q(1,pre_tv) &&
        (q(2,mest_tv)||q(2,suw_edtv)||q(2,suw_mntv)) &&
          q(3,prl_edsrim) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[305]++; print "R305"}; continue;};
- # всё + ... + гл.ед.ср
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[386]++; print "R386"}; continue;};
  if ( q(-1,gl_edsr) && s(-1,-1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[306]++; print "R306"}; continue;};
- # всё + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[387]++; print "R387"}; continue;};
  if ( q(1,gl_vzed) && s(0,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[307]++; print "R307"}; continue;};
- # всё + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[388]++; print "R388"}; continue;};
  if ( q(1,prl_kred_sr) &&
        q(2,gl_in) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[308]++; print "R308"}; continue;};
- # началось всё,
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[389]++; print "R389"}; continue;};
  if ( q(-1,gl_vzed) &&
       (q(1,pre_vi)||q(1,pre_ro)||q(1,pre_tv)) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[309]++; print "R309"}; continue;};
- # началось всё,
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[390]++; print "R390"}; continue;};
  if ( sc(0,",") &&
        q(-1,gl_vzed) && s(-1,-1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[310]++; print "R310"}; continue;};
- # всё + ... + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[391]++; print "R391"}; continue;};
  if ( q(1,qast) &&
        q(2,qast) &&
        (q(3,nar_obvr)||q(3,nar_obme)||q(3,nar_opsp)||q(3,nar_srav)||q(3,nar_opka)||q(3,suw_edvi)||q(3,mest_ed)) &&
         (q(4,gl_ed)||q(4,gl_in)) && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[311]++; print "R311"}; continue;};
- # всё + ... + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[392]++; print "R392"}; continue;};
  if ( q(1,qast) &&
        q(2,qast) &&
        (q(3,nar_obvr)||q(3,nar_obme)||q(3,nar_opsp)||q(3,nar_srav)||q(3,nar_opka)||q(3,suw_edvi)||q(3,mest_ed)) &&
          q(4,qast) &&
          (q(5,gl_ed)||q(5,gl_in)) && s(0,4) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[312]++; print "R312"}; continue;};
- # всё + ... + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[393]++; print "R393"}; continue;};
  if ( q(1,qast) &&
       (q(2,nar_obvr)||q(2,nar_obme)||q(2,nar_opsp)||q(2,nar_srav)||q(2,nar_opka)||q(2,suw_edvi)||q(2,mest_ed)) &&
        (q(3,gl_ed)||q(3,gl_in)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[313]++; print "R313"}; continue;};
- # всё + ... + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[394]++; print "R394"}; continue;};
  if ( q(1,qast) &&
       (q(2,nar_obvr)||q(2,nar_obme)||q(2,nar_opsp)||q(2,nar_srav)||q(2,nar_opka)||q(2,suw_edvi)||q(2,mest_ed)) &&
         q(3,qast) &&
         (q(4,gl_ed)||q(4,gl_in)) && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[314]++; print "R314"}; continue;};
- # всё + ... + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[395]++; print "R395"}; continue;};
  if ( q(-2,mest_mnim) &&
       (q(-1,gl_pnmn)) &&
        (q(1,nar_obvr)||q(1,nar_obme)||q(1,nar_opsp)||q(1,nar_srav)||q(1,nar_opka)||q(1,suw_edvi)||q(1,mest_ed)) && s(-2,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[315]++; print "R315"}; continue;};
- # всё + ... + гл.ед
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[396]++; print "R396"}; continue;};
  if ( (q(1,nar_obvr)||q(1,nar_obme)||q(1,nar_opsp)||q(1,nar_srav)||q(1,nar_opka)||q(1,suw_edvi)||q(1,mest_ed)) &&
         q(2,qast) &&
         (q(3,gl_ed)||q(3,gl_in)) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[316]++; print "R316"}; continue;};
- # гл + все + гл.инф
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[397]++; print "R397"}; continue;};
  if ( q(-1,gl_nemn) &&
        q(1,gl_in) && s(-1,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[317]++; print "R317"}; continue;};
- # гл + все + гл.инф
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[398]++; print "R398"}; continue;};
  if ( q(-1,gl_nemn) &&
        q(1,qast) &&
         q(2,gl_in) && s(-1,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[318]++; print "R318"}; continue;};
- # всё + мест + сущ.ед.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[399]++; print "R399"}; continue;};
  if ( q(1,nar_obme) &&
        q(2,mest_da) &&
         q(3,gl_ed) && s(0,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[319]++; print "R319"}; continue;};
- # всё + мест + сущ.ед.
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[400]++; print "R400"}; continue;};
  if ( q(1,nar_obme) &&
        q(2,mest_da) &&
         q(3,qast) &&
          q(4,gl_ed) && s(0,3) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[320]++; print "R320"}; continue;};
- # все + гл.мн + гл.инф
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[401]++; print "R401"}; continue;};
  if ( q(1,nar_obme) &&
        q(2,gl_pnmn) &&
         q(3,gl_in) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[321]++; print "R321"}; continue;};
- # все + гл.мн + гл.инф
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[402]++; print "R402"}; continue;};
  if ( q(1,nar_obme) &&
        q(2,gl_pnmn) &&
         q(3,qast) &&
          q(4,gl_in) && s(0,3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[322]++; print "R322"}; continue;};
- # все + гл.мн + гл.инф
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[403]++; print "R403"}; continue;};
  if ( (q(1,gl_pnmn)||q(1,gl_pemn)) &&
        q(2,gl_in) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[323]++; print "R323"}; continue;};
- # все + гл.мн + гл.инф
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[404]++; print "R404"}; continue;};
  if ( (q(1,gl_pnmn)||q(1,gl_pemn)) &&
        q(2,qast) &&
         q(3,gl_in) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[324]++; print "R324"}; continue;};
- # всё + гл.ед
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[405]++; print "R405"}; continue;};
  if ( (q(1,gl_ed)||q(1,gl_in)) && s(0,0) && cap(0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[325]++; print "R325"}; continue;};
- # всё + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[406]++; print "R406"}; continue;};
  if ( q(-2,pre_ro) &&
        q(-1,mest_ro) &&
        (q(1,gl_ed)||q(1,gl_in)) && s(-2,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[326]++; print "R326"}; continue;};
- # всё + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[407]++; print "R407"}; continue;};
  if ( q(1,qast) &&
       (q(2,gl_ed)||q(2,gl_in)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[327]++; print "R327"}; continue;};
- # их все + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[408]++; print "R408"}; continue;};
  if ( q(-3,gl_ed) &&
        w(-2,"бы") &&
         q(-1,mest_mnvi) &&
         (q(1,gl_ed)||q(1,gl_in)) && s(-3,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[328]++; print "R328"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[409]++; print "R409"}; continue;};
  if ( q(-2,gl_ed) &&
        q(-1,mest_mnvi) &&
        (q(1,gl_ed)||q(1,gl_in)) && s(-2,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[329]++; print "R329"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[410]++; print "R410"}; continue;};
  if ( q(-1,mest_mnvi) &&
       (q(1,gl_ed)||q(1,gl_in)) && s(-1,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[330]++; print "R330"}; continue;};
- # всё + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[411]++; print "R411"}; continue;};
  if ( (q(1,gl_ed)||q(1,gl_in)) && s(0,0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[331]++; print "R331"}; continue;};
- # всё + гл.ед
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[412]++; print "R412"}; continue;};
  if (  (q(1,nar_obvr)||q(1,nar_obme)||q(1,nar_opsp)||q(1,nar_opst)||q(1,nar_srav)||q(1,nar_opka)) &&
         (q(2,gl_ed)||q(2,gl_in)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[332]++; print "R332"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[413]++; print "R413"}; continue;};
 
 
  # все + ... + перех глагол ============================================
- # все вас знают
  if ( q(1,mest_mn) &&
       (q(2,gl_pemn)||q(2,gl_pnmn)) &&
         w(3,"о об") &&
         (q(4,mest_pr)||q(4,suw_edtv)||q(4,suw_mntv)) && s(0,3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[333]++; print "R333"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[414]++; print "R414"}; continue;};
  if ( (q(1,gl_pemn)||q(1,gl_pnmn)) &&
         w(2,"о об") &&
         (q(3,mest_pr)||q(3,suw_edtv)||q(3,suw_mntv)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[334]++; print "R334"}; continue;};
- # все вас знают
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[415]++; print "R415"}; continue;};
  if ( q(1,mest_vi) &&
       (q(2,gl_pemn)||q(2,gl_pnmn)) &&
        (q(3,suw_odmnim)||q(3,suw_nomniv)||q(3,prl_mniv)) && s(0,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[335]++; print "R335"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[416]++; print "R416"}; continue;};
  if ( q(1,mest_vi) &&
       (q(2,gl_pemn)||q(2,gl_pnmn)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[336]++; print "R336"}; continue;};
- # все вас знают
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[417]++; print "R417"}; continue;};
  if ( l[i+1]~/..ы$/ &&
       (q(2,gl_pemn)||q(2,gl_pnmn)||q(2,gl_nemn)||q(2,gl_vzmn)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[337]++; print "R337"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[418]++; print "R418"}; continue;};
  if ( q(1,mest_vi) &&
        q(2,qast) &&
        (q(3,gl_pemn)||q(3,gl_pnmn)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[338]++; print "R338"}; continue;};
- # все получили такие бумаги
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[419]++; print "R419"}; continue;};
  if (q(1,gl_pemn) &&
      (q(2,prl_ediv)||q(2,prl_edvr)||q(2,prl_mniv)||q(2,prq_mniv)||q(2,prl_mnvr)||q(2,prq_mnvr)) &&
       (q(3,suw_edvi)||q(3,suw_odmnvr)||q(3,suw_nomniv)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[339]++; print "R339"}; continue;};
- # все получили такие бумаги
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[420]++; print "R420"}; continue;};
  if (q(1,qast) &&
       q(2,gl_pemn) &&
       (q(3,prl_ediv)||q(3,prl_edvr)||q(3,prl_mniv)||q(3,prq_mniv)||q(3,prl_mnvr)||q(3,prq_mnvr)) &&
        (q(4,suw_edvi)||q(4,suw_odmnvr)||q(4,suw_nomniv)) && s(0,3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[340]++; print "R340"}; continue;};
- # все мы получили такие бумаги
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[421]++; print "R421"}; continue;};
  if (q(1,mest_mnim) &&
      (q(2,gl_pemn)||q(2,gl_pnmn)) &&
       (q(3,prl_ediv)||q(3,prl_edvr)||q(3,prl_mniv)||q(3,prq_mniv)||q(3,prl_mnvr)||q(3,prq_mnvr)) &&
        (q(4,suw_edvi)||q(4,suw_odmnvr)||q(4,suw_nomniv)) && s(0,3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[341]++; print "R341"}; continue;};
- # все мы получили такие бумаги
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[422]++; print "R422"}; continue;};
  if (q(1,mest_mnim) &&
      (q(2,gl_pemn)||q(2,gl_pnmn)) &&
       (q(3,prl_ediv)||q(3,prl_edvr)||q(3,prl_mniv)||q(3,prq_mniv)||q(3,prl_mnvr)||q(3,prq_mnvr)) &&
        (q(4,prl_ediv)||q(4,prl_edvr)||q(4,prl_mniv)||q(4,prq_mniv)||q(4,prl_mnvr)||q(4,prq_mnvr)) && s(0,3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[342]++; print "R342"}; continue;};
- # все мы получили такие бумаги
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[423]++; print "R423"}; continue;};
  if (q(1,mest_mnim) &&
       q(2,qast) &&
       (q(3,gl_pemn)||q(3,gl_pnmn)) &&
        (q(4,prl_ediv)||q(4,prl_edvr)||q(4,prl_mniv)||q(4,prq_mniv)||q(4,prl_mnvr)||q(4,prq_mnvr)) &&
         (q(5,suw_edvi)||q(5,suw_odmnvr)||q(5,suw_nomniv)) && s(0,4) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[343]++; print "R343"}; continue;};
- # все посмотрели в
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[424]++; print "R424"}; continue;};
  if (q(1,gl_pnmn) &&
       q(2,pre_vi) &&
        q(3,suw_edvi) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[344]++; print "R344"}; continue;};
- # все посмотрели в
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[425]++; print "R425"}; continue;};
  if ( (q(1,gl_nemn)||q(1,gl_pnmn)||q(1,gl_pemn)) &&
         q(2,nar_srav) && s(0,1) && p(2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[345]++; print "R345"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[426]++; print "R426"}; continue;};
  if ( (q(-1,suw_odmnim)||q(-1,suw_nomniv)) &&
        (q(1,gl_nemn)||q(1,gl_pnmn)||q(1,gl_pemn)) &&
          q(2,pre_pr) &&
          (q(3,suw_edpr)||q(3,suw_edme)) && s(-1,2) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[346]++; print "R346"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[427]++; print "R427"}; continue;};
  if ( (q(1,gl_nemn)||q(1,gl_pnmn)||q(1,gl_pemn)) &&
         q(2,pre_pr) &&
         (q(3,suw_edpr)||q(3,suw_edme)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[347]++; print "R347"}; continue;};
- # все посмотрели в
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[428]++; print "R428"}; continue;};
  if (q(1,qast) &&
       q(2,gl_pnmn) &&
        q(3,pre_vi) &&
         q(4,suw_edvi) && s(0,3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[348]++; print "R348"}; continue;};
- # все посмотрели в его
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[429]++; print "R429"}; continue;};
  if (q(1,gl_pnmn) &&
       q(2,pre_vi) &&
        q(3,mest_vi) &&
         q(4,suw_edvi) && s(0,3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[349]++; print "R349"}; continue;};
- # все посмотрели в его
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[430]++; print "R430"}; continue;};
  if (q(1,qast) &&
       q(2,gl_pnmn) &&
        q(3,pre_vi) &&
         q(4,mest_vi) &&
          q(5,suw_edvi) && s(0,4) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[350]++; print "R350"}; continue;};
- # все переживали за него
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[431]++; print "R431"}; continue;};
  if (q(1,gl_pnmn) &&
       q(2,pre_vi) &&
        q(3,mest_vi) && s(0,2) && p(3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[351]++; print "R351"}; continue;};
- # все на него посмотрели
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[432]++; print "R432"}; continue;};
  if (q(1,pre_vi) &&
       q(2,mest_vi) &&
        q(3,gl_pnmn) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[352]++; print "R352"}; continue;};
- # все на него посмотрели
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[433]++; print "R433"}; continue;};
  if (q(1,pre_vi) &&
       q(2,mest_vi) &&
        q(3,qast) &&
         q(4,gl_pnmn) && s(0,3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[353]++; print "R353"}; continue;};
- # все на него посмотрели
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[434]++; print "R434"}; continue;};
  if (q(1,pre_tv) &&
       q(2,mest_tv) &&
        q(3,nar_mest) &&
         q(4,gl_vzmn) && s(0,3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[354]++; print "R354"}; continue;};
- # все на него посмотрели
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[435]++; print "R435"}; continue;};
  if (q(1,pre_pr) &&
      (q(2,prl_edpr)||q(2,prl_mnvr)) &&
       (q(3,suw_edpr)||q(3,suw_mnpr)) &&
        (q(4,gl_vzmn)||q(4,gl_nemn)) && s(0,3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[355]++; print "R355"}; continue;};
-
- # Дополнени в вин.п.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[436]++; print "R436"}; continue;};
  if ( (q(1,gl_pemn)||q(1,gl_pnmn)) &&
         q(2,mest_vi) &&
         (q(3,prl_ediv)||q(3,prl_edvr)||q(3,prl_mniv)||q(3,prq_mniv)||q(3,prl_mnvr)||q(3,prq_mnvr)||q(3,suw_edvi)||q(3,suw_nomniv)||q(3,suw_odmnvr)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[356]++; print "R356"}; continue;};
- # Дополнени в вин.п.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[437]++; print "R437"}; continue;};
  if (q(1,qast) &&
      (q(2,gl_pemn)||q(2,gl_pnmn)) &&
        q(3,mest_vi) &&
        (q(4,prl_ediv)||q(4,prl_edvr)||q(4,prl_mniv)||q(4,prq_mniv)||q(4,prl_mnvr)||q(4,prq_mnvr)||q(4,suw_edvi)||q(4,suw_nomniv)||q(4,suw_odmnvr)) && s(0,3) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[357]++; print "R357"}; continue;};
- # Дополнени в вин.п.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[438]++; print "R438"}; continue;};
  if ( (q(1,gl_pemn)||q(1,gl_pnmn)) &&
        (q(2,suw_edvi)||q(2,suw_nomniv)||q(2,suw_odmnvr)||q(2,mest_vi)) && s(0,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[358]++; print "R358"}; continue;};
- # Дополнени в вин.п.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[439]++; print "R439"}; continue;};
  if (q(-1,mest_da) &&
      (q(1,suw_edvi)||q(1,suw_nomniv)||q(1,suw_odmnvr)) &&
       (q(2,gl_pemn)||q(2,gl_pnmn)) && s(-1,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[359]++; print "R359"}; continue;};
- # Дополнени в вин.п.
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[440]++; print "R440"}; continue;};
  if ((q(1,qast)||q(1,mest_da)) &&
       (q(2,gl_pemn)||q(2,gl_pnmn)) &&
        (q(3,suw_edvi)||q(3,suw_nomniv)||q(3,suw_odmnvr)||q(3,mest_vi)) && s(0,2) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[360]++; print "R360"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[441]++; print "R441"}; continue;};
 
 
 
  # всё то, что
  if ( w(1,"то") && sc(1,",") &&
        q(2,mest_edsr) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[361]++; print "R361"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[442]++; print "R442"}; continue;};
  # всё, что
  if ( sc(0,",") &&
        q(1,mest_edsr) && W(2,"есть") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[362]++; print "R362"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[443]++; print "R443"}; continue;};
  # все те, кто
  if ( w(1,"те") && sc(1,",") &&
        (q(1,mest_edmu)||q(1,mest_edze)) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[363]++; print "R363"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[444]++; print "R444"}; continue;};
  # все, кто
  if ( sc(0,",") &&
        (q(1,mest_edmu)||q(1,mest_edze)) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[364]++; print "R364"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[445]++; print "R445"}; continue;};
  # учитывало всё, кроме
  if ( q(-1,gl_ed) && s(-1,-1) &&
        sc(0,",") &&
         w(1,"кроме") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[365]++; print "R365"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[446]++; print "R446"}; continue;};
 
  # все, которые
  if ( sc(0,",") &&
       (q(1,mest_da)||q(1,suw_edda)||q(1,suw_mnda)) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[366]++; print "R366"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[447]++; print "R447"}; continue;};
  if ( sc(0,",") &&
       (q(1,mest_mn)||q(1,prq_mniv)) && W(1,"мы вы") )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[367]++; print "R367"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[448]++; print "R448"}; continue;};
 
  # Ну всё,
  if ( w(-1,"ну") && s(-1,-1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[368]++; print "R368"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[449]++; print "R449"}; continue;};
 
 
  # гл.мн + все + ...  ============================================
@@ -2022,87 +2174,99 @@ BEGIN {
  if ( (q(-1,gl_vzmn)||q(-1,gl_nemn)) &&
         sc(0,",") &&
         (q(1,nar_obme)||q(1,nar_opka)||q(1,nar_obvr)||q(1,nar_opsp)||q(1,mest_mn)||q(1,suw_edda)) && s(-1,-1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[369]++; print "R369"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[450]++; print "R450"}; continue;};
  if ( (q(1,gl_pemn)) && sc(1,",") &&
         w(2,"что") && s(0,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[370]++; print "R370"}; continue;};
- # гл.мн + все
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[451]++; print "R451"}; continue;};
  if ( (q(-1,gl_vzmn)||q(-1,gl_nemn)) && s(-1,-1) &&
         sc(0,",") )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[371]++; print "R371"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[452]++; print "R452"}; continue;};
           
 
  # ... + всё[;.?!]
  if ( (w(-1,"и")||q(-1,mest_ed)||q(-1,nar_obvr)) && s(-1,-1) && cap(-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[372]++; print "R372"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[453]++; print "R453"}; continue;};
 
  if ( (q(-1,gl_vzmn)||q(-1,gl_nemn)) && s(-1,-1) && p(0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[373]++; print "R373"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[454]++; print "R454"}; continue;};
 
  if ( (q(-1,gl_ed)||q(-1,gl_in)) && s(-1,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[374]++; print "R374"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[455]++; print "R455"}; continue;};
 
  # гл.ед + всё
  if ( (q(-1,gl_ed)||q(-1,gl_in)) && s(-1,-1) && p(0) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[375]++; print "R375"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[456]++; print "R456"}; continue;};
 
  if ( w(1,"были") && s(0,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[376]++; print "R376"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[457]++; print "R457"}; continue;};
 
- # вводные предложения
+ # вводные предложения ----------------------------------------------------
+ if ( vv(0) &&
+      (q(vvn+1,suw_odmnim)||q(vvn+1,suw_nomniv)) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[458]++; print "R458"}; continue;};
+ if ( q(1,mest_mnim) && vv(1) &&
+      (q(vvn+1,nar_opsp)||q(vvn+1,prl_kred_sr)) &&
+        q(vvn+2,prl_krmn) && s(0,0) && s(vvn+1,vvn+1) && p(vvn+2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[459]++; print "R459"}; continue;};
+ if ( q(1,mest_mnim) && vv(1) &&
+       q(vvn+1,gl_povzmn) && s(0,0) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[460]++; print "R460"}; continue;};
  if ( q(1,mest_mnim) && vv(1) &&
        q(vvn+1,nar_obme) &&
         q(vvn+2,nar_obme) && s(0,0) && s(vvn+1,vvn+1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[377]++; print "R377"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[461]++; print "R461"}; continue;};
  if ( vv(1) &&
        q(vvn+1,gl_edsr) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[378]++; print "R378"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[462]++; print "R462"}; continue;};
 
- # поиск вперёд
+ # поиск вперёд ----------------------------------------------------------
  if ( qf(7,gl_edsr) &&
        (q(qfn+1,prl_kred_sr)||q(qfn+1,suw_edtv)) && s(0,qfn) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[379]++; print "R379"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[463]++; print "R463"}; continue;};
  if ( qf(7,gl_nemn) &&
        q(qfn+1,prq_krmn) && s(0,qfn) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[380]++; print "R380"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[464]++; print "R464"}; continue;};
  if ( qf(5,gl_edsr) && s(0,qfn-1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[381]++; print "R381"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[465]++; print "R465"}; continue;};
  if ( q(1,mest_it) &&
        q(2,mest_da) &&
         qf(7,prl_kred_sr) && s(0,qfn-1) && p(qfn) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[382]++; print "R382"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[466]++; print "R466"}; continue;};
  if ( q(1,mest_mn) &&
        qf(6,gl_vzmn) && s(0,qfn-1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[383]++; print "R383"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[467]++; print "R467"}; continue;};
  if ( qf(5,gl_vzmn) && s(0,qfn-1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[384]++; print "R384"}; continue;};
- #--- фразы ----
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[468]++; print "R468"}; continue;};
 
- # поиск назад
+ #--- фразы ----------------------------------------------------
+
+ # поиск назад ------------------------------------------------------------
  if ( q(1,pre_ro) && qb(-4,mest_mn) &&
       (q(2,suw_edro)||q(2,suw_mnro)||q(2,suw_odmnvr)) && s(qbn,1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[386]++; print "R386"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[469]++; print "R469"}; continue;};
  if ( qb(-7,mest_im) &&
        phs(-1,"как и") && s(-2,-1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[387]++; print "R387"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[470]++; print "R470"}; continue;};
  if ( (qb(-5,suw_odmnim)||qb(-5,suw_nomniv)) &&
         q(1,pre_pr) &&
         (q(2,mest_pr)||q(2,suw_edtv)||q(2,suw_mntv)) && s(qbn,1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[388]++; print "R388"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[471]++; print "R471"}; continue;};
  if ( (qb(-5,prl_krmn)||qb(-5,mest_mnim)) && pv(qbn,0,".") &&
        (q(1,prl_kred_sr)||q(1,prl_edsrim)) && s(0,0) && p(1) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[389]++; print "R389"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[472]++; print "R472"}; continue;};
 
- # Конечное подбирание хвостов
+ # Конечное подбирание хвостов ----------------------------------------------
  if ( (q(1,nar_opsp)||q(1,nar_obna)||q(1,nar_opst)) && s(0,0) && p(1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[390]++; print "R390"}; continue;};
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[473]++; print "R473"}; continue;};
  if ( (q(1,suw_odmnim)||q(1,suw_nomniv)) && (q(1,prl_mniv)||q(1,prl_mnvr)) && s(0,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[391]++; print "R391"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[474]++; print "R474"}; continue;};
  if ( (q(1,prq_mniv)||q(1,prq_krmn)) && s(0,0) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[392]++; print "R392"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[475]++; print "R475"}; continue;};
 
              }; delete wpos;
 
+
+ # вывести изменённую строку
  $0 = joinpat(l, sep, nf)
  $0 = gensub(/<_([Ее])_>/, "\\1\xcc\x81", "g", $0)
  print $0
@@ -2112,196 +2276,7 @@ BEGIN {
  END {
  #dbg = 1
  #dbgstat = 1
- if (dbgstat==1) {for (i=1; i<=392; i++) { printf ("%s%s %s %s\n", "R", i, "=", r[i]) }; };
+ if (dbgstat==1) {for (i=1; i<=475; i++) { printf ("%s%s %s %s\n", "R", i, "=", r[i]) }; };
 
-#for (i in mest_im) print i;
-
-
-#dbgarr = 1;
-
- if (dbgarr==1) { 
-
- printf ("%s %s %s\n", "deep         ", length(  deep         ), typeof(deep         ) );
- printf ("%s %s %s\n", "gl_ed        ", length(  gl_ed        ), typeof(gl_ed        ) );
- printf ("%s %s %s\n", "gl_edsr      ", length(  gl_edsr      ), typeof(gl_edsr      ) );
- printf ("%s %s %s\n", "gl_vzed      ", length(  gl_vzed      ), typeof(gl_vzed      ) );
- printf ("%s %s %s\n", "gl_in        ", length(  gl_in        ), typeof(gl_in        ) );
- printf ("%s %s %s\n", "gl_nemn      ", length(  gl_nemn      ), typeof(gl_nemn      ) );
- printf ("%s %s %s\n", "gl_pemn      ", length(  gl_pemn      ), typeof(gl_pemn      ) );
- printf ("%s %s %s\n", "gl_pnmn      ", length(  gl_pnmn      ), typeof(gl_pnmn      ) );
- printf ("%s %s %s\n", "gl_vzmn      ", length(  gl_vzmn      ), typeof(gl_vzmn      ) );
- printf ("%s %s %s\n", "mest_ed      ", length(  mest_ed      ), typeof(mest_ed      ) );
- printf ("%s %s %s\n", "mest_mn      ", length(  mest_mn      ), typeof(mest_mn      ) );
- printf ("%s %s %s\n", "mest_mnim    ", length(  mest_mnim    ), typeof(mest_mnim    ) );
- printf ("%s %s %s\n", "nar_mest     ", length(  nar_mest     ), typeof(nar_mest     ) );
- printf ("%s %s %s\n", "mest_suw     ", length(  mest_suw     ), typeof(mest_suw     ) );
- printf ("%s %s %s\n", "mest_da     ", length(  mest_da     ), typeof(mest_da     ) );
- printf ("%s %s %s\n", "mest_im     ", length(  mest_im     ), typeof(mest_im     ) );
- printf ("%s %s %s\n", "mest_pr     ", length(  mest_pr     ), typeof(mest_pr     ) );
- printf ("%s %s %s\n", "mest_ro     ", length(  mest_ro     ), typeof(mest_ro     ) );
- printf ("%s %s %s\n", "mest_tv     ", length(  mest_tv     ), typeof(mest_tv     ) );
- printf ("%s %s %s\n", "mest_vi     ", length(  mest_vi     ), typeof(mest_vi     ) );
- printf ("%s %s %s\n", "nar_obce     ", length(  nar_obce     ), typeof(nar_obce     ) );
- printf ("%s %s %s\n", "nar_obme     ", length(  nar_obme     ), typeof(nar_obme     ) );
- printf ("%s %s %s\n", "nar_obna     ", length(  nar_obna     ), typeof(nar_obna     ) );
- printf ("%s %s %s\n", "nar_obpr     ", length(  nar_obpr     ), typeof(nar_obpr     ) );
- printf ("%s %s %s\n", "nar_obvr     ", length(  nar_obvr     ), typeof(nar_obvr     ) );
- printf ("%s %s %s\n", "nar_opka     ", length(  nar_opka     ), typeof(nar_opka     ) );
- printf ("%s %s %s\n", "nar_opsp     ", length(  nar_opsp     ), typeof(nar_opsp     ) );
- printf ("%s %s %s\n", "nar_opst     ", length(  nar_opst     ), typeof(nar_opst     ) );
- printf ("%s %s %s\n", "nar_prev     ", length(  nar_prev     ), typeof(nar_prev     ) );
- printf ("%s %s %s\n", "nar_srav     ", length(  nar_srav     ), typeof(nar_srav     ) );
- printf ("%s %s %s\n", "nar_vop      ", length(  nar_vop      ), typeof(nar_vop      ) );
- printf ("%s %s %s\n", "pre_da       ", length(  pre_da       ), typeof(pre_da       ) );
- printf ("%s %s %s\n", "pre_im       ", length(  pre_im       ), typeof(pre_im       ) );
- printf ("%s %s %s\n", "pre_pr       ", length(  pre_pr       ), typeof(pre_pr       ) );
- printf ("%s %s %s\n", "pre_ro       ", length(  pre_ro       ), typeof(pre_ro       ) );
- printf ("%s %s %s\n", "pre_tv       ", length(  pre_tv       ), typeof(pre_tv       ) );
- printf ("%s %s %s\n", "pre_vi       ", length(  pre_vi       ), typeof(pre_vi       ) );
- printf ("%s %s %s\n", "predik       ", length(  predik       ), typeof(predik       ) );
- printf ("%s %s %s\n", "prl_edda     ", length(  prl_edda     ), typeof(prl_edda     ) );
- printf ("%s %s %s\n", "prl_ediv     ", length(  prl_ediv     ), typeof(prl_ediv     ) );
- printf ("%s %s %s\n", "prl_edmsda   ", length(  prl_edmsda   ), typeof(prl_edmsda   ) );
- printf ("%s %s %s\n", "prl_edpr     ", length(  prl_edpr     ), typeof(prl_edpr     ) );
- printf ("%s %s %s\n", "prl_edro     ", length(  prl_edro     ), typeof(prl_edro     ) );
- printf ("%s %s %s\n", "prl_edvr     ", length(  prl_edvr     ), typeof(prl_edvr     ) );
- printf ("%s %s %s\n", "prl_edsrim   ", length(  prl_edsrim   ), typeof(prl_edsrim   ) );
- printf ("%s %s %s\n", "prl_edsrvi   ", length(  prl_edsrvi   ), typeof(prl_edsrvi   ) );
- printf ("%s %s %s\n", "prl_edtv     ", length(  prl_edtv     ), typeof(prl_edtv     ) );
- printf ("%s %s %s\n", "prl_kred     ", length(  prl_kred     ), typeof(prl_kred     ) );
- printf ("%s %s %s\n", "prl_kred_mu  ", length(  prl_kred_mu  ), typeof(prl_kred_mu  ) );
- printf ("%s %s %s\n", "prl_kred_sr  ", length(  prl_kred_sr  ), typeof(prl_kred_sr  ) );
- printf ("%s %s %s\n", "prl_kred_ze  ", length(  prl_kred_ze  ), typeof(prl_kred_ze  ) );
- printf ("%s %s %s\n", "prl_krmn     ", length(  prl_krmn     ), typeof(prl_krmn     ) );
- printf ("%s %s %s\n", "prl_mnda     ", length(  prl_mnda     ), typeof(prl_mnda     ) );
- printf ("%s %s %s\n", "prl_mniv     ", length(  prl_mniv     ), typeof(prl_mniv     ) );
- printf ("%s %s %s\n", "prl_mntv     ", length(  prl_mntv     ), typeof(prl_mntv     ) );
- printf ("%s %s %s\n", "prl_mnvr     ", length(  prl_mnvr     ), typeof(prl_mnvr     ) );
- printf ("%s %s %s\n", "prl_neiz     ", length(  prl_neiz     ), typeof(prl_neiz     ) );
- printf ("%s %s %s\n", "prl_srav     ", length(  prl_srav     ), typeof(prl_srav     ) );
- printf ("%s %s %s\n", "prq_edda     ", length(  prq_edda     ), typeof(prq_edda     ) );
- printf ("%s %s %s\n", "prq_ediv     ", length(  prq_ediv     ), typeof(prq_ediv     ) );
- printf ("%s %s %s\n", "prq_edpr     ", length(  prq_edpr     ), typeof(prq_edpr     ) );
- printf ("%s %s %s\n", "prq_edro     ", length(  prq_edro     ), typeof(prq_edro     ) );
- printf ("%s %s %s\n", "prq_edvr     ", length(  prq_edvr     ), typeof(prq_edvr     ) );
- printf ("%s %s %s\n", "prq_edtv     ", length(  prq_edtv     ), typeof(prq_edtv     ) );
- printf ("%s %s %s\n", "prq_kred     ", length(  prq_kred     ), typeof(prq_kred     ) );
- printf ("%s %s %s\n", "prq_kred_mu  ", length(  prq_kred_mu  ), typeof(prq_kred_mu  ) );
- printf ("%s %s %s\n", "prq_kred_sr  ", length(  prq_kred_sr  ), typeof(prq_kred_sr  ) );
- printf ("%s %s %s\n", "prq_kred_ze  ", length(  prq_kred_ze  ), typeof(prq_kred_ze  ) );
- printf ("%s %s %s\n", "prq_krmn     ", length(  prq_krmn     ), typeof(prq_krmn     ) );
- printf ("%s %s %s\n", "prq_mnda     ", length(  prq_mnda     ), typeof(prq_mnda     ) );
- printf ("%s %s %s\n", "prq_mniv     ", length(  prq_mniv     ), typeof(prq_mniv     ) );
- printf ("%s %s %s\n", "prq_mnvr     ", length(  prq_mnvr     ), typeof(prq_mnvr     ) );
- printf ("%s %s %s\n", "prq_mvtv     ", length(  prq_mvtv     ), typeof(prq_mvtv     ) );
- printf ("%s %s %s\n", "qast         ", length(  qast         ), typeof(qast         ) );
- printf ("%s %s %s\n", "qisl         ", length(  qisl         ), typeof(qisl         ) );
- printf ("%s %s %s\n", "qisl_ed      ", length(  qisl_ed      ), typeof(qisl_ed      ) );
- printf ("%s %s %s\n", "souz         ", length(  souz         ), typeof(souz         ) );
- printf ("%s %s %s\n", "suw_edda     ", length(  suw_edda     ), typeof(suw_edda     ) );
- printf ("%s %s %s\n", "suw_edim     ", length(  suw_edim     ), typeof(suw_edim     ) );
- printf ("%s %s %s\n", "suw_edmuim   ", length(  suw_edmuim   ), typeof(suw_edmuim   ) );
- printf ("%s %s %s\n", "suw_edmuvi   ", length(  suw_edmuvi   ), typeof(suw_edmuvi   ) );
- printf ("%s %s %s\n", "suw_edne     ", length(  suw_edne     ), typeof(suw_edne     ) );
- printf ("%s %s %s\n", "suw_edpr     ", length(  suw_edpr     ), typeof(suw_edpr     ) );
- printf ("%s %s %s\n", "suw_edro     ", length(  suw_edro     ), typeof(suw_edro     ) );
- printf ("%s %s %s\n", "suw_edsq     ", length(  suw_edsq     ), typeof(suw_edsq     ) );
- printf ("%s %s %s\n", "suw_edsrim   ", length(  suw_edsrim   ), typeof(suw_edsrim   ) );
- printf ("%s %s %s\n", "suw_edsrvi   ", length(  suw_edsrvi   ), typeof(suw_edsrvi   ) );
- printf ("%s %s %s\n", "suw_edtv     ", length(  suw_edtv     ), typeof(suw_edtv     ) );
- printf ("%s %s %s\n", "suw_edvi     ", length(  suw_edvi     ), typeof(suw_edvi     ) );
- printf ("%s %s %s\n", "suw_edzeim   ", length(  suw_edzeim   ), typeof(suw_edzeim   ) );
- printf ("%s %s %s\n", "suw_edzevi   ", length(  suw_edzevi   ), typeof(suw_edzevi   ) );
- printf ("%s %s %s\n", "suw_edzv     ", length(  suw_edzv     ), typeof(suw_edzv     ) );
- printf ("%s %s %s\n", "suw_mnda     ", length(  suw_mnda     ), typeof(suw_mnda     ) );
- printf ("%s %s %s\n", "suw_mnne     ", length(  suw_mnne     ), typeof(suw_mnne     ) );
- printf ("%s %s %s\n", "suw_mnpr     ", length(  suw_mnpr     ), typeof(suw_mnpr     ) );
- printf ("%s %s %s\n", "suw_mnro     ", length(  suw_mnro     ), typeof(suw_mnro     ) );
- printf ("%s %s %s\n", "suw_mnsq     ", length(  suw_mnsq     ), typeof(suw_mnsq     ) );
- printf ("%s %s %s\n", "suw_mntv     ", length(  suw_mntv     ), typeof(suw_mntv     ) );
- printf ("%s %s %s\n", "suw_nomniv   ", length(  suw_nomniv   ), typeof(suw_nomniv   ) );
- printf ("%s %s %s\n", "suw_odmnim   ", length(  suw_odmnim   ), typeof(suw_odmnim   ) );
- printf ("%s %s %s\n", "suw_odmnvr   ", length(  suw_odmnvr   ), typeof(suw_odmnvr   ) );
- printf ("%s %s %s\n", "vvod         ", length(  vvod         ), typeof(vvod         ) );
-
-      };
-
-#dbg_arr_infile=1 
-
-  if (dbg_arr_infile==1) { 
-
- printf ("%s %s %s\n", "deep         ", length(  deep          ), typeof(deep          ) );
- printf ("%s %s %s\n", "gl_ed        ", length(  gl_ed         ), typeof(gl_ed         ) );
- printf ("%s %s %s\n", "gl_edsr      ", length(  gl_edsr       ), typeof(gl_edsr       ) );
- printf ("%s %s %s\n", "gl_vzed      ", length(  gl_vzed       ), typeof(gl_vzed       ) );
- printf ("%s %s %s\n", "gl_in        ", length(  gl_in         ), typeof(gl_in         ) );
- printf ("%s %s %s\n", "gl_nemn      ", length(  gl_nemn       ), typeof(gl_nemn       ) );
- printf ("%s %s %s\n", "gl_pemn      ", length(  gl_pemn       ), typeof(gl_pemn       ) );
- printf ("%s %s %s\n", "gl_pnmn      ", length(  gl_pnmn       ), typeof(gl_pnmn       ) );
- printf ("%s %s %s\n", "gl_vzmn      ", length(  gl_vzmn       ), typeof(gl_vzmn       ) );
- printf ("%s %s %s\n", "hyp1         ", length(  hyp1          ), typeof(hyp1          ) );
- printf ("%s %s %s\n", "hyp2         ", length(  hyp2          ), typeof(hyp2          ) );
- printf ("%s %s %s\n", "mest_ed      ", length(  mest_ed       ), typeof(mest_ed       ) );
- printf ("%s %s %s\n", "mest_it      ", length(  mest_it       ), typeof(mest_it       ) );
- printf ("%s %s %s\n", "mest_mn      ", length(  mest_mn       ), typeof(mest_mn       ) );
- printf ("%s %s %s\n", "mest_mnim    ", length(  mest_mnim     ), typeof(mest_mnim     ) );
- printf ("%s %s %s\n", "nar_mest     ", length(  nar_mest      ), typeof(nar_mest      ) );
- printf ("%s %s %s\n", "mest_da      ", length(  mest_da       ), typeof(mest_da       ) );
- printf ("%s %s %s\n", "mest_im      ", length(  mest_im       ), typeof(mest_im       ) );
- printf ("%s %s %s\n", "mest_ro      ", length(  mest_ro       ), typeof(mest_ro       ) );
- printf ("%s %s %s\n", "mest_vi      ", length(  mest_vi       ), typeof(mest_vi       ) );
- printf ("%s %s %s\n", "nar_obme     ", length(  nar_obme      ), typeof(nar_obme      ) );
- printf ("%s %s %s\n", "nar_obna     ", length(  nar_obna      ), typeof(nar_obna      ) );
- printf ("%s %s %s\n", "nar_obpr     ", length(  nar_obpr      ), typeof(nar_obpr      ) );
- printf ("%s %s %s\n", "nar_obvr     ", length(  nar_obvr      ), typeof(nar_obvr      ) );
- printf ("%s %s %s\n", "nar_opka     ", length(  nar_opka      ), typeof(nar_opka      ) );
- printf ("%s %s %s\n", "nar_opsp     ", length(  nar_opsp      ), typeof(nar_opsp      ) );
- printf ("%s %s %s\n", "nar_opst     ", length(  nar_opst      ), typeof(nar_opst      ) );
- printf ("%s %s %s\n", "nar_srav     ", length(  nar_srav      ), typeof(nar_srav      ) );
- printf ("%s %s %s\n", "pre_da       ", length(  pre_da        ), typeof(pre_da        ) );
- printf ("%s %s %s\n", "pre_pr       ", length(  pre_pr        ), typeof(pre_pr        ) );
- printf ("%s %s %s\n", "pre_ro       ", length(  pre_ro        ), typeof(pre_ro        ) );
- printf ("%s %s %s\n", "pre_vi       ", length(  pre_vi        ), typeof(pre_vi        ) );
- printf ("%s %s %s\n", "predik       ", length(  predik        ), typeof(predik        ) );
- printf ("%s %s %s\n", "prl_ediv     ", length(  prl_ediv      ), typeof(prl_ediv      ) );
- printf ("%s %s %s\n", "prl_edmsda   ", length(  prl_edmsda    ), typeof(prl_edmsda    ) );
- printf ("%s %s %s\n", "prl_edpr     ", length(  prl_edpr      ), typeof(prl_edpr      ) );
- printf ("%s %s %s\n", "prl_edro     ", length(  prl_edro      ), typeof(prl_edro      ) );
- printf ("%s %s %s\n", "prl_edsrim   ", length(  prl_edsrim    ), typeof(prl_edsrim    ) );
- printf ("%s %s %s\n", "prl_edsrvi   ", length(  prl_edsrvi    ), typeof(prl_edsrvi    ) );
- printf ("%s %s %s\n", "prl_edvr     ", length(  prl_edvr      ), typeof(prl_edvr      ) );
- printf ("%s %s %s\n", "prl_kred     ", length(  prl_kred      ), typeof(prl_kred      ) );
- printf ("%s %s %s\n", "prl_kred_sr  ", length(  prl_kred_sr   ), typeof(prl_kred_sr   ) );
- printf ("%s %s %s\n", "prl_krmn     ", length(  prl_krmn      ), typeof(prl_krmn      ) );
- printf ("%s %s %s\n", "prl_mniv     ", length(  prl_mniv      ), typeof(prl_mniv      ) );
- printf ("%s %s %s\n", "prl_mnvr     ", length(  prl_mnvr      ), typeof(prl_mnvr      ) );
- printf ("%s %s %s\n", "prl_srav     ", length(  prl_srav      ), typeof(prl_srav      ) );
- printf ("%s %s %s\n", "prq_ediv     ", length(  prq_ediv      ), typeof(prq_ediv      ) );
- printf ("%s %s %s\n", "prq_edro     ", length(  prq_edro      ), typeof(prq_edro      ) );
- printf ("%s %s %s\n", "prq_kred     ", length(  prq_kred      ), typeof(prq_kred      ) );
- printf ("%s %s %s\n", "prq_krmn     ", length(  prq_krmn      ), typeof(prq_krmn      ) );
- printf ("%s %s %s\n", "prq_mniv     ", length(  prq_mniv      ), typeof(prq_mniv      ) );
- printf ("%s %s %s\n", "prq_mnvr     ", length(  prq_mnvr      ), typeof(prq_mnvr      ) );
- printf ("%s %s %s\n", "qast         ", length(  qast          ), typeof(qast          ) );
- printf ("%s %s %s\n", "qisl         ", length(  qisl          ), typeof(qisl          ) );
- printf ("%s %s %s\n", "souz         ", length(  souz          ), typeof(souz          ) );
- printf ("%s %s %s\n", "suw_edda     ", length(  suw_edda      ), typeof(suw_edda      ) );
- printf ("%s %s %s\n", "suw_edim     ", length(  suw_edim      ), typeof(suw_edim      ) );
- printf ("%s %s %s\n", "suw_edpr     ", length(  suw_edpr      ), typeof(suw_edpr      ) );
- printf ("%s %s %s\n", "suw_edro     ", length(  suw_edro      ), typeof(suw_edro      ) );
- printf ("%s %s %s\n", "suw_edsrim   ", length(  suw_edsrim    ), typeof(suw_edsrim    ) );
- printf ("%s %s %s\n", "suw_edsrvi   ", length(  suw_edsrvi    ), typeof(suw_edsrvi    ) );
- printf ("%s %s %s\n", "suw_edtv     ", length(  suw_edtv      ), typeof(suw_edtv      ) );
- printf ("%s %s %s\n", "suw_edvi     ", length(  suw_edvi      ), typeof(suw_edvi      ) );
- printf ("%s %s %s\n", "suw_mnda     ", length(  suw_mnda      ), typeof(suw_mnda      ) );
- printf ("%s %s %s\n", "suw_mnpr     ", length(  suw_mnpr      ), typeof(suw_mnpr      ) );
- printf ("%s %s %s\n", "suw_mnro     ", length(  suw_mnro      ), typeof(suw_mnro      ) );
- printf ("%s %s %s\n", "suw_mntv     ", length(  suw_mntv      ), typeof(suw_mntv      ) );
- printf ("%s %s %s\n", "suw_nomniv   ", length(  suw_nomniv    ), typeof(suw_nomniv    ) );
- printf ("%s %s %s\n", "suw_odmnim   ", length(  suw_odmnim    ), typeof(suw_odmnim    ) );
- printf ("%s %s %s\n", "suw_odmnvr   ", length(  suw_odmnvr    ), typeof(suw_odmnvr    ) );
-
-      };
  
   }
- 
