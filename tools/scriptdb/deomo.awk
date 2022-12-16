@@ -86,9 +86,10 @@ BEGIN {
     # расширенное "это"
     cst = "это то се сие оно сё";
         stoar(cst,mest_it," ");
+    # слова с признаками модальности
     cst = "готово можно должно нельзя могло смогло было стало хотело желало";
         stoar(cst,md_bz," ");
-    cst = "будет был была готов готова мог могла смог смогла сможет хотел хотела захотел захотела хотел хотела должен должна желал желала";
+    cst = "будет был была готов готова мог могла может можешь смог смогла сможет хотел хотела захотел захотела хотел хотела должен должна желал желала";
         stoar(cst,md_ed," ");
     cst = "готовы могут будут смогли сможете хотят хотели захотят захотели могли хотели должны желали";
         stoar(cst,md_mn," ");
@@ -655,7 +656,13 @@ BEGIN {
        q(1,gl_pnmn) &&
        (q(2,mest_ed)||q(2,mest_mn)) && s(-1,0) && sc(1,",") )
  { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[43]++; print "R43"}; continue;};
+ if ( phf(1,"больше по") &&
+      (q(3,suw_edda)||q(3,mnda)) && s(0,2) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[28]++; print "R28"}; continue;};
 
+ if ( (phf(1,"песенка спета")) &&
+       (cap(0)||p(-1)||w(-1,"и")) && sc(0,",") && s(1,hfn-2) && p(hfn-1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[41]++; print "R41"}; continue;};
 
  if ( w(1,"позади понапрасну") && s(0,0) && p(1) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[44]++; print "R44"}; continue;};
@@ -763,6 +770,11 @@ BEGIN {
  if ( q(-1,mest_it) &&
        q(1,mest_da) && s(-1,0) && p(1) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[72]++; print "R72"}; continue;};
+ if ( q(1,mest_it) &&
+       q(2,nar_obvr) &&
+       (q(3,gl_pnmn)||q(3,gl_pemn)) &&
+        (q(4,suw_odmniv)||q(4,suw_nomnvr)||q(4,prl_mniv)) && s(0,3) )
+ { sub(/([Ее])/, "ё", l[i]); if(dbg){r[73]++; print "R73"}; continue;};
  if ( q(1,mest_mn) &&
        q(2,mest_it) &&
        (q(3,gl_pnmn)||q(3,gl_nemn)) && s(0,2) && p(3) )
@@ -959,6 +971,10 @@ BEGIN {
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[123]++; print "R123"}; continue;};
 
  # модальное
+ if ( sc(0,",") && (cap(0)||p(-1)) &&
+      (q(1,md_ed)||q(1,md_mn)) &&
+        q(2,gl_in) && s(1,1) )
+ { sub(/([Ее])/, "ё", l[i]); if(dbg){r[124]++; print "R124"}; continue;};
  if ( q(-2,mest_mn) &&
        q(-1,md_mn) &&
         q(1,gl_in) && s(-2,0) )
@@ -967,10 +983,13 @@ BEGIN {
        q(-1,pre_vi) && s(-2,-1) && p(0) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[125]++; print "R125"}; continue;};
  if ( q(1,md_bz) &&
-       q(2,gl_in) )
+       q(2,gl_in) && s(0,1))
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[126]++; print "R126"}; continue;};
  if ( q(-1,md_bz) && p(0) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[127]++; print "R127"}; continue;};
+ if ( q(1,md_mn) &&
+       q(2,nar_obna) && s(0,1) )
+ { sub(/[Ее]/, "<_&_>", l[i]); if(dbg){r[126]++; print "R126"}; continue;};
 
 
  # глагол говорения -----------------------------------------------------
@@ -1293,6 +1312,9 @@ BEGIN {
        q(2,qast) &&
         q(3,prq_kred_sr) && s(0,2) && p(3) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[216]++; print "R216"}; continue;};
+ if ( w(-1,"за") &&
+       q(1,prl_kred) && s(-1,0) && p(1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[217]++; print "R217"}; continue;};
  if ( q(1,mest_it) &&
        q(2,prl_kred_sr) && s(0,1) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[217]++; print "R217"}; continue;};
@@ -2065,6 +2087,43 @@ BEGIN {
        (q(1,suw_nomniv)||q(1,suw_odmnvr)) && s(-1,0) && W(1,"новые") )
  { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[422]++; print "R422"}; continue;};
 
+
+ # всё то, что
+ if ( w(1,"то") && sc(1,",") &&
+       q(2,mest_edsr) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[482]++; print "R482"}; continue;};
+ # всё, что
+ if ( sc(0,",") &&
+       q(1,mest_edsr) && W(2,"есть") )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[483]++; print "R483"}; continue;};
+ # все те, кто
+ if ( w(1,"те") && sc(1,",") &&
+       (q(1,mest_edmu)||q(1,mest_edze)) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[484]++; print "R484"}; continue;};
+ # все, кто
+ if ( sc(0,",") &&
+       (q(1,mest_edmu)||q(1,mest_edze)) )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[485]++; print "R485"}; continue;};
+ # учитывало всё, кроме
+ if ( q(-1,gl_ed) && s(-1,-1) &&
+       sc(0,",") &&
+        w(1,"кроме") )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[486]++; print "R486"}; continue;};
+
+ # все, которые
+ if ( sc(0,",") &&
+      (q(1,mest_da)||q(1,suw_edda)||q(1,suw_mnda)) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[487]++; print "R487"}; continue;};
+ if ( sc(0,",") &&
+      (q(1,mest_mn)||q(1,prq_mniv)) && W(1,"мы вы") )
+ { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[488]++; print "R488"}; continue;};
+
+ # Ну всё,
+ if ( w(-1,"ну") && s(-1,-1) )
+ { sub(/[Ее]/, "ё", l[i]); if(dbg){r[489]++; print "R489"}; continue;};
+
+
+
  # Всё + ... + глагол.ед ============================================
  if ( (q(1,nar_obvr)||q(1,nar_obme)||q(1,nar_opsp)||q(1,nar_srav)||q(1,nar_opka)||q(3,nar_opst)) &&
         q(2,gl_edsr) && s(0,1) )
@@ -2083,6 +2142,10 @@ BEGIN {
  if ( q(-1,gl_vzed) &&
       (q(1,pre_vi)||q(1,pre_ro)||q(1,pre_tv)) && s(-1,0) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[428]++; print "R428"}; continue;};
+ if ( (q(-1,gl_ed)) &&
+        w(1,"так") && sc(1,",") &&
+         w(2,"что чтобы") && s(-1,-1) && s(0,0) )
+ { sub(/([Ее])/, "ё", l[i]); if(dbg){r[491]++; print "R491"}; continue;};
  if ( sc(0,",") &&
        q(-1,gl_vzed) && s(-1,-1) )
  { sub(/[Ее]/, "ё", l[i]); if(dbg){r[429]++; print "R429"}; continue;};
@@ -2308,41 +2371,6 @@ BEGIN {
        (q(3,suw_edvi)||q(3,suw_nomniv)||q(3,suw_odmnvr)||q(3,mest_vi)) && s(0,2) )
  { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[481]++; print "R481"}; continue;};
 
-
-
- # всё то, что
- if ( w(1,"то") && sc(1,",") &&
-       q(2,mest_edsr) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[482]++; print "R482"}; continue;};
- # всё, что
- if ( sc(0,",") &&
-       q(1,mest_edsr) && W(2,"есть") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[483]++; print "R483"}; continue;};
- # все те, кто
- if ( w(1,"те") && sc(1,",") &&
-       (q(1,mest_edmu)||q(1,mest_edze)) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[484]++; print "R484"}; continue;};
- # все, кто
- if ( sc(0,",") &&
-       (q(1,mest_edmu)||q(1,mest_edze)) )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[485]++; print "R485"}; continue;};
- # учитывало всё, кроме
- if ( q(-1,gl_ed) && s(-1,-1) &&
-       sc(0,",") &&
-        w(1,"кроме") )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[486]++; print "R486"}; continue;};
-
- # все, которые
- if ( sc(0,",") &&
-      (q(1,mest_da)||q(1,suw_edda)||q(1,suw_mnda)) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[487]++; print "R487"}; continue;};
- if ( sc(0,",") &&
-      (q(1,mest_mn)||q(1,prq_mniv)) && W(1,"мы вы") )
- { sub(/([Ее])/, "<_&_>", l[i]); if(dbg){r[488]++; print "R488"}; continue;};
-
- # Ну всё,
- if ( w(-1,"ну") && s(-1,-1) )
- { sub(/[Ее]/, "ё", l[i]); if(dbg){r[489]++; print "R489"}; continue;};
 
 
  # гл.мн + все + ...  ============================================
