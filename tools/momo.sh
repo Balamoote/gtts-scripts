@@ -124,11 +124,14 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "обрабо�
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" mano-"$book"/text-book.txt| wc -l)
 if [[ ! $yop -eq 0 ]]; then
 	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m … ' "Все (" $yop ") ==> Все́/Всё"
-	sed -r '/##START_END##/q' scriptdb/omo-index.sed > "mano-"$book"/vsex.sed"
-	cat scriptdb/vse.sed >> mano-"$book"/vsex.sed
-	sed -rn '/###\sTHE_x_END\s!_#_!/,/#::end::/p' scriptdb/omo-index.sed >> mano-"$book"/vsex.sed
+#   sed -r '/##START_END##/q' scriptdb/omo-index.sed > "mano-"$book"/vsex.sed"
+#   cat scriptdb/vse.sed >> mano-"$book"/vsex.sed
+#   sed -rn '/###\sTHE_x_END\s!_#_!/,/#::end::/p' scriptdb/omo-index.sed >> mano-"$book"/vsex.sed
 	
-	sedroll mano-"$book"/vsex.sed mano-"$book"/text-book.txt
+#   sedroll mano-"$book"/vsex.sed mano-"$book"/text-book.txt
+
+awk -v infolder="scriptdb/" -f scriptdb/deomo.awk mano-"$book"/text-book.txt > mano-"$book"/text-book.awk.txt
+mv mano-"$book"/text-book.awk.txt mano-"$book"/text-book.txt
 
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" mano-"$book"/text-book.txt| wc -l)
 mo_uni2=$(date +%s.%N); duration=$( echo $mo_uni2 - $mo_uni1 | bc )
