@@ -94,8 +94,7 @@ BEGIN {
         stoar(cst,md_mn," ");
 
 
-#    cmd = "zcat basedic.gz glquv.gz glgov.gz gldvi.gz geo.gz gldel.gz";
-   cmd = "zcat " infolder "custdic.gz";
+   cmd = "zcat " infolder "dic_cust.gz";
    while ((cmd|getline) > 0) {
 
    if ($2~ /^gl_/) {
