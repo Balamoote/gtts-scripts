@@ -1,745 +1,1000 @@
+@load "rwarray"
 BEGIN {
-   cmd = "zcat " infolder "dic_prq.gz";
+# Скрипт чтения словарных баз в массивы
+# Последняя версия файла тут: https://github.com/Balamoote/gtts-scripts
+    # let @a=1|%s/;DIC\["\zs[0-9]\+\ze"\]/\=''.(@a+setreg('a',@a+1))/g|%s/k<=\zs\d\+\ze;/\=''.(@a-1)/g 
+    # %s:\[$1\];\zs\ze:DIC["1"]++;:gc
+    # %s:DIC\["\d\+"\]++;::gc
+
+ # Проверяем версию gawk, если меньше 5.2.1, то выключаем функции сохранения и восстановления массивов и переменных: базы тогда читаются всегда заново.
+    redix=gawk52="42"
+    cmd = "awk -Wversion | head -1"
+    cmd|getline verheader; close(cmd)
+    split(verheader, gnuawk, "[ .,]")
+    if (gnuawk[1] == "GNU" && gnuawk[2] == "Awk" && gnuawk[3] >= 5 && gnuawk[4] >= 2 && gnuawk[5] >= 1) { gawk52 = 1 };
+ # Если словари и этот скрипт не изменились и gawk>=5.2.1, восстановить состояние, иначе прочитать всё заново.
+   if ( gawk52 == 1 ) {
+    cmd   = "md5sum -c --status " inax "dix.md5 >/dev/null 2>&1"
+    redix = system(cmd); close(cmd);};
+   
+   if (redix == 0 && gawk52 == 1) { readall(indb "classes.bin") } else {
+
+   cmd = "zcat " indb "dic_prq.gz";
    while ((cmd|getline) > 0) {
 
-        if ($2~ /прч_/      && $2~ /_ед_жен_тв$/              ){  pq_ed_ze_tv            [$1]; DIC["1"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_жен_вин$/             ){  pq_ed_ze_vi            [$1]; DIC["2"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_жен_дат$/             ){  pq_ed_ze_da            [$1]; DIC["3"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_жен_им$/              ){  pq_ed_ze_im            [$1]; DIC["4"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_жен_пр$/              ){  pq_ed_ze_pr            [$1]; DIC["5"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_жен_род$/             ){  pq_ed_ze_ro            [$1]; DIC["6"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_муж_вин_неод$/        ){  pq_ed_mu_vi_no         [$1]; DIC["7"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_муж_вин_одуш$/        ){  pq_ed_mu_vi_od         [$1]; DIC["8"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_муж_дат$/             ){  pq_ed_mu_da            [$1]; DIC["9"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_муж_им$/              ){  pq_ed_mu_im            [$1]; DIC["10"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_муж_пр$/              ){  pq_ed_mu_pr            [$1]; DIC["11"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_муж_род$/             ){  pq_ed_mu_ro            [$1]; DIC["12"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_муж_тв$/              ){  pq_ed_mu_tv            [$1]; DIC["13"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_ср_вин$/              ){  pq_ed_sr_vi            [$1]; DIC["14"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_ср_дат$/              ){  pq_ed_sr_da            [$1]; DIC["15"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_ср_им$/               ){  pq_ed_sr_im            [$1]; DIC["16"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_ср_пр$/               ){  pq_ed_sr_pr            [$1]; DIC["17"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_ср_род$/              ){  pq_ed_sr_ro            [$1]; DIC["18"]++; continue };
-        if ($2~ /прч_/      && $2~ /_ед_ср_тв$/               ){  pq_ed_sr_tv            [$1]; DIC["19"]++; continue };
-        if ($2~ /прч_/      && $2~ /_мн_вин_неод$/            ){  pq_mn_vi_no            [$1]; DIC["20"]++; continue };
-        if ($2~ /прч_/      && $2~ /_мн_вин_одуш$/            ){  pq_mn_vi_od            [$1]; DIC["21"]++; continue };
-        if ($2~ /прч_/      && $2~ /_мн_дат$/                 ){  pq_mn_da               [$1]; DIC["22"]++; continue };
-        if ($2~ /прч_/      && $2~ /_мн_им$/                  ){  pq_mn_im               [$1]; DIC["23"]++; continue };
-        if ($2~ /прч_/      && $2~ /_мн_пр$/                  ){  pq_mn_pr               [$1]; DIC["24"]++; continue };
-        if ($2~ /прч_/      && $2~ /_мн_род$/                 ){  pq_mn_ro               [$1]; DIC["25"]++; continue };
-        if ($2~ /прч_/      && $2~ /_мн_тв$/                  ){  pq_mn_tv               [$1]; DIC["26"]++; continue };
-        if ($2~ /прч_крат_/ && $2~ /_ед_жен$/                 ){  pq_kredze              [$1]; DIC["27"]++; continue };
-        if ($2~ /прч_крат_/ && $2~ /_ед_муж$/                 ){  pq_kredmu              [$1]; DIC["28"]++; continue };
-        if ($2~ /прч_крат_/ && $2~ /_ед_ср$/                  ){  pq_kredsr              [$1]; DIC["29"]++; continue };
-        if ($2~ /прч_крат_/ && $2~ /_мн$/                     ){  pq_kredmn              [$1]; DIC["30"]++; continue };
-     };
+      if ($1~ "-") { dichyph [$1] };
+
+      if($2~ /_ед_жен_/ ){
+        if ($2~ /_ед_жен_тв$/ && $2~ /ю$/           ){  pl_edze_tv        [$1]=""; continue };
+        if ($2~ /_ед_жен_тв$/ && $2~ /й$/           ){  pl_edze_dr        [$1]=""; continue };
+        if ($2~ /_ед_жен_вин$/                      ){  pq_edze_dr        [$1]=""; continue };
+        if ($2~ /_ед_жен_дат$/                      ){  pq_edze_dr        [$1]=""; continue };
+        if ($2~ /_ед_жен_им$/                       ){  pq_edze_im        [$1]=""; continue };
+        if ($2~ /_ед_жен_пр$/                       ){  pq_edze_dr        [$1]=""; continue };
+        if ($2~ /_ед_жен_род$/                      ){  pq_edze_dr        [$1]=""; continue };
+      };                                                                                       
+      if($2~ /_ед_муж_/ ){                                                                     
+        if ($2~ /_ед_муж_вин_неод$/                 ){  pq_edmu_im        [$1]=""; continue };
+        if ($2~ /_ед_муж_вин_одуш$/                 ){  pq_edmu_ro        [$1]=""; continue };
+        if ($2~ /_ед_муж_дат$/                      ){  pq_edmu_da        [$1]=""; continue };
+        if ($2~ /_ед_муж_им$/                       ){  pq_edmu_im        [$1]=""; continue };
+        if ($2~ /_ед_муж_пр$/                       ){  pq_edmu_pr        [$1]=""; continue };
+        if ($2~ /_ед_муж_род$/                      ){  pq_edmu_ro        [$1]=""; continue };
+        if ($2~ /_ед_муж_тв$/                       ){  pq_edmu_tv        [$1]=""; continue };
+      };                                                                                       
+      if($2~ /_ед_ср_/ ){                                                                      
+        if ($2~ /_ед_ср_вин$/                       ){  pq_edsr_im        [$1]=""; continue };
+        if ($2~ /_ед_ср_дат$/                       ){  pq_edsr_da        [$1]=""; continue };
+        if ($2~ /_ед_ср_им$/                        ){  pq_edsr_im        [$1]=""; continue };
+        if ($2~ /_ед_ср_пр$/                        ){  pq_edsr_pr        [$1]=""; continue };
+        if ($2~ /_ед_ср_род$/                       ){  pq_edsr_ro        [$1]=""; continue };
+        if ($2~ /_ед_ср_тв$/                        ){  pq_edsr_tv        [$1]=""; continue };
+      };                                                                                      
+      if($2~ /_мн_/ ){                                                                        
+        if ($2~ /_мн_вин_неод$/                     ){  pq_mn_im          [$1]=""; continue };
+        if ($2~ /_мн_вин_одуш$/                     ){  pq_mn_ro          [$1]=""; continue };
+        if ($2~ /_мн_дат$/                          ){  pq_mn_da          [$1]=""; continue };
+        if ($2~ /_мн_им$/                           ){  pq_mn_im          [$1]=""; continue };
+        if ($2~ /_мн_пр$/                           ){  pq_mn_ro          [$1]=""; continue };
+        if ($2~ /_мн_род$/                          ){  pq_mn_ro          [$1]=""; continue };
+        if ($2~ /_мн_тв$/                           ){  pq_mn_tv          [$1]=""; continue };
+      };                                            
+      if($2~  /^прч_крат_/ ){                       
+        if ($2~ /_ед_жен$/                          ){  pq_kred_ze        [$1]=""; continue };
+        if ($2~ /_ед_муж$/                          ){  pq_kred_mu        [$1]=""; continue };
+        if ($2~ /_ед_ср$/                           ){  pq_kred_sr        [$1]=""; continue };
+        if ($2~ /_мн$/                              ){  pq_krmn           [$1]=""; continue };
+      };
+     }; # чтение prq-dic
    close(cmd);
-   cmd = "zcat " infolder "dic_prl.gz";
+   cmd = "zcat " indb "dic_prl.gz";
    while ((cmd|getline) > 0) {
+
+      if ($1~ "-") { dichyph [$1] };
+
       if($2~  /^прл_ед_жен_/ ){
-        if ($2~ /^прл_ед_жен_тв$/                             ){  pl_ed_ze_tv            [$1]; DIC["31"]++;   continue };
-        if ($2~ /^прл_ед_жен_вин$/                            ){  pl_ed_ze_vi            [$1]; DIC["32"]++;   continue };
-        if ($2~ /^прл_ед_жен_дат$/                            ){  pl_ed_ze_da            [$1]; DIC["33"]++;   continue };
-        if ($2~ /^прл_ед_жен_им$/                             ){  pl_ed_ze_im            [$1]; DIC["34"]++;   continue };
-        if ($2~ /^прл_ед_жен_пр$/                             ){  pl_ed_ze_pr            [$1]; DIC["35"]++;   continue };
-        if ($2~ /^прл_ед_жен_род$/                            ){  pl_ed_ze_ro            [$1]; DIC["36"]++;   continue };
-      };
-      if($2~  /^прл_ед_муж_/ ){
-        if ($2~ /^прл_ед_муж_вин_неод$/                       ){  pl_ed_mu_vi_no         [$1]; DIC["37"]++;   continue };
-        if ($2~ /^прл_ед_муж_вин_одуш$/                       ){  pl_ed_mu_vi_od         [$1]; DIC["38"]++;   continue };
-        if ($2~ /^прл_ед_муж_дат$/                            ){  pl_ed_mu_da            [$1]; DIC["39"]++;   continue };
-        if ($2~ /^прл_ед_муж_им$/                             ){  pl_ed_mu_im            [$1]; DIC["40"]++;  continue };
-        if ($2~ /^прл_ед_муж_пр$/                             ){  pl_ed_mu_pr            [$1]; DIC["41"]++;  continue };
-        if ($2~ /^прл_ед_муж_род$/                            ){  pl_ed_mu_ro            [$1]; DIC["42"]++;  continue };
-        if ($2~ /^прл_ед_муж_тв$/                             ){  pl_ed_mu_tv            [$1]; DIC["43"]++;  continue };
-      };
-      if($2~  /^прл_ед_ср_/ ){
-        if ($2~ /^прл_ед_ср_вин$/                             ){  pl_ed_sr_vi            [$1]; DIC["44"]++;  continue };
-        if ($2~ /^прл_ед_ср_дат$/                             ){  pl_ed_sr_da            [$1]; DIC["45"]++;  continue };
-        if ($2~ /^прл_ед_ср_им$/                              ){  pl_ed_sr_im            [$1]; DIC["46"]++;  continue };
-        if ($2~ /^прл_ед_ср_пр$/                              ){  pl_ed_sr_pr            [$1]; DIC["47"]++;  continue };
-        if ($2~ /^прл_ед_ср_род$/                             ){  pl_ed_sr_ro            [$1]; DIC["48"]++;  continue };
-        if ($2~ /^прл_ед_ср_тв$/                              ){  pl_ed_sr_tv            [$1]; DIC["49"]++;  continue };
+        if ($2~ /^прл_ед_жен_тв$/ && $2~ /ю$/       ){  pl_edze_tv        [$1]=""; continue };
+        if ($2~ /^прл_ед_жен_тв$/ && $2~ /й$/       ){  pl_edze_dr        [$1]=""; continue };
+        if ($2~ /^прл_ед_жен_вин$/                  ){  pl_edze_dr        [$1]=""; continue };
+        if ($2~ /^прл_ед_жен_дат$/                  ){  pl_edze_dr        [$1]=""; continue };
+        if ($2~ /^прл_ед_жен_им$/                   ){  pl_edze_im        [$1]=""; continue };
+        if ($2~ /^прл_ед_жен_пр$/                   ){  pl_edze_dr        [$1]=""; continue };
+        if ($2~ /^прл_ед_жен_род$/                  ){  pl_edze_dr        [$1]=""; continue };
+      };                                                                  
+      if($2~  /^прл_ед_муж_/ ){                                           
+        if ($2~ /^прл_ед_муж_вин_неод$/             ){  pl_edmu_im        [$1]=""; continue };
+        if ($2~ /^прл_ед_муж_вин_одуш$/             ){  pl_edmu_ro        [$1]=""; continue };
+        if ($2~ /^прл_ед_муж_дат$/                  ){  pl_edmu_da        [$1]=""; continue };
+        if ($2~ /^прл_ед_муж_им$/                   ){  pl_edmu_im        [$1]=""; continue };
+        if ($2~ /^прл_ед_муж_пр$/                   ){  pl_edmu_pr        [$1]=""; continue };
+        if ($2~ /^прл_ед_муж_род$/                  ){  pl_edmu_ro        [$1]=""; continue };
+        if ($2~ /^прл_ед_муж_тв$/                   ){  pl_edmu_tv        [$1]=""; continue };
+      };                                                                  
+      if($2~  /^прл_ед_ср_/ ){                                            
+        if ($2~ /^прл_ед_ср_вин$/                   ){  pl_edsr_im        [$1]=""; continue };
+        if ($2~ /^прл_ед_ср_дат$/                   ){  pl_edsr_da        [$1]=""; continue };
+        if ($2~ /^прл_ед_ср_им$/                    ){  pl_edsr_im        [$1]=""; continue };
+        if ($2~ /^прл_ед_ср_пр$/                    ){  pl_edsr_pr        [$1]=""; continue };
+        if ($2~ /^прл_ед_ср_род$/                   ){  pl_edsr_ro        [$1]=""; continue };
+        if ($2~ /^прл_ед_ср_тв$/                    ){  pl_edsr_tv        [$1]=""; continue };
       };
       if($2~  /^прл_мн_/ ){
-        if ($2~ /^прл_мн_вин_неод$/                           ){  pl_mn_vi_no            [$1]; DIC["50"]++;  continue };
-        if ($2~ /^прл_мн_вин_одуш$/                           ){  pl_mn_vi_od            [$1]; DIC["51"]++;  continue };
-        if ($2~ /^прл_мн_дат$/                                ){  pl_mn_da               [$1]; DIC["52"]++;  continue };
-        if ($2~ /^прл_мн_им$/                                 ){  pl_mn_im               [$1]; DIC["53"]++;  continue };
-        if ($2~ /^прл_мн_пр$/                                 ){  pl_mn_pr               [$1]; DIC["54"]++;  continue };
-        if ($2~ /^прл_мн_род$/                                ){  pl_mn_ro               [$1]; DIC["55"]++;  continue };
-        if ($2~ /^прл_мн_тв$/                                 ){  pl_mn_tv               [$1]; DIC["56"]++;  continue };
+        if ($2~ /^прл_мн_вин_неод$/                 ){  pl_mn_im          [$1]=""; continue };
+        if ($2~ /^прл_мн_вин_одуш$/                 ){  pl_mn_ro          [$1]=""; continue };
+        if ($2~ /^прл_мн_дат$/                      ){  pl_mn_da          [$1]=""; continue };
+        if ($2~ /^прл_мн_им$/                       ){  pl_mn_im          [$1]=""; continue };
+        if ($2~ /^прл_мн_пр$/                       ){  pl_mn_ro          [$1]=""; continue };
+        if ($2~ /^прл_мн_род$/                      ){  pl_mn_ro          [$1]=""; continue };
+        if ($2~ /^прл_мн_тв$/                       ){  pl_mn_tv          [$1]=""; continue };
       };
-        if ($2~ /^прл_сравн$/                                 ){  pl_srv                 [$1]; DIC["57"]++;  continue };
+        if ($2~ /^прл_сравн$/                       ){  pl_srv            [$1]=""; continue };
       if($2~  /^прл_крат_/ ){
-        if ($2~ /^прл_крат_ед_муж$/                           ){  pl_kred_mu             [$1]; DIC["58"]++;  continue };
-        if ($2~ /^прл_крат_ед_жен$/                           ){  pl_kred_ze             [$1]; DIC["59"]++;  continue };
-        if ($2~ /^прл_крат_ед_ср$/                            ){  pl_kred_sr             [$1]; DIC["60"]++;  continue };
-        if ($2~ /^прл_крат_мн$/                               ){  pl_krmn                [$1]; DIC["61"]++;  continue };
+        if ($2~ /^прл_крат_ед_муж$/                 ){  pl_kred_mu        [$1]=""; continue };
+        if ($2~ /^прл_крат_ед_жен$/                 ){  pl_kred_ze        [$1]=""; continue };
+        if ($2~ /^прл_крат_ед_ср$/                  ){  pl_kred_sr        [$1]=""; continue };
+        if ($2~ /^прл_крат_мн$/                     ){  pl_krmn           [$1]=""; continue };
       };
       if($2~  /^прл_прев_ед_жен_/ ){
-        if ($2~ /^прл_прев_ед_жен_тв$/                        ){  pl_prv_ed_ze_tv        [$1]; DIC["62"]++;  continue };
-        if ($2~ /^прл_прев_ед_жен_вин$/                       ){  pl_prv_ed_ze_vi        [$1]; DIC["63"]++;  continue };
-        if ($2~ /^прл_прев_ед_жен_дат$/                       ){  pl_prv_ed_ze_da        [$1]; DIC["64"]++;  continue };
-        if ($2~ /^прл_прев_ед_жен_им$/                        ){  pl_prv_ed_ze_im        [$1]; DIC["65"]++;  continue };
-        if ($2~ /^прл_прев_ед_жен_пр$/                        ){  pl_prv_ed_ze_pr        [$1]; DIC["66"]++;  continue };
-        if ($2~ /^прл_прев_ед_жен_род$/                       ){  pl_prv_ed_ze_ro        [$1]; DIC["67"]++;  continue };
+        if ($2~ /^прл_прев_ед_жен_тв$/ && $2~ /ю$/  ){  pl_pv_edze_tv     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_жен_тв$/ && $2~ /й$/  ){  pl_pv_edze_dr     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_жен_вин$/             ){  pl_pv_edze_dr     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_жен_дат$/             ){  pl_pv_edze_dr     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_жен_им$/              ){  pl_pv_edze_im     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_жен_пр$/              ){  pl_pv_edze_dr     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_жен_род$/             ){  pl_pv_edze_dr     [$1]=""; continue };
       };
       if($2~  /^прл_прев_ед_муж_/ ){
-        if ($2~ /^прл_прев_ед_муж_вин_неод$/                  ){  pl_prv_ed_mu_vi_no     [$1]; DIC["68"]++;  continue };
-        if ($2~ /^прл_прев_ед_муж_вин_одуш$/                  ){  pl_prv_ed_mu_vi_od     [$1]; DIC["69"]++;  continue };
-        if ($2~ /^прл_прев_ед_муж_дат$/                       ){  pl_prv_ed_mu_da        [$1]; DIC["70"]++;  continue };
-        if ($2~ /^прл_прев_ед_муж_им$/                        ){  pl_prv_ed_mu_im        [$1]; DIC["71"]++;  continue };
-        if ($2~ /^прл_прев_ед_муж_пр$/                        ){  pl_prv_ed_mu_pr        [$1]; DIC["72"]++;  continue };
-        if ($2~ /^прл_прев_ед_муж_род$/                       ){  pl_prv_ed_mu_ro        [$1]; DIC["73"]++;  continue };
-        if ($2~ /^прл_прев_ед_муж_тв$/                        ){  pl_prv_ed_mu_tv        [$1]; DIC["74"]++;  continue };
-      };
-      if($2~  /^прл_прев_ед_ср_/ ){
-        if ($2~ /^прл_прев_ед_ср_вин$/                        ){  pl_prv_ed_sr_vi        [$1]; DIC["75"]++;  continue };
-        if ($2~ /^прл_прев_ед_ср_дат$/                        ){  pl_prv_ed_sr_da        [$1]; DIC["76"]++;  continue };
-        if ($2~ /^прл_прев_ед_ср_им$/                         ){  pl_prv_ed_sr_im        [$1]; DIC["77"]++;  continue };
-        if ($2~ /^прл_прев_ед_ср_пр$/                         ){  pl_prv_ed_sr_pr        [$1]; DIC["78"]++;  continue };
-        if ($2~ /^прл_прев_ед_ср_род$/                        ){  pl_prv_ed_sr_ro        [$1]; DIC["79"]++;  continue };
-        if ($2~ /^прл_прев_ед_ср_тв$/                         ){  pl_prv_ed_sr_tv        [$1]; DIC["80"]++;  continue };
+        if ($2~ /^прл_прев_ед_муж_вин_неод$/        ){  pl_pv_edmu_im     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_муж_вин_одуш$/        ){  pl_pv_edmu_ro     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_муж_дат$/             ){  pl_pv_edmu_da     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_муж_им$/              ){  pl_pv_edmu_im     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_муж_пр$/              ){  pl_pv_edmu_pr     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_муж_род$/             ){  pl_pv_edmu_ro     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_муж_тв$/              ){  pl_pv_edmu_tv     [$1]=""; continue };
+      };                                                                  
+      if($2~  /^прл_прев_ед_ср_/ ){                                       
+        if ($2~ /^прл_прев_ед_ср_вин$/              ){  pl_pv_edsr_im     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_ср_дат$/              ){  pl_pv_edsr_da     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_ср_им$/               ){  pl_pv_edsr_im     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_ср_пр$/               ){  pl_pv_edsr_pr     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_ср_род$/              ){  pl_pv_edsr_ro     [$1]=""; continue };
+        if ($2~ /^прл_прев_ед_ср_тв$/               ){  pl_pv_edsr_tv     [$1]=""; continue };
       };
       if($2~  /^прл_прев_мн_/ ){
-        if ($2~ /^прл_прев_мн_вин_неод$/                      ){  pl_prv_mn_vi_no        [$1]; DIC["81"]++;  continue };
-        if ($2~ /^прл_прев_мн_вин_одуш$/                      ){  pl_prv_mn_vi_od        [$1]; DIC["82"]++;  continue };
-        if ($2~ /^прл_прев_мн_дат$/                           ){  pl_prv_mn_da           [$1]; DIC["83"]++;  continue };
-        if ($2~ /^прл_прев_мн_им$/                            ){  pl_prv_mn_im           [$1]; DIC["84"]++;  continue };
-        if ($2~ /^прл_прев_мн_пр$/                            ){  pl_prv_mn_pr           [$1]; DIC["85"]++;  continue };
-        if ($2~ /^прл_прев_мн_род$/                           ){  pl_prv_mn_ro           [$1]; DIC["86"]++;  continue };
-        if ($2~ /^прл_прев_мн_тв$/                            ){  pl_prv_mn_tv           [$1]; DIC["87"]++;  continue };
+        if ($2~ /^прл_прев_мн_вин_неод$/            ){  pl_pv_mn_im       [$1]=""; continue };
+        if ($2~ /^прл_прев_мн_вин_одуш$/            ){  pl_pv_mn_ro       [$1]=""; continue };
+        if ($2~ /^прл_прев_мн_дат$/                 ){  pl_pv_mn_da       [$1]=""; continue };
+        if ($2~ /^прл_прев_мн_им$/                  ){  pl_pv_mn_im       [$1]=""; continue };
+        if ($2~ /^прл_прев_мн_пр$/                  ){  pl_pv_mn_pr       [$1]=""; continue };
+        if ($2~ /^прл_прев_мн_род$/                 ){  pl_pv_mn_ro       [$1]=""; continue };
+        if ($2~ /^прл_прев_мн_тв$/                  ){  pl_pv_mn_tv       [$1]=""; continue };
       };
-        if ($2~ /^прл_неизм$/                                 ){  pl_neiz                [$1]; DIC["88"]++;  continue };
-    };
+        if ($2~ /^прл_неизм$/                       ){  pl_neiz           [$1]=""; continue };
+    }; # чтение prl-dic
    close(cmd);
-   cmd = "zcat " infolder "dic_suw.gz";
+   cmd = "zcat " indb "dic_suw.gz";
    while ((cmd|getline) > 0) {
+
+      if ($1~ "-") { dichyph [$1] };
+
       if ($2~ /^сущ_неод_/ ) {
        if ($2~ /^сущ_неод_мн_/ ) {
-        if ($2~ /^сущ_неод_мн_вин$/                           ){  swn_mn_vi              [$1]; DIC["89"]++; continue };
-        if ($2~ /^сущ_неод_мн_дат$/                           ){  swn_mn_da              [$1]; DIC["90"]++; continue };
-        if ($2~ /^сущ_неод_мн_им$/                            ){  swn_mn_im              [$1]; DIC["91"]++; continue };
-        if ($2~ /^сущ_неод_мн_пр$/                            ){  swn_mn_pr              [$1]; DIC["92"]++; continue };
-        if ($2~ /^сущ_неод_мн_род$/                           ){  swn_mn_ro              [$1]; DIC["93"]++; continue };
-        if ($2~ /^сущ_неод_мн_тв$/                            ){  swn_mn_tv              [$1]; DIC["94"]++; continue };
-        if ($2~ /^сущ_неод_мн_нескл$/                         ){  swn_mn_ne              [$1]; DIC["95"]++; continue };
-        if ($2~ /^сущ_неод_мн_счет$/                          ){  swn_mn_sq              [$1]; DIC["96"]++; continue };
-       };
-       if ($2~ /^сущ_неод_ед_жен_/ ) {
-        if ($2~ /^сущ_неод_ед_жен_тв$/                        ){  swn_ed_ze_tv           [$1]; DIC["97"]++;  continue };
-        if ($2~ /^сущ_неод_ед_жен_вин$/                       ){  swn_ed_ze_vi           [$1]; DIC["98"]++;  continue };
-        if ($2~ /^сущ_неод_ед_жен_дат$/                       ){  swn_ed_ze_da           [$1]; DIC["99"]++;  continue };
-        if ($2~ /^сущ_неод_ед_жен_им$/                        ){  swn_ed_ze_im           [$1]; DIC["100"]++;  continue };
-        if ($2~ /^сущ_неод_ед_жен_пр$/                        ){  swn_ed_ze_pr           [$1]; DIC["101"]++;  continue };
-        if ($2~ /^сущ_неод_ед_жен_род$/                       ){  swn_ed_ze_ro           [$1]; DIC["102"]++;  continue };
-        if ($2~ /^сущ_неод_ед_жен_нескл$/                     ){  swn_ed_ze_ne           [$1]; DIC["103"]++;  continue };
-        if ($2~ /^сущ_неод_ед_жен_мест$/                      ){  swn_ed_ze_me           [$1]; DIC["104"]++;  continue };
-       };
-       if ($2~ /^сущ_неод_ед_муж_/ ) {
-        if ($2~ /^сущ_неод_ед_муж_вин$/                       ){  swn_ed_mu_vi           [$1]; DIC["105"]++; continue };
-        if ($2~ /^сущ_неод_ед_муж_дат$/                       ){  swn_ed_mu_da           [$1]; DIC["106"]++; continue };
-        if ($2~ /^сущ_неод_ед_муж_им$/                        ){  swn_ed_mu_im           [$1]; DIC["107"]++; continue };
-        if ($2~ /^сущ_неод_ед_муж_пр$/                        ){  swn_ed_mu_pr           [$1]; DIC["108"]++; continue };
-        if ($2~ /^сущ_неод_ед_муж_род$/                       ){  swn_ed_mu_ro           [$1]; DIC["109"]++; continue };
-        if ($2~ /^сущ_неод_ед_муж_тв$/                        ){  swn_ed_mu_tv           [$1]; DIC["110"]++; continue };
-        if ($2~ /^сущ_неод_ед_муж_нескл$/                     ){  swn_ed_mu_ne           [$1]; DIC["111"]++; continue };
-        if ($2~ /^сущ_неод_ед_муж_мест$/                      ){  swn_ed_mu_me           [$1]; DIC["112"]++; continue };
-        if ($2~ /^сущ_неод_ед_муж_парт$/                      ){  swn_ed_mu_pt           [$1]; DIC["113"]++; continue };
-        if ($2~ /^сущ_неод_ед_муж_счет$/                      ){  swn_ed_mu_sq           [$1]; DIC["114"]++; continue };
-       };
-       if ($2~ /^сущ_неод_ед_ср_/ ) {
-        if ($2~ /^сущ_неод_ед_ср_вин$/                        ){  swn_ed_sr_vi           [$1]; DIC["115"]++; continue };
-        if ($2~ /^сущ_неод_ед_ср_дат$/                        ){  swn_ed_sr_da           [$1]; DIC["116"]++; continue };
-        if ($2~ /^сущ_неод_ед_ср_им$/                         ){  swn_ed_sr_im           [$1]; DIC["117"]++; continue };
-        if ($2~ /^сущ_неод_ед_ср_пр$/                         ){  swn_ed_sr_pr           [$1]; DIC["118"]++; continue };
-        if ($2~ /^сущ_неод_ед_ср_род$/                        ){  swn_ed_sr_ro           [$1]; DIC["119"]++; continue };
-        if ($2~ /^сущ_неод_ед_ср_тв$/                         ){  swn_ed_sr_tv           [$1]; DIC["120"]++; continue };
-        if ($2~ /^сущ_неод_ед_ср_нескл$/                      ){  swn_ed_sr_ne           [$1]; DIC["121"]++; continue };
-       };
-        if ($2~ /^сущ_неод_ед_общ_вин$/                       ){  swn_ed_ob_vi           [$1]; DIC["122"]++; continue };
-        if ($2~ /^сущ_неод_ед_общ_дат$/                       ){  swn_ed_ob_da           [$1]; DIC["123"]++; continue };
-        if ($2~ /^сущ_неод_ед_общ_им$/                        ){  swn_ed_ob_im           [$1]; DIC["124"]++; continue };
-        if ($2~ /^сущ_неод_ед_общ_нескл$/                     ){  swn_ed_ob_ne           [$1]; DIC["125"]++; continue };
-        if ($2~ /^сущ_неод_ед_общ_пр$/                        ){  swn_ed_ob_pr           [$1]; DIC["126"]++; continue };
-        if ($2~ /^сущ_неод_ед_общ_род$/                       ){  swn_ed_ob_ro           [$1]; DIC["127"]++; continue };
-        if ($2~ /^сущ_неод_ед_общ_тв$/                        ){  swn_ed_ob_tv           [$1]; DIC["128"]++; continue };
+        if ($2~ /^сущ_неод_мн_вин$/                 ){  swn_mn_im         [$1]=""; continue };
+        if ($2~ /^сущ_неод_мн_дат$/                 ){  swn_mn_da         [$1]=""; continue };
+        if ($2~ /^сущ_неод_мн_им$/                  ){  swn_mn_im         [$1]=""; continue };
+        if ($2~ /^сущ_неод_мн_пр$/                  ){  swn_mn_pr         [$1]=""; continue };
+        if ($2~ /^сущ_неод_мн_род$/                 ){  swn_mn_ro         [$1]=""; continue };
+        if ($2~ /^сущ_неод_мн_тв$/                  ){  swn_mn_tv         [$1]=""; continue };
+        if ($2~ /^сущ_неод_мн_нескл$/               ){  swn_mn_ne         [$1]=""; continue };
+        if ($2~ /^сущ_неод_мн_счет$/                ){  swn_mn_sq         [$1]=""; continue };
+       };                                                                 
+       if ($2~ /^сущ_неод_ед_жен_/ ) {                                    
+        if ($2~ /^сущ_неод_ед_жен_тв$/              ){  swn_edze_tv       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_жен_вин$/             ){  swn_edze_vi       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_жен_дат$/             ){  swn_edze_da       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_жен_им$/              ){  swn_edze_im       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_жен_пр$/              ){  swn_edze_pr       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_жен_род$/             ){  swn_edze_ro       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_жен_нескл$/           ){  swn_edze_ne       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_жен_мест$/            ){  swn_edze_me       [$1]=""; continue };
+       };                                                                 
+       if ($2~ /^сущ_неод_ед_муж_/ ) {                                    
+        if ($2~ /^сущ_неод_ед_муж_вин$/             ){  swn_edmu_im       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_муж_дат$/             ){  swn_edmu_da       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_муж_им$/              ){  swn_edmu_im       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_муж_пр$/              ){  swn_edmu_pr       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_муж_род$/             ){  swn_edmu_ro       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_муж_тв$/              ){  swn_edmu_tv       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_муж_нескл$/           ){  swn_edmu_ne       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_муж_мест$/            ){  swn_edmu_me       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_муж_парт$/            ){  swn_edmu_pt       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_муж_счет$/            ){  swn_edmu_sq       [$1]=""; continue };
+       };                                                                 
+       if ($2~ /^сущ_неод_ед_ср_/ ) {                                     
+        if ($2~ /^сущ_неод_ед_ср_вин$/              ){  swn_edsr_vi       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_ср_дат$/              ){  swn_edsr_da       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_ср_им$/               ){  swn_edsr_im       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_ср_пр$/               ){  swn_edsr_pr       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_ср_род$/              ){  swn_edsr_ro       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_ср_тв$/               ){  swn_edsr_tv       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_ср_нескл$/            ){  swn_edsr_ne       [$1]=""; continue };
+       };                                                                 
+        if ($2~ /^сущ_неод_ед_общ_вин$/             ){  swn_edob_vi       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_общ_дат$/             ){  swn_edob_da       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_общ_им$/              ){  swn_edob_im       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_общ_нескл$/           ){  swn_edob_ne       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_общ_пр$/              ){  swn_edob_pr       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_общ_род$/             ){  swn_edob_ro       [$1]=""; continue };
+        if ($2~ /^сущ_неод_ед_общ_тв$/              ){  swn_edob_tv       [$1]=""; continue };
+      };                                                                  
+      if ($2~ /^сущ_одуш_/ ) {                                            
+       if ($2~ /^сущ_одуш_мн_/ ) {                                        
+        if ($2~ /^сущ_одуш_мн_вин$/                 ){  swo_mn_ro         [$1]=""; continue };
+        if ($2~ /^сущ_одуш_мн_дат$/                 ){  swo_mn_da         [$1]=""; continue };
+        if ($2~ /^сущ_одуш_мн_им$/                  ){  swo_mn_im         [$1]=""; continue };
+        if ($2~ /^сущ_одуш_мн_пр$/                  ){  swo_mn_pr         [$1]=""; continue };
+        if ($2~ /^сущ_одуш_мн_род$/                 ){  swo_mn_ro         [$1]=""; continue };
+        if ($2~ /^сущ_одуш_мн_тв$/                  ){  swo_mn_tv         [$1]=""; continue };
+        if ($2~ /^сущ_одуш_мн_нескл$/               ){  swo_mn_ne         [$1]=""; continue };
+        if ($2~ /^сущ_одуш_мн_счет$/                ){  swo_mn_sq         [$1]=""; continue };
+       };                                                                 
+       if ($2~ /^сущ_одуш_ед_муж_/ ) {                                    
+        if ($2~ /^сущ_одуш_ед_муж_вин$/             ){  swo_edmu_ro       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_муж_дат$/             ){  swo_edmu_da       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_муж_им$/              ){  swo_edmu_im       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_муж_пр$/              ){  swo_edmu_pr       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_муж_род$/             ){  swo_edmu_ro       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_муж_тв$/              ){  swo_edmu_tv       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_муж_нескл$/           ){  swo_edmu_ne       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_муж_зват$/            ){  swo_edmu_zv       [$1]=""; continue };
+       };                                                                 
+       if ($2~ /^сущ_одуш_ед_жен_/ ) {                                    
+        if ($2~ /^сущ_одуш_ед_жен_тв$/              ){  swo_edze_tv       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_жен_вин$/             ){  swo_edze_vi       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_жен_дат$/             ){  swo_edze_da       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_жен_им$/              ){  swo_edze_im       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_жен_пр$/              ){  swo_edze_pr       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_жен_род$/             ){  swo_edze_ro       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_жен_нескл$/           ){  swo_edze_ne       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_жен_зват$/            ){  swo_edze_zv       [$1]=""; continue };
+       };                                                                 
+       if ($2~ /^сущ_одуш_ед_общ_/ ) {                                    
+        if ($2~ /^сущ_одуш_ед_общ_тв$/              ){  swo_edob_tv       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_общ_вин$/             ){  swo_edob_vi       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_общ_дат$/             ){  swo_edob_da       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_общ_им$/              ){  swo_edob_im       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_общ_пр$/              ){  swo_edob_pr       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_общ_род$/             ){  swo_edob_ro       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_общ_нескл$/           ){  swo_edob_ne       [$1]=""; continue };
+       };                                                                 
+       if ($2~ /^сущ_одуш_ед_ср_/ ) {                                     
+        if ($2~ /^сущ_одуш_ед_ср_вин$/              ){  swo_edsr_vi       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_ср_дат$/              ){  swo_edsr_da       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_ср_им$/               ){  swo_edsr_im       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_ср_пр$/               ){  swo_edsr_pr       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_ср_род$/              ){  swo_edsr_ro       [$1]=""; continue };
+        if ($2~ /^сущ_одуш_ед_ср_тв$/               ){  swo_edsr_tv       [$1]=""; continue };
+       };                                                                 
+      };                                                                  
+      if ($2~ /^сущ_мн_/ ) {                                              
+        if ($2~ /^сущ_мн_дат$/                      ){  sw_mn_da          [$1]=""; continue };
+        if ($2~ /^сущ_мн_им$/                       ){  sw_mn_im          [$1]=""; continue };
+        if ($2~ /^сущ_мн_пр$/                       ){  sw_mn_pr          [$1]=""; continue };
+        if ($2~ /^сущ_мн_род$/                      ){  sw_mn_ro          [$1]=""; continue };
+        if ($2~ /^сущ_мн_тв$/                       ){  sw_mn_tv          [$1]=""; continue };
+        if ($2~ /^сущ_мн_вин$/                      ){  sw_mn_vi          [$1]=""; continue };
+        if ($2~ /^сущ_мн_нескл$/                    ){  sw_mn_ne          [$1]=""; continue };
+      };                                                                  
+      if ($2~ /^сущ_ед_жен_/ ) {                                          
+        if ($2~ /^сущ_ед_жен_тв$/                   ){  sw_edze_tv        [$1]=""; continue };
+        if ($2~ /^сущ_ед_жен_вин$/                  ){  sw_edze_vi        [$1]=""; continue };
+        if ($2~ /^сущ_ед_жен_дат$/                  ){  sw_edze_da        [$1]=""; continue };
+        if ($2~ /^сущ_ед_жен_им$/                   ){  sw_edze_im        [$1]=""; continue };
+        if ($2~ /^сущ_ед_жен_пр$/                   ){  sw_edze_pr        [$1]=""; continue };
+        if ($2~ /^сущ_ед_жен_род$/                  ){  sw_edze_ro        [$1]=""; continue };
+       };                                                                 
+       if ($2~ /^сущ_ед_муж_/ ) {                                         
+        if ($2~ /^сущ_ед_муж_дат$/                  ){  sw_edmu_da        [$1]=""; continue };
+        if ($2~ /^сущ_ед_муж_им$/                   ){  sw_edmu_im        [$1]=""; continue };
+        if ($2~ /^сущ_ед_муж_пр$/                   ){  sw_edmu_pr        [$1]=""; continue };
+        if ($2~ /^сущ_ед_муж_род$/                  ){  sw_edmu_ro        [$1]=""; continue };
+        if ($2~ /^сущ_ед_муж_тв$/                   ){  sw_edmu_tv        [$1]=""; continue };
+        if ($2~ /^сущ_ед_муж_вин$/                  ){  sw_edmu_vi        [$1]=""; continue };
+        if ($2~ /^сущ_ед_муж_нескл$/                ){  sw_edmu_ne        [$1]=""; continue };
+       };                                                                 
+       if ($2~ /^сущ_ед_общ_/ ) {                                         
+        if ($2~ /^сущ_ед_общ_нескл$/                ){  sw_edob_ne        [$1]=""; continue };
+        if ($2~ /^сущ_ед_общ_вин$/                  ){  sw_edob_vi        [$1]=""; continue };
+        if ($2~ /^сущ_ед_общ_дат$/                  ){  sw_edob_da        [$1]=""; continue };
+        if ($2~ /^сущ_ед_общ_им$/                   ){  sw_edob_im        [$1]=""; continue };
+        if ($2~ /^сущ_ед_общ_пр$/                   ){  sw_edob_pr        [$1]=""; continue };
+        if ($2~ /^сущ_ед_общ_род$/                  ){  sw_edob_ro        [$1]=""; continue };
+        if ($2~ /^сущ_ед_общ_тв$/                   ){  sw_edob_tv        [$1]=""; continue };
+       };                                                                 
+       if ($2~ /^сущ_ед_ср_/ ) {                                          
+        if ($2~ /^сущ_ед_ср_вин$/                   ){  sw_edsr_vi        [$1]=""; continue };
+        if ($2~ /^сущ_ед_ср_дат$/                   ){  sw_edsr_da        [$1]=""; continue };
+        if ($2~ /^сущ_ед_ср_им$/                    ){  sw_edsr_im        [$1]=""; continue };
+        if ($2~ /^сущ_ед_ср_пр$/                    ){  sw_edsr_pr        [$1]=""; continue };
+        if ($2~ /^сущ_ед_ср_род$/                   ){  sw_edsr_ro        [$1]=""; continue };
+        if ($2~ /^сущ_ед_ср_тв$/                    ){  sw_edsr_tv        [$1]=""; continue };
       };
-      if ($2~ /^сущ_одуш_/ ) {
-       if ($2~ /^сущ_одуш_мн_/ ) {
-        if ($2~ /^сущ_одуш_мн_вин$/                           ){  swo_mn_vi              [$1]; DIC["129"]++; continue };
-        if ($2~ /^сущ_одуш_мн_дат$/                           ){  swo_mn_da              [$1]; DIC["130"]++; continue };
-        if ($2~ /^сущ_одуш_мн_им$/                            ){  swo_mn_im              [$1]; DIC["131"]++; continue };
-        if ($2~ /^сущ_одуш_мн_пр$/                            ){  swo_mn_pr              [$1]; DIC["132"]++; continue };
-        if ($2~ /^сущ_одуш_мн_род$/                           ){  swo_mn_ro              [$1]; DIC["133"]++; continue };
-        if ($2~ /^сущ_одуш_мн_тв$/                            ){  swo_mn_tv              [$1]; DIC["134"]++; continue };
-        if ($2~ /^сущ_одуш_мн_нескл$/                         ){  swo_mn_ne              [$1]; DIC["135"]++; continue };
-        if ($2~ /^сущ_одуш_мн_счет$/                          ){  swo_mn_sq              [$1]; DIC["136"]++; continue };
-       };
-       if ($2~ /^сущ_одуш_ед_муж_/ ) {
-        if ($2~ /^сущ_одуш_ед_муж_вин$/                       ){  swo_ed_mu_vi           [$1]; DIC["137"]++; continue };
-        if ($2~ /^сущ_одуш_ед_муж_дат$/                       ){  swo_ed_mu_da           [$1]; DIC["138"]++; continue };
-        if ($2~ /^сущ_одуш_ед_муж_им$/                        ){  swo_ed_mu_im           [$1]; DIC["139"]++; continue };
-        if ($2~ /^сущ_одуш_ед_муж_пр$/                        ){  swo_ed_mu_pr           [$1]; DIC["140"]++; continue };
-        if ($2~ /^сущ_одуш_ед_муж_род$/                       ){  swo_ed_mu_ro           [$1]; DIC["141"]++; continue };
-        if ($2~ /^сущ_одуш_ед_муж_тв$/                        ){  swo_ed_mu_tv           [$1]; DIC["142"]++; continue };
-        if ($2~ /^сущ_одуш_ед_муж_нескл$/                     ){  swo_ed_mu_ne           [$1]; DIC["143"]++; continue };
-        if ($2~ /^сущ_одуш_ед_муж_зват$/                      ){  swo_ed_mu_zv           [$1]; DIC["144"]++; continue };
-       };
-       if ($2~ /^сущ_одуш_ед_жен_/ ) {
-        if ($2~ /^сущ_одуш_ед_жен_тв$/                        ){  swo_ed_ze_tv           [$1]; DIC["145"]++; continue };
-        if ($2~ /^сущ_одуш_ед_жен_вин$/                       ){  swo_ed_ze_vi           [$1]; DIC["146"]++; continue };
-        if ($2~ /^сущ_одуш_ед_жен_дат$/                       ){  swo_ed_ze_da           [$1]; DIC["147"]++; continue };
-        if ($2~ /^сущ_одуш_ед_жен_им$/                        ){  swo_ed_ze_im           [$1]; DIC["148"]++; continue };
-        if ($2~ /^сущ_одуш_ед_жен_пр$/                        ){  swo_ed_ze_pr           [$1]; DIC["149"]++; continue };
-        if ($2~ /^сущ_одуш_ед_жен_род$/                       ){  swo_ed_ze_ro           [$1]; DIC["150"]++; continue };
-        if ($2~ /^сущ_одуш_ед_жен_нескл$/                     ){  swo_ed_ze_ne           [$1]; DIC["151"]++; continue };
-        if ($2~ /^сущ_одуш_ед_жен_зват$/                      ){  swo_ed_ze_zv           [$1]; DIC["152"]++; continue };
-       };
-       if ($2~ /^сущ_одуш_ед_общ_/ ) {
-        if ($2~ /^сущ_одуш_ед_общ_тв$/                        ){  swo_ed_ob_tv           [$1]; DIC["153"]++; continue };
-        if ($2~ /^сущ_одуш_ед_общ_вин$/                       ){  swo_ed_ob_vi           [$1]; DIC["154"]++; continue };
-        if ($2~ /^сущ_одуш_ед_общ_дат$/                       ){  swo_ed_ob_da           [$1]; DIC["155"]++; continue };
-        if ($2~ /^сущ_одуш_ед_общ_им$/                        ){  swo_ed_ob_im           [$1]; DIC["156"]++; continue };
-        if ($2~ /^сущ_одуш_ед_общ_пр$/                        ){  swo_ed_ob_pr           [$1]; DIC["157"]++; continue };
-        if ($2~ /^сущ_одуш_ед_общ_род$/                       ){  swo_ed_ob_ro           [$1]; DIC["158"]++; continue };
-        if ($2~ /^сущ_одуш_ед_общ_нескл$/                     ){  swo_ed_ob_ne           [$1]; DIC["159"]++; continue };
-       };
-       if ($2~ /^сущ_одуш_ед_ср_/ ) {
-        if ($2~ /^сущ_одуш_ед_ср_вин$/                        ){  swo_ed_sr_vi           [$1]; DIC["160"]++; continue };
-        if ($2~ /^сущ_одуш_ед_ср_дат$/                        ){  swo_ed_sr_da           [$1]; DIC["161"]++; continue };
-        if ($2~ /^сущ_одуш_ед_ср_им$/                         ){  swo_ed_sr_im           [$1]; DIC["162"]++; continue };
-        if ($2~ /^сущ_одуш_ед_ср_пр$/                         ){  swo_ed_sr_pr           [$1]; DIC["163"]++; continue };
-        if ($2~ /^сущ_одуш_ед_ср_род$/                        ){  swo_ed_sr_ro           [$1]; DIC["164"]++; continue };
-        if ($2~ /^сущ_одуш_ед_ср_тв$/                         ){  swo_ed_sr_tv           [$1]; DIC["165"]++; continue };
-       };
-      };
-      if ($2~ /^сущ_ед_жен_/ ) {
-        if ($2~ /^сущ_ед_жен_тв$/                             ){  sw_ed_ze_tv            [$1]; DIC["166"]++;  continue };
-        if ($2~ /^сущ_ед_жен_вин$/                            ){  sw_ed_ze_vi            [$1]; DIC["167"]++;  continue };
-        if ($2~ /^сущ_ед_жен_дат$/                            ){  sw_ed_ze_da            [$1]; DIC["168"]++;  continue };
-        if ($2~ /^сущ_ед_жен_им$/                             ){  sw_ed_ze_im            [$1]; DIC["169"]++;  continue };
-        if ($2~ /^сущ_ед_жен_пр$/                             ){  sw_ed_ze_pr            [$1]; DIC["170"]++;  continue };
-        if ($2~ /^сущ_ед_жен_род$/                            ){  sw_ed_ze_ro            [$1]; DIC["171"]++;  continue };
-       };
-       if ($2~ /^сущ_ед_муж_/ ) {
-        if ($2~ /^сущ_ед_муж_дат$/                            ){  sw_ed_mu_da            [$1]; DIC["172"]++;  continue };
-        if ($2~ /^сущ_ед_муж_им$/                             ){  sw_ed_mu_im            [$1]; DIC["173"]++;  continue };
-        if ($2~ /^сущ_ед_муж_пр$/                             ){  sw_ed_mu_pr            [$1]; DIC["174"]++;  continue };
-        if ($2~ /^сущ_ед_муж_род$/                            ){  sw_ed_mu_ro            [$1]; DIC["175"]++;  continue };
-        if ($2~ /^сущ_ед_муж_тв$/                             ){  sw_ed_mu_tv            [$1]; DIC["176"]++;  continue };
-        if ($2~ /^сущ_ед_муж_вин$/                            ){  sw_ed_mu_vi            [$1]; DIC["177"]++;  continue };
-        if ($2~ /^сущ_ед_муж_нескл$/                          ){  sw_ed_mu_ne            [$1]; DIC["178"]++;  continue };
-       };
-       if ($2~ /^сущ_ед_общ_/ ) {
-        if ($2~ /^сущ_ед_общ_нескл$/                          ){  sw_ed_ob_ne            [$1]; DIC["179"]++;  continue };
-        if ($2~ /^сущ_ед_общ_вин$/                            ){  sw_ed_ob_vi            [$1]; DIC["180"]++;  continue };
-        if ($2~ /^сущ_ед_общ_дат$/                            ){  sw_ed_ob_da            [$1]; DIC["181"]++;  continue };
-        if ($2~ /^сущ_ед_общ_им$/                             ){  sw_ed_ob_im            [$1]; DIC["182"]++;  continue };
-        if ($2~ /^сущ_ед_общ_пр$/                             ){  sw_ed_ob_pr            [$1]; DIC["183"]++;  continue };
-        if ($2~ /^сущ_ед_общ_род$/                            ){  sw_ed_ob_ro            [$1]; DIC["184"]++;  continue };
-        if ($2~ /^сущ_ед_общ_тв$/                             ){  sw_ed_ob_tv            [$1]; DIC["185"]++;  continue };
-       };
-       if ($2~ /^сущ_ед_ср_/ ) {
-        if ($2~ /^сущ_ед_ср_вин$/                             ){  sw_ed_sr_vi            [$1]; DIC["186"]++;  continue };
-        if ($2~ /^сущ_ед_ср_дат$/                             ){  sw_ed_sr_da            [$1]; DIC["187"]++;  continue };
-        if ($2~ /^сущ_ед_ср_им$/                              ){  sw_ed_sr_im            [$1]; DIC["188"]++;  continue };
-        if ($2~ /^сущ_ед_ср_пр$/                              ){  sw_ed_sr_pr            [$1]; DIC["189"]++;  continue };
-        if ($2~ /^сущ_ед_ср_род$/                             ){  sw_ed_sr_ro            [$1]; DIC["190"]++;  continue };
-        if ($2~ /^сущ_ед_ср_тв$/                              ){  sw_ed_sr_tv            [$1]; DIC["191"]++;  continue };
-      };
-      if ($2~ /^сущ_мн_/ ) {
-        if ($2~ /^сущ_мн_дат$/                                ){  sw_mn_da               [$1]; DIC["192"]++;  continue };
-        if ($2~ /^сущ_мн_им$/                                 ){  sw_mn_im               [$1]; DIC["193"]++;  continue };
-        if ($2~ /^сущ_мн_пр$/                                 ){  sw_mn_pr               [$1]; DIC["194"]++;  continue };
-        if ($2~ /^сущ_мн_род$/                                ){  sw_mn_ro               [$1]; DIC["195"]++;  continue };
-        if ($2~ /^сущ_мн_тв$/                                 ){  sw_mn_tv               [$1]; DIC["196"]++;  continue };
-        if ($2~ /^сущ_мн_вин$/                                ){  sw_mn_vi               [$1]; DIC["197"]++;  continue };
-        if ($2~ /^сущ_мн_нескл$/                              ){  sw_mn_ne               [$1]; DIC["198"]++;  continue };
-      };
-    };
+    }; # чтение suw-dic
    close(cmd);
-   cmd = "zcat " infolder "dic_gl.gz";
+   cmd = "zcat " indb "dic_gl.gz";
    while ((cmd|getline) > 0) {
+
+      if ($1~ "-") { dichyph [$1] };
+
       if($2~  /^гл_несов_непер_/ ){
-        if ($2~ /^гл_несов_непер_воз_инф$/                    ){  gn_ne_vz_in            [$1]; DIC["199"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_наст_ед_1е$/             ){  gn_ne_vz_na_e1         [$1]; DIC["200"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_наст_ед_2е$/             ){  gn_ne_vz_na_e2         [$1]; DIC["201"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_наст_ед_3е$/             ){  gn_ne_vz_na_e3         [$1]; DIC["202"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_наст_мн_1е$/             ){  gn_ne_vz_na_m1         [$1]; DIC["203"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_наст_мн_2е$/             ){  gn_ne_vz_na_m2         [$1]; DIC["204"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_наст_мн_3е$/             ){  gn_ne_vz_na_m3         [$1]; DIC["205"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_пов_ед$/                 ){  gn_ne_vz_po_ed         [$1]; DIC["206"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_пов_мн$/                 ){  gn_ne_vz_po_mn         [$1]; DIC["207"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_прош_ед_жен$/            ){  gn_ne_vz_pa_ed_ze      [$1]; DIC["208"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_прош_ед_муж$/            ){  gn_ne_vz_pa_ed_mu      [$1]; DIC["209"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_прош_ед_ср$/             ){  gn_ne_vz_pa_ed_sr      [$1]; DIC["210"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_прош_мн$/                ){  gn_ne_vz_pa_mn         [$1]; DIC["211"]++; continue };
-        if ($2~ /^гл_несов_непер_инф$/                        ){  gn_ne_in               [$1]; DIC["212"]++; continue };
-        if ($2~ /^гл_несов_непер_наст_ед_1е$/                 ){  gn_ne_na_e1            [$1]; DIC["213"]++; continue };
-        if ($2~ /^гл_несов_непер_наст_ед_2е$/                 ){  gn_ne_na_e2            [$1]; DIC["214"]++; continue };
-        if ($2~ /^гл_несов_непер_наст_ед_3е$/                 ){  gn_ne_na_e3            [$1]; DIC["215"]++; continue };
-        if ($2~ /^гл_несов_непер_наст_мн_1е$/                 ){  gn_ne_na_m1            [$1]; DIC["216"]++; continue };
-        if ($2~ /^гл_несов_непер_наст_мн_2е$/                 ){  gn_ne_na_m2            [$1]; DIC["217"]++; continue };
-        if ($2~ /^гл_несов_непер_наст_мн_3е$/                 ){  gn_ne_na_m3            [$1]; DIC["218"]++; continue };
-        if ($2~ /^гл_несов_непер_пов_ед$/                     ){  gn_ne_po_ed            [$1]; DIC["219"]++; continue };
-        if ($2~ /^гл_несов_непер_пов_мн$/                     ){  gn_ne_po_mn            [$1]; DIC["220"]++; continue };
-        if ($2~ /^гл_несов_непер_прош_ед_жен$/                ){  gn_ne_pa_ed_ze         [$1]; DIC["221"]++; continue };
-        if ($2~ /^гл_несов_непер_прош_ед_муж$/                ){  gn_ne_pa_ed_mu         [$1]; DIC["222"]++; continue };
-        if ($2~ /^гл_несов_непер_прош_ед_ср$/                 ){  gn_ne_pa_ed_sr         [$1]; DIC["223"]++; continue };
-        if ($2~ /^гл_несов_непер_прош_мн$/                    ){  gn_ne_pa_mn            [$1]; DIC["224"]++; continue };
 
-        if ($2~ /^гл_несов_непер_инф_безл$/                   ){  gn_ne_in_bz            [$1]; DIC["225"]++; continue };
-        if ($2~ /^гл_несов_непер_воз_инф_безл$/               ){  gn_ne_vz_in_bz         [$1]; DIC["226"]++; continue };
-      };
-      if($2~  /^гл_несов_перех_/ ){
-        if ($2~ /^гл_несов_перех_инф$/                        ){  gn_pe_in               [$1]; DIC["227"]++; continue };
-        if ($2~ /^гл_несов_перех_наст_ед_1е$/                 ){  gn_pe_na_e1            [$1]; DIC["228"]++; continue };
-        if ($2~ /^гл_несов_перех_наст_ед_2е$/                 ){  gn_pe_na_e2            [$1]; DIC["229"]++; continue };
-        if ($2~ /^гл_несов_перех_наст_ед_3е$/                 ){  gn_pe_na_e3            [$1]; DIC["230"]++; continue };
-        if ($2~ /^гл_несов_перех_наст_мн_1е$/                 ){  gn_pe_na_m1            [$1]; DIC["231"]++; continue };
-        if ($2~ /^гл_несов_перех_наст_мн_2е$/                 ){  gn_pe_na_m2            [$1]; DIC["232"]++; continue };
-        if ($2~ /^гл_несов_перех_наст_мн_3е$/                 ){  gn_pe_na_m3            [$1]; DIC["233"]++; continue };
-        if ($2~ /^гл_несов_перех_пов_ед$/                     ){  gn_pe_po_ed            [$1]; DIC["234"]++; continue };
-        if ($2~ /^гл_несов_перех_пов_мн$/                     ){  gn_pe_po_mn            [$1]; DIC["235"]++; continue };
-        if ($2~ /^гл_несов_перех_прош_ед_жен$/                ){  gn_pe_pa_ed_ze         [$1]; DIC["236"]++; continue };
-        if ($2~ /^гл_несов_перех_прош_ед_муж$/                ){  gn_pe_pa_ed_mu         [$1]; DIC["237"]++; continue };
-        if ($2~ /^гл_несов_перех_прош_ед_ср$/                 ){  gn_pe_pa_ed_sr         [$1]; DIC["238"]++; continue };
-        if ($2~ /^гл_несов_перех_прош_мн$/                    ){  gn_pe_pa_mn            [$1]; DIC["239"]++; continue };
+        if ($2~ /^гл_несов_непер_воз_инф$/          ){  gn_vz_ne_in       [$1]=""; continue };
 
-        if ($2~ /^гл_несов_перех_инф_безл$/                   ){  gn_pe_in_bz            [$1]; DIC["240"]++; continue };
-      };
-      if($2~  /^гл_несов_перне_/ ){
-        if ($2~ /^гл_несов_перне_инф$/                        ){  gn_pn_in               [$1]; DIC["241"]++; continue };
-        if ($2~ /^гл_несов_перне_наст_ед_1е$/                 ){  gn_pn_na_e1            [$1]; DIC["242"]++; continue };
-        if ($2~ /^гл_несов_перне_наст_ед_2е$/                 ){  gn_pn_na_e2            [$1]; DIC["243"]++; continue };
-        if ($2~ /^гл_несов_перне_наст_ед_3е$/                 ){  gn_pn_na_e3            [$1]; DIC["244"]++; continue };
-        if ($2~ /^гл_несов_перне_наст_мн_1е$/                 ){  gn_pn_na_m1            [$1]; DIC["245"]++; continue };
-        if ($2~ /^гл_несов_перне_наст_мн_2е$/                 ){  gn_pn_na_m2            [$1]; DIC["246"]++; continue };
-        if ($2~ /^гл_несов_перне_наст_мн_3е$/                 ){  gn_pn_na_m3            [$1]; DIC["247"]++; continue };
-        if ($2~ /^гл_несов_перне_пов_ед$/                     ){  gn_pn_po_ed            [$1]; DIC["248"]++; continue };
-        if ($2~ /^гл_несов_перне_пов_мн$/                     ){  gn_pn_po_mn            [$1]; DIC["249"]++; continue };
-        if ($2~ /^гл_несов_перне_прош_ед_жен$/                ){  gn_pn_pa_ed_ze         [$1]; DIC["250"]++; continue };
-        if ($2~ /^гл_несов_перне_прош_ед_муж$/                ){  gn_pn_pa_ed_mu         [$1]; DIC["251"]++; continue };
-        if ($2~ /^гл_несов_перне_прош_ед_ср$/                 ){  gn_pn_pa_ed_sr         [$1]; DIC["252"]++; continue };
-        if ($2~ /^гл_несов_перне_прош_мн$/                    ){  gn_pn_pa_mn            [$1]; DIC["253"]++; continue };
-      };
-      if($2~  /^гл_сов_непер_/ ){
-        if ($2~ /^гл_сов_непер_буд_ед_1е$/                    ){  gs_ne_bu_e1            [$1]; DIC["254"]++; continue };
-        if ($2~ /^гл_сов_непер_буд_ед_2е$/                    ){  gs_ne_bu_e2            [$1]; DIC["255"]++; continue };
-        if ($2~ /^гл_сов_непер_буд_ед_3е$/                    ){  gs_ne_bu_e3            [$1]; DIC["256"]++; continue };
-        if ($2~ /^гл_сов_непер_буд_мн_1е$/                    ){  gs_ne_bu_m1            [$1]; DIC["257"]++; continue };
-        if ($2~ /^гл_сов_непер_буд_мн_2е$/                    ){  gs_ne_bu_m2            [$1]; DIC["258"]++; continue };
-        if ($2~ /^гл_сов_непер_буд_мн_3е$/                    ){  gs_ne_bu_m3            [$1]; DIC["259"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_буд_ед_1е$/                ){  gs_ne_vz_bu_e1         [$1]; DIC["260"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_буд_ед_2е$/                ){  gs_ne_vz_bu_e2         [$1]; DIC["261"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_буд_ед_3е$/                ){  gs_ne_vz_bu_e3         [$1]; DIC["262"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_буд_мн_1е$/                ){  gs_ne_vz_bu_m1         [$1]; DIC["263"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_буд_мн_2е$/                ){  gs_ne_vz_bu_m2         [$1]; DIC["264"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_буд_мн_3е$/                ){  gs_ne_vz_bu_m3         [$1]; DIC["265"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_инф$/                      ){  gs_ne_vz_in            [$1]; DIC["266"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_пов_ед$/                   ){  gs_ne_vz_po_ed         [$1]; DIC["267"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_пов_мн$/                   ){  gs_ne_vz_po_mn         [$1]; DIC["268"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_прош_ед_жен$/              ){  gs_ne_vz_pa_ed_ze      [$1]; DIC["269"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_прош_ед_муж$/              ){  gs_ne_vz_pa_ed_mu      [$1]; DIC["270"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_прош_ед_ср$/               ){  gs_ne_vz_pa_ed_sr      [$1]; DIC["271"]++; continue };
-        if ($2~ /^гл_сов_непер_воз_прош_мн$/                  ){  gs_ne_vz_pa_mn         [$1]; DIC["272"]++; continue };
-        if ($2~ /^гл_сов_непер_инф$/                          ){  gs_ne_in               [$1]; DIC["273"]++; continue };
-        if ($2~ /^гл_сов_непер_пов_ед$/                       ){  gs_ne_po_ed            [$1]; DIC["274"]++; continue };
-        if ($2~ /^гл_сов_непер_пов_мн$/                       ){  gs_ne_po_mn            [$1]; DIC["275"]++; continue };
-        if ($2~ /^гл_сов_непер_прош_ед_жен$/                  ){  gs_ne_pa_ed_ze         [$1]; DIC["276"]++; continue };
-        if ($2~ /^гл_сов_непер_прош_ед_муж$/                  ){  gs_ne_pa_ed_mu         [$1]; DIC["277"]++; continue };
-        if ($2~ /^гл_сов_непер_прош_ед_ср$/                   ){  gs_ne_pa_ed_sr         [$1]; DIC["278"]++; continue };
-        if ($2~ /^гл_сов_непер_прош_мн$/                      ){  gs_ne_pa_mn            [$1]; DIC["279"]++; continue };
+       if ($2~ /^гл_несов_непер_воз_наст_/ ) {
+        if ($2~ /^гл_несов_непер_воз_наст_ед_1е$/   ){  gn_vz_nena_e1     [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_воз_наст_ед_2е$/   ){  gn_vz_nena_e2     [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_воз_наст_ед_3е$/   ){  gn_vz_nena_e3     [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_воз_наст_мн_1е$/   ){  gn_vz_nena_m1     [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_воз_наст_мн_2е$/   ){  gn_vz_nena_m2     [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_воз_наст_мн_3е$/   ){  gn_vz_nena_m3     [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_несов_непер_воз_пов_ед$/       ){  gn_vz_nepo_ed     [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_воз_пов_мн$/       ){  gn_vz_nepo_mn     [$1]=""; continue };
+                                                             
+       if ($2~ /^гл_несов_непер_воз_прош_/ ) {               
+        if ($2~ /^гл_несов_непер_воз_прош_ед_жен$/  ){  gn_vz_nepa_edze   [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_воз_прош_ед_муж$/  ){  gn_vz_nepa_edmu   [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_воз_прош_ед_ср$/   ){  gn_vz_nepa_edsr   [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_воз_прош_мн$/      ){  gn_vz_nepa_mn     [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_несов_непер_инф$/              ){  gn_nein           [$1]=""; continue };
+                                                                          
+       if ($2~ /^гл_несов_непер_наст_/ ) {                                
+        if ($2~ /^гл_несов_непер_наст_ед_1е$/       ){  gn_nena_e1        [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_наст_ед_2е$/       ){  gn_nena_e2        [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_наст_ед_3е$/       ){  gn_nena_e3        [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_наст_мн_1е$/       ){  gn_nena_m1        [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_наст_мн_2е$/       ){  gn_nena_m2        [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_наст_мн_3е$/       ){  gn_nena_m3        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_несов_непер_пов_ед$/           ){  gn_nepo_ed        [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_пов_мн$/           ){  gn_nepo_mn        [$1]=""; continue };
 
-        if ($2~ /^гл_сов_непер_воз_инф_безл$/                 ){  gs_ne_vz_in_bz         [$1]; DIC["280"]++; continue };
-        if ($2~ /^гл_сов_непер_инф_безл$/                     ){  gs_ne_in_bz            [$1]; DIC["281"]++; continue };
-      };
-      if($2~  /^гл_сов_перех_/ ){
-        if ($2~ /^гл_сов_перех_буд_ед_1е$/                    ){  gs_pe_bu_e1            [$1]; DIC["282"]++; continue };
-        if ($2~ /^гл_сов_перех_буд_ед_2е$/                    ){  gs_pe_bu_e2            [$1]; DIC["283"]++; continue };
-        if ($2~ /^гл_сов_перех_буд_ед_3е$/                    ){  gs_pe_bu_e3            [$1]; DIC["284"]++; continue };
-        if ($2~ /^гл_сов_перех_буд_мн_1е$/                    ){  gs_pe_bu_m1            [$1]; DIC["285"]++; continue };
-        if ($2~ /^гл_сов_перех_буд_мн_2е$/                    ){  gs_pe_bu_m2            [$1]; DIC["286"]++; continue };
-        if ($2~ /^гл_сов_перех_буд_мн_3е$/                    ){  gs_pe_bu_m3            [$1]; DIC["287"]++; continue };
-        if ($2~ /^гл_сов_перех_инф$/                          ){  gs_pe_in               [$1]; DIC["288"]++; continue };
-        if ($2~ /^гл_сов_перех_пов_ед$/                       ){  gs_pe_po_ed            [$1]; DIC["289"]++; continue };
-        if ($2~ /^гл_сов_перех_пов_мн$/                       ){  gs_pe_po_mn            [$1]; DIC["290"]++; continue };
-        if ($2~ /^гл_сов_перех_прош_ед_жен$/                  ){  gs_pe_pa_ed_ze         [$1]; DIC["291"]++; continue };
-        if ($2~ /^гл_сов_перех_прош_ед_муж$/                  ){  gs_pe_pa_ed_mu         [$1]; DIC["292"]++; continue };
-        if ($2~ /^гл_сов_перех_прош_ед_ср$/                   ){  gs_pe_pa_ed_sr         [$1]; DIC["293"]++; continue };
-        if ($2~ /^гл_сов_перех_прош_мн$/                      ){  gs_pe_pa_mn            [$1]; DIC["294"]++; continue };
+       if ($2~ /^гл_несов_непер_прош_/ ) {
+        if ($2~ /^гл_несов_непер_прош_ед_жен$/      ){  gn_nepa_edze      [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_прош_ед_муж$/      ){  gn_nepa_edmu      [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_прош_ед_ср$/       ){  gn_nepa_edsr      [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_прош_мн$/          ){  gn_nepa_mn        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_несов_непер_инф_безл$/         ){  gn_nein_bz        [$1]=""; continue };
+        if ($2~ /^гл_несов_непер_воз_инф_безл$/     ){  gn_vz_nein_bz     [$1]=""; continue };
+                                                                          
+      };                                                                  
+      if($2~  /^гл_несов_перех_/ ){                                       
+                                                                          
+        if ($2~ /^гл_несов_перех_инф$/              ){  gn_pein           [$1]=""; continue };
+                                                                          
+       if ($2~ /^гл_несов_перех_наст_/ ) {                                
+        if ($2~ /^гл_несов_перех_наст_ед_1е$/       ){  gn_pena_e1        [$1]=""; continue };
+        if ($2~ /^гл_несов_перех_наст_ед_2е$/       ){  gn_pena_e2        [$1]=""; continue };
+        if ($2~ /^гл_несов_перех_наст_ед_3е$/       ){  gn_pena_e3        [$1]=""; continue };
+        if ($2~ /^гл_несов_перех_наст_мн_1е$/       ){  gn_pena_m1        [$1]=""; continue };
+        if ($2~ /^гл_несов_перех_наст_мн_2е$/       ){  gn_pena_m2        [$1]=""; continue };
+        if ($2~ /^гл_несов_перех_наст_мн_3е$/       ){  gn_pena_m3        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_несов_перех_пов_ед$/           ){  gn_pepo_ed        [$1]=""; continue };
+        if ($2~ /^гл_несов_перех_пов_мн$/           ){  gn_pepo_mn        [$1]=""; continue };
 
-        if ($2~ /^гл_сов_перех_инф_безл$/                     ){  gs_pe_in_bz            [$1]; DIC["295"]++; continue };
-      };
-      if($2~  /^гл_сов_перне_/ ){
-        if ($2~ /^гл_сов_перне_буд_ед_1е$/                    ){  gs_pn_bu_e1            [$1]; DIC["296"]++; continue };
-        if ($2~ /^гл_сов_перне_буд_ед_2е$/                    ){  gs_pn_bu_e2            [$1]; DIC["297"]++; continue };
-        if ($2~ /^гл_сов_перне_буд_ед_3е$/                    ){  gs_pn_bu_e3            [$1]; DIC["298"]++; continue };
-        if ($2~ /^гл_сов_перне_буд_мн_1е$/                    ){  gs_pn_bu_m1            [$1]; DIC["299"]++; continue };
-        if ($2~ /^гл_сов_перне_буд_мн_2е$/                    ){  gs_pn_bu_m2            [$1]; DIC["300"]++; continue };
-        if ($2~ /^гл_сов_перне_буд_мн_3е$/                    ){  gs_pn_bu_m3            [$1]; DIC["301"]++; continue };
-        if ($2~ /^гл_сов_перне_инф$/                          ){  gs_pn_in               [$1]; DIC["302"]++; continue };
-        if ($2~ /^гл_сов_перне_пов_ед$/                       ){  gs_pn_po_ed            [$1]; DIC["303"]++; continue };
-        if ($2~ /^гл_сов_перне_пов_мн$/                       ){  gs_pn_po_mn            [$1]; DIC["304"]++; continue };
-        if ($2~ /^гл_сов_перне_прош_ед_жен$/                  ){  gs_pn_pa_ed_ze         [$1]; DIC["305"]++; continue };
-        if ($2~ /^гл_сов_перне_прош_ед_муж$/                  ){  gs_pn_pa_ed_mu         [$1]; DIC["306"]++; continue };
-        if ($2~ /^гл_сов_перне_прош_ед_ср$/                   ){  gs_pn_pa_ed_sr         [$1]; DIC["307"]++; continue };
-        if ($2~ /^гл_сов_перне_прош_мн$/                      ){  gs_pn_pa_mn            [$1]; DIC["308"]++; continue };
+       if ($2~ /^гл_несов_перех_прош_/ ) {
+        if ($2~ /^гл_несов_перех_прош_ед_жен$/      ){  gn_pepa_edze      [$1]=""; continue };
+        if ($2~ /^гл_несов_перех_прош_ед_муж$/      ){  gn_pepa_edmu      [$1]=""; continue };
+        if ($2~ /^гл_несов_перех_прош_ед_ср$/       ){  gn_pepa_edsr      [$1]=""; continue };
+        if ($2~ /^гл_несов_перех_прош_мн$/          ){  gn_pepa_mn        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_несов_перех_инф_безл$/         ){  gn_pein_bz        [$1]=""; continue };
+      };                                                                  
+      if($2~  /^гл_несов_перне_/ ){                                       
+                                                                          
+        if ($2~ /^гл_несов_перне_инф$/              ){  gn_pnin           [$1]=""; continue };
+                                                                          
+       if ($2~ /^гл_несов_перне_наст_/ ) {                                
+        if ($2~ /^гл_несов_перне_наст_ед_1е$/       ){  gn_pnna_e1        [$1]=""; continue };
+        if ($2~ /^гл_несов_перне_наст_ед_2е$/       ){  gn_pnna_e2        [$1]=""; continue };
+        if ($2~ /^гл_несов_перне_наст_ед_3е$/       ){  gn_pnna_e3        [$1]=""; continue };
+        if ($2~ /^гл_несов_перне_наст_мн_1е$/       ){  gn_pnna_m1        [$1]=""; continue };
+        if ($2~ /^гл_несов_перне_наст_мн_2е$/       ){  gn_pnna_m2        [$1]=""; continue };
+        if ($2~ /^гл_несов_перне_наст_мн_3е$/       ){  gn_pnna_m3        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_несов_перне_пов_ед$/           ){  gn_pnpo_ed        [$1]=""; continue };
+        if ($2~ /^гл_несов_перне_пов_мн$/           ){  gn_pnpo_mn        [$1]=""; continue };
 
-        if ($2~ /^гл_сов_перне_инф_безл$/                     ){  gs_pn_in_bz            [$1]; DIC["309"]++; continue };
+       if ($2~ /^гл_несов_перне_прош_/ ) {
+        if ($2~ /^гл_несов_перне_прош_ед_жен$/      ){  gn_pnpa_edze      [$1]=""; continue };
+        if ($2~ /^гл_несов_перне_прош_ед_муж$/      ){  gn_pnpa_edmu      [$1]=""; continue };
+        if ($2~ /^гл_несов_перне_прош_ед_ср$/       ){  gn_pnpa_edsr      [$1]=""; continue };
+        if ($2~ /^гл_несов_перне_прош_мн$/          ){  gn_pnpa_mn        [$1]=""; continue };
+       };                                                                 
+      };                                                                  
+      if($2~  /^гл_сов_непер_/ ){                                         
+       if ($2~ /^гл_сов_непер_буд_/ ) {                                   
+        if ($2~ /^гл_сов_непер_буд_ед_1е$/          ){  gs_nebu_e1        [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_буд_ед_2е$/          ){  gs_nebu_e2        [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_буд_ед_3е$/          ){  gs_nebu_e3        [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_буд_мн_1е$/          ){  gs_nebu_m1        [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_буд_мн_2е$/          ){  gs_nebu_m2        [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_буд_мн_3е$/          ){  gs_nebu_m3        [$1]=""; continue };
+       };                                                                 
+       if ($2~ /^гл_сов_непер_воз_буд_/ ) {                               
+        if ($2~ /^гл_сов_непер_воз_буд_ед_1е$/      ){  gs_vz_nebu_e1     [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_воз_буд_ед_2е$/      ){  gs_vz_nebu_e2     [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_воз_буд_ед_3е$/      ){  gs_vz_nebu_e3     [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_воз_буд_мн_1е$/      ){  gs_vz_nebu_m1     [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_воз_буд_мн_2е$/      ){  gs_vz_nebu_m2     [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_воз_буд_мн_3е$/      ){  gs_vz_nebu_m3     [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_сов_непер_воз_инф$/            ){  gs_vz_nein        [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_воз_пов_ед$/         ){  gs_vz_nepo_ed     [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_воз_пов_мн$/         ){  gs_vz_nepo_mn     [$1]=""; continue };
+                                                                          
+       if ($2~ /^гл_сов_непер_воз_прош_/ ) {                              
+        if ($2~ /^гл_сов_непер_воз_прош_ед_жен$/    ){  gs_vz_nepa_edze   [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_воз_прош_ед_муж$/    ){  gs_vz_nepa_edmu   [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_воз_прош_ед_ср$/     ){  gs_vz_nepa_edsr   [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_воз_прош_мн$/        ){  gs_vz_nepa_mn     [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_сов_непер_инф$/                ){  gs_nein           [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_пов_ед$/             ){  gs_nepo_ed        [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_пов_мн$/             ){  gs_nepo_mn        [$1]=""; continue };
+
+       if ($2~ /^гл_сов_непер_прош_/ ) {
+        if ($2~ /^гл_сов_непер_прош_ед_жен$/        ){  gs_nepa_edze      [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_прош_ед_муж$/        ){  gs_nepa_edmu      [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_прош_ед_ср$/         ){  gs_nepa_edsr      [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_прош_мн$/            ){  gs_nepa_mn        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_сов_непер_воз_инф_безл$/       ){  gs_vz_nein_bz     [$1]=""; continue };
+        if ($2~ /^гл_сов_непер_инф_безл$/           ){  gs_nein_bz        [$1]=""; continue };
+      };                                                                  
+      if($2~  /^гл_сов_перех_/ ){                                         
+       if ($2~ /^гл_сов_перех_буд_/ ) {                                   
+        if ($2~ /^гл_сов_перех_буд_ед_1е$/          ){  gs_pebu_e1        [$1]=""; continue };
+        if ($2~ /^гл_сов_перех_буд_ед_2е$/          ){  gs_pebu_e2        [$1]=""; continue };
+        if ($2~ /^гл_сов_перех_буд_ед_3е$/          ){  gs_pebu_e3        [$1]=""; continue };
+        if ($2~ /^гл_сов_перех_буд_мн_1е$/          ){  gs_pebu_m1        [$1]=""; continue };
+        if ($2~ /^гл_сов_перех_буд_мн_2е$/          ){  gs_pebu_m2        [$1]=""; continue };
+        if ($2~ /^гл_сов_перех_буд_мн_3е$/          ){  gs_pebu_m3        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_сов_перех_инф$/                ){  gs_pein           [$1]=""; continue };
+        if ($2~ /^гл_сов_перех_пов_ед$/             ){  gs_pepo_ed        [$1]=""; continue };
+        if ($2~ /^гл_сов_перех_пов_мн$/             ){  gs_pepo_mn        [$1]=""; continue };
+
+       if ($2~ /^гл_сов_перех_прош_/ ) {
+        if ($2~ /^гл_сов_перех_прош_ед_жен$/        ){  gs_pepa_edze      [$1]=""; continue };
+        if ($2~ /^гл_сов_перех_прош_ед_муж$/        ){  gs_pepa_edmu      [$1]=""; continue };
+        if ($2~ /^гл_сов_перех_прош_ед_ср$/         ){  gs_pepa_edsr      [$1]=""; continue };
+        if ($2~ /^гл_сов_перех_прош_мн$/            ){  gs_pepa_mn        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_сов_перех_инф_безл$/           ){  gs_pein_bz        [$1]=""; continue };
+      };                                                                  
+      if($2~  /^гл_сов_перне_/ ){                                         
+       if ($2~ /^гл_сов_перне_буд_/ ) {                                   
+        if ($2~ /^гл_сов_перне_буд_ед_1е$/          ){  gs_pnbu_e1        [$1]=""; continue };
+        if ($2~ /^гл_сов_перне_буд_ед_2е$/          ){  gs_pnbu_e2        [$1]=""; continue };
+        if ($2~ /^гл_сов_перне_буд_ед_3е$/          ){  gs_pnbu_e3        [$1]=""; continue };
+        if ($2~ /^гл_сов_перне_буд_мн_1е$/          ){  gs_pnbu_m1        [$1]=""; continue };
+        if ($2~ /^гл_сов_перне_буд_мн_2е$/          ){  gs_pnbu_m2        [$1]=""; continue };
+        if ($2~ /^гл_сов_перне_буд_мн_3е$/          ){  gs_pnbu_m3        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_сов_перне_инф$/                ){  gs_pnin           [$1]=""; continue };
+        if ($2~ /^гл_сов_перне_пов_ед$/             ){  gs_pnpo_ed        [$1]=""; continue };
+        if ($2~ /^гл_сов_перне_пов_мн$/             ){  gs_pnpo_mn        [$1]=""; continue };
+
+       if ($2~ /^гл_сов_перне_прош_/ ) {
+        if ($2~ /^гл_сов_перне_прош_ед_жен$/        ){  gs_pnpa_edze      [$1]=""; continue };
+        if ($2~ /^гл_сов_перне_прош_ед_муж$/        ){  gs_pnpa_edmu      [$1]=""; continue };
+        if ($2~ /^гл_сов_перне_прош_ед_ср$/         ){  gs_pnpa_edsr      [$1]=""; continue };
+        if ($2~ /^гл_сов_перне_прош_мн$/            ){  gs_pnpa_mn        [$1]=""; continue };
+       };                                                                 
+      };                                                                  
+      if($2~  /^гл_2вид_перех_/ ){                                        
+       if ($2~ /^гл_2вид_перех_буд_/ ) {                                  
+        if ($2~ /^гл_2вид_перех_буд_ед_1е$/         ){  g2_pebu_e1        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_буд_ед_2е$/         ){  g2_pebu_e2        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_буд_ед_3е$/         ){  g2_pebu_e3        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_буд_мн_1е$/         ){  g2_pebu_m1        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_буд_мн_2е$/         ){  g2_pebu_m2        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_буд_мн_3е$/         ){  g2_pebu_m3        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_2вид_перех_инф$/               ){  g2_pein           [$1]=""; continue };
+                                                                          
+       if ($2~ /^гл_2вид_перех_наст_/ ) {                                 
+        if ($2~ /^гл_2вид_перех_наст_ед_1е$/        ){  g2_pena_e1        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_наст_ед_2е$/        ){  g2_pena_e2        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_наст_ед_3е$/        ){  g2_pena_e3        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_наст_мн_1е$/        ){  g2_pena_m1        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_наст_мн_2е$/        ){  g2_pena_m2        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_наст_мн_3е$/        ){  g2_pena_m3        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_2вид_перех_пов_ед$/            ){  g2_pepo_ed        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_пов_мн$/            ){  g2_pepo_mn        [$1]=""; continue };
+
+       if ($2~ /^гл_2вид_перех_прош_/ ) {
+        if ($2~ /^гл_2вид_перех_прош_ед_жен$/       ){  g2_pepa_edze      [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_прош_ед_муж$/       ){  g2_pepa_edmu      [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_прош_ед_ср$/        ){  g2_pepa_edsr      [$1]=""; continue };
+        if ($2~ /^гл_2вид_перех_прош_мн$/           ){  g2_pepa_mn        [$1]=""; continue };
+       };                                                                 
+      };                                                                  
+      if($2~  /^гл_2вид_непер_/ ){                                        
+       if ($2~ /^гл_2вид_непер_буд_/ ) {                                  
+        if ($2~ /^гл_2вид_непер_буд_ед_1е$/         ){  g2_nebu_e1        [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_буд_ед_2е$/         ){  g2_nebu_e2        [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_буд_ед_3е$/         ){  g2_nebu_e3        [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_буд_мн_1е$/         ){  g2_nebu_m1        [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_буд_мн_2е$/         ){  g2_nebu_m2        [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_буд_мн_3е$/         ){  g2_nebu_m3        [$1]=""; continue };
+       };                                                                 
+       if ($2~ /^гл_2вид_непер_воз_буд_/ ) {                              
+        if ($2~ /^гл_2вид_непер_воз_буд_ед_1е$/     ){  g2_vz_nebu_e1     [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_буд_ед_2е$/     ){  g2_vz_nebu_e2     [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_буд_ед_3е$/     ){  g2_vz_nebu_e3     [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_буд_мн_1е$/     ){  g2_vz_nebu_m1     [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_буд_мн_2е$/     ){  g2_vz_nebu_m2     [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_буд_мн_3е$/     ){  g2_vz_nebu_m3     [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_2вид_непер_воз_инф$/           ){  g2_vz_nein        [$1]=""; continue };
+                                                                          
+       if ($2~ /^гл_2вид_непер_воз_наст_/ ) {                             
+        if ($2~ /^гл_2вид_непер_воз_наст_ед_1е$/    ){  g2_vz_nena_e1     [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_наст_ед_2е$/    ){  g2_vz_nena_e2     [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_наст_ед_3е$/    ){  g2_vz_nena_e3     [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_наст_мн_1е$/    ){  g2_vz_nena_m1     [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_наст_мн_2е$/    ){  g2_vz_nena_m2     [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_наст_мн_3е$/    ){  g2_vz_nena_m3     [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_2вид_непер_воз_пов_ед$/        ){  g2_vz_nepo_ed     [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_пов_мн$/        ){  g2_vz_nepo_mn     [$1]=""; continue };
+                                                             
+       if ($2~ /^гл_2вид_непер_воз_прош_/ ) {                
+        if ($2~ /^гл_2вид_непер_воз_прош_ед_жен$/   ){  g2_vz_nepa_edze   [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_прош_ед_муж$/   ){  g2_vz_nepa_edmu   [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_прош_ед_ср$/    ){  g2_vz_nepa_edsr   [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_воз_прош_мн$/       ){  g2_vz_nepa_mn     [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_2вид_непер_инф$/               ){  g2_nein           [$1]=""; continue };
+                                                                          
+       if ($2~ /^гл_2вид_непер_наст_/ ) {                                 
+        if ($2~ /^гл_2вид_непер_наст_ед_1е$/        ){  g2_nena_e1        [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_наст_ед_2е$/        ){  g2_nena_e2        [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_наст_ед_3е$/        ){  g2_nena_e3        [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_наст_мн_1е$/        ){  g2_nena_m1        [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_наст_мн_2е$/        ){  g2_nena_m2        [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_наст_мн_3е$/        ){  g2_nena_m3        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_2вид_непер_пов_ед$/            ){  g2_nepo_ed        [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_пов_мн$/            ){  g2_nepo_mn        [$1]=""; continue };
+
+       if ($2~ /^гл_2вид_непер_прош_/ ) {
+        if ($2~ /^гл_2вид_непер_прош_ед_жен$/       ){  g2_nepa_edze      [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_прош_ед_муж$/       ){  g2_nepa_edmu      [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_прош_ед_ср$/        ){  g2_nepa_edsr      [$1]=""; continue };
+        if ($2~ /^гл_2вид_непер_прош_мн$/           ){  g2_nepa_mn        [$1]=""; continue };
+       };                                                                 
+      };                                                                  
+      if($2~  /^гл_2вид_перне_/ ){                                        
+       if ($2~ /^гл_2вид_перне_буд_/ ) {                                  
+        if ($2~ /^гл_2вид_перне_буд_ед_1е$/         ){  g2_pnbu_e1        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_буд_ед_2е$/         ){  g2_pnbu_e2        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_буд_ед_3е$/         ){  g2_pnbu_e3        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_буд_мн_1е$/         ){  g2_pnbu_m1        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_буд_мн_2е$/         ){  g2_pnbu_m2        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_буд_мн_3е$/         ){  g2_pnbu_m3        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_2вид_перне_инф$/               ){  g2_pnin           [$1]=""; continue };
+                                                                          
+       if ($2~ /^гл_2вид_перне_наст_/ ) {                                 
+        if ($2~ /^гл_2вид_перне_наст_ед_1е$/        ){  g2_pnna_e1        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_наст_ед_2е$/        ){  g2_pnna_e2        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_наст_ед_3е$/        ){  g2_pnna_e3        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_наст_мн_1е$/        ){  g2_pnna_m1        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_наст_мн_2е$/        ){  g2_pnna_m2        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_наст_мн_3е$/        ){  g2_pnna_m3        [$1]=""; continue };
+       };                                                                 
+                                                                          
+        if ($2~ /^гл_2вид_перне_пов_ед$/            ){  g2_pnpo_ed        [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_пов_мн$/            ){  g2_pnpo_mn        [$1]=""; continue };
+
+       if ($2~ /^гл_2вид_перне_прош_/ ) {
+        if ($2~ /^гл_2вид_перне_прош_ед_жен$/       ){  g2_pnpa_edze      [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_прош_ед_муж$/       ){  g2_pnpa_edmu      [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_прош_ед_ср$/        ){  g2_pnpa_edsr      [$1]=""; continue };
+        if ($2~ /^гл_2вид_перне_прош_мн$/           ){  g2_pnpa_mn        [$1]=""; continue };
+       };
       };
-      if($2~  /^гл_2вид_перех_/ ){
-        if ($2~ /^гл_2вид_перех_буд_ед_1е$/                   ){  g2_pe_bu_e1            [$1]; DIC["310"]++; continue };
-        if ($2~ /^гл_2вид_перех_буд_ед_2е$/                   ){  g2_pe_bu_e2            [$1]; DIC["311"]++; continue };
-        if ($2~ /^гл_2вид_перех_буд_ед_3е$/                   ){  g2_pe_bu_e3            [$1]; DIC["312"]++; continue };
-        if ($2~ /^гл_2вид_перех_буд_мн_1е$/                   ){  g2_pe_bu_m1            [$1]; DIC["313"]++; continue };
-        if ($2~ /^гл_2вид_перех_буд_мн_2е$/                   ){  g2_pe_bu_m2            [$1]; DIC["314"]++; continue };
-        if ($2~ /^гл_2вид_перех_буд_мн_3е$/                   ){  g2_pe_bu_m3            [$1]; DIC["315"]++; continue };
-        if ($2~ /^гл_2вид_перех_инф$/                         ){  g2_pe_in               [$1]; DIC["316"]++; continue };
-        if ($2~ /^гл_2вид_перех_наст_ед_1е$/                  ){  g2_pe_na_e1            [$1]; DIC["317"]++; continue };
-        if ($2~ /^гл_2вид_перех_наст_ед_2е$/                  ){  g2_pe_na_e2            [$1]; DIC["318"]++; continue };
-        if ($2~ /^гл_2вид_перех_наст_ед_3е$/                  ){  g2_pe_na_e3            [$1]; DIC["319"]++; continue };
-        if ($2~ /^гл_2вид_перех_наст_мн_1е$/                  ){  g2_pe_na_m1            [$1]; DIC["320"]++; continue };
-        if ($2~ /^гл_2вид_перех_наст_мн_2е$/                  ){  g2_pe_na_m2            [$1]; DIC["321"]++; continue };
-        if ($2~ /^гл_2вид_перех_наст_мн_3е$/                  ){  g2_pe_na_m3            [$1]; DIC["322"]++; continue };
-        if ($2~ /^гл_2вид_перех_пов_ед$/                      ){  g2_pe_po_ed            [$1]; DIC["323"]++; continue };
-        if ($2~ /^гл_2вид_перех_пов_мн$/                      ){  g2_pe_po_mn            [$1]; DIC["324"]++; continue };
-        if ($2~ /^гл_2вид_перех_прош_ед_жен$/                 ){  g2_pe_pa_ed_ze         [$1]; DIC["325"]++; continue };
-        if ($2~ /^гл_2вид_перех_прош_ед_муж$/                 ){  g2_pe_pa_ed_mu         [$1]; DIC["326"]++; continue };
-        if ($2~ /^гл_2вид_перех_прош_ед_ср$/                  ){  g2_pe_pa_ed_sr         [$1]; DIC["327"]++; continue };
-        if ($2~ /^гл_2вид_перех_прош_мн$/                     ){  g2_pe_pa_mn            [$1]; DIC["328"]++; continue };
-      };
-      if($2~  /^гл_2вид_непер_/ ){
-        if ($2~ /^гл_2вид_непер_буд_ед_1е$/                   ){  g2_ne_bu_e1            [$1]; DIC["329"]++; continue };
-        if ($2~ /^гл_2вид_непер_буд_ед_2е$/                   ){  g2_ne_bu_e2            [$1]; DIC["330"]++; continue };
-        if ($2~ /^гл_2вид_непер_буд_ед_3е$/                   ){  g2_ne_bu_e3            [$1]; DIC["331"]++; continue };
-        if ($2~ /^гл_2вид_непер_буд_мн_1е$/                   ){  g2_ne_bu_m1            [$1]; DIC["332"]++; continue };
-        if ($2~ /^гл_2вид_непер_буд_мн_2е$/                   ){  g2_ne_bu_m2            [$1]; DIC["333"]++; continue };
-        if ($2~ /^гл_2вид_непер_буд_мн_3е$/                   ){  g2_ne_bu_m3            [$1]; DIC["334"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_буд_ед_1е$/               ){  g2_ne_vz_bu_e1         [$1]; DIC["335"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_буд_ед_2е$/               ){  g2_ne_vz_bu_e2         [$1]; DIC["336"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_буд_ед_3е$/               ){  g2_ne_vz_bu_e3         [$1]; DIC["337"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_буд_мн_1е$/               ){  g2_ne_vz_bu_m1         [$1]; DIC["338"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_буд_мн_2е$/               ){  g2_ne_vz_bu_m2         [$1]; DIC["339"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_буд_мн_3е$/               ){  g2_ne_vz_bu_m3         [$1]; DIC["340"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_инф$/                     ){  g2_ne_vz_in            [$1]; DIC["341"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_наст_ед_1е$/              ){  g2_ne_vz_na_e1         [$1]; DIC["342"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_наст_ед_2е$/              ){  g2_ne_vz_na_e2         [$1]; DIC["343"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_наст_ед_3е$/              ){  g2_ne_vz_na_e3         [$1]; DIC["344"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_наст_мн_1е$/              ){  g2_ne_vz_na_m1         [$1]; DIC["345"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_наст_мн_2е$/              ){  g2_ne_vz_na_m2         [$1]; DIC["346"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_наст_мн_3е$/              ){  g2_ne_vz_na_m3         [$1]; DIC["347"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_пов_ед$/                  ){  g2_ne_vz_po_ed         [$1]; DIC["348"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_пов_мн$/                  ){  g2_ne_vz_po_mn         [$1]; DIC["349"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_прош_ед_жен$/             ){  g2_ne_vz_pa_ed_ze      [$1]; DIC["350"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_прош_ед_муж$/             ){  g2_ne_vz_pa_ed_mu      [$1]; DIC["351"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_прош_ед_ср$/              ){  g2_ne_vz_pa_ed_sr      [$1]; DIC["352"]++; continue };
-        if ($2~ /^гл_2вид_непер_воз_прош_мн$/                 ){  g2_ne_vz_pa_mn         [$1]; DIC["353"]++; continue };
-        if ($2~ /^гл_2вид_непер_инф$/                         ){  g2_ne_in               [$1]; DIC["354"]++; continue };
-        if ($2~ /^гл_2вид_непер_наст_ед_1е$/                  ){  g2_ne_na_e1            [$1]; DIC["355"]++; continue };
-        if ($2~ /^гл_2вид_непер_наст_ед_2е$/                  ){  g2_ne_na_e2            [$1]; DIC["356"]++; continue };
-        if ($2~ /^гл_2вид_непер_наст_ед_3е$/                  ){  g2_ne_na_e3            [$1]; DIC["357"]++; continue };
-        if ($2~ /^гл_2вид_непер_наст_мн_1е$/                  ){  g2_ne_na_m1            [$1]; DIC["358"]++; continue };
-        if ($2~ /^гл_2вид_непер_наст_мн_2е$/                  ){  g2_ne_na_m2            [$1]; DIC["359"]++; continue };
-        if ($2~ /^гл_2вид_непер_наст_мн_3е$/                  ){  g2_ne_na_m3            [$1]; DIC["360"]++; continue };
-        if ($2~ /^гл_2вид_непер_пов_ед$/                      ){  g2_ne_po_ed            [$1]; DIC["361"]++; continue };
-        if ($2~ /^гл_2вид_непер_пов_мн$/                      ){  g2_ne_po_mn            [$1]; DIC["362"]++; continue };
-        if ($2~ /^гл_2вид_непер_прош_ед_жен$/                 ){  g2_ne_pa_ed_ze         [$1]; DIC["363"]++; continue };
-        if ($2~ /^гл_2вид_непер_прош_ед_муж$/                 ){  g2_ne_pa_ed_mu         [$1]; DIC["364"]++; continue };
-        if ($2~ /^гл_2вид_непер_прош_ед_ср$/                  ){  g2_ne_pa_ed_sr         [$1]; DIC["365"]++; continue };
-        if ($2~ /^гл_2вид_непер_прош_мн$/                     ){  g2_ne_pa_mn            [$1]; DIC["366"]++; continue };
-      };
-      if($2~  /^гл_2вид_перне_/ ){
-        if ($2~ /^гл_2вид_перне_буд_ед_1е$/                   ){  g2_pn_bu_e1            [$1]; DIC["367"]++; continue };
-        if ($2~ /^гл_2вид_перне_буд_ед_2е$/                   ){  g2_pn_bu_e2            [$1]; DIC["368"]++; continue };
-        if ($2~ /^гл_2вид_перне_буд_ед_3е$/                   ){  g2_pn_bu_e3            [$1]; DIC["369"]++; continue };
-        if ($2~ /^гл_2вид_перне_буд_мн_1е$/                   ){  g2_pn_bu_m1            [$1]; DIC["370"]++; continue };
-        if ($2~ /^гл_2вид_перне_буд_мн_2е$/                   ){  g2_pn_bu_m2            [$1]; DIC["371"]++; continue };
-        if ($2~ /^гл_2вид_перне_буд_мн_3е$/                   ){  g2_pn_bu_m3            [$1]; DIC["372"]++; continue };
-        if ($2~ /^гл_2вид_перне_инф$/                         ){  g2_pn_in               [$1]; DIC["373"]++; continue };
-        if ($2~ /^гл_2вид_перне_наст_ед_1е$/                  ){  g2_pn_na_e1            [$1]; DIC["374"]++; continue };
-        if ($2~ /^гл_2вид_перне_наст_ед_2е$/                  ){  g2_pn_na_e2            [$1]; DIC["375"]++; continue };
-        if ($2~ /^гл_2вид_перне_наст_ед_3е$/                  ){  g2_pn_na_e3            [$1]; DIC["376"]++; continue };
-        if ($2~ /^гл_2вид_перне_наст_мн_1е$/                  ){  g2_pn_na_m1            [$1]; DIC["377"]++; continue };
-        if ($2~ /^гл_2вид_перне_наст_мн_2е$/                  ){  g2_pn_na_m2            [$1]; DIC["378"]++; continue };
-        if ($2~ /^гл_2вид_перне_наст_мн_3е$/                  ){  g2_pn_na_m3            [$1]; DIC["379"]++; continue };
-        if ($2~ /^гл_2вид_перне_пов_ед$/                      ){  g2_pn_po_ed            [$1]; DIC["380"]++; continue };
-        if ($2~ /^гл_2вид_перне_пов_мн$/                      ){  g2_pn_po_mn            [$1]; DIC["381"]++; continue };
-        if ($2~ /^гл_2вид_перне_прош_ед_жен$/                 ){  g2_pn_pa_ed_ze         [$1]; DIC["382"]++; continue };
-        if ($2~ /^гл_2вид_перне_прош_ед_муж$/                 ){  g2_pn_pa_ed_mu         [$1]; DIC["383"]++; continue };
-        if ($2~ /^гл_2вид_перне_прош_ед_ср$/                  ){  g2_pn_pa_ed_sr         [$1]; DIC["384"]++; continue };
-        if ($2~ /^гл_2вид_перне_прош_мн$/                     ){  g2_pn_pa_mn            [$1]; DIC["385"]++; continue };
-      };
-    };
+    }; # чтение gl-dic
    close(cmd);
-   cmd = "zcat " infolder "dic_rest.gz";
+   cmd = "zcat " indb "dic_rest.gz";
    while ((cmd|getline) > 0) {
+
+    if ($1~ "-") { dichyph [$1] };
+
     if ($2~  /^дееп_/ ){
-        if ($2~ /^дееп_сов_перех_прош$/                       ){  dps_pe_pa              [$1]; DIC["386"]++; continue };
-        if ($2~ /^дееп_сов_непер_воз_прош$/                   ){  dps_ne_vo_pa           [$1]; DIC["387"]++; continue };
-        if ($2~ /^дееп_несов_непер_воз_наст$/                 ){  dpn_ne_vo_na           [$1]; DIC["388"]++; continue };
-        if ($2~ /^дееп_несов_перех_наст$/                     ){  dpn_pe_na              [$1]; DIC["389"]++; continue };
-        if ($2~ /^дееп_сов_непер_прош$/                       ){  dps_ne_pa              [$1]; DIC["390"]++; continue };
-        if ($2~ /^дееп_сов_перне_прош$/                       ){  dps_pn_pa              [$1]; DIC["391"]++; continue };
-        if ($2~ /^дееп_несов_непер_наст$/                     ){  dpn_ne_na              [$1]; DIC["392"]++; continue };
-        if ($2~ /^дееп_несов_перне_наст$/                     ){  dpn_pn_na              [$1]; DIC["393"]++; continue };
-        if ($2~ /^дееп_несов_перех_прош$/                     ){  dpn_pe_pa              [$1]; DIC["394"]++; continue };
-        if ($2~ /^дееп_несов_перне_прош$/                     ){  dpn_pn_pa              [$1]; DIC["395"]++; continue };
-        if ($2~ /^дееп_несов_непер_прош$/                     ){  dpn_ne_pa              [$1]; DIC["396"]++; continue };
+        if ($2~ /^дееп_сов_перех_прош$/             ){  dps_pe_pa         [$1]=""; continue };
+        if ($2~ /^дееп_сов_непер_воз_прош$/         ){  dps_vz_ne_pa      [$1]=""; continue };
+        if ($2~ /^дееп_несов_непер_воз_наст$/       ){  dpn_vz_ne_na      [$1]=""; continue };
+        if ($2~ /^дееп_несов_перех_наст$/           ){  dpn_pe_na         [$1]=""; continue };
+        if ($2~ /^дееп_сов_непер_прош$/             ){  dps_ne_pa         [$1]=""; continue };
+        if ($2~ /^дееп_сов_перне_прош$/             ){  dps_pn_pa         [$1]=""; continue };
+        if ($2~ /^дееп_несов_непер_наст$/           ){  dpn_ne_na         [$1]=""; continue };
+        if ($2~ /^дееп_несов_перне_наст$/           ){  dpn_pn_na         [$1]=""; continue };
+        if ($2~ /^дееп_несов_перех_прош$/           ){  dpn_pe_pa         [$1]=""; continue };
+        if ($2~ /^дееп_несов_перне_прош$/           ){  dpn_pn_pa         [$1]=""; continue };
+        if ($2~ /^дееп_несов_непер_прош$/           ){  dpn_ne_pa         [$1]=""; continue };
     };
     if($2~  /^нар/ ){
-        if ($2~ /^нар_сравн$/                                 ){  nr_srv                 [$1]; DIC["397"]++; continue };
-        if ($2~ /^нар_опред_кач$/                             ){  nr_opka                [$1]; DIC["398"]++; continue };
-        if ($2~ /^нар_опред_спос$/                            ){  nr_opsp                [$1]; DIC["399"]++; continue };
-        if ($2~ /^нар_опред_степ$/                            ){  nr_opst                [$1]; DIC["400"]++; continue };
-        if ($2~ /^нар_обст_врем$/                             ){  nr_obvr                [$1]; DIC["401"]++; continue };
-        if ($2~ /^нар_обст_места$/                            ){  nr_obme                [$1]; DIC["402"]++; continue };
-        if ($2~ /^нар_обст_напр$/                             ){  nr_obna                [$1]; DIC["403"]++; continue };
-        if ($2~ /^нар_обст_причин$/                           ){  nr_obpr                [$1]; DIC["404"]++; continue };
-        if ($2~ /^нар_обст_цель$/                             ){  nr_obce                [$1]; DIC["405"]++; continue };
-        if ($2~ /^нар_вопр$/                                  ){  nr_vopr                [$1]; DIC["406"]++; continue };
-        if ($2~ /^нар_мест$/                                  ){  nr_mest                [$1]; DIC["407"]++; continue };
-        if ($2~ /^нар_прев$/                                  ){  nr_srv                 [$1]; DIC["408"]++; continue };
-        if ($2~ /^нар$/                                       ){  nr_nar                 [$1]; DIC["414"]++; continue };
+        if ($2~ /^нар_сравн$/                       ){  nr_srv            [$1]=""; continue };
+        if ($2~ /^нар_опред_кач$/                   ){  nr_opka           [$1]=""; continue };
+        if ($2~ /^нар_опред_спос$/                  ){  nr_opsp           [$1]=""; continue };
+        if ($2~ /^нар_опред_степ$/                  ){  nr_opst           [$1]=""; continue };
+        if ($2~ /^нар_обст_врем$/                   ){  nr_obvr           [$1]=""; continue };
+        if ($2~ /^нар_обст_места$/                  ){  nr_obme           [$1]=""; continue };
+        if ($2~ /^нар_обст_напр$/                   ){  nr_obna           [$1]=""; continue };
+        if ($2~ /^нар_обст_причин$/                 ){  nr_obpr           [$1]=""; continue };
+        if ($2~ /^нар_обст_цель$/                   ){  nr_obce           [$1]=""; continue };
+        if ($2~ /^нар_вопр$/                        ){  nr_vopr           [$1]=""; continue };
+        if ($2~ /^нар_мест$/                        ){  nr_mest           [$1]=""; continue };
+        if ($2~ /^нар_прев$/                        ){  nr_pv             [$1]=""; continue };
+        if ($2~ /^нар$/                             ){  nr_nar            [$1]=""; continue };
     };
 
-        if ($2~ /^предик$/                                    ){  predk                  [$1]; DIC["409"]++; continue };
-        if ($2~ /^межд$/                                      ){  mzd                    [$1]; DIC["410"]++; continue };
-        if ($2~ /^част$/                                      ){  qst                    [$1]; DIC["411"]++; continue };
-        if ($2~ /^ввод$/                                      ){  vvod                   [$1]; DIC["412"]++; continue };
-        if ($2~ /^союз$/                                      ){  suyz                   [$1]; DIC["413"]++; continue };
+        if ($2~ /^предик$/                          ){  predk             [$1]=""; continue };
+        if ($2~ /^межд$/                            ){  mzd               [$1]=""; continue };
+        if ($2~ /^част$/                            ){  qst               [$1]=""; continue };
+        if ($2~ /^ввод$/                            ){  vvodn             [$1]=""; continue };
+        if ($2~ /^союз$/                            ){  suyz              [$1]=""; continue };
 
     if($2~  /^мест_/ ){
-        if ($2~ /^мест_(сущ|прл)_ед_муж_вин$/                 ){  mst_ed_mu_vi           [$1]; DIC["415"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_муж_вин_неод$/            ){  mst_ed_mu_vi_no        [$1]; DIC["416"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_муж_вин_одуш$/            ){  mst_ed_mu_vi_od        [$1]; DIC["417"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_муж_дат$/                 ){  mst_ed_mu_da           [$1]; DIC["418"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_муж_им$/                  ){  mst_ed_mu_im           [$1]; DIC["419"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_муж_пр$/                  ){  mst_ed_mu_pr           [$1]; DIC["420"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_муж_род$/                 ){  mst_ed_mu_ro           [$1]; DIC["421"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_муж_тв$/                  ){  mst_ed_mu_tv           [$1]; DIC["422"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_жен_вин$/                 ){  mst_ed_ze_vi           [$1]; DIC["423"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_жен_дат$/                 ){  mst_ed_ze_da           [$1]; DIC["424"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_жен_им$/                  ){  mst_ed_ze_im           [$1]; DIC["425"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_жен_пр$/                  ){  mst_ed_ze_pr           [$1]; DIC["426"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_жен_род$/                 ){  mst_ed_ze_ro           [$1]; DIC["427"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_жен_тв$/                  ){  mst_ed_ze_tv           [$1]; DIC["428"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_ср_вин$/                  ){  mst_ed_sr_vi           [$1]; DIC["429"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_ср_дат$/                  ){  mst_ed_sr_da           [$1]; DIC["430"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_ср_им$/                   ){  mst_ed_sr_im           [$1]; DIC["431"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_ср_пр$/                   ){  mst_ed_sr_pr           [$1]; DIC["432"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_ср_род$/                  ){  mst_ed_sr_ro           [$1]; DIC["433"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_ср_тв$/                   ){  mst_ed_sr_tv           [$1]; DIC["434"]++; continue };
-                                                                                         
-        if ($2~ /^мест_(сущ|прл)_мн_вин_неод$/                ){  mst_mn_vi_no           [$1]; DIC["435"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_мн_вин_одуш$/                ){  mst_mn_vi_od           [$1]; DIC["436"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_мн_вин$/                     ){  mst_mn_vi              [$1]; DIC["437"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_мн_дат$/                     ){  mst_mn_da              [$1]; DIC["438"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_мн_им$/                      ){  mst_mn_im              [$1]; DIC["439"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_мн_пр$/                      ){  mst_mn_pr              [$1]; DIC["440"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_мн_род$/                     ){  mst_mn_ro              [$1]; DIC["441"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_мн_тв$/                      ){  mst_mn_tv              [$1]; DIC["442"]++; continue };
-                                                                                         
-        if ($2~ /^мест_(сущ|прл)_ед_вин$/                     ){  mst_ed_vi              [$1]; DIC["443"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_им$/                      ){  mst_ed_im              [$1]; DIC["444"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_дат$/                     ){  mst_ed_da              [$1]; DIC["445"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_пр$/                      ){  mst_ed_pr              [$1]; DIC["446"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_род$/                     ){  mst_ed_ro              [$1]; DIC["447"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_тв$/                      ){  mst_ed_tv              [$1]; DIC["448"]++; continue };
-                                                                                         
-        if ($2~ /^мест_(сущ|прл)_ед_муж$/                     ){  mst_ed_mu              [$1]; DIC["449"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_ед_жен$/                     ){  mst_ed_ze              [$1]; DIC["450"]++; continue };
-                                                                                         
-        if ($2~ /^мест_(сущ|прл)_им$/                         ){  mst_im                 [$1]; DIC["451"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_вин$/                        ){  mst_vi                 [$1]; DIC["452"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_дат$/                        ){  mst_da                 [$1]; DIC["453"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_пр$/                         ){  mst_pr                 [$1]; DIC["454"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_род$/                        ){  mst_ro                 [$1]; DIC["455"]++; continue };
-        if ($2~ /^мест_(сущ|прл)_тв$/                         ){  mst_tv                 [$1]; DIC["456"]++; continue };
-        if ($2~ /^мест_прл_мн$/                               ){  mst_mn                 [$1]; DIC["457"]++; continue };
-                                                                                         
-        if ($2~ /^мест_сущ$/                                  ){  mst_suw                [$1]; DIC["458"]++; continue };
-        if ($2~ /^мест_прл_ед_ср$/                            ){  mst_ed_sr              [$1]; DIC["459"]++; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_муж_вин$/       ){  mst_ed_mu_vi      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_муж_вин_неод$/  ){  mst_ed_mu_im      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_муж_вин_одуш$/  ){  mst_ed_mu_ro      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_муж_дат$/       ){  mst_ed_mu_da      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_муж_им$/        ){  mst_ed_mu_im      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_муж_пр$/        ){  mst_ed_mu_pr      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_муж_род$/       ){  mst_ed_mu_ro      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_муж_тв$/        ){  mst_ed_mu_tv      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_жен_вин$/       ){  mst_ed_ze_vi      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_жен_дат$/       ){  mst_ed_ze_da      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_жен_им$/        ){  mst_ed_ze_im      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_жен_пр$/        ){  mst_ed_ze_pr      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_жен_род$/       ){  mst_ed_ze_ro      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_жен_тв$/        ){  mst_ed_ze_tv      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_ср_вин$/        ){  mst_ed_sr_vi      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_ср_дат$/        ){  mst_ed_sr_da      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_ср_им$/         ){  mst_ed_sr_im      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_ср_пр$/         ){  mst_ed_sr_pr      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_ср_род$/        ){  mst_ed_sr_ro      [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_ср_тв$/         ){  mst_ed_sr_tv      [$1]=""; continue };
+                                                                          
+        if ($2~ /^мест_(сущ|прл)_мн_вин_неод$/      ){  mst_mn_im         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_мн_вин_одуш$/      ){  mst_mn_ro         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_мн_вин$/           ){  mst_mn_vi         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_мн_дат$/           ){  mst_mn_da         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_мн_им$/            ){  mst_mn_im         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_мн_пр$/            ){  mst_mn_pr         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_мн_род$/           ){  mst_mn_ro         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_мн_тв$/            ){  mst_mn_tv         [$1]=""; continue };
+                                                                          
+        if ($2~ /^мест_(сущ|прл)_ед_вин$/           ){  mst_ed_vi         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_им$/            ){  mst_ed_im         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_дат$/           ){  mst_ed_da         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_пр$/            ){  mst_ed_pr         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_род$/           ){  mst_ed_ro         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_тв$/            ){  mst_ed_tv         [$1]=""; continue };
+                                                                          
+        if ($2~ /^мест_(сущ|прл)_ед_муж$/           ){  mst_ed_mu         [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_ед_жен$/           ){  mst_ed_ze         [$1]=""; continue };
+                                                                          
+        if ($2~ /^мест_(сущ|прл)_им$/               ){  mst_im            [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_вин$/              ){  mst_vi            [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_дат$/              ){  mst_da            [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_пр$/               ){  mst_pr            [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_род$/              ){  mst_ro            [$1]=""; continue };
+        if ($2~ /^мест_(сущ|прл)_тв$/               ){  mst_tv            [$1]=""; continue };
+        if ($2~ /^мест_прл_мн$/                     ){  mst_mn            [$1]=""; continue };
+                                                                          
+        if ($2~ /^мест_сущ$/                        ){  mst_suw           [$1]=""; continue };
+        if ($2~ /^мест_прл_ед_ср$/                  ){  mst_ed_sr         [$1]=""; continue };
     };
     if($2~  /^предл_/ ){
-        if ($2~ /^предл_вин$/                                 ){  predvi                 [$1]; DIC["460"]++; continue };
-        if ($2~ /^предл_дат$/                                 ){  predda                 [$1]; DIC["461"]++; continue };
-        if ($2~ /^предл_им$/                                  ){  predim                 [$1]; DIC["462"]++; continue };
-        if ($2~ /^предл_пр$/                                  ){  predpr                 [$1]; DIC["463"]++; continue };
-        if ($2~ /^предл_род$/                                 ){  predro                 [$1]; DIC["464"]++; continue };
-        if ($2~ /^предл_тв$/                                  ){  predtv                 [$1]; DIC["465"]++; continue };
+        if ($2~ /^предл_вин$/                       ){  pred_vi           [$1]=""; continue };
+        if ($2~ /^предл_дат$/                       ){  pred_da           [$1]=""; continue };
+        if ($2~ /^предл_им$/                        ){  pred_im           [$1]=""; continue };
+        if ($2~ /^предл_пр$/                        ){  pred_pr           [$1]=""; continue };
+        if ($2~ /^предл_род$/                       ){  pred_ro           [$1]=""; continue };
+        if ($2~ /^предл_тв$/                        ){  pred_tv           [$1]=""; continue };
     };
-    if ($2~ /^числ_/ ) {
+    if ($2~ /^числ_/ ) {                                qall              [$1]="";
       if ($2~ /^числ_кол_/ ) {
-        if ($2~ /^числ_кол_вин$/                              ){  qko_vi                 [$1]; DIC["466"]++; continue };
-        if ($2~ /^числ_кол_дат$/                              ){  qko_da                 [$1]; DIC["467"]++; continue };
-        if ($2~ /^числ_кол_ед_жен_вин$/                       ){  qko_ed_ze_vi           [$1]; DIC["468"]++; continue };
-        if ($2~ /^числ_кол_ед_жен_дат$/                       ){  qko_ed_ze_da           [$1]; DIC["469"]++; continue };
-        if ($2~ /^числ_кол_ед_жен_им$/                        ){  qko_ed_ze_im           [$1]; DIC["470"]++; continue };
-        if ($2~ /^числ_кол_ед_жен_пр$/                        ){  qko_ed_ze_pr           [$1]; DIC["471"]++; continue };
-        if ($2~ /^числ_кол_ед_жен_род$/                       ){  qko_ed_ze_ro           [$1]; DIC["472"]++; continue };
-        if ($2~ /^числ_кол_ед_жен_тв$/                        ){  qko_ed_ze_tv           [$1]; DIC["473"]++; continue };
-        if ($2~ /^числ_кол_ед_муж_вин$/                       ){  qko_ed_mu_vi           [$1]; DIC["474"]++; continue };
-        if ($2~ /^числ_кол_ед_муж_дат$/                       ){  qko_ed_mu_da           [$1]; DIC["475"]++; continue };
-        if ($2~ /^числ_кол_ед_муж_им$/                        ){  qko_ed_mu_im           [$1]; DIC["476"]++; continue };
-        if ($2~ /^числ_кол_ед_муж_пр$/                        ){  qko_ed_mu_pr           [$1]; DIC["477"]++; continue };
-        if ($2~ /^числ_кол_ед_муж_род$/                       ){  qko_ed_mu_ro           [$1]; DIC["478"]++; continue };
-        if ($2~ /^числ_кол_ед_муж_тв$/                        ){  qko_ed_mu_tv           [$1]; DIC["479"]++; continue };
-        if ($2~ /^числ_кол_ед_ср_вин$/                        ){  qko_ed_sr_vi           [$1]; DIC["480"]++; continue };
-        if ($2~ /^числ_кол_ед_ср_дат$/                        ){  qko_ed_sr_da           [$1]; DIC["481"]++; continue };
-        if ($2~ /^числ_кол_ед_ср_им$/                         ){  qko_ed_sr_im           [$1]; DIC["482"]++; continue };
-        if ($2~ /^числ_кол_ед_ср_пр$/                         ){  qko_ed_sr_pr           [$1]; DIC["483"]++; continue };
-        if ($2~ /^числ_кол_ед_ср_род$/                        ){  qko_ed_sr_ro           [$1]; DIC["484"]++; continue };
-        if ($2~ /^числ_кол_ед_ср_тв$/                         ){  qko_ed_sr_tv           [$1]; DIC["485"]++; continue };
-        if ($2~ /^числ_кол_жен_вин$/                          ){  qko_ze_vi              [$1]; DIC["486"]++; continue };
-        if ($2~ /^числ_кол_жен_им$/                           ){  qko_ze_im              [$1]; DIC["487"]++; continue };
-        if ($2~ /^числ_кол_им$/                               ){  qko_im                 [$1]; DIC["488"]++; continue };
-        if ($2~ /^числ_кол_мн_вин$/                           ){  qko_mn_vi              [$1]; DIC["489"]++; continue };
-        if ($2~ /^числ_кол_мн_дат$/                           ){  qko_mn_da              [$1]; DIC["490"]++; continue };
-        if ($2~ /^числ_кол_мн_им$/                            ){  qko_mn_im              [$1]; DIC["491"]++; continue };
-        if ($2~ /^числ_кол_мн_пр$/                            ){  qko_mn_pr              [$1]; DIC["492"]++; continue };
-        if ($2~ /^числ_кол_мн_род$/                           ){  qko_mn_ro              [$1]; DIC["493"]++; continue };
-        if ($2~ /^числ_кол_мн_тв$/                            ){  qko_mn_tv              [$1]; DIC["494"]++; continue };
-        if ($2~ /^числ_кол_пр$/                               ){  qko_pr                 [$1]; DIC["495"]++; continue };
-        if ($2~ /^числ_кол_род$/                              ){  qko_ro                 [$1]; DIC["496"]++; continue };
-        if ($2~ /^числ_кол_тв$/                               ){  qko_tv                 [$1]; DIC["497"]++; continue };
+        if ($2~ /^числ_кол_вин$/                    ){  qko_vi            [$1]=""; continue };
+        if ($2~ /^числ_кол_дат$/                    ){  qko_da            [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_жен_вин$/             ){  qko_ed_ze_vi      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_жен_дат$/             ){  qko_ed_ze_da      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_жен_им$/              ){  qko_ed_ze_im      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_жен_пр$/              ){  qko_ed_ze_pr      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_жен_род$/             ){  qko_ed_ze_ro      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_жен_тв$/              ){  qko_ed_ze_tv      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_муж_вин$/             ){  qko_ed_mu_vi      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_муж_дат$/             ){  qko_ed_mu_da      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_муж_им$/              ){  qko_ed_mu_im      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_муж_пр$/              ){  qko_ed_mu_pr      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_муж_род$/             ){  qko_ed_mu_ro      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_муж_тв$/              ){  qko_ed_mu_tv      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_ср_вин$/              ){  qko_ed_sr_vi      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_ср_дат$/              ){  qko_ed_sr_da      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_ср_им$/               ){  qko_ed_sr_im      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_ср_пр$/               ){  qko_ed_sr_pr      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_ср_род$/              ){  qko_ed_sr_ro      [$1]=""; continue };
+        if ($2~ /^числ_кол_ед_ср_тв$/               ){  qko_ed_sr_tv      [$1]=""; continue };
+        if ($2~ /^числ_кол_жен_вин$/                ){  qko_ze_vi         [$1]=""; continue };
+        if ($2~ /^числ_кол_жен_им$/                 ){  qko_ze_im         [$1]=""; continue };
+        if ($2~ /^числ_кол_им$/                     ){  qko_im            [$1]=""; continue };
+        if ($2~ /^числ_кол_мн_вин$/                 ){  qko_mn_vi         [$1]=""; continue };
+        if ($2~ /^числ_кол_мн_дат$/                 ){  qko_mn_da         [$1]=""; continue };
+        if ($2~ /^числ_кол_мн_им$/                  ){  qko_mn_im         [$1]=""; continue };
+        if ($2~ /^числ_кол_мн_пр$/                  ){  qko_mn_pr         [$1]=""; continue };
+        if ($2~ /^числ_кол_мн_род$/                 ){  qko_mn_ro         [$1]=""; continue };
+        if ($2~ /^числ_кол_мн_тв$/                  ){  qko_mn_tv         [$1]=""; continue };
+        if ($2~ /^числ_кол_пр$/                     ){  qko_pr            [$1]=""; continue };
+        if ($2~ /^числ_кол_род$/                    ){  qko_ro            [$1]=""; continue };
+        if ($2~ /^числ_кол_тв$/                     ){  qko_tv            [$1]=""; continue };
       };
       if ($2~ /^числ_неопр_/ ) {
 
-        if ($2~ /^числ_неопр_вин$/                            ){  qne_vi                 [$1]; DIC["498"]++; continue };
-        if ($2~ /^числ_неопр_дат$/                            ){  qne_da                 [$1]; DIC["499"]++; continue };
-        if ($2~ /^числ_неопр_им$/                             ){  qne_im                 [$1]; DIC["500"]++; continue };
-        if ($2~ /^числ_неопр_пр$/                             ){  qne_pr                 [$1]; DIC["501"]++; continue };
-        if ($2~ /^числ_неопр_род$/                            ){  qne_ro                 [$1]; DIC["502"]++; continue };
-        if ($2~ /^числ_неопр_тв$/                             ){  qne_tv                 [$1]; DIC["503"]++; continue };
+        if ($2~ /^числ_неопр_вин$/                  ){  qne_vi            [$1]=""; continue };
+        if ($2~ /^числ_неопр_дат$/                  ){  qne_da            [$1]=""; continue };
+        if ($2~ /^числ_неопр_им$/                   ){  qne_im            [$1]=""; continue };
+        if ($2~ /^числ_неопр_пр$/                   ){  qne_pr            [$1]=""; continue };
+        if ($2~ /^числ_неопр_род$/                  ){  qne_ro            [$1]=""; continue };
+        if ($2~ /^числ_неопр_тв$/                   ){  qne_tv            [$1]=""; continue };
       };
       if ($2~ /^числ_поряд_/ ) {
 
-        if ($2~ /^числ_поряд_ед_жен_вин$/                     ){  qpo_ed_ze_vi           [$1]; DIC["504"]++; continue };
-        if ($2~ /^числ_поряд_ед_жен_дат$/                     ){  qpo_ed_ze_da           [$1]; DIC["505"]++; continue };
-        if ($2~ /^числ_поряд_ед_жен_им$/                      ){  qpo_ed_ze_im           [$1]; DIC["506"]++; continue };
-        if ($2~ /^числ_поряд_ед_жен_пр$/                      ){  qpo_ed_ze_pr           [$1]; DIC["507"]++; continue };
-        if ($2~ /^числ_поряд_ед_жен_род$/                     ){  qpo_ed_ze_ro           [$1]; DIC["508"]++; continue };
-        if ($2~ /^числ_поряд_ед_жен_тв$/                      ){  qpo_ed_ze_tv           [$1]; DIC["509"]++; continue };
-        if ($2~ /^числ_поряд_ед_муж_вин_неод$/                ){  qpo_ed_mu_vi           [$1]; DIC["510"]++; continue };
-        if ($2~ /^числ_поряд_ед_муж_вин_одуш$/                ){  qpo_ed_mu_vi           [$1]; DIC["511"]++; continue };
-        if ($2~ /^числ_поряд_ед_муж_дат$/                     ){  qpo_ed_mu_da           [$1]; DIC["512"]++; continue };
-        if ($2~ /^числ_поряд_ед_муж_им$/                      ){  qpo_ed_mu_im           [$1]; DIC["513"]++; continue };
-        if ($2~ /^числ_поряд_ед_муж_пр$/                      ){  qpo_ed_mu_pr           [$1]; DIC["514"]++; continue };
-        if ($2~ /^числ_поряд_ед_муж_род$/                     ){  qpo_ed_mu_ro           [$1]; DIC["515"]++; continue };
-        if ($2~ /^числ_поряд_ед_муж_тв$/                      ){  qpo_ed_mu_tv           [$1]; DIC["516"]++; continue };
-        if ($2~ /^числ_поряд_ед_ср_вин$/                      ){  qpo_ed_sr_vi           [$1]; DIC["517"]++; continue };
-        if ($2~ /^числ_поряд_ед_ср_дат$/                      ){  qpo_ed_sr_da           [$1]; DIC["518"]++; continue };
-        if ($2~ /^числ_поряд_ед_ср_им$/                       ){  qpo_ed_sr_im           [$1]; DIC["519"]++; continue };
-        if ($2~ /^числ_поряд_ед_ср_пр$/                       ){  qpo_ed_sr_pr           [$1]; DIC["520"]++; continue };
-        if ($2~ /^числ_поряд_ед_ср_род$/                      ){  qpo_ed_sr_ro           [$1]; DIC["521"]++; continue };
-        if ($2~ /^числ_поряд_ед_ср_тв$/                       ){  qpo_ed_sr_tv           [$1]; DIC["522"]++; continue };
-        if ($2~ /^числ_поряд_мн_вин_неод$/                    ){  qpo_mn_vi              [$1]; DIC["523"]++; continue };
-        if ($2~ /^числ_поряд_мн_вин_одуш$/                    ){  qpo_mn_vi              [$1]; DIC["524"]++; continue };
-        if ($2~ /^числ_поряд_мн_дат$/                         ){  qpo_mn_da              [$1]; DIC["525"]++; continue };
-        if ($2~ /^числ_поряд_мн_им$/                          ){  qpo_mn_im              [$1]; DIC["526"]++; continue };
-        if ($2~ /^числ_поряд_мн_пр$/                          ){  qpo_mn_pr              [$1]; DIC["527"]++; continue };
-        if ($2~ /^числ_поряд_мн_род$/                         ){  qpo_mn_ro              [$1]; DIC["528"]++; continue };
-        if ($2~ /^числ_поряд_мн_тв$/                          ){  qpo_mn_tv              [$1]; DIC["529"]++; continue };
+        if ($2~ /^числ_поряд_ед_жен_вин$/           ){  qpo_ed_ze_vi      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_жен_дат$/           ){  qpo_ed_ze_da      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_жен_им$/            ){  qpo_ed_ze_im      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_жен_пр$/            ){  qpo_ed_ze_pr      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_жен_род$/           ){  qpo_ed_ze_ro      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_жен_тв$/            ){  qpo_ed_ze_tv      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_муж_вин_неод$/      ){  qpo_ed_mu_im      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_муж_вин_одуш$/      ){  qpo_ed_mu_ro      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_муж_дат$/           ){  qpo_ed_mu_da      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_муж_им$/            ){  qpo_ed_mu_im      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_муж_пр$/            ){  qpo_ed_mu_pr      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_муж_род$/           ){  qpo_ed_mu_ro      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_муж_тв$/            ){  qpo_ed_mu_tv      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_ср_вин$/            ){  qpo_ed_sr_vi      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_ср_дат$/            ){  qpo_ed_sr_da      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_ср_им$/             ){  qpo_ed_sr_im      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_ср_пр$/             ){  qpo_ed_sr_pr      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_ср_род$/            ){  qpo_ed_sr_ro      [$1]=""; continue };
+        if ($2~ /^числ_поряд_ед_ср_тв$/             ){  qpo_ed_sr_tv      [$1]=""; continue };
+        if ($2~ /^числ_поряд_мн_вин_неод$/          ){  qpo_mn_im         [$1]=""; continue };
+        if ($2~ /^числ_поряд_мн_вин_одуш$/          ){  qpo_mn_ro         [$1]=""; continue };
+        if ($2~ /^числ_поряд_мн_дат$/               ){  qpo_mn_da         [$1]=""; continue };
+        if ($2~ /^числ_поряд_мн_им$/                ){  qpo_mn_im         [$1]=""; continue };
+        if ($2~ /^числ_поряд_мн_пр$/                ){  qpo_mn_pr         [$1]=""; continue };
+        if ($2~ /^числ_поряд_мн_род$/               ){  qpo_mn_ro         [$1]=""; continue };
+        if ($2~ /^числ_поряд_мн_тв$/                ){  qpo_mn_tv         [$1]=""; continue };
       };
       if ($2~ /^числ_собир_/ ) {
 
-        if ($2~ /^числ_собир_вин$/                            ){  qso_vi                 [$1]; DIC["530"]++; continue };
-        if ($2~ /^числ_собир_дат$/                            ){  qso_da                 [$1]; DIC["531"]++; continue };
-        if ($2~ /^числ_собир_жен_вин$/                        ){  qso_ze_vi              [$1]; DIC["532"]++; continue };
-        if ($2~ /^числ_собир_жен_дат$/                        ){  qso_ze_da              [$1]; DIC["533"]++; continue };
-        if ($2~ /^числ_собир_жен_им$/                         ){  qso_ze_im              [$1]; DIC["534"]++; continue };
-        if ($2~ /^числ_собир_жен_пр$/                         ){  qso_ze_pr              [$1]; DIC["535"]++; continue };
-        if ($2~ /^числ_собир_жен_род$/                        ){  qso_ze_ro              [$1]; DIC["536"]++; continue };
-        if ($2~ /^числ_собир_жен_тв$/                         ){  qso_ze_tv              [$1]; DIC["537"]++; continue };
-        if ($2~ /^числ_собир_им$/                             ){  qso_im                 [$1]; DIC["538"]++; continue };
-        if ($2~ /^числ_собир_муж_вин$/                        ){  qso_mu_vi              [$1]; DIC["539"]++; continue };
-        if ($2~ /^числ_собир_муж_дат$/                        ){  qso_mu_da              [$1]; DIC["540"]++; continue };
-        if ($2~ /^числ_собир_муж_им$/                         ){  qso_mu_im              [$1]; DIC["541"]++; continue };
-        if ($2~ /^числ_собир_муж_пр$/                         ){  qso_mu_pr              [$1]; DIC["542"]++; continue };
-        if ($2~ /^числ_собир_муж_род$/                        ){  qso_mu_ro              [$1]; DIC["543"]++; continue };
-        if ($2~ /^числ_собир_муж_тв$/                         ){  qso_mu_tv              [$1]; DIC["544"]++; continue };
-        if ($2~ /^числ_собир_пр$/                             ){  qso_pr                 [$1]; DIC["545"]++; continue };
-        if ($2~ /^числ_собир_род$/                            ){  qso_ro                 [$1]; DIC["546"]++; continue };
-        if ($2~ /^числ_собир_ср_вин$/                         ){  qso_sr_vi              [$1]; DIC["547"]++; continue };
-        if ($2~ /^числ_собир_ср_дат$/                         ){  qso_sr_da              [$1]; DIC["548"]++; continue };
-        if ($2~ /^числ_собир_ср_им$/                          ){  qso_sr_im              [$1]; DIC["549"]++; continue };
-        if ($2~ /^числ_собир_ср_пр$/                          ){  qso_sr_pr              [$1]; DIC["550"]++; continue };
-        if ($2~ /^числ_собир_ср_род$/                         ){  qso_sr_ro              [$1]; DIC["551"]++; continue };
-        if ($2~ /^числ_собир_ср_тв$/                          ){  qso_sr_tv              [$1]; DIC["552"]++; continue };
-        if ($2~ /^числ_собир_тв$/                             ){  qso_tv                 [$1]; DIC["553"]++; continue };
+        if ($2~ /^числ_собир_вин$/                  ){  qso_vi            [$1]=""; continue };
+        if ($2~ /^числ_собир_дат$/                  ){  qso_da            [$1]=""; continue };
+        if ($2~ /^числ_собир_жен_вин$/              ){  qso_ze_vi         [$1]=""; continue };
+        if ($2~ /^числ_собир_жен_дат$/              ){  qso_ze_da         [$1]=""; continue };
+        if ($2~ /^числ_собир_жен_им$/               ){  qso_ze_im         [$1]=""; continue };
+        if ($2~ /^числ_собир_жен_пр$/               ){  qso_ze_pr         [$1]=""; continue };
+        if ($2~ /^числ_собир_жен_род$/              ){  qso_ze_ro         [$1]=""; continue };
+        if ($2~ /^числ_собир_жен_тв$/               ){  qso_ze_tv         [$1]=""; continue };
+        if ($2~ /^числ_собир_им$/                   ){  qso_im            [$1]=""; continue };
+        if ($2~ /^числ_собир_муж_вин$/              ){  qso_mu_vi         [$1]=""; continue };
+        if ($2~ /^числ_собир_муж_дат$/              ){  qso_mu_da         [$1]=""; continue };
+        if ($2~ /^числ_собир_муж_им$/               ){  qso_mu_im         [$1]=""; continue };
+        if ($2~ /^числ_собир_муж_пр$/               ){  qso_mu_pr         [$1]=""; continue };
+        if ($2~ /^числ_собир_муж_род$/              ){  qso_mu_ro         [$1]=""; continue };
+        if ($2~ /^числ_собир_муж_тв$/               ){  qso_mu_tv         [$1]=""; continue };
+        if ($2~ /^числ_собир_пр$/                   ){  qso_pr            [$1]=""; continue };
+        if ($2~ /^числ_собир_род$/                  ){  qso_ro            [$1]=""; continue };
+        if ($2~ /^числ_собир_ср_вин$/               ){  qso_sr_vi         [$1]=""; continue };
+        if ($2~ /^числ_собир_ср_дат$/               ){  qso_sr_da         [$1]=""; continue };
+        if ($2~ /^числ_собир_ср_им$/                ){  qso_sr_im         [$1]=""; continue };
+        if ($2~ /^числ_собир_ср_пр$/                ){  qso_sr_pr         [$1]=""; continue };
+        if ($2~ /^числ_собир_ср_род$/               ){  qso_sr_ro         [$1]=""; continue };
+        if ($2~ /^числ_собир_ср_тв$/                ){  qso_sr_tv         [$1]=""; continue };
+        if ($2~ /^числ_собир_тв$/                   ){  qso_tv            [$1]=""; continue };
       };
     };
-   }; # чтение basedic
+   }; # чтение rest-dic
    close(cmd);
-   cmd = "zcat " infolder "dic_cust.gz";
+   cmd = "zcat " indb "dic_cust.gz";
    while ((cmd|getline) > 0) {
 
-   if ($2~ /^gl_/) {
-        if($2~  /^gl_чув_/ && $2~ /_ср_ед/               ){  gl_quvedsr [$1];                                           };
-        if($2~  /^gl_гов_/ && $2~ /_ср_ед/               ){  gl_quvedsr [$1];                                           };
-        if($2~  /^gl_дел_/ && $2~ /_ср_ед/               ){  gl_deledsr [$1];                                           };
-        if($2~  /^gl_дви_/ && $2~ /_ср_ед/               ){  gl_dviedsr [$1];                                           };
-        if($2~  /^gl_гов_/ && $2~ /_пов/                 ){  gl_govpo   [$1];                                           };
-        if($2~  /^gl_чув_/ && $2~ /_пов/                 ){  gl_quvpo   [$1];                                           };
-        if($2~  /^gl_дел_/ && $2~ /_пов/                 ){  gl_delpo   [$1];                                           };
-        if($2~  /^gl_дви_/ && $2~ /_пов/                 ){  gl_dvipo   [$1];                                           };
-        if($2~  /^gl_чув_/ && $2~ /_ед/                  ){  gl_quved   [$1];  gl_quv   [$1];                  continue };
-        if($2~  /^gl_чув_/ && $2~ /_мн/                  ){  gl_quvmn   [$1];  gl_quv   [$1];                  continue };
-        if($2~  /^gl_чув_/ && $2~ /_инф/                 ){  gl_quvin   [$1];  gl_quv   [$1];                  continue };
-        if($2~  /^gl_гов_/ && $2~ /_ед/                  ){  gl_goved   [$1];  gl_gov   [$1];                  continue };
-        if($2~  /^gl_гов_/ && $2~ /_мн/                  ){  gl_govmn   [$1];  gl_gov   [$1];                  continue };
-        if($2~  /^gl_гов_/ && $2~ /_инф/                 ){  gl_govin   [$1];  gl_gov   [$1];                  continue };
-        if($2~  /^gl_дел_/ && $2~ /_ед/                  ){  gl_deled   [$1];  gl_del   [$1];                  continue };
-        if($2~  /^gl_дел_/ && $2~ /_мн/                  ){  gl_delmn   [$1];  gl_del   [$1];                  continue };
-        if($2~  /^gl_дел_/ && $2~ /_инф/                 ){  gl_delin   [$1];  gl_del   [$1];                  continue };
-        if($2~  /^gl_дви_/ && $2~ /_ед/                  ){  gl_dvied   [$1];  gl_dvi   [$1];                  continue };
-        if($2~  /^gl_дви_/ && $2~ /_мн/                  ){  gl_dvimn   [$1];  gl_dvi   [$1];                  continue };
-        if($2~  /^gl_дви_/ && $2~ /_инф/                 ){  gl_dviin   [$1];  gl_dvi   [$1];                  continue };
-   };
-   if ($2~ /^muk_/) {
-        if($2~  /_ед_муж_им$/                            ){  muk_edmuim [$1];  muk_edim [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_жен_им$/                            ){  muk_edzeim [$1];  muk_edim [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_ср_им$/                             ){  muk_edsrim [$1];  muk_edim [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_муж_вин/                            ){  muk_edmuvi [$1];  muk_edvi [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_жен_вин/                            ){  muk_edzevi [$1];  muk_edvi [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_ср_вин/                             ){  muk_edsrvi [$1];  muk_edvi [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_муж_дат$/                           ){  muk_edmuda [$1];  muk_edda [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_жен_дат$/                           ){  muk_edzeda [$1];  muk_edda [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_ср_дат$/                            ){  muk_edsrda [$1];  muk_edda [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_муж_род$/                           ){  muk_edmuro [$1];  muk_edro [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_жен_род$/                           ){  muk_edzero [$1];  muk_edro [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_ср_род$/                            ){  muk_edsrro [$1];  muk_edro [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_муж_тв$/                            ){  muk_edmutv [$1];  muk_edtv [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_жен_тв$/                            ){  muk_edzetv [$1];  muk_edtv [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_ср_тв$/                             ){  muk_edsrtv [$1];  muk_edtv [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_муж_пр$/                            ){  muk_edmupr [$1];  muk_edpr [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_жен_пр$/                            ){  muk_edzepr [$1];  muk_edpr [$1];  muk_ed [$1];    continue };
-        if($2~  /_ед_ср_пр$/                             ){  muk_edsrpr [$1];  muk_edpr [$1];  muk_ed [$1];    continue };
-        if($2~  /_мн_им$/                                ){  muk_mnim   [$1];                  muk_mn [$1];    continue };
-        if($2~  /_мн_вин/                                ){  muk_mnvi   [$1];                  muk_mn [$1];    continue };
-        if($2~  /_мн_дат$/                               ){  muk_mnda   [$1];                  muk_mn [$1];    continue };
-        if($2~  /_мн_род$/                               ){  muk_mnro   [$1];                  muk_mn [$1];    continue };
-        if($2~  /_мн_тв$/                                ){  muk_mntv   [$1];                  muk_mn [$1];    continue };
-        if($2~  /_мн_пр$/                                ){  muk_mnpr   [$1];                  muk_mn [$1];    continue };
-        if($2~  /^muk_прл_им$/                           ){  muk_mnim   [$1];                  muk_mn [$1];    continue };
-        if($2~  /^muk_прл_вин$/                          ){  muk_mnvi   [$1];                  muk_mn [$1];    continue };
-        if($2~  /^muk_прл_дат$/                          ){  muk_mnda   [$1];                  muk_mn [$1];    continue };
-        if($2~  /^muk_прл_род$/                          ){  muk_mnro   [$1];                  muk_mn [$1];    continue };
-        if($2~  /^muk_прл_тв$/                           ){  muk_mntv   [$1];                  muk_mn [$1];    continue };
-        if($2~  /^muk_прл_пр$/                           ){  muk_mnpr   [$1];                  muk_mn [$1];    continue };
-   };
-   if ($2~ /^geo_/) {
-        if($2~  /^geo_ед_ср_им$/                         ){  geo_edsrim [$1];                                  continue };
-        if($2~  /^geo_мн_им$/                            ){  geo_mnim   [$1];                                  continue };
-   };
+   if ($1~ "-") { dichyph [$1] };
+
+        if ($2~ /^gl_/ && $2~ /_мн/ && $2!~ /_пов/ && $2!~ /_воз/ ){ gc_mn[$1]=$3; continue };
+        if ($2~ /^gl_/ && $2~ /_инф/                              ){ gc_in[$1]=$3; continue };
+        if ($2~ /^gl_/ && $2~ /_пов/                              ){ gc_po[$1]=$3; continue };
+        if ($2~ /^gl_/ && $2~ /_ед/                               ){ gc_ed[$1]=$3; continue };
+
+
+#  if ($2~ /^gl_/) {
+#     if ($2~ /^gl_2вид_/ ) {
+#       if ($2~ /^gl_2вид_непер_буд_мн_1е$/         ){  gc2_nebu_m1       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_буд_мн_2е$/         ){  gc2_nebu_m2       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_буд_мн_3е$/         ){  gc2_nebu_m3       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_воз_буд_мн_1е$/     ){  gc2_vz_nebu_m1    [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_воз_буд_мн_2е$/     ){  gc2_vz_nebu_m2    [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_воз_буд_мн_3е$/     ){  gc2_vz_nebu_m3    [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_воз_наст_мн_1е$/    ){  gc2_vz_nena_m1    [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_воз_наст_мн_2е$/    ){  gc2_vz_nena_m2    [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_воз_наст_мн_3е$/    ){  gc2_vz_nena_m3    [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_воз_пов_мн$/        ){  gc2_vz_nepo_mn    [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_воз_прош_мн$/       ){  gc2_vz_nepa_mn    [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_наст_мн_1е$/        ){  gc2_nena_m1       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_наст_мн_2е$/        ){  gc2_nena_m2       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_наст_мн_3е$/        ){  gc2_nena_m3       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_пов_мн$/            ){  gc2_nepo_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_непер_прош_мн$/           ){  gc2_nepa_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перех_буд_мн_1е$/         ){  gc2_pebu_m1       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перех_буд_мн_2е$/         ){  gc2_pebu_m2       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перех_буд_мн_3е$/         ){  gc2_pebu_m3       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перех_наст_мн_1е$/        ){  gc2_pena_m1       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перех_наст_мн_2е$/        ){  gc2_pena_m2       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перех_наст_мн_3е$/        ){  gc2_pena_m3       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перех_пов_мн$/            ){  gc2_pepo_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перех_прош_мн$/           ){  gc2_pepa_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перне_буд_мн_1е$/         ){  gc2_pnbu_m1       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перне_буд_мн_2е$/         ){  gc2_pnbu_m2       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перне_буд_мн_3е$/         ){  gc2_pnbu_m3       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перне_наст_мн_1е$/        ){  gc2_pnna_m1       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перне_наст_мн_2е$/        ){  gc2_pnna_m2       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перне_наст_мн_3е$/        ){  gc2_pnna_m3       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перне_пов_мн$/            ){  gc2_pnpo_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_2вид_перне_прош_мн$/           ){  gc2_pnpa_mn       [$1]=$3; continue };
+#     };
+#     if ($2~ /^gl_несов_/ ) {
+
+#       if ($2~ /^gl_несов_непер_воз_наст_мн_1е$/   ){  gcn_vz_nena_m1    [$1]=$3; continue };
+#       if ($2~ /^gl_несов_непер_воз_наст_мн_2е$/   ){  gcn_vz_nena_m2    [$1]=$3; continue };
+#       if ($2~ /^gl_несов_непер_воз_наст_мн_3е$/   ){  gcn_vz_nena_m3    [$1]=$3; continue };
+#       if ($2~ /^gl_несов_непер_воз_пов_мн$/       ){  gcn_vz_nepo_mn    [$1]=$3; continue };
+#       if ($2~ /^gl_несов_непер_воз_прош_мн$/      ){  gcn_vz_nepa_mn    [$1]=$3; continue };
+#       if ($2~ /^gl_несов_непер_наст_мн_1е$/       ){  gcn_nena_m1       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_непер_наст_мн_2е$/       ){  gcn_nena_m2       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_непер_наст_мн_3е$/       ){  gcn_nena_m3       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_непер_пов_мн$/           ){  gcn_nepo_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_непер_прош_мн$/          ){  gcn_nepa_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_перех_наст_мн_1е$/       ){  gcn_pena_m1       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_перех_наст_мн_2е$/       ){  gcn_pena_m2       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_перех_наст_мн_3е$/       ){  gcn_pena_m3       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_перех_пов_мн$/           ){  gcn_pepo_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_перех_прош_мн$/          ){  gcn_pepa_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_перне_наст_мн_1е$/       ){  gcn_pnna_m1       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_перне_наст_мн_2е$/       ){  gcn_pnna_m2       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_перне_наст_мн_3е$/       ){  gcn_pnna_m3       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_перне_пов_мн$/           ){  gcn_pnpo_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_несов_перне_прош_мн$/          ){  gcn_pnpa_mn       [$1]=$3; continue };
+#     };
+#     if ($2~ /^gl_сов_/ ) {
+
+#       if ($2~ /^gl_сов_непер_буд_мн_1е$/          ){  gcs_nebu_m1       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_непер_буд_мн_2е$/          ){  gcs_nebu_m2       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_непер_буд_мн_3е$/          ){  gcs_nebu_m3       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_непер_воз_буд_мн_1е$/      ){  gcs_vz_nebu_m1    [$1]=$3; continue };
+#       if ($2~ /^gl_сов_непер_воз_буд_мн_2е$/      ){  gcs_vz_nebu_m2    [$1]=$3; continue };
+#       if ($2~ /^gl_сов_непер_воз_буд_мн_3е$/      ){  gcs_vz_nebu_m3    [$1]=$3; continue };
+#       if ($2~ /^gl_сов_непер_воз_пов_мн$/         ){  gcs_vz_nepo_mn    [$1]=$3; continue };
+#       if ($2~ /^gl_сов_непер_воз_прош_мн$/        ){  gcs_vz_nepa_mn    [$1]=$3; continue };
+#       if ($2~ /^gl_сов_непер_пов_мн$/             ){  gcs_nepo_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_непер_прош_мн$/            ){  gcs_nepa_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_перех_буд_мн_1е$/          ){  gcs_pebu_m1       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_перех_буд_мн_2е$/          ){  gcs_pebu_m2       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_перех_буд_мн_3е$/          ){  gcs_pebu_m3       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_перех_пов_мн$/             ){  gcs_pepo_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_перех_прош_мн$/            ){  gcs_pepa_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_перне_буд_мн_1е$/          ){  gcs_pnbu_m1       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_перне_буд_мн_2е$/          ){  gcs_pnbu_m2       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_перне_буд_мн_3е$/          ){  gcs_pnbu_m3       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_перне_пов_мн$/             ){  gcs_pnpo_mn       [$1]=$3; continue };
+#       if ($2~ /^gl_сов_перне_прош_мн$/            ){  gcs_pnpa_mn       [$1]=$3; continue };
+#     };
+#  };                                                                     
+   if ($2~ /^muk_/) {                                                     
+        if($2~  /_ед_муж_им$/                       ){  muc_edmuim        [$1]=""; continue };
+        if($2~  /_ед_жен_им$/                       ){  muc_edzeim        [$1]=""; continue };
+        if($2~  /_ед_ср_им$/                        ){  muc_edsrim        [$1]=""; continue };
+        if($2~  /_ед_муж_вин/                       ){  muc_edmuvi        [$1]=""; continue };
+        if($2~  /_ед_жен_вин/                       ){  muc_edzevi        [$1]=""; continue };
+        if($2~  /_ед_ср_вин/                        ){  muc_edsrvi        [$1]=""; continue };
+        if($2~  /_ед_муж_дат$/                      ){  muc_edmuda        [$1]=""; continue };
+        if($2~  /_ед_жен_дат$/                      ){  muc_edzeda        [$1]=""; continue };
+        if($2~  /_ед_ср_дат$/                       ){  muc_edsrda        [$1]=""; continue };
+        if($2~  /_ед_муж_род$/                      ){  muc_edmuro        [$1]=""; continue };
+        if($2~  /_ед_жен_род$/                      ){  muc_edzero        [$1]=""; continue };
+        if($2~  /_ед_ср_род$/                       ){  muc_edsrro        [$1]=""; continue };
+        if($2~  /_ед_муж_тв$/                       ){  muc_edmutv        [$1]=""; continue };
+        if($2~  /_ед_жен_тв$/                       ){  muc_edzetv        [$1]=""; continue };
+        if($2~  /_ед_ср_тв$/                        ){  muc_edsrtv        [$1]=""; continue };
+        if($2~  /_ед_муж_пр$/                       ){  muc_edmupr        [$1]=""; continue };
+        if($2~  /_ед_жен_пр$/                       ){  muc_edzepr        [$1]=""; continue };
+        if($2~  /_ед_ср_пр$/                        ){  muc_edsrpr        [$1]=""; continue };
+        if($2~  /_мн_им$/                           ){  muc_mnim          [$1]=""; continue };
+        if($2~  /_мн_вин/                           ){  muc_mnvi          [$1]=""; continue };
+        if($2~  /_мн_дат$/                          ){  muc_mnda          [$1]=""; continue };
+        if($2~  /_мн_род$/                          ){  muc_mnro          [$1]=""; continue };
+        if($2~  /_мн_тв$/                           ){  muc_mntv          [$1]=""; continue };
+        if($2~  /_мн_пр$/                           ){  muc_mnpr          [$1]=""; continue };
+        if($2~  /^muk_прл_им$/                      ){  muc_mnim          [$1]=""; continue };
+        if($2~  /^muk_прл_вин$/                     ){  muc_mnvi          [$1]=""; continue };
+        if($2~  /^muk_прл_дат$/                     ){  muc_mnda          [$1]=""; continue };
+        if($2~  /^muk_прл_род$/                     ){  muc_mnro          [$1]=""; continue };
+        if($2~  /^muk_прл_тв$/                      ){  muc_mntv          [$1]=""; continue };
+        if($2~  /^muk_прл_пр$/                      ){  muc_mnpr          [$1]=""; continue };
+   };                                                                     
+#   if($2~  /^nac/ ){
+#       if ($2~ /^nar_сравн$/                       ){  nrc_srv            [$1]=""; continue };
+#       if ($2~ /^nar_опред_кач$/                   ){  nrc_opka           [$1]=""; continue };
+        if ($2~ /^nar_опред_спос$/                  ){  nrc_opsp           [$1]=""; continue };
+#       if ($2~ /^nar_опред_степ$/                  ){  nrc_opst           [$1]=""; continue };
+#       if ($2~ /^nar_обст_врем$/                   ){  nrc_obvr           [$1]=""; continue };
+#       if ($2~ /^nar_обст_места$/                  ){  nrc_obme           [$1]=""; continue };
+        if ($2~ /^nar_обст_напр$/                   ){  nrc_obna           [$1]=""; continue };
+#       if ($2~ /^nar_обст_причин$/                 ){  nrc_obpr           [$1]=""; continue };
+#       if ($2~ /^nar_обст_цель$/                   ){  nrc_obce           [$1]=""; continue };
+#       if ($2~ /^nar_вопр$/                        ){  nrc_vopr           [$1]=""; continue };
+#       if ($2~ /^nar_мест$/                        ){  nrc_mest           [$1]=""; continue };
+#       if ($2~ /^nar_прев$/                        ){  nrc_pv             [$1]=""; continue };
+#       if ($2~ /^nar$/                             ){  nrc_nar            [$1]=""; continue };
+#   };
+
+   if ($2~ /^zvat_/                                 ){  zvt               [$1]=""; continue };
+
+   if ($2~ /^geo_/) {                                                     
+        if($2~  /^geo_ед_ср_им$/                    ){  geo_edsrim        [$1]=""; continue };
+        if($2~  /^geo_мн_им$/                       ){  geo_mnim          [$1]=""; continue };
+      };
    } close(cmd);
+ # Записать состояние словарных массивов
+  if (gawk52 == 1) { writeall(inax "classes.bin") };
+  cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " indb "dic_rest.gz " indb "dic_suw.gz > " inax "dix.md5"
+  system(cmd); close(cmd)
+   } #gnuawk
+
+
+ # Коррекции - удаление омографов из массивов
+ delete g2_nena_e1["есть"];delete g2_nena_e2["есть"];delete g2_nena_e3["есть"];delete g2_nena_m1["есть"];delete g2_nena_m2["есть"];delete g2_nena_m3["есть"];delete qst["есть"];
+
+ delete gs_pebu_m3["выглядят"];
+ delete gn_nepo_ed["времени"];
+ delete gs_pepa_edze["дела"];
+ delete gs_pepo_ed["почти"];
+ delete gn_pepo_ed["пять"];
+ delete gs_pepo_ed["пришли"];
+ delete gn_nepa_edsr["тускло"];
+ delete gs_pepa_edsr["дело"];
+ delete soyz["все-таки"]; delete qst["все-таки"];
+ delete dpn_pe_na["для"];
+ delete dpn_pn_na["хотя"];
+ delete gn_pepo_ed["три"];
+ delete swn_edsr_ne["надо"];
+ delete swn_edze_da["были"];delete swn_edze_pr["были"];delete swn_edze_ro["были"];delete swn_mn_im["были"];
+ delete swo_edmu_tv["им"];
+ delete swo_edmu_ro["его"];
+ delete swn_edsr_im["сто"]; delete swn_edsr_vi["сто"];
 
 
 
- for (i=1; i<=553; i++) { printf ("%s%s %s %s\n", "R", i, "=", DIC[i]) };
+# for (k=1; k<=664; k++) { printf ("%s%s %s %s\n", "R", k, "=", DIC[k]); sumdic = sumdic + DIC[k] }; print sumdic;
 
 }
 

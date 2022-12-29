@@ -1,5 +1,5 @@
 #!/bin/bash
-# Скрипт ручно обработки текста
+# Скрипт ручной обработки текста
 # Создает в директории mano-$book дискретные скрипты для обработки каждого из найденных омографов.
 # Можно использовать вместо omofix или совместно с ним.
 # Последняя версия файла тут: https://github.com/Balamoote/gtts-scripts
@@ -130,7 +130,7 @@ if [[ ! $yop -eq 0 ]]; then
 	
 #   sedroll mano-"$book"/vsex.sed mano-"$book"/text-book.txt
 
-awk -v infolder="scriptdb/" -f scriptdb/deomo.awk mano-"$book"/text-book.txt > mano-"$book"/text-book.awk.txt
+awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/deomo.awk mano-"$book"/text-book.txt > mano-"$book"/text-book.awk.txt
 mv mano-"$book"/text-book.awk.txt mano-"$book"/text-book.txt
 
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" mano-"$book"/text-book.txt| wc -l)
