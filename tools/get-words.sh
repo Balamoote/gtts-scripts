@@ -244,10 +244,10 @@ if [[ $key != "wonly" ]]; then
 #s=(\w)<strong>([$RVUC$rvlc])<\/strong>=\1\2\xcc\x81=g
 #s=<strong>([$RVUC$rvlc])<\/strong>(\w)=\1\xcc\x81\2=g
 
-zgrep -Ff gwt-"$book"/namebase0-proc-list.pat scriptdb/namebase0.txt.gz   | sed -r "s/^_(.+)=(.+=g)$/s=\\\b\u\1\\\b=\u\2/g; s/([$RVUC$rvlc])'/\1\xcc\x81/g" >> gwt-"$book"/names-proc.sed
-zgrep -Ff gwt-"$book"/override-proc-list.pat scriptdb/nameoverride.txt.gz | sed -r "s/^_(.+)=(.+=g)$/s=\\\b\u\1\\\b=\u\2/g; s/([$RVUC$rvlc])'/\1\xcc\x81/g" >> gwt-"$book"/names-proc.sed
+#zgrep -Ff gwt-"$book"/namebase0-proc-list.pat scriptdb/namebase0.txt.gz   | sed -r "s/^_(.+)=(.+=g)$/s=\\\b\u\1\\\b=\u\2/g; s/([$RVUC$rvlc])'/\1\xcc\x81/g" >> gwt-"$book"/names-proc.sed
+#zgrep -Ff gwt-"$book"/override-proc-list.pat scriptdb/nameoverride.txt.gz | sed -r "s/^_(.+)=(.+=g)$/s=\\\b\u\1\\\b=\u\2/g; s/([$RVUC$rvlc])'/\1\xcc\x81/g" >> gwt-"$book"/names-proc.sed
 
-sort -u -o gwt-"$book"/names-proc.sed gwt-"$book"/names-proc.sed
+#sort -u -o gwt-"$book"/names-proc.sed gwt-"$book"/names-proc.sed
 
 echo "s=(\S)\s+=\1 =g
 s=(<p>)\s+=\1=gI
@@ -260,7 +260,7 @@ s=X5Ъ=\xcc\xad=g
 s=X6Ъ=\xcc\xb0=g
 s=X8Ъ=\xe2\x80\xa4=g
 s=X7Ъ=\xe2\x80\xa7=g
-s=(\xcc\x81)+=\xcc\x81=g" >> gwt-"$book"/names-proc.sed
+s=(\xcc\x81)+=\xcc\x81=g" > gwt-"$book"/names-proc.sed
 
 gw_pre=$(date +%s.%N); duration=$( echo $gw_pre - $gw_time0 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предварительная подготовка заняла:" $duration "сек"
@@ -270,6 +270,9 @@ printf '\e[36m%s\e[0m ' "Расстановка ударений в именах
 
 inc=100
 sedroll gwt-"$book"/names-proc.sed gwt-"$book"/text-book.txt
+
+awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/namedef.awk gwt-"$book"/text-book.txt > gwt-"$book"/text-book.awk.txt
+mv gwt-"$book"/text-book.awk.txt gwt-"$book"/text-book.txt
 
 gw_sed=$(date +%s.%N); duration=$( echo $gw_sed - $gw_pre | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "выполнена за" $duration "сек"

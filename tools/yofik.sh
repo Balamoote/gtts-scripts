@@ -104,36 +104,40 @@ grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" jot-"$book"/text-book.txt | grep
 
 grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" jot-"$book"/text-book.txt | grep -v "[$unxc]" | sed -r 's/^.+$/_\0=/g' | sort -u > jot-"$book"/words-all-uc.pat
 
-cat <(sed -r "s/_(.)/_\l\1/g" jot-"$book"/words-all-uc.pat) jot-"$book"/words-all-lc.pat | sort -u > jot-"$book"/words-all.pat
+#cat <(sed -r "s/_(.)/_\l\1/g" jot-"$book"/words-all-uc.pat) jot-"$book"/words-all-lc.pat | sort -u > jot-"$book"/words-all.pat
 
 # Список всех слов, однозначно ёфицируемых, ё не на первом месте
-grep -Ff <(zcat scriptaux/yodef0.pat.gz) jot-"$book"/words-all.pat | sort -u > jot-"$book"/yo-def0.pat
+#grep -Ff <(zcat scriptaux/yodef0.pat.gz) jot-"$book"/words-all.pat | sort -u > jot-"$book"/yo-def0.pat
 
 # Список всех слов, однозначно ёфицируемых, ё на первом месте
-grep -Ff <(zcat scriptaux/yodef1.pat.gz) jot-"$book"/words-all.pat | sort -u > jot-"$book"/yo-def1.pat
+#grep -Ff <(zcat scriptaux/yodef1.pat.gz) jot-"$book"/words-all.pat | sort -u > jot-"$book"/yo-def1.pat
 
 # Список всех слов, однозначно ёфицируемых в нижнем регистре
-grep -Ff scriptaux/yolc.pat jot-"$book"/words-all.pat | sort -u > jot-"$book"/yolc-def.pat
+#grep -Ff scriptaux/yolc.pat jot-"$book"/words-all.pat | sort -u > jot-"$book"/yolc-def.pat
 
 if [[ $fixomo -eq "1" ]]; then # fimomochk 0
 # Генерируем скрипт sed для однозначной ёфикации
-zgrep -Ff jot-"$book"/yo-def0.pat scriptdb/yodef0.txt.gz | sed -r "s/^_(.)(.+)=(.)(.+)$/s=\\\b(\1)\2\\\b=\\\1\4=gI/g" > jot-"$book"/yodef-proc.sed
-zgrep -Ff jot-"$book"/yo-def1.pat scriptdb/yodef1.txt.gz | sed -r "s/^_(.+)=(.+)$/s=\\\b\1\\\b=\2=g/g" >> jot-"$book"/yodef-proc.sed
-zgrep -Ff jot-"$book"/yo-def1.pat scriptdb/yodef1.txt.gz | sed -r "s/^_(.)(.+)=(.)(.+)$/s=\\\b\u\1\2\\\b=\u\3\4=g/g" >> jot-"$book"/yodef-proc.sed
-grep -Ff jot-"$book"/yolc-def.pat scriptdb/yolc.txt | sed -r "s/^_(.+)=(.+)$/s=\\\b\1\\\b=\2=g/g" >> jot-"$book"/yodef-proc.sed
+#zgrep -Ff jot-"$book"/yo-def0.pat scriptdb/yodef0.txt.gz | sed -r "s/^_(.)(.+)=(.)(.+)$/s=\\\b(\1)\2\\\b=\\\1\4=gI/g" > jot-"$book"/yodef-proc.sed
+#zgrep -Ff jot-"$book"/yo-def1.pat scriptdb/yodef1.txt.gz | sed -r "s/^_(.+)=(.+)$/s=\\\b\1\\\b=\2=g/g" >> jot-"$book"/yodef-proc.sed
+#zgrep -Ff jot-"$book"/yo-def1.pat scriptdb/yodef1.txt.gz | sed -r "s/^_(.)(.+)=(.)(.+)$/s=\\\b\u\1\2\\\b=\u\3\4=g/g" >> jot-"$book"/yodef-proc.sed
+#grep -Ff jot-"$book"/yolc-def.pat scriptdb/yolc.txt | sed -r "s/^_(.+)=(.+)$/s=\\\b\1\\\b=\2=g/g" >> jot-"$book"/yodef-proc.sed
 
-sort -u -o jot-"$book"/yodef-proc.sed jot-"$book"/yodef-proc.sed
+#sort -u -o jot-"$book"/yodef-proc.sed jot-"$book"/yodef-proc.sed
+
 
 # Дописки в однозначное
+cat scriptdb/yomodef.sed > jot-"$book"/yodef-proc.sed
 sed -i "1is=(ё)=Ъ\\\1Ъ=gI
 1is=\\\xcc\\\x81=ЪЪЪ=g\n" jot-"$book"/yodef-proc.sed
 #cat scriptdb/yomodef.sed scriptdb/vse.sed >> jot-"$book"/yodef-proc.sed
-cat scriptdb/yomodef.sed >> jot-"$book"/yodef-proc.sed
 
 yo_pre=$(date +%s.%N); duration=$( echo $yo_pre - $yo_time0 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предварительная подготовка скриптов ёфикации заняла:" $duration "сек"
 
 sedroll jot-"$book"/yodef-proc.sed jot-"$book"/text-book.txt
+
+awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/yodef.awk jot-"$book"/text-book.txt > jot-"$book"/text-book.awk.txt
+mv jot-"$book"/text-book.awk.txt jot-"$book"/text-book.txt
 
 awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/deomo.awk jot-"$book"/text-book.txt > jot-"$book"/text-book.awk.txt
 mv jot-"$book"/text-book.awk.txt jot-"$book"/text-book.txt
