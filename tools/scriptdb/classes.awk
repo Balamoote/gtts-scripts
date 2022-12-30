@@ -14,7 +14,7 @@ BEGIN {
     if (gnuawk[1] == "GNU" && gnuawk[2] == "Awk" && gnuawk[3] >= 5 && gnuawk[4] >= 2 && gnuawk[5] >= 1) { gawk52 = 1 };
  # Если словари и этот скрипт не изменились и gawk>=5.2.1, восстановить состояние, иначе прочитать всё заново.
    if ( gawk52 == 1 ) {
-    cmd   = "md5sum -c --status " inax "dix.md5 >/dev/null 2>&1"
+    cmd   = "md5sum -c --status " inax "classes.md5 >/dev/null 2>&1"
     redix = system(cmd); close(cmd);};
    
    if (redix == 0 && gawk52 == 1) { readall(indb "classes.bin") } else {
@@ -966,7 +966,7 @@ BEGIN {
    } close(cmd);
  # Записать состояние словарных массивов
   if (gawk52 == 1) { writeall(inax "classes.bin") };
-  cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " indb "dic_rest.gz " indb "dic_suw.gz > " inax "dix.md5"
+  cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " indb "dic_rest.gz " indb "dic_suw.gz > " inax "classes.md5"
   system(cmd); close(cmd)
    } #gnuawk
 
