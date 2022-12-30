@@ -1,4 +1,5 @@
 @load "rwarray"
+
 BEGIN {
 # Скрипт чтения словарных баз в массивы
 # Последняя версия файла тут: https://github.com/Balamoote/gtts-scripts
