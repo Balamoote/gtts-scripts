@@ -17,8 +17,10 @@ BEGIN {
    if ( gawk52 == 1 ) {
     cmd   = "md5sum -c --status " inax "classes.md5 >/dev/null 2>&1"
     redix = system(cmd); close(cmd);};
+
+   classcache = inax "classes.bin"
    
-   if (redix == 0 && gawk52 == 1) { readall(indb "classes.bin") } else {
+   if (redix == 0 && gawk52 == 1) { readall(classcache) } else {
 
    cmd = "zcat " indb "dic_prq.gz";
    while ((cmd|getline) > 0) {
@@ -966,7 +968,7 @@ BEGIN {
       };
    } close(cmd);
  # Записать состояние словарных массивов
-  if (gawk52 == 1) { writeall(inax "classes.bin") };
+  if (gawk52 == 1) { writeall(classcache) };
   cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " indb "dic_rest.gz " indb "dic_suw.gz > " inax "classes.md5"
   system(cmd); close(cmd)
    } #gnuawk
