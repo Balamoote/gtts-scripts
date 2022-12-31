@@ -187,8 +187,8 @@ sed -r 's/^/ /g' gwt-"$book"/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$R
 	sort -u > gwt-"$book"/anycap-all.pat
 
 # Список известных имён собственных, которые подлежат обработке, за вычетом омографов
-grep -Ff <(zcat scriptaux/namebase0.pat.gz) gwt-"$book"/anycap-all.pat  | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/namebase0-proc-list.pat
-grep -Ff <(zcat scriptaux/override.pat.gz)  gwt-"$book"/anycap-all.pat  | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/override-proc-list.pat
+#grep -Ff <(zcat scriptaux/namebase0.pat.gz) gwt-"$book"/anycap-all.pat  | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/namebase0-proc-list.pat
+#grep -Ff <(zcat scriptaux/override.pat.gz)  gwt-"$book"/anycap-all.pat  | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/override-proc-list.pat
 
 # Отсеиваем уже известные имена в базах, а также омографы
 grep -Fvf <(zcat scriptaux/names-all.pat.gz) gwt-"$book"/anycap-all.pat | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/anycap-raw.pat
