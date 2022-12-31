@@ -159,11 +159,12 @@ for ( o in om ) { #e2
             # Обнуление цикла
             ennum=0; delete prevar;
 
-        } #preview
+        }; #preview
         ofile = wrd ".sh"
         outblock = shblock[o] outblock
         print outblock >> ofile; fflush();
         close(ofile);
+        outblock = "";
 
     } #e2
     printf ( "\033[0m%s\n", "" );
