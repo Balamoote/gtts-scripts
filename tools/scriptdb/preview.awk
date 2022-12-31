@@ -23,6 +23,7 @@ BEGIN {
     unxy    = "[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
     unxn    = "[^\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
     isword  = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
+    patword = "[^АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
     dotmark = "................................................................................"
     wrdmark = "================================================================================"
     nummark = "###########"
@@ -34,7 +35,7 @@ BEGIN {
     omoqty = split(readfile("omo-luc.lst"), omlst, "\n"); delete omlst[omoqty];
     for (i in omlst) { #b1
         le = split (omlst[i], arr, " ");
-        om[i] = arr[1]; lcm = tolower(om[i]); oml = length(lcm); ompad = sprintf("%" oml+5 "s", "" );
+        om[i] = arr[1]; omos[arr[1]]; lcm = tolower(om[i]); oml = length(lcm); ompad = sprintf("%" oml+5 "s", "" );
 	headr = sprintf ( "%s\n%s%s\n", "#!/bin/bash", ompad, "var=$1; case \"$var\" in");
         sedpart = ""; vimpart = ""; lexxpart = ""; riphead = ""; vpat = arr[2];
         for (s = 2; s <= le; s++ ) { #b2 Сборка опций для sed
@@ -59,65 +60,72 @@ BEGIN {
 
             shblock[i] = headr sedpart riphead vimhead lexxpart;
         } #b1
+        delete omos[""]
+ savefs = FS;   FS = patword;
     } { # Читаем файл книги в массив
 
     gsub("</?p>", "", $0)
     num++; book[num] = $0;
+    for ( i=1; i<=NF; i++ ) { if ($i in omos) {omos[$i] = omos[$i] " " num}; }
 
 } END { #e1 Для каждого омографа из сканируем каждую строку книги
+FS = savefs
 for ( o in om ) { #e2
     wrd = om[o];
+    lifo=split(omos[wrd], omlin, " ");
+    for (i in omlin) {if (omlin[i] == omlin[i+1]) {omlin[i]=""};  };
+
     wlen = length( wrd ); if ( wlen == 0 ) { continue };
     if ( preview == 1 ) { #preview
         replstring = sprintf( "%" wlen "s", "");
-        lnumwidt = length(num);					# Ширина вывода номера строки из количества строк в книге
-        lookfwrd = totallen-lookback-wlen-lnumwidt+correcti;    # Длина правой части превьюшки
-        maxprint += wlen + 1;					# Текущая длина вывода в консоль, считаем для перевода строки
+        lnumwidt = length(num);	                             # Ширина вывода номера строки из количества строк в книге
+        lookfwrd = totallen-lookback-wlen-lnumwidt+correcti; # Длина правой части превьюшки
+        maxprint += wlen + 1;                                # Текущая длина вывода в консоль, считаем для перевода строки
 
         if ( maxprint >= maxwidth ) { printf ("\n" ); maxprint = 0 };
 
         printf ( "\033[33m%s ", wrd );
 
-        for ( b in book ) { #e3
+        for ( i=1; i<=lifo; i++ ) { #e3
+            b = omlin[i]; if ( b == "" ) {continue};
             # Копируем book[b], чтобы выреза́ть из копии уже найденное вхождение
-            cline = book[b];				# Текущая строка
-            clen  = length ( book[b] );			# Длина текущей строки
+            cline = book[b];                                 # Текущая строка
+            clen  = length ( book[b] )                       # Длина текущей строки
 
-            while ( word = match ( cline, wrd ) ) { 	#e4 while ... match wrd всё ещё в строке
-                wend = RSTART + RLENGTH 		# адрес начала правой подстроки
-                best = substr(book[b], RSTART - 1, 1);  # адрес до поискового слова
-                afst = substr(book[b], wend, 1) 	# адерс после поискового слова
-
-                rlen = lookfwrd;			# Длина правой подстроки, после поискового слова
-                rzlen = 0; lzlen = 0;			# Длина найденных "нулевых"
+            while ( word = match ( cline, wrd ) ) { 	     #e4 while ... match wrd всё ещё в строке
+                wend = RSTART + RLENGTH                      # адрес начала правой подстроки
+                best = substr(book[b], RSTART - 1, 1);       # адрес до поискового слова
+                afst = substr(book[b], wend, 1)              # адерс после поискового слова
 
                 # Проверка, границ слова: не обработано ли оно уже?
-                if ( afst !~ isword ) { #e5 if afst
-                    if ( best !~ isword ) { #e6 if best
+                if ( afst !~ isword && best !~ isword ) {    #e5 if best
 
-                        if ( RSTART > lookback + 1 ) {  #e7.1 if rstart ... левая подстока слева не дотягивается до 1
-                            lan = RSTART - lookback; llen = lookback;
-                            do {
-                                lzlen0 = finduni(substr (book[b], lan, llen));
-                                delta  = lzlen0 - lzlen;
-                                lan   -= delta;
-                                dzq    = finduni(substr (book[b], lan, delta));
+                   rlen = lookfwrd;                          # Длина правой подстроки, после поискового слова
+                   rzlen = 0; lzlen = 0;                     # Длина найденных "нулевых"
 
-                                if ( dzq > 0 ) { lan -= dzq; delta += dzq;
-					if ( substr(book[b], lan, 1) ~ unxy) { lan -= 1; delta += 1 }; };
+                   if ( RSTART > lookback + 1 ) {           #e7.1 if rstart ... левая подстока слева не дотягивается до 1
+                       lan = RSTART - lookback; llen = lookback;
+                       do {
+                           lzlen0 = finduni(substr (book[b], lan, llen));
+                           delta  = lzlen0 - lzlen;
+                           lan   -= delta;
+                           dzq    = finduni(substr (book[b], lan, delta));
 
-                                if ( lan >= 1 ) { llen += delta; lpad = "";   }
-                                else { llen = RSTART - 1;
-                                       lpad = sprintf ( "%" 1 - lan "s", "" ) };
+                           if ( dzq > 0 ) { lan -= dzq; delta += dzq;
+				   if ( substr(book[b], lan, 1) ~ unxy) { lan -= 1; delta += 1 }; };
 
-                                lzlen  = finduni(substr(book[b], lan, llen));
+                           if ( lan >= 1 ) { llen += delta; lpad = "";   }
+                           else { llen = RSTART - 1;
+                                  lpad = sprintf ( "%" 1 - lan "s", "" ) };
 
-                            } while ( lzlen != lzlen0 );
+                           lzlen  = finduni(substr(book[b], lan, llen));
+
+                       } while ( lzlen != lzlen0 );
  
-                            lstring = lpad substr(book[b], lan, llen);
-                        } #e7.1 if rstart on left
+                       lstring = lpad substr(book[b], lan, llen);
+                    } #e7.1 if rstart on left
 
-                        else if ( RSTART > 1 ) { #e7.2 else if RSTART
+                    else if ( RSTART > 1 ) { #e7.2 else if RSTART
 
                             lan = 1; llen = RSTART - 1 ;
                             lstri = substr(book[b], lan, llen);
@@ -126,27 +134,26 @@ for ( o in om ) { #e2
                             lpad = sprintf( "%" lookback - llen "s", "" );
                             lstring = lpad lstri;
 
-                        } #e7.2 else if RSTART
+                     } #e7.2 else if RSTART
 
-                        else  { lstring = "" ; } #e7.3.
+                         else  { lstring = "" ; } #e7.3.
 
-                            # Формирование правой подстроки, без паддинга
-                            do {				#e8
-                                rzlen0 = finduni(substr( book[b], wend, rlen));
-                                delta  = rzlen0 - rzlen;
-                                rlen  += delta;
-                                dzq    = finduni(substr(book[b], wend+rlen-delta, delta));
-                                if ( dzq > 0 ) { rlen += dzq;  };
-                                rzlen  = finduni(substr( book[b], wend, rlen));
-                            } while ( rzlen != rzlen0 );	#e8
+                           # Формирование правой подстроки, без паддинга
+                           do {				#e8
+                               rzlen0 = finduni(substr( book[b], wend, rlen));
+                               delta  = rzlen0 - rzlen;
+                               rlen  += delta;
+                               dzq    = finduni(substr(book[b], wend+rlen-delta, delta));
+                               if ( dzq > 0 ) { rlen += dzq;  };
+                               rzlen  = finduni(substr( book[b], wend, rlen));
+                           } while ( rzlen != rzlen0 );	#e8
 
-                            rstring = substr ( book[b], wend, rlen );
+                     rstring = substr ( book[b], wend, rlen );
 
-                            ennum=ennum+1;
-                            prevar[ennum]=sprintf ("%" lnumwidt "s|%s%s%s", b, lstring, wrd, rstring);
-                        } #e6 if best
-                    } #e5 if afst
-                    cline = substr ( cline, 1, RSTART - 1) replstring substr(cline, wend)
+                     ennum=ennum+1;
+                     prevar[ennum]=sprintf ("%" lnumwidt "s|%s%s%s", b, lstring, wrd, rstring);
+                   } #e5 if afst
+                   cline = substr ( cline, 1, RSTART - 1) replstring substr(cline, wend)
                 } #e4 while ... match wrd in current line
             } #e3 main prog
 
@@ -167,4 +174,6 @@ for ( o in om ) { #e2
 
     } #e2
     printf ( "\033[0m%s\n", "" );
+#  for (i in omos){ print i omos[i]}
 } #e1
+
