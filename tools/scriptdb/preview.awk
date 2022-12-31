@@ -152,19 +152,18 @@ for ( o in om ) { #e2
 
             # Формируем блок текста превью для печати
             headline = sprintf("%s%s %s %s\n", substr(nummark, 1, lnumwidt), substr(dotmark, 1, lookback), substr(wrdmark, 1, wlen), substr(dotmark, 1, lookfwrd - 1)) ;
-            outblock = sprintf ("%s %s\n", "Всего найдено:", ennum) headline;
+            prevblock = sprintf ("%s %s\n", "Всего найдено:", ennum) headline;
 
-            for (j in prevar) { outblock = outblock sprintf ("%s\n", prevar[j]) };
+            for (j in prevar) { prevblock = prevblock sprintf ("%s\n", prevar[j]) };
 
             # Обнуление цикла
             ennum=0; delete prevar;
 
         }; #preview
         ofile = wrd ".sh"
-        outblock = shblock[o] outblock
+        outblock = shblock[o] prevblock
         print outblock >> ofile; fflush();
         close(ofile);
-        outblock = "";
 
     } #e2
     printf ( "\033[0m%s\n", "" );
