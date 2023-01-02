@@ -56,8 +56,8 @@ BEGIN {
 ##START_END##
 
 ### все !_#_!
- word["все"];
- for (i=1; i<=nf; i++) { if ( lc(0) in word ) wpos[i]; }; i="";
+ #word["все"];
+ for (i=1; i<=nf; i++) { if ( w(0,"все") ) wpos[i]; };
  for (i in wpos) { i=strtonum(i);
 
  #v всё-таки
@@ -641,7 +641,7 @@ BEGIN {
  { sub(/([Ее])/, "<_&_>", l[i]); r[160]++; if(dbg){print "R160"}; continue;};
  if ( mest_it(1) &&
        glc_mn(2,"syg") && s(0,1) )
- { sub(/([Ее])/, "ё", l[i]); r[161]++; if(dbg){print "R161"}; continue;};
+ { sub(/([Ее])/, "<_&_>", l[i]); r[161]++; if(dbg){print "R161"}; continue;};
  if ( mest_mnim(-1) &&
        prl_kred_sr(1) &&
         glc_mn(2,"syg") && s(-1,1) )
@@ -2218,6 +2218,7 @@ if ( gl_nemn(1) &&
         if (seeklast == "всё"    ) {prevyo[FNR] = 1; break};
         if (seeklast == "вс<_е_>") {prevje[FNR] = 1; break};
         }; };
+
 
 ### THE_x_END !_#_!
 

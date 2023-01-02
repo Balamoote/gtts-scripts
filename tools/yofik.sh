@@ -126,24 +126,29 @@ if [[ $fixomo -eq "1" ]]; then # fimomochk 0
 
 
 # Дописки в однозначное
-cat scriptdb/yomodef.sed > jot-"$book"/yodef-proc.sed
-sed -i "1is=(ё)=Ъ\\\1Ъ=gI
-1is=\\\xcc\\\x81=ЪЪЪ=g\n" jot-"$book"/yodef-proc.sed
+#cat scriptdb/yomodef.sed > jot-"$book"/yodef-proc.sed
+#sed -i "1is=(ё)=Ъ\\\1Ъ=gI
+#1is=\\\xcc\\\x81=ЪЪЪ=g\n" jot-"$book"/yodef-proc.sed
 #cat scriptdb/yomodef.sed scriptdb/vse.sed >> jot-"$book"/yodef-proc.sed
 
-yo_pre=$(date +%s.%N); duration=$( echo $yo_pre - $yo_time0 | bc )
+yo_time1=$(date +%s.%N); duration=$( echo $yo_time1 - $yo_time0 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предварительная подготовка скриптов ёфикации заняла:" $duration "сек"
 
-sedroll jot-"$book"/yodef-proc.sed jot-"$book"/text-book.txt
+#sedroll jot-"$book"/yodef-proc.sed jot-"$book"/text-book.txt
+
+sed -ri -f scriptdb/yomodef.sed jot-"$book"/text-book.txt
 
 awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/yodef.awk jot-"$book"/text-book.txt > jot-"$book"/text-book.awk.txt
 mv jot-"$book"/text-book.awk.txt jot-"$book"/text-book.txt
 
+yo_time2=$(date +%s.%N); duration=$( echo $yo_time2 - $yo_time1 | bc )
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация однозначных случаев заняла:" $duration "сек"
+
 awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/deomo.awk jot-"$book"/text-book.txt > jot-"$book"/text-book.awk.txt
 mv jot-"$book"/text-book.awk.txt jot-"$book"/text-book.txt
 
-yo_time1=$(date +%s.%N); duration=$( echo $yo_time1 - $yo_time0 | bc )
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация однозначных случаев заняла:" $duration "сек"
+yo_time3=$(date +%s.%N); duration=$( echo $yo_time3 - $yo_time2 | bc )
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация однозначных омографов заняла:" $duration "сек"
 
 # Возвращаем графику назад
 cat jot-"$book"/text-book.txt jot-"$book"/binary-book.txt > "$book"
@@ -192,7 +197,7 @@ printf '\e[36m%s \e[093m%s\e[36m%s\e[0m\n' "Найдено ё-омографов
 
 chmod +x *.sh
 cd ..
-yo_disc=$(date +%s.%N); duration=$( echo $yo_disc - $yo_time1 | bc )
+yo_time4=$(date +%s.%N); duration=$( echo $yo_time4 - $yo_time3 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Создание дискретных скриптов заняло:" $duration "сек"
 
 else # Если не нашли ё-омографов для ручной обработки yoomchk 1

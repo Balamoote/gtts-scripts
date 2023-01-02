@@ -50,7 +50,7 @@ BEGIN {
 
  for (i=1; i<=nf; i++) {
     
-    if ( l[i] ~ capword ) { lcfield=tolower(l[i]); if ( lcfield in yodef ) { l[i]=toupper(yodef[lcfield]) }; }
+    if ( l[i] ~ capword ) { lcf=tolower(l[i]); if ( lcf in yodef ) { l[i]=toupper(yodef[lcf]) }; }
     else { if ( l[i] in yodef ) { l[i]=yodef[l[i]] }; };
         
         }

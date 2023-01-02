@@ -133,11 +133,17 @@ if [[ -d gwt-"$book" ]]; then rm -rf gwt-"$book"/ && mkdir gwt-"$book"; else mkd
 # Удалить старые отчёты 00 - 10
 find . -type f -name "[01][0-9]_*\.list" -exec rm '{}'  \;
 
+# gw_m00=$(date +%s.%N); duration=$( echo $gw_m00 - $gw_time0 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 00:" $duration "сек" #dbgtime
+
 # Конвертация в UTF-8, если нужно
 #vim -c "set nobomb | set fenc=utf8 | x" "$book"
 
 [[ -e "$book".omo ]] && rm "$book".omo
 [[ -n $(ls [01][0-9]_*.list_* >/dev/null 2>&1) ]] && rm [01][0-9]_*.list_*
+
+# gw_m01=$(date +%s.%N); duration=$( echo $gw_m01 - $gw_m00 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 01:" $duration "сек" #dbgtime
 
 sed "/<binary/Q" "$book" | sed -r "s/\xc2\xa0/ /g; s/\x09/ /g
 s=([АБВГДЕЁЖЗИЙКЛМНОПРСТУФЦЧШЩЪЫЬЭЮЯ])ХХ([АБВГДЕЁЖЗИЙКЛМНОПРСТУФЦЧШЩЪЫЬЭЮЯ])=\1хх\2=g
@@ -151,6 +157,9 @@ s=([АБВГДЕЁЖЗИЙКЛМНОПРСТУФЦЧШЩЪЫЬЭЮЯ])ХХ([АБ
 	s=\xe2\x80\xa7=X7Ъ=g
 	" > gwt-"$book"/text-book.txt
 sed -n '/<binary/,$p' "$book" > gwt-"$book"/binary-book.txt
+
+# gw_m02=$(date +%s.%N); duration=$( echo $gw_m02 - $gw_m01 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 02:" $duration "сек" #dbgtime
 
 # Фикс римских цифр, записанных кириллицей
 latcyr=1
@@ -170,21 +179,36 @@ done
 
 sed -ri "s=([АБВГДЕЁЖЗИЙКЛМНОПРСТУФЦЧШЩЪЫЬЭЮЯ])хх([АБВГДЕЁЖЗИЙКЛМНОПРСТУФЦЧШЩЪЫЬЭЮЯ])=\1ХХ\2=g" gwt-"$book"/text-book.txt
 
+# gw_m03=$(date +%s.%N); duration=$( echo $gw_m03 - $gw_m02 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 03:" $duration "сек" #dbgtime
+
 # Список обычных слов (только с маленькой буквы)
-sed -r 's/^/ /g' gwt-"$book"/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$rulc$unxe]+" | grep -Ev "[$unxe]" | sed -r "s/^.+$/_\0=/g" | \
-	grep -Fvf <(zcat scriptaux/lexx.pat.gz) | sort -u | sed -r "s/^_(.+)=$/_\1=\1=/g" > 00_wrd_newdic_nl.list
+ sed -r 's/^/ /g' gwt-"$book"/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$rulc$unxe]+" | grep -Ev "[$unxe]" | sed -r "s/^.+$/_\0=/g" | \
+ 	grep -Fvf <(zcat scriptaux/lexx.pat.gz) | sort -u | sed -r "s/^_(.+)=$/_\1=\1=/g" > 00_wrd_newdic_nl.list
+
+# gw_m04=$(date +%s.%N); duration=$( echo $gw_m04 - $gw_m03 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 04:" $duration "сек" #dbgtime
 
 # Список слов с заглавной буквы НЕ в начале предложения
-grep -Po "(?<=[A-Za-zА-Яа-яёЁ0-9,}):;$unxe$unxs])[ ’(«$qtsd–—-]+[$RUUC$unxe][$rulc$unxe]+" gwt-"$book"/text-book.txt | grep -Ev "[$unxe]" | \
+grep -Po "(?<=[A-Za-zА-Яа-яёЁ0-9,}):;$unxe$unxs])[ ’(«$qtsd–—-]+[$unxe]?[$RUUC][$rulc$unxe]+" gwt-"$book"/text-book.txt | grep -Ev "[$unxe]" | \
 	sed -r "s/^[ ’(«\x22\x27–—-]+(.*)$/_\l\1=/g" | sort -u > gwt-"$book"/surcap-all.pat
+
+# gw_m05=$(date +%s.%N); duration=$( echo $gw_m05 - $gw_m04 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 05:" $duration "сек" #dbgtime
 
 # Фамилия после инициала
 grep -Po "\b(?<=[$RUUC][$fkdt.])\s*[$RUUC$unxe][$rulc$unxe]+" gwt-"$book"/text-book.txt| grep -Ev "[$unxe]" | sed -r "s/^\s*(.*)$/_\l\1=/g" | \
 	sort -u >> gwt-"$book"/surcap-all.pat
 
+# gw_m06=$(date +%s.%N); duration=$( echo $gw_m06 - $gw_m05 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 06:" $duration "сек" #dbgtime
+
 # Список всех слов с заглавной буквы, без учёта позиции
 sed -r 's/^/ /g' gwt-"$book"/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$RUUC$unxe][$rulc$unxe]+" | grep -Ev "[$unxe]" | sed -r "s/^.+$/_\l\0=/g" | \
 	sort -u > gwt-"$book"/anycap-all.pat
+
+# gw_m07=$(date +%s.%N); duration=$( echo $gw_m07 - $gw_m06 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 07:" $duration "сек" #dbgtime
 
 # Список известных имён собственных, которые подлежат обработке, за вычетом омографов
 #grep -Ff <(zcat scriptaux/namebase0.pat.gz) gwt-"$book"/anycap-all.pat  | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/namebase0-proc-list.pat
@@ -194,8 +218,14 @@ sed -r 's/^/ /g' gwt-"$book"/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$R
 grep -Fvf <(zcat scriptaux/names-all.pat.gz) gwt-"$book"/anycap-all.pat | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/anycap-raw.pat
 grep -Fvf <(zcat scriptaux/names-all.pat.gz) gwt-"$book"/surcap-all.pat | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/surcap-raw.pat
 
+# gw_m08=$(date +%s.%N); duration=$( echo $gw_m08 - $gw_m07 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 08:" $duration "сек" #dbgtime
+
 # Выделяем из "списка всех" часть со словами в начале предложения и т.п.
 grep -Fvf gwt-"$book"/surcap-raw.pat gwt-"$book"/anycap-raw.pat > gwt-"$book"/anycap-may.txt
+
+# gw_m09=$(date +%s.%N); duration=$( echo $gw_m09 - $gw_m08 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 09:" $duration "сек" #dbgtime
 
 # Отсеиваем слова из базового словаря scriptdb/wordbase0.gz
 grep -Fvf <(zcat scriptaux/wdb0.gz) gwt-"$book"/anycap-may.txt > gwt-"$book"/anycap-lex.pat
@@ -203,9 +233,15 @@ grep -Ff  <(zcat scriptaux/wdb0.gz) gwt-"$book"/anycap-may.txt > gwt-"$book"/any
 grep -Fvf <(zcat scriptaux/wdb0.gz) gwt-"$book"/surcap-raw.pat > gwt-"$book"/surcap-lex.pat
 grep -Ff  <(zcat scriptaux/wdb0.gz) gwt-"$book"/surcap-raw.pat > gwt-"$book"/surcap-bas.pat
 
+# gw_m10=$(date +%s.%N); duration=$( echo $gw_m10 - $gw_m09 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 10:" $duration "сек" #dbgtime
+
 # Список неизвестных имён
 grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/surcap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 01_nom_newsur_nl.list
 grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/anycap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 02_nom_newany_nl.list
+
+# gw_m11=$(date +%s.%N); duration=$( echo $gw_m11 - $gw_m10 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 11:" $duration "сек" #dbgtime
 
 # Делаем списки слов, обработанных словарем lexx blchk 0
 if [[ "$2" != "biglist" ]]; then
@@ -222,6 +258,9 @@ if [[ "$2" != "biglist" ]]; then
   sedz-dp scriptaux/tts-dq.pat.gz gwt-"$book"/surcap-lex.pat > gwt-"$book"/surlex-in-dq.sed
   sedz-si scriptaux/tts-si.pat.gz gwt-"$book"/surcap-lex.pat > gwt-"$book"/surlex-in-si.sed
 
+# gw_m12=$(date +%s.%N); duration=$( echo $gw_m12 - $gw_m11 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 12:" $duration "сек" #dbgtime
+
   touch 03_nom_surlex_dq.list 04_nom_surlex_si.list 05_nom_anylex_dq.list 06_nom_anylex_si.list 07_nom_surbas_dq.list 08_nom_surbas_si.list 09_nom_anybas_dq.list 10_nom_anybas_si.list
   inc=50
   sedrnf () { local lico=$(wc -l < "$1"); local i=0; local j=0; for i in $(seq 1 $inc $lico); do j=$(($i+$(($inc-1)))); sed -rnf <(sed -n "$i,$j p" < "$1") "$2"; done; }
@@ -234,6 +273,9 @@ if [[ "$2" != "biglist" ]]; then
   sedrnf gwt-"$book"/surbas-in-si.sed gwt-"$book"/surcap-raw.pat >> 08_nom_surbas_si.list
   sedrnf gwt-"$book"/surlex-in-dq.sed gwt-"$book"/surcap-raw.pat >> 03_nom_surlex_dq.list
   sedrnf gwt-"$book"/surlex-in-si.sed gwt-"$book"/surcap-raw.pat >> 04_nom_surlex_si.list
+
+# gw_m13=$(date +%s.%N); duration=$( echo $gw_m13 - $gw_m12 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 13:" $duration "сек" #dbgtime
 
 # Генерируем скрипт sed для обработки текста книги wochk 0
 if [[ $key != "wonly" ]]; then
@@ -249,7 +291,7 @@ if [[ $key != "wonly" ]]; then
 
 #sort -u -o gwt-"$book"/names-proc.sed gwt-"$book"/names-proc.sed
 
-echo "s=(\S)\s+=\1 =g
+sed -ri "s=(\S)\s+=\1 =g
 s=(<p>)\s+=\1=gI
 s=\s+(<\/p>)=\1=gI
 s=X1Ъ=\xcc\x81=g
@@ -260,7 +302,10 @@ s=X5Ъ=\xcc\xad=g
 s=X6Ъ=\xcc\xb0=g
 s=X8Ъ=\xe2\x80\xa4=g
 s=X7Ъ=\xe2\x80\xa7=g
-s=(\xcc\x81)+=\xcc\x81=g" > gwt-"$book"/names-proc.sed
+s=(\xcc\x81)+=\xcc\x81=g" gwt-"$book"/text-book.txt
+
+# gw_m14=$(date +%s.%N); duration=$( echo $gw_m14 - $gw_m13 | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 14:" $duration "сек" #dbgtime
 
 gw_pre=$(date +%s.%N); duration=$( echo $gw_pre - $gw_time0 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предварительная подготовка заняла:" $duration "сек"
@@ -268,8 +313,10 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предва�
 # Применяем шаблоны
 printf '\e[36m%s\e[0m ' "Расстановка ударений в именах собственных …"
 
-inc=100
-sedroll gwt-"$book"/names-proc.sed gwt-"$book"/text-book.txt
+#inc=100
+#sedroll gwt-"$book"/names-proc.sed gwt-"$book"/text-book.txt
+#gw_m15=$(date +%s.%N); duration=$( echo $gw_m15 - $gw_pre | bc ) #dbgtime
+#LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 15:" $duration "сек" #dbgtime
 
 awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/namedef.awk gwt-"$book"/text-book.txt > gwt-"$book"/text-book.awk.txt
 mv gwt-"$book"/text-book.awk.txt gwt-"$book"/text-book.txt

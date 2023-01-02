@@ -35,7 +35,7 @@ BEGIN {
     omoqty = split(readfile("omo-luc.lst"), omlst, "\n"); delete omlst[omoqty];
     for (i in omlst) { #b1
         le = split (omlst[i], arr, " ");
-        om[i] = arr[1]; omos[arr[1]]; lcm = tolower(om[i]); oml = length(lcm); ompad = sprintf("%" oml+5 "s", "" );
+        omos[arr[1]]; lcm = tolower(arr[1]); oml = length(lcm); ompad = sprintf("%" oml+5 "s", "" );
 	headr = sprintf ( "%s\n%s%s\n", "#!/bin/bash", ompad, "var=$1; case \"$var\" in");
         sedpart = ""; vimpart = ""; lexxpart = ""; riphead = ""; vpat = arr[2];
         for (s = 2; s <= le; s++ ) { #b2 Сборка опций для sed
@@ -58,7 +58,7 @@ BEGIN {
                 };  
             if ( lexxpart == "" ) { lexxpart = sprintf("%s\n", "Шаблон в lexx: нет" ) };
 
-            shblock[i] = headr sedpart riphead vimhead lexxpart;
+            shblock[arr[1]] = headr sedpart riphead vimhead lexxpart;
         } #b1
         delete omos[""]
     savefs = FS;   FS = fsword;
@@ -70,10 +70,10 @@ BEGIN {
 
 } END { #e1 Для каждого омографа из сканируем каждую строку книги
 FS = savefs
-for ( o in om ) { #e2
-    wrd = om[o];
+PROCINFO["sorted_in"]="@ind_num_asc"
+
+for ( wrd in omos ) { #e2
     lifo=split(omos[wrd], omlin, " ");
-    for (i in omlin) {if (omlin[i] == omlin[i+1]) {omlin[i]=""};  };
 
     wlen = length( wrd ); if ( wlen == 0 ) { continue };
     if ( preview == 1 ) { #preview
@@ -87,6 +87,7 @@ for ( o in om ) { #e2
         printf ( "\033[33m%s ", wrd );
 
         for ( i=1; i<=lifo; i++ ) { #e3
+            if (omlin[i] == omlin[i+1])  {continue};
             b = omlin[i]; if ( b == "" ) {continue};
             # Копируем book[b], чтобы выреза́ть из копии уже найденное вхождение
             cline = book[b];                                 # Текущая строка
@@ -168,7 +169,7 @@ for ( o in om ) { #e2
 
         }; #preview
         ofile = wrd ".sh"
-        outblock = shblock[o] prevblock
+        outblock = shblock[wrd] prevblock
         print outblock >> ofile; fflush();
         close(ofile);
 
