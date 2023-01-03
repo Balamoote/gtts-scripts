@@ -13,7 +13,13 @@
 @include "scriptdb/functions.awk"
 @include "scriptdb/classes.awk"
 
+function hyphback(hystring)
+{if (hystring ~ /[-]/) { for (i=1; i<=nf-1; i++) { if ( se(0,"-") ) { hyw = lc(0) sep[i] lc(1); if ( hyw in dichyph )
+    { l[i] = l[i] sep[i] l[i+1]; delete sep[i]; delete l[i+1]; nf=arrpack(i+1, l); arrpack(i, sep) }; }; }; };}
+
 BEGIN {
+      PROCINFO["sorted_in"]="@ind_num_asc"
+
    # dbg = 1
    # dbgstat = 1
 
@@ -22,6 +28,7 @@ BEGIN {
     RUUC    = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]+"
     rulc    = "[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]+"
     patword = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb00-9]+"
+    fsword  = "[^АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
     vvpat   = "[,—]"
 
     # массивы для разных целей
@@ -42,27 +49,26 @@ BEGIN {
     cst = "готовы могут можете будут будем смогли сможете хотят хотите хотели захотят захотели могли хотели должны желали стали станут просим";
         stoar(cst,md_mn," ");
 
+    cst = "все";
+        stoar(cst,omoz," ");
 
+   savefs = FS;
+   FS = fsword;
+} {
 
+    num++; book[num] = $0;
+    for ( i=1; i<=NF; i++ ) { if ( tolower($i) in omoz && num != prevnum[$i] ) { omos[$i] = omos[$i] " " num; prevnum[$i] = num }};
 
- }  {
+}
+END {
+FS = savefs
 
+for (wrd in omos) { wln=split(omos[wrd], omlin, " "); for (y=1; y<=wln; y++) { b = strtonum(omlin[y]); nf=patsplit(book[b], l, patword, sep); hyphback(book[b])
 
- nf=patsplit($0, l, patword, sep);
- # соединяем некоторые слова с дефисом в одно
- if ($0 ~ "-") { for (i=1; i<=nf-1; i++) { if ( se(0,"-") ) { hyw = lc(0) sep[i] lc(1);
-     if ( hyw in dichyph && hyw != "все-таки" )
-     { l[i] = l[i] sep[i] l[i+1]; delete sep[i]; delete l[i+1]; nf=arrpack(i+1, l); arrpack(i, sep) }; }; }; };
-##START_END##
+###START_END##
 
 ### все !_#_!
- #word["все"];
- for (i=1; i<=nf; i++) { if ( w(0,"все") ) wpos[i]; };
- for (i in wpos) { i=strtonum(i);
-
- #v всё-таки
- if ( se(0,"-") && w(1,"таки") )
- { sub(/[Ее]/, "ё", l[i]); r[1]++; if(dbg){print "R1"}; continue;};
+ if(tolower(wrd)== "все" ){for(i=1;i<=nf;i++){if(l[i]==wrd) wpos[i];};for(i in wpos){i=strtonum(i);
 
  #v всё же
  if ( w(-1,"не") &&
@@ -2202,38 +2208,48 @@ if ( gl_nemn(1) &&
  { sub(/[Ее]/, "ё", l[i]); r[570]++; if(dbg){print "R570"}; continue;};
 
  # короткие предложения в зависимости от предыдущей строки
- if (i<=5 && prevyo[FNR-1])
+ if (i<=5 && prevyo[b-1] )
  { sub(/[Ее]/, "ё", l[i]); r[571]++; if(dbg){print "R571"}; continue;};
 
  # короткие предложения в зависимости от предыдущей строки
- if (i<=5 && prevje[FNR-1])
+ if (i<=5 && prevje[b-1] )
  { sub(/([Ее])/, "<_&_>", l[i]); r[572]++; if(dbg){print "R572"}; continue;};
 
 
              }; delete wpos;
 
  # всё/все́ в предыдущей строке
- for (k = 0; k <= 9; k++) {
-    if (nf-k > 1) { seeklast = tolower(l[nf-k]);
-        if (seeklast == "всё"    ) {prevyo[FNR] = 1; break};
-        if (seeklast == "вс<_е_>") {prevje[FNR] = 1; break};
+ for (sk = 0; sk <= 9; sk++) { skl = nf-sk;
+    if (skl > 0) { seeklast = tolower(l[skl]);
+        if (seeklast == "всё"    ) {prevyo[b] = skl; break};
+        if (seeklast == "вс<_е_>") {prevje[b] = skl; break};
         }; };
+ 
+ book[b] = joinpat(l, sep, nf)
+ book[b] = gensub(/<_([Ее])_>/, "\\1\xcc\x81", "g", book[b])
+
+  } # все
 
 
+
+
+
+  } # строка
+ } # омограф
+ 
 ### THE_x_END !_#_!
 
- # вывести изменённую строку
- $0 = joinpat(l, sep, nf)
- $0 = gensub(/<_([Ее])_>/, "\\1\xcc\x81", "g", $0)
- print $0
+# вывести изменённую строку
 
- }
+for (i in book) { print book[i]}
 
- END {
 #dbg = 1
 #dbgstat = 1;
- cmd = "rm stat.txt"
- if (dbgstat==1) {system(cmd); for (i=1; i<=572; i++) { printf ("%s%s %s %s\n", "R", i, "=", r[i]) >> "stat.txt"} };
+ cmd = "rm _stat.txt _yo.txt _omos.txt"
+ if (dbgstat==1) {system(cmd); for (i=1; i<=572; i++) { printf ("%s%s %s %s\n", "R", i, "=", r[i]) >> "_stat.txt"};
+ for (i in prevyo) {print i, prevyo[i] >> "_yo.txt"}
+ for (i in omos) { print i, omos[i] >> "_omos.txt" }
+ }
 
 
   }

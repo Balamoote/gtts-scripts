@@ -136,16 +136,16 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предва�
 
 #sedroll jot-"$book"/yodef-proc.sed jot-"$book"/text-book.txt
 
-sed -ri -f scriptdb/yomodef.sed jot-"$book"/text-book.txt
+#sed -ri -f scriptdb/yomodef.sed jot-"$book"/text-book.txt
 
-awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/yodef.awk jot-"$book"/text-book.txt > jot-"$book"/text-book.awk.txt
-mv jot-"$book"/text-book.awk.txt jot-"$book"/text-book.txt
+ awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/yodef.awk jot-"$book"/text-book.txt > jot-"$book"/text-book.awk.txt
+ mv jot-"$book"/text-book.awk.txt jot-"$book"/text-book.txt
 
 yo_time2=$(date +%s.%N); duration=$( echo $yo_time2 - $yo_time1 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация однозначных случаев заняла:" $duration "сек"
 
-awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/deomo.awk jot-"$book"/text-book.txt > jot-"$book"/text-book.awk.txt
-mv jot-"$book"/text-book.awk.txt jot-"$book"/text-book.txt
+ awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/deomo.awk jot-"$book"/text-book.txt > jot-"$book"/text-book.awk.txt
+ mv jot-"$book"/text-book.awk.txt jot-"$book"/text-book.txt
 
 yo_time3=$(date +%s.%N); duration=$( echo $yo_time3 - $yo_time2 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация однозначных омографов заняла:" $duration "сек"

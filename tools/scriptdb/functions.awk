@@ -7,8 +7,8 @@ function pusha(arr, arrto,    k)                  # добывать масси�
                 { for (k in arr) {arrto[k]}; }
 function stoar(string, arrto, sepr,    i,arrt)    # добывать массив выдать 1-й символ строки-сеператора
                 { split(string, arrt, sepr); for (i in arrt) {arrto[arrt[i]]}; delete arrt; }
-function sl(n,    rett)                           # выдать 1-й символ строки-сеператора
-                { rett = substr(sep[i+n],1,1); return rett }
+function s1(n,wl,    rett)                           # выдать 1-й символ строки-сеператора
+                { if( substr(sep[i+n],1,1) == wl ) {rett=1} else {rett=0}; return rett }
 function lc(n,   rett)                            # перевести в нижний гегистр
                 { rett = gensub(unxy,"","g",tolower(l[i+n])); return rett }
 function q(n, array,    el, rett)                 # слово в БАЗОВОМ массиве?
@@ -50,7 +50,7 @@ function wc(n, wl,    wrds, k, lk, rett)           # нахождение час
 function wv(n, wl,    wrds, k, lk, rett)           # НЕ нахождение части слова в списке? = "один из набора"
                 { lk=split(wl, wrds, " "); for (k=1; k<=lk; k++) { if (lc(n)~wrds[k]) {rett=0; break} else {rett=1};}; return rett }
 function W(n, wl,    wrds, k, lk, rett)           # НЕнахождение в списке? != "одно из слов"
-                { lk=split(wl, wrds, " "); for (k=1; k<=lk; k++) { if (lc(n)==wrds[k]) {rett=0; break} else {rett=1};}; return rett }
+                { rett=1; lk=split(wl, wrds, " "); for (k=1; k<=lk; k++) { if (lc(n)==wrds[k]) {rett=0; break} }; return rett }
 function wb(n, wl,    wrds, k, rett)              # поиск на n шагов назад слова из списка
                 { rett=0; wbn=""; split(wl, wrds, " "); for (k=-1; k>=n; k--) { if (lc(k) in wrds) {rett=1; wbn=k; break};}; return rett }
 function wf(n, wl,    wrds, k, rett)              # поиск на n шагов вперёд наличия слова в массиве
