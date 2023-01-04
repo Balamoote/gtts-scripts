@@ -7,13 +7,17 @@ function pusha(arr, arrto,    k)                  # добывать масси�
                 { for (k in arr) {arrto[k]}; }
 function stoar(string, arrto, sepr,    i,arrt)    # добывать массив выдать 1-й символ строки-сеператора
                 { split(string, arrt, sepr); for (i in arrt) {arrto[arrt[i]]}; delete arrt; }
-function s1(n,wl,    rett)                           # выдать 1-й символ строки-сеператора
+function hyphback(hystring,  hyw)
+{if (hystring ~ hysnip) { for (i=1; i<=nf-1; i++) { if ( se(0,"-") ) { hyw = lc(0) sep[i] lc(1); if ( hyw in dichyph )
+    { l[i] = l[i] sep[i] l[i+1]; delete sep[i]; delete l[i+1]; nf=arrpack(i+1, l); arrpack(i, sep) }; }; }; };}
+
+function s1(n,wl,    rett)                        # выдать 1-й символ строки-сеператора
                 { if( substr(sep[i+n],1,1) == wl ) {rett=1} else {rett=0}; return rett }
 function lc(n,   rett)                            # перевести в нижний гегистр
                 { rett = gensub(unxy,"","g",tolower(l[i+n])); return rett }
 function q(n, array,    el, rett)                 # слово в БАЗОВОМ массиве?
                 { if(lc(n) in array) {rett=1} else {rett=0}; return rett}
-function q_(n, array,    el, rett)                 # слово в БАЗОВОМ массиве?
+function q_(n, array,    el, rett)                # слово в БАЗОВОМ массиве?
                 { if(lc(n) in array) {rett=1} else {rett=0}; return rett}
 function qq(m, n,    rett)                        # слово m равно слово n?
                 { if ( lc(m) == lc(n) ) {rett=1} else {rett=0}; return rett}
@@ -27,27 +31,27 @@ function Qf(n, class,    k, rett)                 # поиск на n шагов
                 { rett=1; for (k= 1; k<=n; k++)   { if ( @class(k) ) {rett=0; break}; }; return rett }
 function Q(n, class,    rett)                     # слово НЕ в классе?
                 { if ( @class(n) ) {rett=0} else {rett=1}; return rett }
-function qb_(n, array,    k, rett)                 # поиск на n шагов назад наличия слова в БАЗОВОМ массиве
+function qb_(n, array,    k, rett)                # поиск на n шагов назад наличия слова в БАЗОВОМ массиве
                 { rett=0; qbn=""; for (k=-1; k>=n; k--) { if (lc(k) in array) {rett=1; qbn=k; break}; }; return rett }
-function qf_(n, array,    k, rett)                 # поиск на n шагов вперёд наличия слова в БАЗОВОМ массиве
+function qf_(n, array,    k, rett)                # поиск на n шагов вперёд наличия слова в БАЗОВОМ массиве
                 { rett=0; qfn=""; for (k= 1; k<=n; k++) { if (lc(k) in array) {rett=1; qfn=k; break}; }; return rett }
-function Qb_(n, array,    k, rett)                 # поиск на n шагов назад отсутствия слова в БАЗОВОМ массиве
+function Qb_(n, array,    k, rett)                # поиск на n шагов назад отсутствия слова в БАЗОВОМ массиве
                 { rett=1; for (k=-1; k>=n; k--)   { if (lc(k) in array) {rett=0; break}; }; return rett }
-function Qf_(n, array,    k, rett)                 # поиск на n шагов вперёд отсутствия слова в БАЗОВОМ массиве
+function Qf_(n, array,    k, rett)                # поиск на n шагов вперёд отсутствия слова в БАЗОВОМ массиве
                 { rett=1; for (k= 1; k<=n; k++)   { if (lc(k) in array) {rett=0; break}; }; return rett }
-function Q_(n, array,    rett)                     # слово НЕ в БАЗОВОМ массиве?
+function Q_(n, array,    rett)                    # слово НЕ в БАЗОВОМ массиве?
                 { if (lc(n) in array) {rett=0} else {rett=1}; return rett }
-function p(n,wl,    rett)                            # разделитель содержит препинаний?
+function p(n,wl,    rett)                         # разделитель содержит препинаний?
                 { if(length(wl)) {if(sep[i+n]~"[…,.:;!?—]" && sep[i+n]!~wl){rett=1} else {rett=0}} else {if( sep[i+n]~"[…,.:;!?—]"){rett=1} else {rett=0}}; return rett}
 function cap(n,    el, rett)                      # Слово с заглавной буквы?
                 { el = l[i+n]; if ( substr(el,1,1) ~ RUUC ) {rett=1} else {rett=0}; return rett }
-function m(wl,    wrds, k, el, lk, rett)           # нахождение в списке? = "одно из слов"
+function m(wl,    wrds, k, el, lk, rett)          # нахождение в списке? = "одно из слов"
                 { lk=split(wl, wrds, " "); for (k=1; k<=lk; k++) { el = "_" wrds[k] "_"; if (fi3 ~ el) {rett=1; break} else {rett=0};}; return rett }
 function w(n, wl,    wrds, k, lk, rett)           # нахождение в списке? = "одно из слов"
                 { lk=split(wl, wrds, " "); for (k=1; k<=lk; k++) { if (lc(n)==wrds[k]) {rett=1; break} else {rett=0};}; return rett }
-function wc(n, wl,    wrds, k, lk, rett)           # нахождение части слова в списке? = "один из набора"
+function wc(n, wl,    wrds, k, lk, rett)          # нахождение части слова в списке? = "один из набора"
                 { lk=split(wl, wrds, " "); for (k=1; k<=lk; k++) { if (lc(n)~wrds[k]) {rett=1; break} else {rett=0};}; return rett }
-function wv(n, wl,    wrds, k, lk, rett)           # НЕ нахождение части слова в списке? = "один из набора"
+function wv(n, wl,    wrds, k, lk, rett)          # НЕ нахождение части слова в списке? = "один из набора"
                 { lk=split(wl, wrds, " "); for (k=1; k<=lk; k++) { if (lc(n)~wrds[k]) {rett=0; break} else {rett=1};}; return rett }
 function W(n, wl,    wrds, k, lk, rett)           # НЕнахождение в списке? != "одно из слов"
                 { rett=1; lk=split(wl, wrds, " "); for (k=1; k<=lk; k++) { if (lc(n)==wrds[k]) {rett=0; break} }; return rett }
@@ -73,7 +77,7 @@ function phs(n, wl,    wrds, k, lk, cnt, rett)    # кусок фразы ДО �
 function phf(n, wl,    wrds, k, lk, cnt, rett)    # кусок фразы ПОСЛЕ слова
                 {hfn="";lk=split(wl,wrds," "); for(k=1;k<=lk;k++) {if(lc(n+k-1)==wrds[k]) {cnt++} else {cnt=0; break};};
                     if(cnt==lk) {rett=1;hfn=n+lk} else {rett=0}; return rett}
-function arrpack(n, array,   i, rett)                  # устранить пропуск в массиве
+function arrpack(n, array,   i, rett)             # устранить пропуск в массиве
                 { rett = length(array); for (i=n; i<=rett; i++) {array[i] = array[i+1]}; delete array[rett+1]; return rett }
 
 

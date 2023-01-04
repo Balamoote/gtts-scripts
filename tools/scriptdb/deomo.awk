@@ -13,10 +13,6 @@
 @include "scriptdb/functions.awk"
 @include "scriptdb/classes.awk"
 
-function hyphback(hystring)
-{if (hystring ~ /[-]/) { for (i=1; i<=nf-1; i++) { if ( se(0,"-") ) { hyw = lc(0) sep[i] lc(1); if ( hyw in dichyph )
-    { l[i] = l[i] sep[i] l[i+1]; delete sep[i]; delete l[i+1]; nf=arrpack(i+1, l); arrpack(i, sep) }; }; }; };}
-
 BEGIN {
       PROCINFO["sorted_in"]="@ind_num_asc"
 
@@ -28,16 +24,13 @@ BEGIN {
     RUUC    = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]+"
     rulc    = "[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]+"
     patword = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb00-9]+"
+    regword = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
     fsword  = "[^АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
     vvpat   = "[,—]"
+    hysnip  = regword "[-]" regword
 
     # массивы для разных целей
 
-    # части слов с дефисом для склейки
-#   cst = "где докуда зачем из как когда кое кто кому кого кем куда откуда отчего по потому почему что сколько чего чему чье чьё чьем чьём чью";
-#       stoar(cst,hyp1," ")
-#   cst = "где за зачем когда кое куда либо над нибудь никак откуда отчего под подо почему то что";
-#       stoar(cst,hyp2," ")
     # расширенное "это"
     cst = "это то се сие оно сё";
         stoar(cst,mst_it," ");
@@ -50,26 +43,27 @@ BEGIN {
         stoar(cst,md_mn," ");
 
     cst = "все";
-        stoar(cst,omoz," ");
+        stoar(cst,vsez," ");
 
    savefs = FS;
    FS = fsword;
 } {
-
     num++; book[num] = $0;
-    for ( i=1; i<=NF; i++ ) { if ( tolower($i) in omoz && num != prevnum[$i] ) { omos[$i] = omos[$i] " " num; prevnum[$i] = num }};
 
+    for (i=1; i<=NF; i++) { ci=tolower($i);
+
+        if(ci in vsez && num!=prevnum) {vsez["все"]=vsez["все"] " " num;prevnum=num}; #_#_#vsez "все" не делим по регистрам
+
+    };
 }
 END {
 FS = savefs
-
-for (wrd in omos) { wln=split(omos[wrd], omlin, " "); for (y=1; y<=wln; y++) { b = strtonum(omlin[y]); nf=patsplit(book[b], l, patword, sep); hyphback(book[b])
-
 ###START_END##
 
 ### все !_#_!
- if(tolower(wrd)== "все" ){for(i=1;i<=nf;i++){if(l[i]==wrd) wpos[i];};for(i in wpos){i=strtonum(i);
-
+for(wrd in vsez){wln=split(vsez[wrd],omlin," ");for(y=1;y<=wln;y++){b=strtonum(omlin[y]);nf=patsplit(book[b],l,patword,sep);hyphback(book[b]) # header1
+for(i=1;i<=nf;i++){if(tolower(l[i])==wrd) wpos[i];};for(i in wpos){i=strtonum(i);                                                             # header2
+    
  #v всё же
  if ( w(-1,"не") &&
        w(1,"же ж") &&
@@ -79,7 +73,7 @@ for (wrd in omos) { wln=split(omos[wrd], omlin, " "); for (y=1; y<=wln; y++) { b
        mest_it(2) &&
         gl_pnmn(3) && s(0,2) )
  { sub(/[Ее]/, "<_&_>", l[i]); r[3]++; if(dbg){print "R3"}; continue;};
- if ( s(0,0) && (w(1,"же ж равно едино одно")) )
+ if ( s(0,0) && w(1,"же ж равно едино одно") )
  { sub(/[Ее]/, "ё", l[i]); r[4]++; if(dbg){print "R4"}; continue;};
 
  # География
@@ -1879,7 +1873,7 @@ if ( gl_nemn(1) &&
         (gl_ed(4)||gl_in(4)) && s(0,3) )
  { sub(/[Ее]/, "ё", l[i]); r[486]++; if(dbg){print "R486"}; continue;};
  if ( mest_mnim(-2) &&
-      (gl_pnmn(-1)) &&
+       gl_pnmn(-1) &&
        (nar_vrem(1)||nar_mest(1)||nar_spos(1)||nar_srav(1)||nar_kaq(1)||suw_edvi(1)||mest_ed(1)) && s(-2,0) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[487]++; if(dbg){print "R487"}; continue;};
  if ( (nar_vrem(1)||nar_mest(1)||nar_spos(1)||nar_srav(1)||nar_kaq(1)||suw_edvi(1)||mest_ed(1)) &&
@@ -2208,34 +2202,23 @@ if ( gl_nemn(1) &&
  { sub(/[Ее]/, "ё", l[i]); r[570]++; if(dbg){print "R570"}; continue;};
 
  # короткие предложения в зависимости от предыдущей строки
- if (i<=5 && prevyo[b-1] )
+ if (i<=5 && b-prevyo == 1 )
  { sub(/[Ее]/, "ё", l[i]); r[571]++; if(dbg){print "R571"}; continue;};
 
  # короткие предложения в зависимости от предыдущей строки
- if (i<=5 && prevje[b-1] )
+ if (i<=5 && b-prevje == 1 )
  { sub(/([Ее])/, "<_&_>", l[i]); r[572]++; if(dbg){print "R572"}; continue;};
-
 
              }; delete wpos;
 
  # всё/все́ в предыдущей строке
- for (sk = 0; sk <= 9; sk++) { skl = nf-sk;
-    if (skl > 0) { seeklast = tolower(l[skl]);
-        if (seeklast == "всё"    ) {prevyo[b] = skl; break};
-        if (seeklast == "вс<_е_>") {prevje[b] = skl; break};
-        }; };
- 
- book[b] = joinpat(l, sep, nf)
- book[b] = gensub(/<_([Ее])_>/, "\\1\xcc\x81", "g", book[b])
+ if (nf-i <= 9 ) {
+        if (tolower(l[i]) == "всё"    ) {prevyo = b};
+        if (tolower(l[i]) == "вс<_е_>") {prevje = b};
+        };
 
-  } # все
-
-
-
-
-
-  } # строка
- } # омограф
+ book[b]=joinpat(l,sep,nf)
+ book[b]=gensub(/<_([Ее])_>/,"\\1\xcc\x81","g",book[b]) };}; ###_footer_vsez
  
 ### THE_x_END !_#_!
 
@@ -2245,11 +2228,9 @@ for (i in book) { print book[i]}
 
 #dbg = 1
 #dbgstat = 1;
- cmd = "rm _stat.txt _yo.txt _omos.txt"
+ cmd = "rm _stat.txt _yo.txt _vsez.txt"
  if (dbgstat==1) {system(cmd); for (i=1; i<=572; i++) { printf ("%s%s %s %s\n", "R", i, "=", r[i]) >> "_stat.txt"};
  for (i in prevyo) {print i, prevyo[i] >> "_yo.txt"}
- for (i in omos) { print i, omos[i] >> "_omos.txt" }
- }
-
-
-  }
+ for (i in vsez) { print i, vsez[i] >> "_vsez.txt" }
+                 }
+  } ###_END_###
