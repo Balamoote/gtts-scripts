@@ -63,7 +63,6 @@ BEGIN {
 END {
 FS = savefs
     for(wrd in yods ){wln=split(yods[wrd],yolin," ");for(y=1;y<=wln;y++){b=strtonum(yolin[y]);nf=patsplit(book[b],l,patword,sep);
-
     for (i=1; i<=nf; i++) {
     
        if ( l[i] ~ capword ) { lcf=tolower(l[i]); if ( lcf in yodef ) { l[i]=toupper(yodef[lcf]) }; }
