@@ -10,6 +10,10 @@ function stoar(string, arrto, sepr,    i,arrt)    # добывать масси�
 function hyphback(hystring,  hyw)
 {if (hystring ~ hysnip) { for (i=1; i<=nf-1; i++) { if ( se(0,"-") ) { hyw = lc(0) sep[i] lc(1); if ( hyw in dichyph )
     { l[i] = l[i] sep[i] l[i+1]; delete sep[i]; delete l[i+1]; nf=arrpack(i+1, l); arrpack(i, sep) }; }; }; };}
+function splitline(instring,    rett)
+                { rett=patsplit(instring,l,patword,sep); return rett }
+function getwpos(word)
+                { for(i=1;i<=nf;i++) {if(tolower(l[i])==word) wpos[i]}; }
 
 function s1(n,wl,    rett)                        # выдать 1-й символ строки-сеператора
                 { if( substr(sep[i+n],1,1) == wl ) {rett=1} else {rett=0}; return rett }

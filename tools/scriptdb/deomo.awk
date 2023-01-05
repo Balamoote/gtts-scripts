@@ -54,15 +54,15 @@ BEGIN {
 
         if(ci in vsez && num!=prevnum) {vsez["все"]=vsez["все"] " " num;prevnum=num}; #_#_#vsez "все" не делим по регистрам
 
-    };
-}
-END {
+  };
+
+} END {
 FS = savefs
 ###START_END##
 
 ### все !_#_!
-for(wrd in vsez){wln=split(vsez[wrd],omlin," ");for(y=1;y<=wln;y++){b=strtonum(omlin[y]);nf=patsplit(book[b],l,patword,sep);hyphback(book[b]) # header1
-for(i=1;i<=nf;i++){if(tolower(l[i])==wrd) wpos[i];};for(i in wpos){i=strtonum(i);                                                             # header2
+for(wrd in vsez){wln=split(vsez[wrd],omlin," "); for(y=1;y<=wln;y++){b=strtonum(omlin[y]); # header1
+nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonum(i);     # header2
     
  #v всё же
  if ( w(-1,"не") &&
@@ -786,11 +786,6 @@ for(i=1;i<=nf;i++){if(tolower(l[i])==wrd) wpos[i];};for(i in wpos){i=strtonum(i)
        mod_mn(2) &&
         gl_in(3) && s(0,2) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[204]++; if(dbg){print "R204"}; continue;};
- if ( mod_mn(1) &&
-       gl_in(2) && 
-        pre_pr(3) &&
-        (suw_edpr(4)||suw_mnpr(4)) && s(0,3) )
- { sub(/([Ее])/, "<_&_>", l[i]); r[205]++; if(dbg){print "R205"}; continue;};
  if ( mod_mn(1) &&
        glc_in(2,"j") && s(0,1) )
  { sub(/[Ее]/, "<_&_>", l[i]); r[206]++; if(dbg){print "R206"}; continue;};
@@ -2212,7 +2207,7 @@ if ( gl_nemn(1) &&
              }; delete wpos;
 
  # всё/все́ в предыдущей строке
- if (nf-i <= 9 ) {
+ if (nf-i <= 7 ) {
         if (tolower(l[i]) == "всё"    ) {prevyo = b};
         if (tolower(l[i]) == "вс<_е_>") {prevje = b};
         };
