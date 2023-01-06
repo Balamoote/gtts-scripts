@@ -295,6 +295,9 @@ function suw_noed(n,    wd,rett) { wd = lc(n);
                      wd in swn_edsr_da||wd in swn_edsr_im||wd in swn_edsr_ne||wd in swn_edsr_pr||wd in swn_edsr_ro||wd in swn_edsr_tv||wd in swn_edsr_vi||wd in swn_edze_da||
                      wd in swn_edze_im||wd in swn_edze_me||wd in swn_edze_ne||wd in swn_edze_pr||wd in swn_edze_ro||wd in swn_edze_tv||wd in swn_edze_vi)
                      {rett=1} else {rett=0}; return rett}
+function suw_noedim(n,    wd,rett) { wd = lc(n);
+                 if (wd in swn_edmu_im||wd in swn_edob_im||wd in swn_edsr_im||wd in swn_edze_im) {rett=1} else {rett=0}; return rett}
+function suw_nomnim(n,    wd,rett) { wd = lc(n); if (wd in swn_mn_im) {rett=1} else {rett=0}; return rett}
 function suw_nomn(n,    wd,rett) { wd = lc(n);
                  if (wd in swn_mn_da||wd in swn_mn_im||wd in swn_mn_ne||wd in swn_mn_pr||wd in swn_mn_ro||wd in swn_mn_sq||wd in swn_mn_tv) {rett=1} else {rett=0}; return rett}
 function suw_edme(n,    wd,rett) { wd = lc(n); if (wd in swn_edmu_me||wd in swn_edze_me) {rett=1} else {rett=0}; return rett}
@@ -338,6 +341,7 @@ function mest_pr(n,    wd,rett) { wd = lc(n);
                  if (wd in mst_ed_mu_pr||wd in mst_ed_ze_pr||wd in mst_ed_sr_pr||wd in mst_mn_pr||wd in mst_ed_pr||wd in mst_pr) {rett=1} else {rett=0}; return rett}
 function mest_mnim(n,    wd,rett) { wd = lc(n); if (wd in mst_mn_im) {rett=1} else {rett=0}; return rett}
 function mest_mnvi(n,    wd,rett) { wd = lc(n); if (wd in mst_mn_im||wd in mst_mn_ro||wd in mst_mn_vi) {rett=1} else {rett=0}; return rett}
+function mest_edsrim(n,  wd,rett) { wd = lc(n); if (wd in mst_ed_sr_im||wd in mst_ed_sr) {rett=1} else {rett=0}; return rett}
 
 # наречия
 function nar_srav(n,    wd,rett) { wd = lc(n); if (wd in nr_srv)  {rett=1} else {rett=0}; return rett}

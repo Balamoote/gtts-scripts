@@ -994,7 +994,9 @@ BEGIN {
  delete swo_edmu_tv["им"];
  delete swo_edmu_ro["его"];
  delete swn_edsr_im["сто"]; delete swn_edsr_vi["сто"];
-
+ delete swn_edmu_im["сорок"]
+ delete swn_edmu_im["тут"]; delete swn_mn_ro["тут"];
+ delete swn_mn_im["или"];
 
 
 # for (k=1; k<=664; k++) { printf ("%s%s %s %s\n", "R", k, "=", DIC[k]); sumdic = sumdic + DIC[k] }; print sumdic;
