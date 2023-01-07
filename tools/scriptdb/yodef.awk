@@ -75,7 +75,7 @@ FS = savefs
     for(wrd in trex ){wln=split(trex[wrd],omlin," ");for(y=1;y<=wln;y++){b=strtonum(omlin[y]); nf=splitline(book[b]); # header1
     getwpos(wrd);for(i in wpos){i=strtonum(i);                                                        # header2
 
-      sub(/рех/, "рёх", l[i]); r[2]++; if(dbg){print "R2"}; continue;
+      sub(/рех/, "рёх", l[i]); r[2]++; if(dbg){print "R2"}; continue; # Первое самое левое вхождение!
   
     }; delete wpos; book[b]=joinpat(l,sep,nf);};}; # footer
 

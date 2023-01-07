@@ -210,10 +210,6 @@ sed -r 's/^/ /g' gwt-"$book"/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$R
 # gw_m07=$(date +%s.%N); duration=$( echo $gw_m07 - $gw_m06 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 07:" $duration "сек" #dbgtime
 
-# Список известных имён собственных, которые подлежат обработке, за вычетом омографов
-#grep -Ff <(zcat scriptaux/namebase0.pat.gz) gwt-"$book"/anycap-all.pat  | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/namebase0-proc-list.pat
-#grep -Ff <(zcat scriptaux/override.pat.gz)  gwt-"$book"/anycap-all.pat  | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/override-proc-list.pat
-
 # Отсеиваем уже известные имена в базах, а также омографы
 grep -Fvf <(zcat scriptaux/names-all.pat.gz) gwt-"$book"/anycap-all.pat | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/anycap-raw.pat
 grep -Fvf <(zcat scriptaux/names-all.pat.gz) gwt-"$book"/surcap-all.pat | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/surcap-raw.pat
@@ -286,11 +282,6 @@ if [[ $key != "wonly" ]]; then
 #s=(\w)<strong>([$RVUC$rvlc])<\/strong>=\1\2\xcc\x81=g
 #s=<strong>([$RVUC$rvlc])<\/strong>(\w)=\1\xcc\x81\2=g
 
-#zgrep -Ff gwt-"$book"/namebase0-proc-list.pat scriptdb/namebase0.txt.gz   | sed -r "s/^_(.+)=(.+=g)$/s=\\\b\u\1\\\b=\u\2/g; s/([$RVUC$rvlc])'/\1\xcc\x81/g" >> gwt-"$book"/names-proc.sed
-#zgrep -Ff gwt-"$book"/override-proc-list.pat scriptdb/nameoverride.txt.gz | sed -r "s/^_(.+)=(.+=g)$/s=\\\b\u\1\\\b=\u\2/g; s/([$RVUC$rvlc])'/\1\xcc\x81/g" >> gwt-"$book"/names-proc.sed
-
-#sort -u -o gwt-"$book"/names-proc.sed gwt-"$book"/names-proc.sed
-
 sed -ri "s=(\S)\s+=\1 =g
 s=(<p>)\s+=\1=gI
 s=\s+(<\/p>)=\1=gI
@@ -313,10 +304,8 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предва�
 # Применяем шаблоны
 printf '\e[36m%s\e[0m ' "Расстановка ударений в именах собственных …"
 
-#inc=100
-#sedroll gwt-"$book"/names-proc.sed gwt-"$book"/text-book.txt
-#gw_m15=$(date +%s.%N); duration=$( echo $gw_m15 - $gw_pre | bc ) #dbgtime
-#LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 15:" $duration "сек" #dbgtime
+# gw_m15=$(date +%s.%N); duration=$( echo $gw_m15 - $gw_pre | bc ) #dbgtime
+# LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 15:" $duration "сек" #dbgtime
 
 awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/namedef.awk gwt-"$book"/text-book.txt > gwt-"$book"/text-book.awk.txt
 mv gwt-"$book"/text-book.awk.txt gwt-"$book"/text-book.txt

@@ -85,7 +85,7 @@ if [[ $clxx -eq "1" ]]; then
 	else printf '\e[1;31m%s \e[93m%s \e[1;31m%s\e[0m\n' "Выполнение скрипта" "./momo.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
 
 # Массив со списком обязательных файлов
-pack="momo.sh tts.txt scriptdb/mano-uc0.txt.gz scriptaux/mano-uc.pat.gz scriptdb/mano-lc0.txt.gz scriptaux/mano-lc.pat.gz scriptaux/ttspat.man.gz scriptaux/tts0.man.gz scriptdb/omo-index.sed scriptdb/vse.sed"
+pack="momo.sh tts.txt scriptdb/mano-uc0.txt.gz scriptaux/mano-uc.pat.gz scriptdb/mano-lc0.txt.gz scriptaux/mano-lc.pat.gz scriptaux/ttspat.man.gz scriptaux/tts0.man.gz scriptdb/omo-index.sed scriptdb/deomo.awk"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -120,7 +120,7 @@ sedroll mano-"$book"/book-index.sed mano-"$book"/text-book.txt
 mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "обработано за" $duration "сек"
 
-# Проверить наличие необработанных "все" и подключить vse в полном объёме
+# Проверить наличие необработанных "все" и подключить пару "все/всё"
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" mano-"$book"/text-book.txt| wc -l)
 if [[ ! $yop -eq 0 ]]; then
 	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m … ' "Все (" $yop ") ==> Все́/Всё"
@@ -128,17 +128,15 @@ if [[ ! $yop -eq 0 ]]; then
 #   cat scriptdb/vse.sed >> mano-"$book"/vsex.sed
 #   sed -rn '/###\sTHE_x_END\s!_#_!/,/#::end::/p' scriptdb/omo-index.sed >> mano-"$book"/vsex.sed
 	
-#   sedroll mano-"$book"/vsex.sed mano-"$book"/text-book.txt
-
 awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/deomo.awk mano-"$book"/text-book.txt > mano-"$book"/text-book.awk.txt
 mv mano-"$book"/text-book.awk.txt mano-"$book"/text-book.txt
 
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" mano-"$book"/text-book.txt| wc -l)
 mo_uni2=$(date +%s.%N); duration=$( echo $mo_uni2 - $mo_uni1 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "обработано за" $duration "сек. Остаток:" $yop
-fi
+fi # все
 
-fi
+fi # fixomo?
 
 # Списки слов всех омографов с маленькой и с Большой буквы
 
@@ -149,7 +147,7 @@ grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" mano-"$book"/text-bo
 	sort -u > mano-"$book"/manofi-uc.pat
 
 # Список всех омографов в обоих регистрах
-zgrep -Ff mano-"$book"/manofi-uc.pat scriptdb/mano-uc0.txt.gz > mano-"$book"/mano-luc.txt
+zgrep -Ff mano-"$book"/manofi-uc.pat scriptdb/mano-uc0.txt.gz >  mano-"$book"/mano-luc.txt
 zgrep -Ff mano-"$book"/manofi-lc.pat scriptdb/mano-lc0.txt.gz >> mano-"$book"/mano-luc.txt
 
 cd mano-"$book"/
