@@ -945,23 +945,28 @@ BEGIN {
         if($2~  /^muk_прл_пр$/                      ){  muc_mnpr          [$1]=""; continue };
    };                                                                     
 #   if($2~  /^nac/ ){
-#       if ($2~ /^nar_сравн$/                       ){  nrc_srv            [$1]=""; continue };
-#       if ($2~ /^nar_опред_кач$/                   ){  nrc_opka           [$1]=""; continue };
-        if ($2~ /^nar_опред_спос$/                  ){  nrc_opsp           [$1]=""; continue };
-#       if ($2~ /^nar_опред_степ$/                  ){  nrc_opst           [$1]=""; continue };
-#       if ($2~ /^nar_обст_врем$/                   ){  nrc_obvr           [$1]=""; continue };
-#       if ($2~ /^nar_обст_места$/                  ){  nrc_obme           [$1]=""; continue };
-        if ($2~ /^nar_обст_напр$/                   ){  nrc_obna           [$1]=""; continue };
-#       if ($2~ /^nar_обст_причин$/                 ){  nrc_obpr           [$1]=""; continue };
-#       if ($2~ /^nar_обст_цель$/                   ){  nrc_obce           [$1]=""; continue };
-#       if ($2~ /^nar_вопр$/                        ){  nrc_vopr           [$1]=""; continue };
-#       if ($2~ /^nar_мест$/                        ){  nrc_mest           [$1]=""; continue };
-#       if ($2~ /^nar_прев$/                        ){  nrc_pv             [$1]=""; continue };
-#       if ($2~ /^nar$/                             ){  nrc_nar            [$1]=""; continue };
+#       if ($2~ /^nar_сравн$/                       ){  nrc_srv           [$1]=""; continue };
+#       if ($2~ /^nar_опред_кач$/                   ){  nrc_opka          [$1]=""; continue };
+        if ($2~ /^nar_опред_спос$/                  ){  nrc_opsp          [$1]=""; continue };
+#       if ($2~ /^nar_опред_степ$/                  ){  nrc_opst          [$1]=""; continue };
+#       if ($2~ /^nar_обст_врем$/                   ){  nrc_obvr          [$1]=""; continue };
+#       if ($2~ /^nar_обст_места$/                  ){  nrc_obme          [$1]=""; continue };
+        if ($2~ /^nar_обст_напр$/                   ){  nrc_obna          [$1]=""; continue };
+#       if ($2~ /^nar_обст_причин$/                 ){  nrc_obpr          [$1]=""; continue };
+#       if ($2~ /^nar_обст_цель$/                   ){  nrc_obce          [$1]=""; continue };
+#       if ($2~ /^nar_вопр$/                        ){  nrc_vopr          [$1]=""; continue };
+#       if ($2~ /^nar_мест$/                        ){  nrc_mest          [$1]=""; continue };
+#       if ($2~ /^nar_прев$/                        ){  nrc_pv            [$1]=""; continue };
+#       if ($2~ /^nar$/                             ){  nrc_nar           [$1]=""; continue };
 #   };
 
    if ($2~ /^zvat_/                                 ){  zvt               [$1]=""; continue };
 
+   if ($2~ /^md/) {                                                     
+        if($2~  /^mdbz_/                            ){  md_bz             [$1]=""; continue };
+        if($2~  /^mded_/                            ){  md_ed             [$1]=""; continue };
+        if($2~  /^mdmn_/                            ){  md_mn             [$1]=""; continue };
+      };
    if ($2~ /^geo_/) {                                                     
         if($2~  /^geo_ед_ср_им$/                    ){  geo_edsrim        [$1]=""; continue };
         if($2~  /^geo_мн_им$/                       ){  geo_mnim          [$1]=""; continue };

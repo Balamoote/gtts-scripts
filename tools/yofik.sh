@@ -122,6 +122,12 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикац�
 yo_time3=$(date +%s.%N); duration=$( echo $yo_time3 - $yo_time2 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация однозначных омографов заняла:" $duration "сек"
 
+# Проверить наличие необработанных "все" и подключить пару "все/всё"
+yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" jot-"$book"/text-book.txt| wc -l)
+if [[ ! $yop -eq 0 ]]; then
+	printf '\e[36m%s \e[93m%s\e[36m%s\e[0m\n' "Остаток Все́/Всё:" $yop "."; fi
+
+
 # Возвращаем графику назад
 cat jot-"$book"/text-book.txt jot-"$book"/binary-book.txt > "$book"
 

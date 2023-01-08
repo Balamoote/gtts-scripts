@@ -13,8 +13,7 @@
 @include "scriptdb/functions.awk"
 @include "scriptdb/classes.awk"
 
-BEGIN {
-      PROCINFO["sorted_in"]="@ind_num_asc"
+BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
 
    # dbg = 1
    # dbgstat = 1
@@ -34,16 +33,8 @@ BEGIN {
     # расширенное "это"
     cst = "это то се сие оно сё";
         stoar(cst,mst_it," ");
-    # слова с признаками модальности
-    cst = "готово можно надо нужно должно нельзя могло смогло было стало хотело желало стало умело сумело захотело начало кончало прекращало заканчивало поспешило шло пошло бросилось собиралось побежало ходило";
-        stoar(cst,md_bz," ");
-    cst = "будет буду был была готов готова мог могла может можешь смог смогла сможет хотел хотела захотел захотела хотел хотела должен должна желал желала стал стала станет умел умела сумел сумели начал начала кончал кончала прекращал прекращала заканчивал заканчивала поспешил поспешила шёл шла пошёл пошла бросился бросилась собирался собиралась побежал побежала ходил ходила";
-        stoar(cst,md_ed," ");
-    cst = "готовы могут можете будут будем смогли можем сможем сможете хотят хотим хотите хотели захотят захотим захотели могли хотели должны желали желаем стали станем станут просим умеем умели сумели сумеем начали начнём кончали кончим прекращали прекратим заканчивали закончим поспешили поспешим идём шли пойдём пошли бросимся бросились собираемся соберёмся собирались побежали побежим ходили";
-        stoar(cst,md_mn," ");
 
-    cst = "все";
-        stoar(cst,vsez," ");
+        vsez["все"];
 
    savefs = FS;
    FS = fsword;
@@ -84,34 +75,47 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
 
 
  #v всё в (порядке)
+ if ( w(1,"ли") &&
+       pre_tv(2) &&
+       (mest_tv(3)||prl_edtv(3)||prl_mntv(3)) &&
+        (suw_edtv(4)||suw_mntv(4)) &&
+         w(5,"в") &&
+          w(6,"порядке норме ажуре шоколаде исправности") && s(0,5) && (p(6)||w(7,"и")||pre_any(7)||gl_edsr(7)) )
+ { sub(/[Ее]/, "ё", l[i]); r[6]++; if(dbg){print "R6"}; continue};
+ if ( w(1,"ли") &&
+       pre_tv(2) &&
+       (mest_tv(3)||suw_edtv(3)||suw_mntv(3)) &&
+         w(4,"в") &&
+          w(5,"порядке норме ажуре шоколаде исправности") && s(0,4) && (p(5)||w(6,"и")||pre_any(6)||gl_edsr(6)) )
+ { sub(/[Ее]/, "ё", l[i]); r[6]++; if(dbg){print "R6"}; continue};
  if ( w(1,"ли уже ведь") &&
        nar_mest(2) &&
         w(3,"в") &&
-         w(4,"порядке норме ажуре шоколаде исправности") && s(0,3) && (p(4)||w(5,"и с")||gl_edsr(5)) )
+         w(4,"порядке норме ажуре шоколаде исправности") && s(0,3) && (p(4)||w(5,"и")||pre_any(5)||gl_edsr(5)) )
  { sub(/[Ее]/, "ё", l[i]); r[6]++; if(dbg){print "R6"}; continue};
  if ( w(1,"ли уже ведь") &&
        w(2,"в") &&
-        w(3,"порядке норме ажуре шоколаде исправности") && s(0,2) && (p(3)||w(4,"и с")||gl_edsr(4)) )
+        w(3,"порядке норме ажуре шоколаде исправности") && s(0,2) && (p(3)||w(4,"и")||pre_any(4)||gl_edsr(4)) )
  { sub(/[Ее]/, "ё", l[i]); r[7]++; if(dbg){print "R7"}; continue};
  if ( (phf(1,"как будто")||phf(1,"вроде бы")) &&
         w(hfn,"в") &&
          prl_edpr(hfn+1) &&
-         w(hfn+2,"порядке норме ажуре шоколаде исправности") && s(0,hfn+1) && (p(hfn+2)||w(hfn+3,"и с")||gl_edsr(hfn+3)) )
+         w(hfn+2,"порядке норме ажуре шоколаде исправности") && s(0,hfn+1) && (p(hfn+2)||w(hfn+3,"и")||pre_any(3)||gl_edsr(hfn+3)) )
  { sub(/[ее]/, "ё", l[i]); r[8]++; if(dbg){print "R8"}; continue};
  if ( (phf(1,"как будто")||phf(1,"вроде бы")) &&
         w(hfn,"в") &&
-         w(hfn+1,"порядке норме ажуре шоколаде исправности") && s(0,hfn) && (p(hfn+1)||w(hfn+2,"и с")||gl_edsr(hfn+2)) )
+         w(hfn+1,"порядке норме ажуре шоколаде исправности") && s(0,hfn) && (p(hfn+1)||w(hfn+2,"и")||pre_any(2)||gl_edsr(hfn+2)) )
  { sub(/[ее]/, "ё", l[i]); r[9]++; if(dbg){print "R9"}; continue};
  if ( (qast(1)||nar_mest(1)) &&
         w(2,"в") &&
-         w(3,"порядке норме ажуре шоколаде исправности") && s(0,2) && (p(3)||w(4,"и с")||gl_edsr(4)) )
+         w(3,"порядке норме ажуре шоколаде исправности") && s(0,2) && (p(3)||w(4,"и")||pre_any(4)||gl_edsr(4)) )
  { sub(/[ее]/, "ё", l[i]); r[10]++; if(dbg){print "R10"}; continue};
  if ( w(1,"в") &&
       (prl_edpr(2)||prq_edpr(2)) &&
-        w(3,"порядке порядок норме норму ажуре шоколаде исправности") && s(0,2) && (p(3)||w(4,"и с")||gl_edsr(4)) )
+        w(3,"порядке порядок норме норму ажуре шоколаде исправности") && s(0,2) && (p(3)||w(4,"и")||pre_any(4)||gl_edsr(4)) )
  { sub(/[Ее]/, "ё", l[i]); r[11]++; if(dbg){print "R11"}; continue};
  if ( w(1,"в") &&
-       w(2,"порядке порядок норме норму ажуре шоколаде целом исправности") && s(0,1) && (p(2)||w(3,"и с")||gl_edsr(3)) )
+       w(2,"порядке порядок норме норму ажуре шоколаде целом исправности меру") && s(0,1) && (p(2)||w(3,"и")||pre_any(3)||gl_edsr(3)) )
  { sub(/[Ее]/, "ё", l[i]); r[12]++; if(dbg){print "R12"}; continue};
  if ( qast(1) &&
        w(2,"на") &&
@@ -173,6 +177,7 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
  if ((phf(1,"не слава богу")||
       phf(1,"одно и то же")||
       phf(1,"раз и навсегда")||
+      phf(1,"как на духу")||
       phf(1,"точно так")||
       phf(1,"или ничего")||
       phf(1,"и дело")||
@@ -182,6 +187,7 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
  { sub(/[Ее]/, "ё", l[i]); r[27]++; if(dbg){print "R27"}; continue};
 
  if ((phf(1,"на одно лицо")||
+      phf(1,"в одном лице")||
       phf(1,"под богом ходим")||
       phf(1,"за и против") ) &&
       s(0,hfn-2) )
@@ -225,7 +231,7 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
          w(4,"что") && s(0,2) && sc(3,",") )
  { sub(/([Ее])/, "<_&_>", l[i]); r[37]++; if(dbg){print "R37"}; continue};
  if ( w(1,"как") &&
-       w(2,"один одна") && s(0,1) )
+       w(2,"один одна") && ( s(0,1)||( sc(0,",") && s(1,1)) ) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[38]++; if(dbg){print "R38"}; continue};
 
  if ( phf(1,"не так уж") &&
@@ -250,7 +256,7 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
  if ( w(1,"позади понапрасну") && s(0,0) && p(1) )
  { sub(/[Ее]/, "ё", l[i]); r[44]++; if(dbg){print "R44"}; continue};
   if ( wf(5,"до") &&
-       w(wfn+1,"одного единого") && s(0,wfn) )
+       w(wfn+1,"одного единого единой") && s(0,wfn) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[45]++; if(dbg){print "R45"}; continue};
 
  if ( w(-1,"и") &&
@@ -383,6 +389,10 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
          pre_any(4) && s(0,4) )
  { sub(/([Ее])/, "ё", l[i]); r[78]++; if(dbg){print "R78"}; continue};
  if ( mest_it(-1) &&
+       mest_im(1) &&
+       (prl_kred(2)||prl_krmn(2)) && s(-1,1) )
+ { sub(/[Ее]/, "ё", l[i]); r[79]++; if(dbg){print "R79"}; continue};
+ if ( mest_it(-1) &&
        mest_ed(1) &&
         gl_ed(2) && s(-1,1) )
  { sub(/[Ее]/, "ё", l[i]); r[79]++; if(dbg){print "R79"}; continue};
@@ -492,10 +502,10 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
  { sub(/[Ее]/, "ё", l[i]); r[105]++; if(dbg){print "R105"}; continue};
  if ( pre_da(-1) && s(0,0) )
  { sub(/[Ее]/, "ё", l[i]); r[106]++; if(dbg){print "R106"}; continue};
- if ( w(1,"ли") &&
+ if ( ( (w(1,"ли") && s(0,0) )||( w(1,"то") && se(0,"-") ) ) &&
        w(2,"у") &&
         mest_ro(3) &&
-         prl_kred_sr(4) && s(0,3) && p(4) )
+        (prl_kred_sr(4)||w(4,"есть")) && s(0,3) && p(4) )
  { sub(/[Ее]/, "ё", l[i]); r[107]++; if(dbg){print "R107"}; continue};
  if ( w(-3,"у") &&
        mest_ro(-2) &&
@@ -520,6 +530,11 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
       (suw_edvi(2)||suw_mnvi(2)) &&
        (suw_edro(3)||suw_mnro(3)) && s(0,2) )
  { sub(/[Ее]/, "ё", l[i]); r[113]++; if(dbg){print "R113"}; continue};
+ if ( pre_ro(-1) &&
+      (prl_edro(1)||prl_mnro(1)) &&
+       (suw_edro(2)||suw_mnro(2)) &&
+         suw_mnro(3) && s(-1,2) )
+ { sub(/[Ее]/, "ё", l[i]); r[114]++; if(dbg){print "R114"}; continue};
  if ( pre_ro(1) &&
        mest_ro(2) &&
         prq_edim(3) && s(0,2) )
@@ -572,6 +587,9 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
  { sub(/[Ее]/, "ё", l[i]); r[127]++; if(dbg){print "R127"}; continue};
  if ( (prl_edtv(-2)||prl_mntv(-2)||prl_edim(-2)||prl_mnim(-2)) &&
         pre_pr(-1) && s(-2,-1) && p(0) )
+ { sub(/[Ее]/, "ё", l[i]); r[128]++; if(dbg){print "R128"}; continue};
+ if ( pre_vi(-1) &&
+        pre_any(1) && s(-1,0) )
  { sub(/[Ее]/, "ё", l[i]); r[128]++; if(dbg){print "R128"}; continue};
 
  # все что
@@ -829,6 +847,9 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
       (mod_ed(1)||mod_mn(1)) &&
         gl_in(2) && s(1,1) )
  { sub(/([Ее])/, "ё", l[i]); r[196]++; if(dbg){print "R196"}; continue};
+ if ( mod_ed(1) &&
+       gl_in(2) && s(0,1) )
+ { sub(/([Ее])/, "ё", l[i]); r[196]++; if(dbg){print "R196"}; continue};
  if ( mod_mn(1) &&
        prl_kred_sr(2) &&
         gl_in(3) && s(0,2) )
@@ -1070,6 +1091,9 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
        (suw_edtv(2)||suw_mntv(2)) &&
          prq_krmn(3) && s(0,2) )
  { sub(/[Ее]/, "<_&_>", l[i]); r[258]++; if(dbg){print "R258"}; continue};
+ if ( suw_edim(1) &&
+       prq_kred_sr(2) && sc(0,",") && s(1,1) )
+ { sub(/[Ее]/, "ё", l[i]); r[259]++; if(dbg){print "R259"}; continue};
  if ( (nar_mest(1)||nar_step(1)) &&
         prq_kred_sr(2) && s(0,1) )
  { sub(/[Ее]/, "ё", l[i]); r[259]++; if(dbg){print "R259"}; continue};
@@ -1340,6 +1364,8 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
  if ( nar_spos(1) &&
        prl_mnim(2) && s(0,1) && p(2) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[336]++; if(dbg){print "R336"}; continue};
+ if ( prl_mnim(1) && W(1,"новые") && s(0,0) && (p(1)||(w(2,"и")||pre_any(2))) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[336]++; if(dbg){print "R336"}; continue};
 
  # Все + ... + существительное =====================================
 
@@ -1480,6 +1506,10 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
  { sub(/([Ее])/, "<_&_>", l[i]); r[372]++; if(dbg){print "R372"}; continue};
 
 
+ if ( w(-2,"да вот ну") &&
+       w(-1,"и") &&
+        w(1,"тут") && s(-2,0) && p(1) && sv(1,1,",") )
+ { sub(/[Ее]/, "ё", l[i]); r[281]++; if(dbg){print "R281"}; continue};
  if ( (nar_napr(1)) &&
         w(2,"и или") &&
         (nar_napr(3)) && s(0,2)  )
@@ -1594,6 +1624,11 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
         mest_mnim(1) && s(-2,0) )
  { sub(/[Ее]/, "<_&_>", l[i]); r[402]++; if(dbg){print "R402"}; continue};
  if ( mest_mnim(1) &&
+       (nar_vrem(2)||nar_mest(2)) &&
+         w(3,"не") &&
+          muk_mnim(4) && s(0,3) )
+ { sub(/[Ее]/, "<_&_>", l[i]); r[403]++; if(dbg){print "R403"}; continue};
+ if ( mest_mnim(1) &&
        prl_kred_sr(2) &&
         pre_pr(3) && s(0,3) )
  { sub(/[Ее]/, "<_&_>", l[i]); r[403]++; if(dbg){print "R403"}; continue};
@@ -1615,7 +1650,7 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
  { sub(/[Ее]/, "<_&_>", l[i]); r[407]++; if(dbg){print "R407"}; continue};
  if ( mest_mnim(1) &&
       (nar_kaq(2)||nar_step(2)||prl_kred_sr(2)) &&
-        prl_krmn(3) && s(0,2) )
+        (prl_krmn(3)||prl_mnim(3)) && s(0,2) )
  { sub(/[Ее]/, "<_&_>", l[i]); r[408]++; if(dbg){print "R408"}; continue};
  if ( mest_mnim(-1) &&
       (nar_kaq(1)||nar_step(1)) &&
@@ -1684,9 +1719,10 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
        (mest_ro(2)||suw_edro(2)||suw_mnro(2)) &&
          gl_pnmn(3) && s(-1,2) )
  { sub(/[Ее]/, "<_&_>", l[i]); r[423]++; if(dbg){print "R423"}; continue};
- if ( mest_mn(-1) &&
-      (gl_pnmn(1)||gl_nemn(1)) &&
-        prl_kred_sr(2) && s(-1,1) )
+ if ( w(-2,"а") &&
+       mest_mnim(-1) &&
+       (gl_pnmn(1)||gl_nemn(1)) &&
+         prl_kred_sr(2) && s(-2,1) )
  { sub(/[Ее]/, "ё", l[i]); r[424]++; if(dbg){print "R424"}; continue};
  if ( mest_mn(1) &&
       (nar_step(2)||prl_kred_sr(2)) &&
@@ -1882,8 +1918,12 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
         nar_mest(1) && s(-2,0) )
  { sub(/[Ее]/, "ё", l[i]); r[472]++; if(dbg){print "R472"}; continue};
  if ( deep(-2) &&
+       pre_vi(-1) &&
+       (prl_edtv(1)||prl_mntv(1)||suw_edvi(1)||suw_mnvi(1)) && s(-2,0) )
+ { sub(/[Ее]/, "ё", l[i]); r[473]++; if(dbg){print "R473"}; continue};
+ if ( deep(-2) &&
        mest_vi(-1) &&
-        prl_srav(1) && s(-2,0) )
+        (prl_srav(1)||prl_edtv(1)||prl_mntv(1)||suw_edvi(1)||suw_mnvi(1)) && s(-2,0) )
  { sub(/[Ее]/, "ё", l[i]); r[473]++; if(dbg){print "R473"}; continue};
  if ( deep(-1) &&
        pre_vi(1) &&
@@ -1902,6 +1942,9 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
  { sub(/[Ее]/, "ё", l[i]); r[477]++; if(dbg){print "R477"}; continue};
  if ( deep(-1) &&
        gl_nemn(1) && s(-1,0) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[478]++; if(dbg){print "R478"}; continue};
+ if ( w(1,"включая") && sc(0,",") &&
+      (suw_edvi(2)||suw_mnvi(2)) && s(1,1) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[478]++; if(dbg){print "R478"}; continue};
  if ( deep(-1) &&
        nar_mest(1) && s(-1,0) )
@@ -2044,6 +2087,8 @@ if ( gl_nemn(1) &&
 
  # Ну всё,
  if ( w(-1,"ну") && s(-1,-1) )
+ { sub(/[Ее]/, "ё", l[i]); r[512]++; if(dbg){print "R512"}; continue};
+ if ( phs(-1,"ну всё") && sc(-1,",") && p(0) )
  { sub(/[Ее]/, "ё", l[i]); r[512]++; if(dbg){print "R512"}; continue};
 
 
@@ -2318,6 +2363,52 @@ if ( gl_nemn(1) &&
 
 
 
+ # гл.мн. + дополнение с прдл. в род. п.
+ if ( (suw_mnim(-2)||suw_mnne(-2)) &&
+         gl_nemn(-1) &&
+          pre_pr(1) && s(-2,1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[578]++; if(dbg){print "R578"}; continue};
+ if ( pre_pr(1) &&
+        suw_edpr(2) &&
+        (gl_nemn(3)||gl_pnmn(3)) &&
+          pre_pr(4) && s(0,3) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[578]++; if(dbg){print "R578"}; continue};
+ if ( mest_mnim(1) &&
+       pre_tv(2) &&
+       (suw_edtv(3)||suw_mntv(3)) &&
+        (gl_nemn(4)||gl_pnmn(4)) &&
+          pre_pr(5) && s(0,4) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[578]++; if(dbg){print "R578"}; continue};
+ if ( pre_tv(1) &&
+      (suw_edtv(2)||suw_mntv(2)) &&
+       (gl_nemn(3)||gl_pnmn(3)) &&
+         pre_pr(4) && s(0,3) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[578]++; if(dbg){print "R578"}; continue};
+
+ # гл.мн. + дополнение с прдл. в род. п.
+ if ( (suw_mnim(-2)||suw_mnne(-2)) &&
+         gl_nemn(-1) &&
+          pre_tv(1) && s(-2,1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[578]++; if(dbg){print "R578"}; continue};
+ if ( pre_pr(1) &&
+        suw_edpr(2) &&
+        (gl_nemn(3)||gl_pnmn(3)) &&
+          pre_tv(4) && s(0,3) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[578]++; if(dbg){print "R578"}; continue};
+ if ( mest_mnim(1) &&
+       pre_tv(2) &&
+       (suw_edtv(3)||suw_mntv(3)) &&
+        (gl_nemn(4)||gl_pnmn(4)) &&
+          pre_tv(5) && s(0,4) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[578]++; if(dbg){print "R578"}; continue};
+ if ( pre_tv(1) &&
+      (suw_edtv(2)||suw_mntv(2)) &&
+       (gl_nemn(3)||gl_pnmn(3)) &&
+         pre_tv(4) && s(0,3) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[578]++; if(dbg){print "R578"}; continue};
+
+
+
  # гл.мн + все + ...  ============================================
  # гл.мн + все + ... + доп.
  if ( (gl_vzmn(-1)||gl_nemn(-1)) &&
@@ -2351,6 +2442,11 @@ if ( gl_nemn(1) &&
  { sub(/([Ее])/, "ё", l[i]); r[585]++; if(dbg){print "R585"}; continue};
 
  # вводные предложения ----------------------------------------------------
+ if ( mest_mnim(1) &&
+       nar_mest(2) &&
+        vv(2) &&
+         suw_mnim(vvn+1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[586]++; if(dbg){print "R586"}; continue};
  if ( vv(0) &&
        suw_mnim(vvn+1) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[586]++; if(dbg){print "R586"}; continue};
@@ -2413,6 +2509,12 @@ if ( gl_nemn(1) &&
        (prl_kred_sr(1)||prl_edsrim(1)) && s(0,0) && p(1) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[603]++; if(dbg){print "R603"}; continue};
 
+ if ( wb(-7,"вс<_е_>") && sv(wbn,-2,"[!.?]") && p(-1) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[603]++; if(dbg){print "R603"}; continue};
+ if ( wb(-7,"всё") && sv(wbn,-2,"[!.?]") && p(-1) )
+ { sub(/([Ее])/, "ё", l[i]); r[603]++; if(dbg){print "R603"}; continue};
+
+
  # Конечное подбирание хвостов ----------------------------------------------
  if ( (nar_spos(1)||nar_napr(1)||nar_step(1)) && s(0,0) && p(1) )
  { sub(/[Ее]/, "ё", l[i]); r[604]++; if(dbg){print "R604"}; continue};
@@ -2422,6 +2524,8 @@ if ( gl_nemn(1) &&
  { sub(/([Ее])/, "<_&_>", l[i]); r[606]++; if(dbg){print "R606"}; continue};
  if ( (gl_vzmn(1)||gl_nemn(1)) && s(0,0) && p(1) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[607]++; if(dbg){print "R607"}; continue};
+ if ( prl_srav(1) && s(0,0) )
+ { sub(/[Ее]/, "ё", l[i]); r[608]++; if(dbg){print "R608"}; continue};
  if ( gl_poed(-1) && s(-1,-1) && p(0) )
  { sub(/[Ее]/, "ё", l[i]); r[608]++; if(dbg){print "R608"}; continue};
  if ( deep(1) && s(0,0) )

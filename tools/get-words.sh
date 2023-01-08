@@ -218,23 +218,25 @@ grep -Fvf <(zcat scriptaux/names-all.pat.gz) gwt-"$book"/surcap-all.pat | grep -
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 08:" $duration "сек" #dbgtime
 
 # Выделяем из "списка всех" часть со словами в начале предложения и т.п.
-grep -Fvf gwt-"$book"/surcap-raw.pat gwt-"$book"/anycap-raw.pat > gwt-"$book"/anycap-may.txt
+grep -Fvf gwt-"$book"/surcap-raw.pat gwt-"$book"/anycap-raw.pat > gwt-"$book"/anycap-may.pat
 
 # gw_m09=$(date +%s.%N); duration=$( echo $gw_m09 - $gw_m08 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 09:" $duration "сек" #dbgtime
 
 # Отсеиваем слова из базового словаря scriptdb/wordbase0.gz
-grep -Fvf <(zcat scriptaux/wdb0.gz) gwt-"$book"/anycap-may.txt > gwt-"$book"/anycap-lex.pat
-grep -Ff  <(zcat scriptaux/wdb0.gz) gwt-"$book"/anycap-may.txt > gwt-"$book"/anycap-bas.pat
-grep -Fvf <(zcat scriptaux/wdb0.gz) gwt-"$book"/surcap-raw.pat > gwt-"$book"/surcap-lex.pat
-grep -Ff  <(zcat scriptaux/wdb0.gz) gwt-"$book"/surcap-raw.pat > gwt-"$book"/surcap-bas.pat
+#grep -Fvf <(zcat scriptaux/wdb0.gz) gwt-"$book"/anycap-may.pat > gwt-"$book"/anycap-lex.pat
+#grep -Ff  <(zcat scriptaux/wdb0.gz) gwt-"$book"/anycap-may.pat > gwt-"$book"/anycap-bas.pat
+#grep -Fvf <(zcat scriptaux/wdb0.gz) gwt-"$book"/surcap-raw.pat > gwt-"$book"/surcap-lex.pat
+#grep -Ff  <(zcat scriptaux/wdb0.gz) gwt-"$book"/surcap-raw.pat > gwt-"$book"/surcap-bas.pat
+
+ awk -vindb="scriptdb/" -vinax="scriptaux/" -vbook=$book -f scriptdb/gw_caplists.awk
 
 # gw_m10=$(date +%s.%N); duration=$( echo $gw_m10 - $gw_m09 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 10:" $duration "сек" #dbgtime
 
 # Список неизвестных имён
-grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/surcap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 01_nom_newsur_nl.list
-grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/anycap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 02_nom_newany_nl.list
+ grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/surcap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 01_nom_newsur_nl.list
+ grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/anycap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 02_nom_newany_nl.list
 
 # gw_m11=$(date +%s.%N); duration=$( echo $gw_m11 - $gw_m10 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 11:" $duration "сек" #dbgtime
@@ -243,7 +245,7 @@ grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/anycap-lex.pat | sed -r 's/^
 if [[ "$2" != "biglist" ]]; then
 	
   sedz-dp () { zgrep -Ff <(grep -Fof <(zcat "$1") "$2" | sort -u) scriptaux/tts0.txt.gz | sed -nr 's/^_(.+)\"=\"\s(.+)\"$/s=_\1=_\1\\\=\2=gp/gp'; }
-  sedz-si () { zgrep -Ff <(grep -Fof <(zcat "$1") "$2" | sort -u) scriptaux/tts0.txt.gz | sed -nr 's/^_(.+)=(.+)$/s=_\1\\\b=_\1\\\=\2=gp/gp'; }
+  sedz-si () { zgrep -Ff <(grep -Fof <(zcat "$1") "$2" | sort -u) scriptaux/tts0.txt.gz | sed -nr 's/^_(.+)=(.+)$/s=_\1\\\b=_\1\\\=\2=gp/gp'    ; }
 
   sedz-dp scriptaux/tts-dq.pat.gz gwt-"$book"/anycap-bas.pat > gwt-"$book"/anybas-in-dq.sed
   sedz-si scriptaux/tts-si.pat.gz gwt-"$book"/anycap-bas.pat > gwt-"$book"/anybas-in-si.sed
@@ -263,7 +265,7 @@ if [[ "$2" != "biglist" ]]; then
 
   sedrnf gwt-"$book"/anybas-in-dq.sed gwt-"$book"/anycap-raw.pat >> 09_nom_anybas_dq.list
   sedrnf gwt-"$book"/anybas-in-si.sed gwt-"$book"/anycap-raw.pat >> 10_nom_anybas_si.list
-  sedrnf gwt-"$book"/anylex-in-dq.sed gwt-"$book"/anycap-lex.pat >> 05_nom_anylex_dq.list
+  sedrnf gwt-"$book"/anylex-in-dq.sed gwt-"$book"/anycap-lex.pat >> 04_nom_anylex_dq.list
   sedrnf gwt-"$book"/anylex-in-si.sed gwt-"$book"/anycap-lex.pat >> 06_nom_anylex_si.list
   sedrnf gwt-"$book"/surbas-in-dq.sed gwt-"$book"/surcap-raw.pat >> 07_nom_surbas_dq.list
   sedrnf gwt-"$book"/surbas-in-si.sed gwt-"$book"/surcap-raw.pat >> 08_nom_surbas_si.list
@@ -282,18 +284,20 @@ if [[ $key != "wonly" ]]; then
 #s=(\w)<strong>([$RVUC$rvlc])<\/strong>=\1\2\xcc\x81=g
 #s=<strong>([$RVUC$rvlc])<\/strong>(\w)=\1\xcc\x81\2=g
 
-sed -ri "s=(\S)\s+=\1 =g
-s=(<p>)\s+=\1=gI
-s=\s+(<\/p>)=\1=gI
-s=X1Ъ=\xcc\x81=g
-s=X0Ъ=\xcc\xa0=g
-s=X3Ъ=\xcc\xa3=g
-s=X4Ъ=\xcc\xa4=g
-s=X5Ъ=\xcc\xad=g
-s=X6Ъ=\xcc\xb0=g
-s=X8Ъ=\xe2\x80\xa4=g
-s=X7Ъ=\xe2\x80\xa7=g
-s=(\xcc\x81)+=\xcc\x81=g" gwt-"$book"/text-book.txt
+sed -ri "
+         s=(\S)\s+=\1 =g
+         s=(<p>)\s+=\1=gI
+         s=\s+(<\/p>)=\1=gI
+         s=X1Ъ=\xcc\x81=g
+         s=X0Ъ=\xcc\xa0=g
+         s=X3Ъ=\xcc\xa3=g
+         s=X4Ъ=\xcc\xa4=g
+         s=X5Ъ=\xcc\xad=g
+         s=X6Ъ=\xcc\xb0=g
+         s=X8Ъ=\xe2\x80\xa4=g
+         s=X7Ъ=\xe2\x80\xa7=g
+         s=(\xcc\x81)+=\xcc\x81=g
+        " gwt-"$book"/text-book.txt
 
 # gw_m14=$(date +%s.%N); duration=$( echo $gw_m14 - $gw_m13 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 14:" $duration "сек" #dbgtime
@@ -392,7 +396,7 @@ fi # maomchk 2
 cat gwt-"$book"/text-book.txt gwt-"$book"/binary-book.txt > "$book"
 
 # Удаляем временные файлы
-rm -rf gwt-"$book"
+ rm -rf gwt-"$book"
 
 gw_proc=$(date +%s.%N); duration=$( echo $gw_proc - $gw_sed | bc ); tot_dur=$( echo $gw_proc - $gw_time0 | bc )
 

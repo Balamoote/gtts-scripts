@@ -36,7 +36,7 @@ case "$1" in
 esac; fi
 
 # Массив со списком обязательных файлов
-pack="add2lexx.sh addnames.sh all-in-one.sh check-lexx.sh dic.sh get-words.sh lexx2txt.sh momo.sh omofix.sh scriptdb/omo-index.sed scriptdb/exclusion.pat.gz scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/deomo.awk scriptdb/yodef.awk scriptdb/wordbase0.gz scriptdb/yoall-ok.pat.gz scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptomo/00-on.sed scriptomo/01-yo.sed scriptomo/11-num.sed scriptomo/20-index.sed scriptomo/41-1_eo-ast.sed scriptomo/41-2_eo.sed scriptomo/99-fin.sed stripper.sh txt2lexx.sh yofik.sh"
+pack="add2lexx.sh addnames.sh all-in-one.sh check-lexx.sh dic.sh get-words.sh lexx2txt.sh momo.sh omofix.sh scriptdb/omo-index.sed scriptdb/exclusion.pat.gz scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/deomo.awk scriptdb/gw_caplists.awk scriptdb/yodef.awk scriptdb/wordbase0.gz scriptdb/yoall-ok.pat.gz scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptomo/00-on.sed scriptomo/01-yo.sed scriptomo/11-num.sed scriptomo/20-index.sed scriptomo/41-1_eo-ast.sed scriptomo/41-2_eo.sed scriptomo/99-fin.sed stripper.sh txt2lexx.sh yofik.sh"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -196,9 +196,9 @@ elif [[ -s _err-msg.md5 ]]; then rm _err-msg.md5; fi;
 if [[ $wdb -eq 1 ]]; then
 	printf '\e[36m%s \e[32m%s ' "WDB:" "старый" 
 else
-	zcat scriptdb/wordbase0.gz | sed -r "s/([^_]=).+$/\1/g; s/^.+-.+\n//g" | gzip > scriptaux/wdb0.gz
+   #zcat scriptdb/wordbase0.gz | sed -r "s/([^_]=).+$/\1/g; s/^.+-.+\n//g" | gzip > scriptaux/wdb0.gz
 	printf '\e[36m%s \e[93m%s ' "WDB:" "новый" 
-	md5sum scriptdb/wordbase0.gz scriptaux/wdb0.gz > zwdb.md5; fi
+	md5sum scriptdb/wordbase0.gz > zwdb.md5; fi
 
 if [[ $lexxdb -eq 1 ]]; then
 	printf '\e[36m%s \e[32m%s ' "GW:" "старые"
@@ -247,7 +247,7 @@ else
 
        	printf '\e[36m%s \e[93m%s ' "MOM:" "новые"
 	md5sum tts.txt scriptdb/mano-uc0.txt.gz scriptaux/mano-uc.pat.gz scriptdb/mano-lc0.txt.gz scriptaux/mano-lc.pat.gz scriptaux/ttspat.man.gz \
-	       scriptaux/tts0.man.gz scriptdb/omo-index.sed scriptdb/deomo.awk > zaomo.md5
+	       scriptaux/tts0.man.gz scriptdb/omo-index.sed > zaomo.md5
 fi
 
 # Выполняем проверку вспомогательных файлов из ./yofik.sh
@@ -268,7 +268,7 @@ else
 	rm scriptaux/ttspat.yoyt
 	zgrep -Ff <(zcat scriptaux/ttspat.yoy.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.yoy.gz
        	printf '\e[36m%s \e[93m%s ' "YOF:" "новые"
-	md5sum tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc0.txt.gz scriptaux/yomo-lc0.pat.gz scriptdb/deomo.awk \
+	md5sum tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc0.txt.gz scriptaux/yomo-lc0.pat.gz \
            scriptdb/yodef.awk scriptdb/yomo-uc0.txt.gz scriptaux/yomo-uc0.pat.gz scriptaux/tts.pat.gz scriptaux/tts0.txt.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz \
            scriptdb/yolc.txt scriptaux/yolc.pat > zjofik.md5
 fi
