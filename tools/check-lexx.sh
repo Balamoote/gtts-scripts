@@ -36,7 +36,7 @@ case "$1" in
 esac; fi
 
 # Массив со списком обязательных файлов
-pack="add2lexx.sh addnames.sh all-in-one.sh check-lexx.sh dic.sh get-words.sh lexx2txt.sh momo.sh omofix.sh scriptdb/omo-index.sed scriptdb/exclusion.pat.gz scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/deomo.awk scriptdb/gw_caplists.awk scriptdb/yodef.awk scriptdb/wordbase0.gz scriptdb/yoall-ok.pat.gz scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptomo/00-on.sed scriptomo/01-yo.sed scriptomo/11-num.sed scriptomo/20-index.sed scriptomo/41-1_eo-ast.sed scriptomo/41-2_eo.sed scriptomo/99-fin.sed stripper.sh txt2lexx.sh yofik.sh"
+pack="add2lexx.sh addnames.sh all-in-one.sh check-lexx.sh dic.sh get-words.sh lexx2txt.sh momo.sh omofix.sh scriptdb/omo-index.sed scriptdb/exclusion.pat.gz scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/deomo.awk scriptdb/gw_caplists.awk scriptdb/yodef.awk scriptdb/wordbase0.gz scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptomo/00-on.sed scriptomo/01-yo.sed scriptomo/11-num.sed scriptomo/20-index.sed scriptomo/41-1_eo-ast.sed scriptomo/41-2_eo.sed scriptomo/99-fin.sed stripper.sh txt2lexx.sh yofik.sh"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -208,10 +208,10 @@ else
         zgrep -P "_.+=$" scriptaux/tts.pat.gz | gzip > scriptaux/tts-si.pat.gz
         sed -r 's/^\" /_/g; s/^([^_r"]+)/_\1/g; s/^\"//g' tts.txt | gzip > scriptaux/tts0.txt.gz
         ## паттерны известных и исключений в lexx
-        cat scriptaux/tts.pat.gz scriptdb/exclusion.pat.gz scriptdb/yoall-ok.pat.gz > scriptaux/lexx.pat.gz
+        cat scriptaux/tts.pat.gz scriptdb/exclusion.pat.gz > scriptaux/lexx.pat.gz
        	printf '%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' X1Ъ X0Ъ X3Ъ X4Ъ X5Ъ X6Ъ X8Ъ X7Ъ ъъъ ЪЪЪ | gzip -c >> scriptaux/lexx.pat.gz
 
-	md5sum tts.txt scriptdb/exclusion.pat.gz scriptdb/yoall-ok.pat.gz scriptaux/tts.pat.gz scriptaux/tts-dq.pat.gz scriptaux/tts-si.pat.gz \
+	md5sum tts.txt scriptdb/exclusion.pat.gz scriptaux/tts.pat.gz scriptaux/tts-dq.pat.gz scriptaux/tts-si.pat.gz \
 		scriptaux/tts0.txt.gz scriptaux/lexx.pat.gz scriptaux/_tts-noq.txt.gz scriptaux/_4awk-dq-rules.txt.gz > zlexxdb.md5
 	printf '\e[36m%s \e[93m%s ' "GW:" "новые"
 fi
