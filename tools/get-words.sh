@@ -265,7 +265,7 @@ if [[ "$2" != "biglist" ]]; then
 
   sedrnf gwt-"$book"/anybas-in-dq.sed gwt-"$book"/anycap-raw.pat >> 09_nom_anybas_dq.list
   sedrnf gwt-"$book"/anybas-in-si.sed gwt-"$book"/anycap-raw.pat >> 10_nom_anybas_si.list
-  sedrnf gwt-"$book"/anylex-in-dq.sed gwt-"$book"/anycap-lex.pat >> 04_nom_anylex_dq.list
+  sedrnf gwt-"$book"/anylex-in-dq.sed gwt-"$book"/anycap-lex.pat >> 05_nom_anylex_dq.list
   sedrnf gwt-"$book"/anylex-in-si.sed gwt-"$book"/anycap-lex.pat >> 06_nom_anylex_si.list
   sedrnf gwt-"$book"/surbas-in-dq.sed gwt-"$book"/surcap-raw.pat >> 07_nom_surbas_dq.list
   sedrnf gwt-"$book"/surbas-in-si.sed gwt-"$book"/surcap-raw.pat >> 08_nom_surbas_si.list

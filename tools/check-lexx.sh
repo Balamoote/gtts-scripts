@@ -51,22 +51,22 @@ if [[ -s _err-msg.md5 ]]; then
 		if [[ -s zlexxdb.md5 ]] && md5sum -c --status _err-msg.md5 >/dev/null 2>&1; then
 		rm zlexxdb.md5 _err-msg.md5; printf '\e[31;5;1m%s\e[0m \e[33m%s \e[31;5;1m%s\e[0m\n' "Исправьте ошибки в" "tts.txt" "!"; exit 1; fi
 	else
-	       	[[ -s _err-msg.md5 ]] && rm _err-msg.md5
-		[[ -s _lost.txt ]] && rm _lost.txt
-		[[ -s _2x-left.txt ]] && rm _2x-left.txt
+	    [[ -s _err-msg.md5        ]] && rm _err-msg.md5
+		[[ -s _lost.txt           ]] && rm _lost.txt
+		[[ -s _2x-left.txt        ]] && rm _2x-left.txt
 		[[ -s _2x-right-quick.txt ]] && rm _2x-right-quick.txt
-		[[ -s _2x-right-full.txt ]] && rm _2x-right-full.txt
-		[[ -s _pat-error.txt ]] && rm _pat-error.txt
+		[[ -s _2x-right-full.txt  ]] && rm _2x-right-full.txt
+		[[ -s _pat-error.txt      ]] && rm _pat-error.txt
 	fi
 
 # Проверка по md5: zlexxdb.md5 zaomo.md5 zjofik.md5 zndb.md5 zwdb.md5 . Назначаем "1", если ОК, и "0"", если нужно пересоздать.
 if [[ -s zlexxdb.md5 ]] && md5sum -c --status zlexxdb.md5 >/dev/null 2>&1; then lexxdb=1
 	printf '\e[32m%s \e[33m%s \e[32m%s \e[33m%s\e[0m\n' "Файл" "tts.txt" "не изменён. Строк в словаре:" $(wc -l < tts.txt);
 	else lexxdb=0 ; fi
-if [[ -s zaomo.md5 ]] && md5sum -c --status zaomo.md5 >/dev/null 2>&1; then aomo=1; else aomo=0 ; fi
-if [[ -s zjofik.md5 ]] && md5sum -c --status zjofik.md5 >/dev/null 2>&1; then jofik=1; 	else jofik=0 ; fi
-if [[ -s zndb.md5 ]] && md5sum -c --status zndb.md5 >/dev/null 2>&1; then ndb=1; else ndb=0 ; fi
-if [[ -s zwdb.md5 ]] && md5sum -c --status zwdb.md5 >/dev/null 2>&1; then wdb=1; else wdb=0 ; fi
+if [[ -s zaomo.md5  ]] && md5sum -c --status zaomo.md5  >/dev/null 2>&1; then aomo=1;  else aomo=0  ; fi
+if [[ -s zjofik.md5 ]] && md5sum -c --status zjofik.md5 >/dev/null 2>&1; then jofik=1; else jofik=0 ; fi
+if [[ -s zndb.md5   ]] && md5sum -c --status zndb.md5   >/dev/null 2>&1; then ndb=1;   else ndb=0   ; fi
+if [[ -s zwdb.md5   ]] && md5sum -c --status zwdb.md5   >/dev/null 2>&1; then wdb=1;   else wdb=0   ; fi
 
 # Если файлы lexx, сопутсвующих и производных не изменены, ничего неделать
 if [[ $lexxdb -eq "0" ]]; then # lexxchk 0
@@ -205,7 +205,7 @@ if [[ $lexxdb -eq 1 ]]; then
 else
         # Служебный список поисковых строк из базы lexx
         zgrep -Pv "_.+=$" scriptaux/tts.pat.gz | gzip > scriptaux/tts-dq.pat.gz
-        zgrep -P "_.+=$" scriptaux/tts.pat.gz | gzip > scriptaux/tts-si.pat.gz
+        zgrep -P "_.+=$"  scriptaux/tts.pat.gz | gzip > scriptaux/tts-si.pat.gz
         sed -r 's/^\" /_/g; s/^([^_r"]+)/_\1/g; s/^\"//g' tts.txt | gzip > scriptaux/tts0.txt.gz
         ## паттерны известных и исключений в lexx
         cat scriptaux/tts.pat.gz scriptdb/exclusion.pat.gz > scriptaux/lexx.pat.gz
@@ -220,12 +220,12 @@ fi
 if [[ $ndb -eq 1 ]]; then
        	printf '\e[36m%s \e[32m%s ' "NDB:" "старые"
 else
-	sed -r 's/=.+$/=/g' <(zcat scriptdb/namebase0.txt.gz) | gzip > scriptaux/namebase0.pat.gz
-	sed -r 's/=.+$/=/g' <(zcat scriptdb/nameoverride.txt.gz) | gzip > scriptaux/override.pat.gz
+	sed -r 's/=.+$/=/g' <(zcat scriptdb/namebase0.txt.gz)      | gzip > scriptaux/namebase0.pat.gz
+	sed -r 's/=.+$/=/g' <(zcat scriptdb/nameoverride.txt.gz)   | gzip > scriptaux/override.pat.gz
 	sed -r 's/_(.+)=.+$/_\l\1=/g' <(zcat scriptdb/nomo.txt.gz) | sort -u | gzip > scriptaux/nomo.pat.gz
 	zcat scriptaux/namebase0.pat.gz scriptaux/override.pat.gz scriptaux/nomo.pat.gz | sort -u | gzip > scriptaux/names-all.pat.gz
-	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/nomo.pat.gz | sort -u | gzip > scriptaux/ttspat.nam.gz
-	zgrep -Ff <(zcat scriptaux/ttspat.nam.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.nam.gz
+	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/nomo.pat.gz    | sort -u | gzip > scriptaux/ttspat.nam.gz
+	zgrep -Ff  <(zcat scriptaux/ttspat.nam.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.nam.gz
         md5sum tts.txt scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptaux/namebase0.pat.gz \
 		scriptaux/override.pat.gz scriptaux/nomo.pat.gz scriptaux/names-all.pat.gz scriptaux/ttspat.nam.gz scriptaux/tts0.nam.gz > zndb.md5
        	printf '\e[36m%s \e[93m%s ' "NDB:" "новые"
@@ -256,8 +256,8 @@ fi
 if [[ $jofik -eq 1 ]]; then
        	printf '\e[36m%s \e[32m%s ' "YOF:" "старые"
 else
-	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef0.txt.gz) | gzip > scriptaux/yodef0.pat.gz
-	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef1.txt.gz) | gzip > scriptaux/yodef1.pat.gz
+	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef0.txt.gz)   | gzip > scriptaux/yodef0.pat.gz
+	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef1.txt.gz)   | gzip > scriptaux/yodef1.pat.gz
 	sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-lc0.txt.gz) | gzip > scriptaux/yomo-lc0.pat.gz
 	sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-uc0.txt.gz) | gzip > scriptaux/yomo-uc0.pat.gz
 	sed -r "s/=.+$/=/g" scriptdb/yolc.txt > scriptaux/yolc.pat
@@ -277,18 +277,18 @@ printf '\e[32;4;1m%s\e[0m\n' "Всё ОК!"
 
 # Проверка баз имён на обрабатываемость основным словарём
 
-zgrep -Ff <(zcat scriptaux/tts.pat.gz) scriptdb/namebase0.txt.gz | sort > _err_namebase0.txt
+zgrep -Ff  <(zcat scriptaux/tts.pat.gz) scriptdb/namebase0.txt.gz    | sort > _err_namebase0.txt
 zgrep -Fvf <(zcat scriptaux/tts.pat.gz) scriptdb/nameoverride.txt.gz | sort > _err_nameoverride.txt
 zgrep "'" scriptaux/namebase0.pat.gz >> _err_namebase0.txt
-zgrep "'" scriptaux/override.pat.gz >> _err_nameoverride.txt
+zgrep "'" scriptaux/override.pat.gz  >> _err_nameoverride.txt
 
-zgrep -Ff <(zcat scriptaux/mano-uc.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/namebase0.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > _omo_namebase0_err.txt
+zgrep -Ff <(zcat scriptaux/mano-uc.pat.gz  | sed -r "s/_(.)/_\l\1/g") scriptdb/namebase0.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >  _omo_namebase0_err.txt
 zgrep -Ff <(zcat scriptaux/yomo-uc0.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/namebase0.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >> _omo_namebase0_err.txt
 zgrep -Ff <(zcat scriptaux/nomo.pat.gz) scriptdb/namebase0.txt.gz | sort >> _omo_namebase0_err.txt
 
 if [[ -s _omo_namebase0_err.txt ]]; then sort -u -o _omo_namebase0_err.txt _omo_namebase0_err.txt; fi
 
-zgrep -Ff <(zcat scriptaux/mano-uc.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/nameoverride.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > _omo_nameoverride_err.txt
+zgrep -Ff <(zcat scriptaux/mano-uc.pat.gz  | sed -r "s/_(.)/_\l\1/g") scriptdb/nameoverride.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >  _omo_nameoverride_err.txt
 zgrep -Ff <(zcat scriptaux/yomo-uc0.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/nameoverride.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >> _omo_nameoverride_err.txt
 zgrep -Ff <(zcat scriptaux/nomo.pat.gz) scriptdb/nameoverride.txt.gz | sort >> _omo_nameoverride_err.txt
 
