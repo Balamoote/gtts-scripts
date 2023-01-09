@@ -90,9 +90,9 @@ function geo_sr(n,        wd,rett) { wd = lc(n); if (wd in geo_edsrim)          
 function geo_mn(n,        wd,rett) { wd = lc(n); if (wd in geo_mnim)                                                                           {rett=1} else {rett=0}; return rett}
                                                                                                                                               
 # глаголы кастомных классов                                                                                                                   
-function glc_mn(n,el,     wd,rett) {el = "_" el "_"; wd = lc(n); if (wd in gc_mn && gc_mn[wd]~el)                                              {rett=1} else {rett=0}; return rett}
-function glc_in(n,el,     wd,rett) {el = "_" el "_"; wd = lc(n); if (wd in gc_in && gc_in[wd]~el)                                              {rett=1} else {rett=0}; return rett}
-function glc_po(n,el,     wd,rett) {el = "_" el "_"; wd = lc(n); if (wd in gc_po && gc_po[wd]~el)                                              {rett=1} else {rett=0}; return rett}
+function glc_mn(n,wl,     el,k,wrds,wd,rett) {stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in gc_mn && gc_mn[wd]~el) {rett=1;break} else {rett=0}}; return rett}
+function glc_in(n,wl,     el,k,wrds,wd,rett) {stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in gc_in && gc_in[wd]~el) {rett=1;break} else {rett=0}}; return rett}
+function glc_po(n,wl,     el,k,wrds,wd,rett) {stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in gc_po && gc_po[wd]~el) {rett=1;break} else {rett=0}}; return rett}
                           
 # модальные слова         
 function mod_bz(n,        wd,rett) { fi3 =""; wd = lc(n); if (wd in md_bz)                                                      {fi3=md_bz[wd]; rett=1} else {rett=0}; return rett}

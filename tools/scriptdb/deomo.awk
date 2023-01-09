@@ -698,7 +698,7 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
         glc_mn(3,"ogj") && s(0,2) && p(3) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[153]++; if(dbg){print "R153"}; continue};
  if ( mod_mn(1) &&
-       glc_in(2,"ny") &&
+       glc_in(2,"py") &&
         pre_any(3) && s(0,3) )
  { sub(/([Ее])/, "ё", l[i]); r[154]++; if(dbg){print "R154"}; continue};
  if ( glc_in(-1,"qy") && s(-1,-1) &&
@@ -788,7 +788,7 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
         glc_mn(1,"ogj") && s(-1,0) && p(1) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[177]++; if(dbg){print "R177"}; continue};
  if ( (suw_edvi(-1)||suw_mnvi(-1)||suw_mntv(-1)||mest_vi(-1)) &&
-        glc_mn(1,"ogj") && s(-1,0) && p(1) )
+        glc_mn(1,"ogj Vjg") && s(-1,0) && (p(1)||((w(2,"и")||pre_any(0)) && s(-1,1))) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[178]++; if(dbg){print "R178"}; continue};
  if ( (suw_edvi(-2)||suw_mnvi(-2)||suw_mntv(-2)||mest_vi(-2)) &&
         glc_mn(-1,"ogj") && s(-2,-1) && p(0) )
@@ -833,13 +833,13 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
  if ( (mest_da(-1)||suw_edda(-1)||suw_mnda(-1)) &&
        glc_mn(1,"oyg") && s(-1,0) )
  { sub(/([Ее])/, "ё", l[i]); r[193]++; if(dbg){print "R193"}; continue};
- if ( glc_mn(-1,"ny") &&
+ if ( glc_mn(-1,"py") &&
        pre_vi(1) &&
        (suw_edvi(2)||suw_mnvi(2)) && s(-1,1) )
  { sub(/[Ее]/, "ё", l[i]); r[194]++; if(dbg){print "R194"}; continue};
  if ( pre_pr(1) &&
       (suw_edpr(2)||suw_mnpr(2)) &&
-        glc_mn(3,"ny") && s(0,2) )
+        glc_mn(3,"py") && s(0,2) )
  { sub(/[Ее]/, "ё", l[i]); r[195]++; if(dbg){print "R195"}; continue};
  
  # модальное mod_, с возможностью учёта метки m() в словаре dic_cust.gz
@@ -1229,6 +1229,9 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
  if ( (mest_da(-1)||suw_edda(-1)||suw_mnda(-1)) &&
         prl_kred_sr(1) && s(-1,0) )
  { sub(/[Ее]/, "ё", l[i]); r[298]++; if(dbg){print "R298"}; continue};
+ if ( prl_kred_sr(1) &&
+       pre_pr(2) && s(0,1) )
+ { sub(/[Ее]/, "ё", l[i]); r[298]++; if(dbg){print "R298"}; continue};
  if ( w(1,"так") &&
         prl_krmn(2) && s(0,1) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[299]++; if(dbg){print "R299"}; continue};
@@ -1363,6 +1366,9 @@ nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonu
  { sub(/[Ее]/, "ё", l[i]); r[335]++; if(dbg){print "R335"}; continue};
  if ( nar_spos(1) &&
        prl_mnim(2) && s(0,1) && p(2) )
+ { sub(/([Ее])/, "<_&_>", l[i]); r[336]++; if(dbg){print "R336"}; continue};
+ if ( w(1,"ли же ведь") &&
+       prl_mnim(2) && s(0,1) && (p(2)||(w(3,"и")||pre_any(3))) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[336]++; if(dbg){print "R336"}; continue};
  if ( prl_mnim(1) && W(1,"новые") && s(0,0) && (p(1)||(w(2,"и")||pre_any(2))) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[336]++; if(dbg){print "R336"}; continue};
@@ -2363,7 +2369,13 @@ if ( gl_nemn(1) &&
 
 
 
- # гл.мн. + дополнение с прдл. в род. п.
+ # гл.мн. + дополнение с прдл. в вин. п.
+ if ( gl_nemn(-2) &&
+       pre_vi(-1) &&
+       (suw_edtv(1)||suw_mntv(1)) && s(-2,0) )
+ { sub(/([Ее])/, "ё", l[i]); r[578]++; if(dbg){print "R578"}; continue};
+
+ # гл.мн. + дополнение с прдл. в пр. п.
  if ( (suw_mnim(-2)||suw_mnne(-2)) &&
          gl_nemn(-1) &&
           pre_pr(1) && s(-2,1) )
@@ -2385,7 +2397,7 @@ if ( gl_nemn(1) &&
          pre_pr(4) && s(0,3) )
  { sub(/([Ее])/, "<_&_>", l[i]); r[578]++; if(dbg){print "R578"}; continue};
 
- # гл.мн. + дополнение с прдл. в род. п.
+ # гл.мн. + дополнение с прдл. в тв. п.
  if ( (suw_mnim(-2)||suw_mnne(-2)) &&
          gl_nemn(-1) &&
           pre_tv(1) && s(-2,1) )

@@ -17,8 +17,8 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
    if ( gawk52 == 1 ) {
     cmd   = "md5sum -c --status " inax "wdb0.md5 >/dev/null 2>&1"
     wdb0  = system(cmd); close(cmd);
-    cmd   = "md5sum -c --status " inax "lexxpat.md5 >/dev/null 2>&1"
-    lxpat = system(cmd); close(cmd);
+#   cmd   = "md5sum -c --status " inax "lexxpat.md5 >/dev/null 2>&1"
+#   lxpat = system(cmd); close(cmd);
    };
 
  # Читаем базовый список слов
