@@ -32,8 +32,8 @@
 # Подробности см. в файлах README стандартной поставки (может быть устаревшим).
 
 # При добавлении ключа -ld скрипт формирует частный словарь для обрабатываемой книги. Например:
-# Команда ./get-words.sh -ld book.fb2 -ld ДОПОЛНИТЕЛЬНО сформирует частный словарь book.fb2.lexx
-# Команда ./get-words.sh -old book.fb2 -old сформирует ТОЛЬКО частный словарь book.fb2.lexx
+# Команда ./get-words.sh -ld book.fb2 : обработает книгу и ДОПОЛНИТЕЛЬНО сформирует частный словарь book.fb2.lexx
+# Команда ./get-words.sh -old book.fb2 : сформирует ТОЛЬКО частный словарь book.fb2.lexx
 # При обработке больших списков имён, можно отключить часть операций ключом -bl
 # При обработке очень больших файлов с текстом, можно использовать ключ -wo, чтобы только собрать слова, но не расставлять ударения.
 
@@ -425,7 +425,7 @@ if [[ $key = "-ld" ]] || [[ $key = "-old" ]] ; then
 
 # Создаем список слов в книге
 	grep -Po "(?<=[^$RUUC$rulc])[$RUUC$rulc]+" gwt-"$book"/text-book.txt | sed -r 's/^.+$/_\L\0=/g' | sort -u > gwt-"$book"/book-words.txt
-	printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36%sm\e[0m\n' "Книга" "$book" "содержит" $(wc -l < gwt-"$book"/book-words.txt) "словоформ."
+	printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36%s\e[0m\n' "Книга" "$book" "содержит" $(wc -l < gwt-"$book"/book-words.txt) "словоформ."
 # Находим сработавшие шаблоны
 	grep -Fof <(zcat scriptaux/tts.pat.gz) gwt-"$book"/book-words.txt > gwt-"$book"/book-words-o.pat
 
@@ -446,11 +446,10 @@ if [[ $key = "-ld" ]] || [[ $key = "-old" ]] ; then
 	grep -P '^\"\-[^ ]+\"='    tts.txt >> gwt-"$book"/booklexx.txt		# "-слово"=" сло'во"
 
 # Сортируем и преобразуем словарь в lexx
-	sed "s/([$rvlc])'/\1\xcc\x81/g" gwt-"$book"/booklexx.txt | sort -u > "$book".lexx
+	sed -r "s/([$rvlc])\x27/\1\xcc\x81/g" gwt-"$book"/booklexx.txt | sort -u > "$book".lexx
 
 	printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' \
 		"Для книги" "$book" "сформирован локальный словарь" "$book".lexx ", который содержит" $(wc -l < "$book".lexx) "строк."
-
 # Создание скрипта для простановки ударений во всех словах текста. Используется для скрипта ./all-in-one.sh с ключами --alna и --alin
 	sed -r "
 	s='=ЪЪЪ=g
@@ -463,7 +462,6 @@ if [[ $key = "-ld" ]] || [[ $key = "-old" ]] ; then
 	s/^\"\s(.*[^ ])\"=\"\s(.*[^ ])\"$/\\\b\1=\2/g
 	s/^\"([^\"]+)\"=\"([^\"]+)\"$/\1=\2/g
 	s/^\"([^ ]*)\s\"=\"([^ ]*)\s\"$/\1\\\b=\2/g
-
 	s/^/s=/g
 	s/$/=gI/g" gwt-"$book"/booklexx.txt | sort -u > gwt-"$book"/booksed-main.txt
 
