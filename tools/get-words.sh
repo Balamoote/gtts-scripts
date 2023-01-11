@@ -109,17 +109,16 @@ esac
 if [[ $key != "-old" ]]; then # Выключить всё, кроме создания локального словаря oldchk 0
 
 # Служебный список поисковых строк из базы имён
-if [[ -s zwdb.md5 ]] && md5sum -c --status zwdb.md5 >/dev/null 2>&1; then
-	printf '\e[36m%s \e[33m%-8s \e[32m%s \e[0m' "Файлы" zwdb.md5 "OK!"; znl=1
+if [[ -s scriptaux/zwdb.md5 ]] && md5sum -c --status scriptaux/zwdb.md5 >/dev/null 2>&1; then
+	printf '\e[36m%s \e[33m%-8s \e[32m%s \e[0m' "Файлы" scriptaux/zwdb.md5 "OK!"; znl=1
 else clxx=1; fi
 
-#if [[ -s zndb.md5 ]] && [[ -z $(grep "get-words.sh" zndb.md5) ]]; then clxx=1; fi
-if [[ -s zndb.md5 ]] && md5sum -c --status zndb.md5 >/dev/null 2>&1; then
-	printf '\e[36m%s \e[33m%-8s \e[32m%s \e[0m' "Файлы" zndb.md5 "OK!"; znl=1
+if [[ -s scriptaux/zndb.md5 ]] && md5sum -c --status scriptaux/zndb.md5 >/dev/null 2>&1; then
+	printf '\e[36m%s \e[33m%-8s \e[32m%s \e[0m' "Файлы" scriptaux/zndb.md5 "OK!"; znl=1
 else clxx=1; fi
 
-if [[ -s zlexxdb.md5 ]] && md5sum -c --status zlexxdb.md5 >/dev/null 2>&1; then
-	printf '\e[36m%s \e[33m%-11s \e[32m%s \e[0m' "Файлы" zlexxdb.md5 "OK!"; znl=1
+if [[ -s scriptaux/zlexxdb.md5 ]] && md5sum -c --status scriptaux/zlexxdb.md5 >/dev/null 2>&1; then
+	printf '\e[36m%s \e[33m%-11s \e[32m%s \e[0m' "Файлы" scriptaux/zlexxdb.md5 "OK!"; znl=1
 else clxx=1; fi
 
 if [[ $znl -eq 1 ]]; then echo; fi

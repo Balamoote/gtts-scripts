@@ -69,8 +69,7 @@ printf '\e[36m%s \e[93m%s\e[0m\n' "Строк там же, слова с нач�
 printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Строк в словаре:" $(zgrep -c ^ scriptdb/yomo-uc0.txt.gz) "Ё-омографов и" $(zgrep -c ^ scriptdb/yomo-lc0.txt.gz) "ё-омографов."
 if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
 
-#if [[ -s zjofik.md5 ]] && [[ -z $(grep "yofik.sh" zjofik.md5) ]]; then rm clxx=1; fi
-if [[ -s zjofik.md5 ]] && md5sum -c --status zjofik.md5 >/dev/null 2>&1; then
+if [[ -s scriptaux/zjofik.md5 ]] && md5sum -c --status scriptaux/zjofik.md5 >/dev/null 2>&1; then
 	printf '\e[32m%s \e[33m%s \e[32m%s\e[0m\n' "Вспомогательные файлы ёфикатора в" "scriptaux/" ": OK";
 else clxx=1; fi
 
@@ -85,7 +84,7 @@ read -a minpack <<< $pack
 # Проверка не потерялось ли чего
 for f in "${minpack[@]}"; do
 	if [[ ! -s $f ]]; then
-	if [[ -e zjofik.md5 ]]; then rm zjofik.md5; fi
+	if [[ -e scriptaux/zjofik.md5 ]]; then rm scriptaux/zjofik.md5; fi
 	printf '\e[31;5;1m%s\e[0m \e[93m%s \e[31;5;1m%s\e[0m\n' "Отсутствует файл:" $f "Запустите еще раз или найдите потерянный файл."; exit 1; fi; done
 
 
@@ -120,7 +119,7 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикац�
  mv jot-"$book"/text-book.awk.txt jot-"$book"/text-book.txt
 
 yo_time3=$(date +%s.%N); duration=$( echo $yo_time3 - $yo_time2 | bc )
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация однозначных омографов заняла:" $duration "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация омографов заняла:" $duration "сек"
 
 # Проверить наличие необработанных "все" и подключить пару "все/всё"
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" jot-"$book"/text-book.txt| wc -l)
@@ -139,7 +138,7 @@ if [[ ! -d jomo-"$book" ]]; then
 	mkdir jomo-"$book"
 	grep -Ff <(zcat scriptaux/yomo-lc0.pat.gz) jot-"$book"/words-all-lc.pat | sort -u > jomo-"$book"/yo-omo0-lc.pat
 	grep -Ff <(zcat scriptaux/yomo-uc0.pat.gz) jot-"$book"/words-all-uc.pat | sort -u > jomo-"$book"/yo-omo0-uc.pat
-	zgrep -Ff jomo-"$book"/yo-omo0-uc.pat scriptdb/yomo-uc0.txt.gz > jomo-"$book"/yomo-luc.txt
+	zgrep -Ff jomo-"$book"/yo-omo0-uc.pat scriptdb/yomo-uc0.txt.gz >  jomo-"$book"/yomo-luc.txt
 	zgrep -Ff jomo-"$book"/yo-omo0-lc.pat scriptdb/yomo-lc0.txt.gz >> jomo-"$book"/yomo-luc.txt
 
 	cd jomo-"$book"

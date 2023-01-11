@@ -75,9 +75,8 @@ else printf '\e[35m%s \e[93m%s \e[35m%s \e[93m%s\e[0m\n' "Директория �
 
 printf '\e[36m%s \e[93m%s\e[36m%s \e[93m%s\e[0m ' "В словаре Омографов:" $(zgrep -c ^ scriptdb/mano-uc0.txt.gz) ", омографов:" $(zgrep -c ^ scriptdb/mano-lc0.txt.gz)
 if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
-#if [[ -s zaomo.md5 ]] && [[ -z $(grep "momo.sh" zaomo.md5) ]]; then clxx=1; fi
-if [[ -s zaomo.md5 ]] && md5sum -c --status zaomo.md5 >/dev/null 2>&1; then
-	printf '\e[36m%s \e[33m%-8s \e[32m%s\e[0m\n' "Файлы" zndb.md5 "OK!";
+if [[ -s scriptaux/zaomo.md5 ]] && md5sum -c --status scriptaux/zaomo.md5 >/dev/null 2>&1; then
+	printf '\e[36m%s \e[33m%-8s \e[32m%s\e[0m\n' "Файлы" scriptaux/zndb.md5 "OK!";
 else printf '\n'; clxx=1; fi
 
 if [[ $clxx -eq "1" ]]; then
@@ -91,7 +90,7 @@ read -a minpack <<< $pack
 # Проверка не потерялось ли чего
 for f in "${minpack[@]}"; do
 	if [[ ! -s $f ]]; then
-	if [[ -e zaomo.md5 ]]; then rm zaomo.md5; fi
+	if [[ -e scriptaux/zaomo.md5 ]]; then rm scriptaux/zaomo.md5; fi
 	printf '\e[1;31;5m%s \e[0;93m%s \e[1;31;5m%s\e[0m\n' "Отсутствует файл:" $f "Запустите еще раз или найдите потерянный файл."; exit 1; fi; done
 
 d2u;

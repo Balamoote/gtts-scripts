@@ -17,18 +17,18 @@ if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
 
 if [[ ! -z "$1" ]]; then
 case "$1" in
-	-r | -f |--recheck ) # Принудительно перепроверить словарь и заново создать все вспомогательные файлы для скриптов
-		if compgen -G "*.md5" 1> /dev/null; then rm *.md5; fi; [[ -d scriptaux ]] && rm -rf scriptaux/ && mkdir scriptaux;;
-	-a | --rawk ) # Полная проверка "кавычных" шаблонов
+	-r  | -f |--recheck ) # Принудительно перепроверить словарь и заново создать все вспомогательные файлы для скриптов
+	       [[ -d scriptaux ]] && rm -rf scriptaux/ && mkdir scriptaux;;
+	-a  | --rawk ) # Полная проверка "кавычных" шаблонов
 		rawk="1" ;;
 	-fc | -fa | --chawk ) # Перепроверить словарь, создать вспомогательные файлы и сделать полную проверку "кавычных" шаблонов
-		if [[ -s zlexxdb.md5 ]]; then rm zlexxdb.md5; rawk="1"; fi ;;
+		if [[ -s scriptaux/zlexxdb.md5 ]]; then rm scriptaux/zlexxdb.md5; rawk="1"; fi ;;
 	-fg | --fgword ) # Перепроверить вспомогательные файлы get-words.sh
-		if [[ -s zndb.md5 ]]; then rm zndb.md5; fi; if [[ -s zlexxdb.md5 ]]; then rm zlexxdb.md5; fi ;;
+		if [[ -s scriptaux/zndb.md5 ]]; then rm scriptaux/zndb.md5; fi; if [[ -s scriptaux/zlexxdb.md5 ]]; then rm scriptaux/zlexxdb.md5; fi ;;
 	-fy | --fyofik ) # Перепроверить вспомогательные файлы yofik.sh
-		if [[ -s zjofik.md5 ]]; then rm zjofik.md5; fi ;;
+		if [[ -s scriptaux/zjofik.md5 ]]; then rm scriptaux/zjofik.md5; fi ;;
 	-fm | --fmomo ) # Перепроверить вспомогательные файлы momo.sh
-		if [[ -s zaomo.md5 ]]; then rm zaomo.md5; fi ;;
+		if [[ -s scriptaux/zaomo.md5 ]]; then rm scriptaux/zaomo.md5; fi ;;
 	*) # Проверить, существует ли файл книги
 		if [[ -s "$1" ]]; then book="$1"
 		else printf '\e[35m%s \e[93m%s \e[35m%s \e[93m%s \e[93m%s \e[35m%s\e[0m\n' \
@@ -48,8 +48,8 @@ if [[ ! -s tts.txt ]]; then printf '\e[35m%s \e[33m%s \e[35m%s \e[93m%s\e[35m%s\
 
 # Проверяем, изменялся ли дефектный tts.txt после последней проверки
 if [[ -s _err-msg.md5 ]]; then
-		if [[ -s zlexxdb.md5 ]] && md5sum -c --status _err-msg.md5 >/dev/null 2>&1; then
-		rm zlexxdb.md5 _err-msg.md5; printf '\e[31;5;1m%s\e[0m \e[33m%s \e[31;5;1m%s\e[0m\n' "Исправьте ошибки в" "tts.txt" "!"; exit 1; fi
+		if [[ -s scriptaux/zlexxdb.md5 ]] && md5sum -c --status _err-msg.md5 >/dev/null 2>&1; then
+		rm scriptaux/zlexxdb.md5 _err-msg.md5; printf '\e[31;5;1m%s\e[0m \e[33m%s \e[31;5;1m%s\e[0m\n' "Исправьте ошибки в" "tts.txt" "!"; exit 1; fi
 	else
 	    [[ -s _err-msg.md5        ]] && rm _err-msg.md5
 		[[ -s _lost.txt           ]] && rm _lost.txt
@@ -60,13 +60,13 @@ if [[ -s _err-msg.md5 ]]; then
 	fi
 
 # Проверка по md5: zlexxdb.md5 zaomo.md5 zjofik.md5 zndb.md5 zwdb.md5 . Назначаем "1", если ОК, и "0"", если нужно пересоздать.
-if [[ -s zlexxdb.md5 ]] && md5sum -c --status zlexxdb.md5 >/dev/null 2>&1; then lexxdb=1
+if [[ -s scriptaux/zlexxdb.md5 ]] && md5sum -c --status scriptaux/zlexxdb.md5 >/dev/null 2>&1; then lexxdb=1
 	printf '\e[32m%s \e[33m%s \e[32m%s \e[33m%s\e[0m\n' "Файл" "tts.txt" "не изменён. Строк в словаре:" $(wc -l < tts.txt);
 	else lexxdb=0 ; fi
-if [[ -s zaomo.md5  ]] && md5sum -c --status zaomo.md5  >/dev/null 2>&1; then aomo=1;  else aomo=0  ; fi
-if [[ -s zjofik.md5 ]] && md5sum -c --status zjofik.md5 >/dev/null 2>&1; then jofik=1; else jofik=0 ; fi
-if [[ -s zndb.md5   ]] && md5sum -c --status zndb.md5   >/dev/null 2>&1; then ndb=1;   else ndb=0   ; fi
-if [[ -s zwdb.md5   ]] && md5sum -c --status zwdb.md5   >/dev/null 2>&1; then wdb=1;   else wdb=0   ; fi
+if [[ -s scriptaux/zaomo.md5  ]] && md5sum -c --status scriptaux/zaomo.md5  >/dev/null 2>&1; then aomo=1;  else aomo=0  ; fi
+if [[ -s scriptaux/zjofik.md5 ]] && md5sum -c --status scriptaux/zjofik.md5 >/dev/null 2>&1; then jofik=1; else jofik=0 ; fi
+if [[ -s scriptaux/zndb.md5   ]] && md5sum -c --status scriptaux/zndb.md5   >/dev/null 2>&1; then ndb=1;   else ndb=0   ; fi
+if [[ -s scriptaux/zwdb.md5   ]] && md5sum -c --status scriptaux/zwdb.md5   >/dev/null 2>&1; then wdb=1;   else wdb=0   ; fi
 
 # Если файлы lexx, сопутсвующих и производных не изменены, ничего неделать
 if [[ $lexxdb -eq "0" ]]; then # lexxchk 0
@@ -198,7 +198,7 @@ if [[ $wdb -eq 1 ]]; then
 else
    #zcat scriptdb/wordbase0.gz | sed -r "s/([^_]=).+$/\1/g; s/^.+-.+\n//g" | gzip > scriptaux/wdb0.gz
 	printf '\e[36m%s \e[93m%s ' "WDB:" "новый" 
-	md5sum scriptdb/wordbase0.gz > zwdb.md5; fi
+	md5sum scriptdb/wordbase0.gz > scriptaux/zwdb.md5; fi
 
 if [[ $lexxdb -eq 1 ]]; then
 	printf '\e[36m%s \e[32m%s ' "GW:" "старые"
@@ -212,7 +212,7 @@ else
        	printf '%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' X1Ъ X0Ъ X3Ъ X4Ъ X5Ъ X6Ъ X8Ъ X7Ъ ъъъ ЪЪЪ | gzip -c >> scriptaux/lexx.pat.gz
 
 	md5sum tts.txt scriptdb/exclusion.pat.gz scriptaux/tts.pat.gz scriptaux/tts-dq.pat.gz scriptaux/tts-si.pat.gz \
-		scriptaux/tts0.txt.gz scriptaux/lexx.pat.gz scriptaux/_tts-noq.txt.gz scriptaux/_4awk-dq-rules.txt.gz > zlexxdb.md5
+		scriptaux/tts0.txt.gz scriptaux/lexx.pat.gz scriptaux/_tts-noq.txt.gz scriptaux/_4awk-dq-rules.txt.gz > scriptaux/zlexxdb.md5
 	printf '\e[36m%s \e[93m%s ' "GW:" "новые"
 fi
 
@@ -227,7 +227,7 @@ else
 	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/nomo.pat.gz    | sort -u | gzip > scriptaux/ttspat.nam.gz
 	zgrep -Ff  <(zcat scriptaux/ttspat.nam.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.nam.gz
         md5sum tts.txt scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptaux/namebase0.pat.gz \
-		scriptaux/override.pat.gz scriptaux/nomo.pat.gz scriptaux/names-all.pat.gz scriptaux/ttspat.nam.gz scriptaux/tts0.nam.gz > zndb.md5
+		scriptaux/override.pat.gz scriptaux/nomo.pat.gz scriptaux/names-all.pat.gz scriptaux/ttspat.nam.gz scriptaux/tts0.nam.gz > scriptaux/zndb.md5
        	printf '\e[36m%s \e[93m%s ' "NDB:" "новые"
 fi
 
@@ -247,7 +247,7 @@ else
 
        	printf '\e[36m%s \e[93m%s ' "MOM:" "новые"
 	md5sum tts.txt scriptdb/mano-uc0.txt.gz scriptaux/mano-uc.pat.gz scriptdb/mano-lc0.txt.gz scriptaux/mano-lc.pat.gz scriptaux/ttspat.man.gz \
-	       scriptaux/tts0.man.gz scriptdb/omo-index.sed > zaomo.md5
+	       scriptaux/tts0.man.gz scriptdb/omo-index.sed > scriptaux/zaomo.md5
 fi
 
 # Выполняем проверку вспомогательных файлов из ./yofik.sh
@@ -270,7 +270,7 @@ else
        	printf '\e[36m%s \e[93m%s ' "YOF:" "новые"
 	md5sum tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc0.txt.gz scriptaux/yomo-lc0.pat.gz \
            scriptdb/yodef.awk scriptdb/yomo-uc0.txt.gz scriptaux/yomo-uc0.pat.gz scriptaux/tts.pat.gz scriptaux/tts0.txt.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz \
-           scriptdb/yolc.txt scriptaux/yolc.pat > zjofik.md5
+           scriptdb/yolc.txt scriptaux/yolc.pat > scriptaux/zjofik.md5
 fi
 
 printf '\e[32;4;1m%s\e[0m\n' "Всё ОК!"
