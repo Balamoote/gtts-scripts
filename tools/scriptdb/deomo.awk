@@ -43,13 +43,13 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
 
     for (i=1; i<=NF; i++) { ci=tolower($i);
 
-        if(ci in vsez && num!=prevnum) {vsez["все"]=vsez["все"] " " num;prevnum=num}; #_#_#vsez "все" не делим по регистрам
+        if(ci in vsez && num!=prevnum) {vsez["все"]=vsez["все"] " " num;prevnum=num}; # "все" не делим по регистрам #_#_# vsez !_#_!
 
   };
 
 } END {
 FS = savefs
-###START_END##
+###START_END###
 
 ### все !_#_!
 for(wrd in vsez){wln=split(vsez[wrd],omlin," "); for(y=1;y<=wln;y++){b=strtonum(omlin[y]); # header1
@@ -2560,7 +2560,7 @@ if ( gl_nemn(1) &&
  };
 
  book[b]=joinpat(l,sep,nf)
- book[b]=gensub(/<_([Ее])_>/,"\\1\xcc\x81","g",book[b]) };}; ###_footer_vsez
+ book[b]=gensub(/<_([Ее])_>/,"\\1\xcc\x81","g",book[b]) };}; ##_footer_vsez
  
 ### THE_x_END !_#_!
 
@@ -2575,4 +2575,5 @@ for (i in book) { print book[i]}
  for (i in prevyo) {print i, prevyo[i] >> "_yo.txt"}
  for (i in vsez) { print i, vsez[i] >> "_vsez.txt" }
                  }
-  } ###_END_###
+  }
+###_END_###
