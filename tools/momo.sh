@@ -12,6 +12,7 @@ export LC_COLLATE=C
 mo_time0=$(date +%s.%N);
 key="$1"
 book="$2"
+bookwrkdir=mano-"$book"
 suf=man
 backup="$book".$suf
 debug=1   # Если 1, то сделать отладку скриптов омографов: поиск искажений текста в "пастеризованных" версиях исходника и результата 
@@ -53,7 +54,7 @@ obook="$book" # ё-омографы пишутся в $book, т.е. в осно�
 case $key in 
 	-f) # удалить директорию mano-book
 		if [[ -d "mano-$book" ]]; then rm -rf "mano-$book"; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; exit 1
-		else printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директории" mano-"$book" "не существует. Используйте другой ключ."; exit 1; fi ;;
+		else printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директории" $bookwrkdir "не существует. Используйте другой ключ."; exit 1; fi ;;
 	-x) # Однозначние омографы+дискретные скрипты; существующую директорию mano- не удалять
 		fixomo=1; preview=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы и дискретные скрипты." ;;
 	-p) # Превью текста и дискретные скрипты; существующую директорию mano- не удалять
@@ -61,16 +62,16 @@ case $key in
 	-px | -xp | -g) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- не удалять
 		fixomo=1; preview=1; printf '\e[36m%s\e[0m\n' "Однозначные омографы, превью и дискретные скрипты." ;;
 	-fpx | -fxp | -fg | -gg ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить
-		fixomo=1; preview=1; if [[ -d "mano-$book" ]]; then rm -rf mano-"$book"; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=1; preview=1; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-xf | -fx) # Превью текста и дискретные скрипты; существующую директорию mano- удалить
-		fixomo=1; preview=0; if [[ -d "mano-$book" ]]; then rm -rf mano-"$book"; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=1; preview=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-fp | -pf) # Однозначные омографы Не делать, дискретные скрипты; существующую директорию mano- удалить
-		fixomo=0; preview=1; if [[ -d "mano-$book" ]]; then rm -rf mano-"$book"; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=0; preview=1; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	*) # Нечто другое
 		printf '\e[32m%s \e[93m%s \e[32m%s \e[93m%s\e[0m\n' "Задайте ключ или книгу. Например:" "./momo.sh -xp book.fb2" "или" "./momo.fb2 book.fb2"; exit 0 ;;
 esac
 
-if [[ ! -d mano-"$book" ]]; then mkdir mano-"$book"
+if [[ ! -d $bookwrkdir ]]; then mkdir $bookwrkdir
 else printf '\e[35m%s \e[93m%s \e[35m%s \e[93m%s\e[0m\n' "Директория для дискретных скриптов" "mano-$book" "существует. Удалите ее или запустите скрипт с ключом" "-f"; exit 1; fi
 
 printf '\e[36m%s \e[93m%s\e[36m%s \e[93m%s\e[0m ' "В словаре Омографов:" $(zgrep -c ^ scriptdb/mano-uc0.txt.gz) ", омографов:" $(zgrep -c ^ scriptdb/mano-lc0.txt.gz)
@@ -98,8 +99,8 @@ d2u;
 # Конвертация в UTF-8, если нужно
 #$edi -c "set nobomb | set fenc=utf8 | x" "$book"
 
-sed "/<binary/Q" "$book" | sed -r "s/\xc2\xa0/ /g" > mano-"$book"/text-book.txt
-sed -n '/<binary/,$p' "$book" > mano-"$book"/binary-book.txt
+sed "/<binary/Q" "$book" | sed -r "s/\xc2\xa0/ /g" > $bookwrkdir/text-book.txt
+sed -n '/<binary/,$p' "$book" > $bookwrkdir/binary-book.txt
 
 # Замены однозначных
 mo_uni=$(date +%s.%N); duration=$( echo $mo_uni - $mo_time0 | bc )
@@ -107,30 +108,30 @@ if [[ $fixomo == "1" ]]; then
 
 rexsed="scriptdb/omo-index.sed"
 
-awk -v tmpdir=mano-"$book" -v rexfile=$rexsed -f scriptdb/omopick.awk mano-"$book"/text-book.txt >/dev/null 2>&1
+awk -vtmpdir=$bookwrkdir -vrexfile=$rexsed -f scriptdb/omopick.awk $bookwrkdir/text-book.txt >/dev/null 2>&1
 
 # При подсчете блоков омографов вычитаем стационарные блоки шаблонов
 statblock=4
-locomo=$(( $( grep -c "###" mano-"$book"/book-index.sed ) - $statblock ))
+locomo=$(( $( grep -c "###" $bookwrkdir/book-index.sed ) - $statblock ))
 printf '\e[36m%s \e[93m%s %s%s%s\e[0m … ' "Омографов для автообработки:" $locomo "(" $statblock ")"
 
-sedroll mano-"$book"/book-index.sed mano-"$book"/text-book.txt
+sedroll $bookwrkdir/book-index.sed $bookwrkdir/text-book.txt
 
 mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "обработано за" $duration "сек"
 
 # Проверить наличие необработанных "все" и подключить пару "все/всё"
-yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" mano-"$book"/text-book.txt| wc -l)
+yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
 if [[ ! $yop -eq 0 ]]; then
 	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m … ' "Все (" $yop ") ==> Все́/Всё"
-#   sed -r '/##START_END##/q' scriptdb/omo-index.sed > "mano-"$book"/vsex.sed"
-#   cat scriptdb/vse.sed >> mano-"$book"/vsex.sed
-#   sed -rn '/###\sTHE_x_END\s!_#_!/,/#::end::/p' scriptdb/omo-index.sed >> mano-"$book"/vsex.sed
+#   sed -r '/##START_END##/q' scriptdb/omo-index.sed > "$bookwrkdir/vsex.sed"
+#   cat scriptdb/vse.sed >> $bookwrkdir/vsex.sed
+#   sed -rn '/###\sTHE_x_END\s!_#_!/,/#::end::/p' scriptdb/omo-index.sed >> $bookwrkdir/vsex.sed
 	
-awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/deomo.awk mano-"$book"/text-book.txt > mano-"$book"/text-book.awk.txt
-mv mano-"$book"/text-book.awk.txt mano-"$book"/text-book.txt
+awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/deomo.awk $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
 
-yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" mano-"$book"/text-book.txt| wc -l)
+yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
 mo_uni2=$(date +%s.%N); duration=$( echo $mo_uni2 - $mo_uni1 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "обработано за" $duration "сек. Остаток:" $yop
 fi # все
@@ -139,29 +140,29 @@ fi # fixomo?
 
 # Списки слов всех омографов с маленькой и с Большой буквы
 
-grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" mano-"$book"/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-lc.pat.gz) | \
-	sort -u > mano-"$book"/manofi-lc.pat
+grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-lc.pat.gz) | \
+	sort -u > $bookwrkdir/manofi-lc.pat
 
-grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" mano-"$book"/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-uc.pat.gz) | \
-	sort -u > mano-"$book"/manofi-uc.pat
+grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-uc.pat.gz) | \
+	sort -u > $bookwrkdir/manofi-uc.pat
 
 # Список всех омографов в обоих регистрах
-zgrep -Ff mano-"$book"/manofi-uc.pat scriptdb/mano-uc0.txt.gz >  mano-"$book"/mano-luc.txt
-zgrep -Ff mano-"$book"/manofi-lc.pat scriptdb/mano-lc0.txt.gz >> mano-"$book"/mano-luc.txt
+zgrep -Ff $bookwrkdir/manofi-uc.pat scriptdb/mano-uc0.txt.gz >  $bookwrkdir/mano-luc.txt
+zgrep -Ff $bookwrkdir/manofi-lc.pat scriptdb/mano-lc0.txt.gz >> $bookwrkdir/mano-luc.txt
 
-cd mano-"$book"/
-if [[ -s mano-luc.txt ]]; then # Проверяем найдено ли хоть что-то… discretchk 0
-sed -r "s/^_(.+)=/\1/g
+if [[ -s $bookwrkdir/mano-luc.txt ]]; then # Проверяем найдено ли хоть что-то из омографов… discretchk 0
+sed -r "
+    s/^_(.+)=/\1/g
 	s/\x27/\xcc\x81/g
 	s/\\\xcc\\\xa0/\xcc\xa0/g
 	s/\\\xcc\\\xa3/\xcc\xa3/g
 	s/\\\xcc\\\xa4/\xcc\xa4/g
 	s/\\\xcc\\\xad/\xcc\xad/g
-	s/\\\xcc\\\xb0/\xcc\xb0/g" mano-luc.txt > omo-luc.lst
-
+	s/\\\xcc\\\xb0/\xcc\xb0/g
+    " $bookwrkdir/mano-luc.txt > $bookwrkdir/omo-luc.lst
 
 mo_pre=$(date +%s.%N); duration=$( echo $mo_pre - $mo_time0 | bc )
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Всего предварительная подготовка:" $duration "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Всего обработка омографов заняла:" $duration "сек"
 
 # Формируем дискретные скрипты пословно
 printf '\e[32m%s ' "Идет поиск омографов … подождите."
@@ -169,37 +170,34 @@ if [[ $preview -eq 1 ]]; then printf '\e[32m%s\n' "Превью текста в�
 else printf '\e[36m%s\n' "Превью текста выключено."; fi
 twd=$(tput cols)
 
-zgrep -Ff <(grep -Fof <(zcat ../scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' omo-luc.lst | sort -u)) ../scriptaux/tts0.$suf.gz |\
-       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > omo-lexx.txt
+zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\
+       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
-sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" text-book.txt | \
-    awk -v obook=$obook -v twd=$twd -v preview=$preview -v termcor=$termcor -v editor=$edi -f ../scriptdb/preview.awk
+sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $bookwrkdir/text-book.txt | \
+    awk -v obook=$obook -v twd=$twd -v preview=$preview -v termcor=$termcor -v editor=$edi -vbkwrkdir="$bookwrkdir/" -f scriptdb/preview.awk
 
-printf '\e[36m%s \e[093m%s\e[36m%s\e[0m ' "Создано дискретных скриптов:" $(ls -l *.sh | wc -l)
+printf '\e[36m%s \e[093m%s\e[36m%s\e[0m ' "Создано дискретных скриптов:" $(ls -l $bookwrkdir/*.sh | wc -l)
 
 mo_disc=$(date +%s.%N); duration=$( echo $mo_disc - $mo_pre | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Создание дискретных скриптов:" $duration "сек"
 
-chmod +x *.sh
+chmod +x $bookwrkdir/*.sh
 # Собираем книгу и удаляем временные файлы
-cat text-book.txt binary-book.txt > ../"$book"
-rm *.txt *.pat *.sed
-#rm *.txt *.pat
-cd ..
-
+cat $bookwrkdir/text-book.txt $bookwrkdir/binary-book.txt > "$book"
+rm $bookwrkdir/*.txt $bookwrkdir/*.pat $bookwrkdir/*.sed
+#rm $bookwrkdir/*.txt $bookwrkdir/*.pat
 
 else # Если не нашли омографов для ручной обработки discretchk 0
 	noomo=1
-	cat text-book.txt binary-book.txt > ../"$book"
+	cat $bookwrkdir/text-book.txt $bookwrkdir/binary-book.txt > "$book"
 	printf '\e[36m%s \e[093m%s \e[36m%s\e[0m\n' "Однозначные обработаны, омографов для ручной обработки" "НЕ" "найдено."
-	cd ..
-	rm -rf mano-"$book"
+	rm -rf $bookwrkdir
 fi # discretchk 0
 
 # Отладка: поиск искажений текста в "пастеризованных" версиях исходника и результата dbgchk 0
 if [[ debug -eq 1 ]]; then
 	# "Пастеризация": всё в нижний регистр, ё -> е, удалить служебные и ударения
-	sed -r '
+	sed -r "
 		s=\.\.\.=…=g
 		s=\xc2\xa0= =g
 		s=(\S)\s+=\1 =g
@@ -215,10 +213,10 @@ if [[ debug -eq 1 ]]; then
 		s=\xcc\x81+==g
 		s=Ё=Е=g
 		s=ё=е=g
-		' "$book".$suf > "$book".0
+		" "$book".$suf > "$book".0
 		if [[ $nocaps -eq 1 ]]; then sed -ri 's=^.*$=\L\0=g' "$book".0; fi
 
-	sed -r '
+	sed -r "
 		s=\xe2\x80\xa4=.=g
 		s=\xe2\x80\xa7==g
 		s=\xcc\xa0==g
@@ -230,7 +228,7 @@ if [[ debug -eq 1 ]]; then
 		s=Ё=Е=g
 		s=ё=е=g
 		s=\t+= =g
-		' "$book" > "$book".1
+		" "$book" > "$book".1
 		if [[ $nocaps -eq 1 ]]; then sed -ri 's=^.*$=\L\0=g' "$book".1; fi
 
 	diff "$book".0 "$book".1 > "$book".diff

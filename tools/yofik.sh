@@ -11,6 +11,8 @@ export LC_COLLATE=C
 yo_time0=$(date +%s.%N)
 key="$1"
 book="$2"
+bookwrkdir=jomo-"$book"
+tmpdir=jot-"$book"
 suf=yoy
 backup="$book".$suf
 
@@ -45,7 +47,7 @@ obook="$book" # ё-омографы пишутся в $book, т.е. в осно�
 
 case $key in 
 	-f) # удалить директорию yomo-book
-		if [[ -d "jomo-$book" ]]; then rm -rf "jomo-$book"; printf '\e[32m%s \e[93m%s \e[32m%s\e[0m\n' "Директория" jomo-"$book" "удалена."; exit 1
+		if [[ -d "jomo-$book" ]]; then rm -rf "jomo-$book"; printf '\e[32m%s \e[93m%s \e[32m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; exit 1
 		else printf '\e[32m%s \e[93m%s \e[32m%s\e[0m\n' "Директории" "jomo-$book" "не существует. Используйте другой ключ."; exit 1; fi ;;
 	-x) # Однозначние+дискретные скрипты БЕЗ превью; существующую директорию yomo- не удалять
 		fixomo=1; preview=0; printf '\e[32m%s\e[0m\n' "Задания: однозначные омографы, дискретные скрипты." ;;
@@ -87,20 +89,19 @@ for f in "${minpack[@]}"; do
 	if [[ -e scriptaux/zjofik.md5 ]]; then rm scriptaux/zjofik.md5; fi
 	printf '\e[31;5;1m%s\e[0m \e[93m%s \e[31;5;1m%s\e[0m\n' "Отсутствует файл:" $f "Запустите еще раз или найдите потерянный файл."; exit 1; fi; done
 
-
-if [[ -d jot-"$book" ]]; then rm -rf jot-"$book"/ && mkdir jot-"$book"; else mkdir jot-"$book"; fi; d2u;
+if [[ -d $tmpdir ]]; then rm -rf $tmpdir/ && mkdir $tmpdir; else mkdir $tmpdir; fi; d2u;
 
 # Конвертация в UTF-8, если нужно
 #vim -c "set nobomb | set fenc=utf8 | x" "$book"
 
-sed "/<binary/Q" "$book" | sed -r "s/\xc2\xa0/ /g" > jot-"$book"/text-book.txt
-sed -n '/<binary/,$p' "$book" > jot-"$book"/binary-book.txt
+sed "/<binary/Q" "$book" | sed -r "s/\xc2\xa0/ /g" > $tmpdir/text-book.txt
+sed -n '/<binary/,$p' "$book" > $tmpdir/binary-book.txt
 
 # Список слов всех, в нижнем регистре, затем в верхем
 
-grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" jot-"$book"/text-book.txt | grep -v "[$unxc]" | sed -r 's/^.+$/_\0=/g' | sort -u > jot-"$book"/words-all-lc.pat
+grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+"             $tmpdir/text-book.txt | grep -v "[$unxc]" | sed -r 's/^.+$/_\0=/g' | sort -u > $tmpdir/words-all-lc.pat
 
-grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" jot-"$book"/text-book.txt | grep -v "[$unxc]" | sed -r 's/^.+$/_\0=/g' | sort -u > jot-"$book"/words-all-uc.pat
+grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" $tmpdir/text-book.txt | grep -v "[$unxc]" | sed -r 's/^.+$/_\0=/g' | sort -u > $tmpdir/words-all-uc.pat
 
 
 if [[ $fixomo -eq "1" ]]; then # fimomochk 0
@@ -109,52 +110,52 @@ if [[ $fixomo -eq "1" ]]; then # fimomochk 0
 yo_time1=$(date +%s.%N); duration=$( echo $yo_time1 - $yo_time0 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предварительная подготовка скриптов ёфикации заняла:" $duration "сек"
 
- awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/yodef.awk jot-"$book"/text-book.txt > jot-"$book"/text-book.awk.txt
- mv jot-"$book"/text-book.awk.txt jot-"$book"/text-book.txt
+ awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/yodef.awk $tmpdir/text-book.txt > $tmpdir/text-book.awk.txt
+ mv $tmpdir/text-book.awk.txt $tmpdir/text-book.txt
 
 yo_time2=$(date +%s.%N); duration=$( echo $yo_time2 - $yo_time1 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация однозначных случаев заняла:" $duration "сек"
 
- awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/deomo.awk jot-"$book"/text-book.txt > jot-"$book"/text-book.awk.txt
- mv jot-"$book"/text-book.awk.txt jot-"$book"/text-book.txt
+ awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/deomo.awk $tmpdir/text-book.txt > $tmpdir/text-book.awk.txt
+ mv $tmpdir/text-book.awk.txt $tmpdir/text-book.txt
 
 yo_time3=$(date +%s.%N); duration=$( echo $yo_time3 - $yo_time2 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация омографов заняла:" $duration "сек"
 
 # Проверить наличие необработанных "все" и подключить пару "все/всё"
-yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" jot-"$book"/text-book.txt| wc -l)
+yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $tmpdir/text-book.txt| wc -l)
 if [[ ! $yop -eq 0 ]]; then
 	printf '\e[36m%s \e[93m%s\e[36m%s\e[0m\n' "Остаток Все́/Всё:" $yop "."; fi
 
 
 # Возвращаем графику назад
-cat jot-"$book"/text-book.txt jot-"$book"/binary-book.txt > "$book"
+cat $tmpdir/text-book.txt $tmpdir/binary-book.txt > "$book"
 
 fi # fixomochk 1
 
 # --------------------- Ё-омографы ----------------------------------------------------------------
 # Список ё-омонимов yodirchk 0
-if [[ ! -d jomo-"$book" ]]; then
-	mkdir jomo-"$book"
-	grep -Ff <(zcat scriptaux/yomo-lc0.pat.gz) jot-"$book"/words-all-lc.pat | sort -u > jomo-"$book"/yo-omo0-lc.pat
-	grep -Ff <(zcat scriptaux/yomo-uc0.pat.gz) jot-"$book"/words-all-uc.pat | sort -u > jomo-"$book"/yo-omo0-uc.pat
-	zgrep -Ff jomo-"$book"/yo-omo0-uc.pat scriptdb/yomo-uc0.txt.gz >  jomo-"$book"/yomo-luc.txt
-	zgrep -Ff jomo-"$book"/yo-omo0-lc.pat scriptdb/yomo-lc0.txt.gz >> jomo-"$book"/yomo-luc.txt
+if [[ ! -d $bookwrkdir ]]; then
+	mkdir $bookwrkdir
+	grep -Ff <(zcat scriptaux/yomo-lc0.pat.gz) $tmpdir/words-all-lc.pat | sort -u > $bookwrkdir/yo-omo0-lc.pat
+	grep -Ff <(zcat scriptaux/yomo-uc0.pat.gz) $tmpdir/words-all-uc.pat | sort -u > $bookwrkdir/yo-omo0-uc.pat
+	zgrep -Ff $bookwrkdir/yo-omo0-uc.pat scriptdb/yomo-uc0.txt.gz >  $bookwrkdir/yomo-luc.txt
+	zgrep -Ff $bookwrkdir/yo-omo0-lc.pat scriptdb/yomo-lc0.txt.gz >> $bookwrkdir/yomo-luc.txt
 
-	cd jomo-"$book"
-
-        sed -r "s/^_(.+)=/\1/g
+    sed -r "
+        s/^_(.+)=/\1/g
 		s/\x27/\xcc\x81/g
 		s/\\xcc\\xa0/\xcc\xa0/g
 		s/\\xcc\\xa3/\xcc\xa3/g
 		s/\\xcc\\xa4/\xcc\xa4/g
 		s/\\xcc\\xad/\xcc\xad/g
-		s/\\xcc\\xb0/\xcc\xb0/g" yomo-luc.txt > omo-luc.lst
-	rm *.pat *.txt
+		s/\\xcc\\xb0/\xcc\xb0/g
+        " $bookwrkdir/yomo-luc.txt > $bookwrkdir/omo-luc.lst
+	rm $bookwrkdir/*.pat $bookwrkdir/*.txt
 
-if [[ -s omo-luc.lst ]]; then # Проверка найдены ли ё-омографы для ручной обработки yoomchk 0
+if [[ -s $bookwrkdir/omo-luc.lst ]]; then # Проверка найдены ли ё-омографы для ручной обработки yoomchk 0
 
-# Создать дискретные скрипты ёфикации пословно в jomo-"$book"
+# Создать дискретные скрипты ёфикации пословно в jomo-$book
 # Дискретные скрипты запускаются из директории jomo-$book по отдельности каждый.
 # ВНИМАНИЕ: для этой операции необходимо иметь навыки работы в редакторе vim !!!
 # Работает только при установленом плагине vim PatternsOnText (https://github.com/inkarkat/vim-PatternsOnText)
@@ -163,29 +164,27 @@ if [[ -s omo-luc.lst ]]; then # Проверка найдены ли ё-омог
 printf '\e[32m%s\n' "Создание дискретных скриптов обработки ё-омографов:"
 twd=$(tput cols)
 
-zgrep -Ff <(grep -Fof <(zcat ../scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' omo-luc.lst | sort -u)) ../scriptaux/tts0.$suf.gz |\
-       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > omo-lexx.txt
+zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\
+       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
-sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" ../jot-"$book"/text-book.txt | \
-    awk -v obook=$obook -v twd=$twd -v preview=$preview -v termcor=$termcor -v editor=$edi -f ../scriptdb/preview.awk
+sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $tmpdir/text-book.txt | \
+    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -f scriptdb/preview.awk
 
 # Допечатываем превьюшку из текста книги для поискового слова
-printf '\e[36m%s \e[093m%s\e[36m%s\e[0m\n' "Найдено ё-омографов:" $(ls -l *.sh | wc -l)
+printf '\e[36m%s \e[093m%s\e[36m%s\e[0m\n' "Найдено ё-омографов:" $(ls -l $bookwrkdir/*.sh | wc -l)
 
-chmod +x *.sh
-cd ..
+chmod +x $bookwrkdir/*.sh
 yo_time4=$(date +%s.%N); duration=$( echo $yo_time4 - $yo_time3 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Создание дискретных скриптов заняло:" $duration "сек"
 
 else # Если не нашли ё-омографов для ручной обработки yoomchk 1
 	printf '\e[36m%s\e[0m\n' "Ё-омографов для ручной обработки не найдено."
-	cd ..
-	rm -rf jomo-"$book"
+	rm -rf $bookwrkdir
 fi; fi # yoomchk 2 yodirchk 2
 
 
 # Удаляем временные файлы
-rm -rf jot-"$book"
+rm -rf $tmpdir
 
 yo_proc=$(date +%s.%N); tot_dur=$( echo $yo_proc - $yo_time0 | bc )
 

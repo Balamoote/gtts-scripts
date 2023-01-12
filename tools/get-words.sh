@@ -48,6 +48,8 @@ export LC_COLLATE=C
 gw_time0=$(date +%s.%N);
 key="$1"
 book="$2"
+bookwrkdir=nomo-"$book"
+tmpdir=gwt-"$book"
 suf=nam
 backup="$book".$suf
 
@@ -88,8 +90,8 @@ if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
 
 case $key in 
 	-f) # удалить директорию nomo-book
-		if [[ -d "nomo-$book" ]]; then rm -rf "nomo-$book"; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" nomo-"$book" "удалена."; exit 1
-		else printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директории" nomo-"$book" "не существует. Используйте другой ключ."; exit 1; fi ;;
+		if [[ -d "nomo-$book" ]]; then rm -rf "nomo-$book"; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; exit 1
+		else printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директории" $bookwrkdir "не существует. Используйте другой ключ."; exit 1; fi ;;
 	-old) # Сделать частный словарь для книги и НИЧЕГО БОЛЬШЕ НЕ ДЕЛАТЬ
 		preview=0; printf '\e[32m%s\e[0m\n' "Только создать локальный словарь." ;;
 	-wo) # Большой файл. Собрать слова, текст не обрабатывать, списки 00 - 10
@@ -99,9 +101,9 @@ case $key in
 	-px | -xp | -g | -n) # Обработать имена, собрать слова, директорию namo- не удалять (если хотим продолжить работу)
 		preview=1; printf '\e[32m%s\e[0m\n' "Однозначные омографы, превью и дискретные скрипты." ;;
 	-fpx | -fg | -fn | -gg) # Обработать имена, собрать слова, директорию namo- удалить и создать заново
-		preview=1; if [[ -d "nomo-$book" ]]; then rm -rf nomo-"$book"; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" nomo-"$book" "удалена."; fi ;;
+		preview=1; if [[ -d "nomo-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	-ld ) # Обработать имена, собрать слова, директорию namo- удалить и создать заново + создать локальный словарь
-		preview=1; if [[ -d "nomo-$book" ]]; then rm -rf nomo-"$book"; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" nomo-"$book" "удалена."; fi ;;
+		preview=1; if [[ -d "nomo-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	*) # Нечто другое
 		printf '\e[32m%s \e[93m%s \e[32m%s \e[93m%s\e[0m\n' "Задайте ключ или книгу. Например:" "./get-words.sh -xp book.fb2" "или" "./get-words.fb2 book.fb2"; exit 0 ;;
 esac
@@ -127,7 +129,7 @@ if [[ $clxx -eq "1" ]]; then
 	if ./check-lexx.sh -fg; then printf '\e[32m%s\e[0m\n' "Проверка файлов завершена успешно…"
 	else printf '\e[31;1m%s\e[0m \e[93m%s \e[31;1m%s\e[0m\n' "Выполнение скрипта" "./get-words.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
 
-if [[ -d gwt-"$book" ]]; then rm -rf gwt-"$book"/ && mkdir gwt-"$book"; else mkdir gwt-"$book"; fi; d2u
+if [[ -d $tmpdir ]]; then rm -rf $tmpdir/ && mkdir $tmpdir; else mkdir $tmpdir; fi; d2u
 
 # Удалить старые отчёты 00 - 10
 find . -type f -name "[01][0-9]_*\.list" -exec rm '{}'  \;
@@ -154,8 +156,8 @@ s=([АБВГДЕЁЖЗИЙКЛМНОПРСТУФЦЧШЩЪЫЬЭЮЯ])ХХ([АБ
 	s=\xcc\xb0=X6Ъ=g
 	s=\xe2\x80\xa4=X8Ъ=g
 	s=\xe2\x80\xa7=X7Ъ=g
-	" > gwt-"$book"/text-book.txt
-sed -n '/<binary/,$p' "$book" > gwt-"$book"/binary-book.txt
+	" > $tmpdir/text-book.txt
+sed -n '/<binary/,$p' "$book" > $tmpdir/binary-book.txt
 
 # gw_m02=$(date +%s.%N); duration=$( echo $gw_m02 - $gw_m01 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 02:" $duration "сек" #dbgtime
@@ -171,62 +173,62 @@ do	sed -ri "s=Х([CILMVX])=X\1=g
 		 s=([CILMVX])С=\1C=g
 		 s=ХХ=XX=g
 		 s=ІІ=II=g
-		 " gwt-"$book"/text-book.txt
+		 " $tmpdir/text-book.txt
 
-latcyr=$(grep -e "[ХІС][CILMVX]" -e "[CILMVX][ХІС]" -e "ХХ" -e "ІІ" gwt-"$book"/text-book.txt | wc -l)
+latcyr=$(grep -e "[ХІС][CILMVX]" -e "[CILMVX][ХІС]" -e "ХХ" -e "ІІ" $tmpdir/text-book.txt | wc -l)
 done
 
-sed -ri "s=([АБВГДЕЁЖЗИЙКЛМНОПРСТУФЦЧШЩЪЫЬЭЮЯ])хх([АБВГДЕЁЖЗИЙКЛМНОПРСТУФЦЧШЩЪЫЬЭЮЯ])=\1ХХ\2=g" gwt-"$book"/text-book.txt
+sed -ri "s=([АБВГДЕЁЖЗИЙКЛМНОПРСТУФЦЧШЩЪЫЬЭЮЯ])хх([АБВГДЕЁЖЗИЙКЛМНОПРСТУФЦЧШЩЪЫЬЭЮЯ])=\1ХХ\2=g" $tmpdir/text-book.txt
 
 # gw_m03=$(date +%s.%N); duration=$( echo $gw_m03 - $gw_m02 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 03:" $duration "сек" #dbgtime
 
 # Список обычных слов (только с маленькой буквы)
- sed -r 's/^/ /g' gwt-"$book"/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$rulc$unxe]+" | grep -Ev "[$unxe]" | sed -r "s/^.+$/_\0=/g" | \
+ sed -r 's/^/ /g' $tmpdir/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$rulc$unxe]+" | grep -Ev "[$unxe]" | sed -r "s/^.+$/_\0=/g" | \
  	grep -Fvf <(zcat scriptaux/lexx.pat.gz) | sort -u | sed -r "s/^_(.+)=$/_\1=\1=/g" > 00_wrd_newdic_nl.list
 
 # gw_m04=$(date +%s.%N); duration=$( echo $gw_m04 - $gw_m03 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 04:" $duration "сек" #dbgtime
 
 # Список слов с заглавной буквы НЕ в начале предложения
-grep -Po "(?<=[A-Za-zА-Яа-яёЁ0-9,}):;$unxe$unxs])[ ’(«$qtsd–—-]+[$unxe]?[$RUUC][$rulc$unxe]+" gwt-"$book"/text-book.txt | grep -Ev "[$unxe]" | \
-	sed -r "s/^[ ’(«\x22\x27–—-]+(.*)$/_\l\1=/g" | sort -u > gwt-"$book"/surcap-all.pat
+grep -Po "(?<=[A-Za-zА-Яа-яёЁ0-9,}):;$unxe$unxs])[ ’(«$qtsd–—-]+[$unxe]?[$RUUC][$rulc$unxe]+" $tmpdir/text-book.txt | grep -Ev "[$unxe]" | \
+	sed -r "s/^[ ’(«\x22\x27–—-]+(.*)$/_\l\1=/g" | sort -u > $tmpdir/surcap-all.pat
 
 # gw_m05=$(date +%s.%N); duration=$( echo $gw_m05 - $gw_m04 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 05:" $duration "сек" #dbgtime
 
 # Фамилия после инициала
-grep -Po "\b(?<=[$RUUC][$fkdt.])\s*[$RUUC$unxe][$rulc$unxe]+" gwt-"$book"/text-book.txt| grep -Ev "[$unxe]" | sed -r "s/^\s*(.*)$/_\l\1=/g" | \
-	sort -u >> gwt-"$book"/surcap-all.pat
+grep -Po "\b(?<=[$RUUC][$fkdt.])\s*[$RUUC$unxe][$rulc$unxe]+" $tmpdir/text-book.txt| grep -Ev "[$unxe]" | sed -r "s/^\s*(.*)$/_\l\1=/g" | \
+	sort -u >> $tmpdir/surcap-all.pat
 
 # gw_m06=$(date +%s.%N); duration=$( echo $gw_m06 - $gw_m05 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 06:" $duration "сек" #dbgtime
 
 # Список всех слов с заглавной буквы, без учёта позиции
-sed -r 's/^/ /g' gwt-"$book"/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$RUUC$unxe][$rulc$unxe]+" | grep -Ev "[$unxe]" | sed -r "s/^.+$/_\l\0=/g" | \
-	sort -u > gwt-"$book"/anycap-all.pat
+sed -r 's/^/ /g' $tmpdir/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxe])[$RUUC$unxe][$rulc$unxe]+" | grep -Ev "[$unxe]" | sed -r "s/^.+$/_\l\0=/g" | \
+	sort -u > $tmpdir/anycap-all.pat
 
 # gw_m07=$(date +%s.%N); duration=$( echo $gw_m07 - $gw_m06 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 07:" $duration "сек" #dbgtime
 
 # Отсеиваем уже известные имена в базах, а также омографы
-grep -Fvf <(zcat scriptaux/names-all.pat.gz) gwt-"$book"/anycap-all.pat | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/anycap-raw.pat
-grep -Fvf <(zcat scriptaux/names-all.pat.gz) gwt-"$book"/surcap-all.pat | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > gwt-"$book"/surcap-raw.pat
+grep -Fvf <(zcat scriptaux/names-all.pat.gz) $tmpdir/anycap-all.pat | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > $tmpdir/anycap-raw.pat
+grep -Fvf <(zcat scriptaux/names-all.pat.gz) $tmpdir/surcap-all.pat | grep -Fvf <(zcat scriptaux/nomo.pat.gz) > $tmpdir/surcap-raw.pat
 
 # gw_m08=$(date +%s.%N); duration=$( echo $gw_m08 - $gw_m07 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 08:" $duration "сек" #dbgtime
 
 # Выделяем из "списка всех" часть со словами в начале предложения и т.п.
-grep -Fvf gwt-"$book"/surcap-raw.pat gwt-"$book"/anycap-raw.pat > gwt-"$book"/anycap-may.pat
+grep -Fvf $tmpdir/surcap-raw.pat $tmpdir/anycap-raw.pat > $tmpdir/anycap-may.pat
 
 # gw_m09=$(date +%s.%N); duration=$( echo $gw_m09 - $gw_m08 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 09:" $duration "сек" #dbgtime
 
 # Отсеиваем слова из базового словаря scriptdb/wordbase0.gz
-#grep -Fvf <(zcat scriptaux/wdb0.gz) gwt-"$book"/anycap-may.pat > gwt-"$book"/anycap-lex.pat
-#grep -Ff  <(zcat scriptaux/wdb0.gz) gwt-"$book"/anycap-may.pat > gwt-"$book"/anycap-bas.pat
-#grep -Fvf <(zcat scriptaux/wdb0.gz) gwt-"$book"/surcap-raw.pat > gwt-"$book"/surcap-lex.pat
-#grep -Ff  <(zcat scriptaux/wdb0.gz) gwt-"$book"/surcap-raw.pat > gwt-"$book"/surcap-bas.pat
+#grep -Fvf <(zcat scriptaux/wdb0.gz) $tmpdir/anycap-may.pat > $tmpdir/anycap-lex.pat
+#grep -Ff  <(zcat scriptaux/wdb0.gz) $tmpdir/anycap-may.pat > $tmpdir/anycap-bas.pat
+#grep -Fvf <(zcat scriptaux/wdb0.gz) $tmpdir/surcap-raw.pat > $tmpdir/surcap-lex.pat
+#grep -Ff  <(zcat scriptaux/wdb0.gz) $tmpdir/surcap-raw.pat > $tmpdir/surcap-bas.pat
 
  awk -vindb="scriptdb/" -vinax="scriptaux/" -vbook=$book -f scriptdb/gw_caplists.awk
 
@@ -234,8 +236,8 @@ grep -Fvf gwt-"$book"/surcap-raw.pat gwt-"$book"/anycap-raw.pat > gwt-"$book"/an
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 10:" $duration "сек" #dbgtime
 
 # Список неизвестных имён
- grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/surcap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 01_nom_newsur_nl.list
- grep -Fvf <(zcat scriptaux/lexx.pat.gz) gwt-"$book"/anycap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 02_nom_newany_nl.list
+ grep -Fvf <(zcat scriptaux/lexx.pat.gz) $tmpdir/surcap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 01_nom_newsur_nl.list
+ grep -Fvf <(zcat scriptaux/lexx.pat.gz) $tmpdir/anycap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 02_nom_newany_nl.list
 
 # gw_m11=$(date +%s.%N); duration=$( echo $gw_m11 - $gw_m10 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 11:" $duration "сек" #dbgtime
@@ -246,14 +248,14 @@ if [[ "$2" != "biglist" ]]; then
   sedz-dp () { zgrep -Ff <(grep -Fof <(zcat "$1") "$2" | sort -u) scriptaux/tts0.txt.gz | sed -nr 's/^_(.+)\"=\"\s(.+)\"$/s=_\1=_\1\\\=\2=gp/gp'; }
   sedz-si () { zgrep -Ff <(grep -Fof <(zcat "$1") "$2" | sort -u) scriptaux/tts0.txt.gz | sed -nr 's/^_(.+)=(.+)$/s=_\1\\\b=_\1\\\=\2=gp/gp'    ; }
 
-  sedz-dp scriptaux/tts-dq.pat.gz gwt-"$book"/anycap-bas.pat > gwt-"$book"/anybas-in-dq.sed
-  sedz-si scriptaux/tts-si.pat.gz gwt-"$book"/anycap-bas.pat > gwt-"$book"/anybas-in-si.sed
-  sedz-dp scriptaux/tts-dq.pat.gz gwt-"$book"/anycap-lex.pat > gwt-"$book"/anylex-in-dq.sed
-  sedz-si scriptaux/tts-si.pat.gz gwt-"$book"/anycap-lex.pat > gwt-"$book"/anylex-in-si.sed
-  sedz-dp scriptaux/tts-dq.pat.gz gwt-"$book"/surcap-bas.pat > gwt-"$book"/surbas-in-dq.sed
-  sedz-si scriptaux/tts-si.pat.gz gwt-"$book"/surcap-bas.pat > gwt-"$book"/surbas-in-si.sed
-  sedz-dp scriptaux/tts-dq.pat.gz gwt-"$book"/surcap-lex.pat > gwt-"$book"/surlex-in-dq.sed
-  sedz-si scriptaux/tts-si.pat.gz gwt-"$book"/surcap-lex.pat > gwt-"$book"/surlex-in-si.sed
+  sedz-dp scriptaux/tts-dq.pat.gz $tmpdir/anycap-bas.pat > $tmpdir/anybas-in-dq.sed
+  sedz-si scriptaux/tts-si.pat.gz $tmpdir/anycap-bas.pat > $tmpdir/anybas-in-si.sed
+  sedz-dp scriptaux/tts-dq.pat.gz $tmpdir/anycap-lex.pat > $tmpdir/anylex-in-dq.sed
+  sedz-si scriptaux/tts-si.pat.gz $tmpdir/anycap-lex.pat > $tmpdir/anylex-in-si.sed
+  sedz-dp scriptaux/tts-dq.pat.gz $tmpdir/surcap-bas.pat > $tmpdir/surbas-in-dq.sed
+  sedz-si scriptaux/tts-si.pat.gz $tmpdir/surcap-bas.pat > $tmpdir/surbas-in-si.sed
+  sedz-dp scriptaux/tts-dq.pat.gz $tmpdir/surcap-lex.pat > $tmpdir/surlex-in-dq.sed
+  sedz-si scriptaux/tts-si.pat.gz $tmpdir/surcap-lex.pat > $tmpdir/surlex-in-si.sed
 
 # gw_m12=$(date +%s.%N); duration=$( echo $gw_m12 - $gw_m11 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 12:" $duration "сек" #dbgtime
@@ -262,14 +264,14 @@ if [[ "$2" != "biglist" ]]; then
   inc=50
   sedrnf () { local lico=$(wc -l < "$1"); local i=0; local j=0; for i in $(seq 1 $inc $lico); do j=$(($i+$(($inc-1)))); sed -rnf <(sed -n "$i,$j p" < "$1") "$2"; done; }
 
-  sedrnf gwt-"$book"/anybas-in-dq.sed gwt-"$book"/anycap-raw.pat >> 09_nom_anybas_dq.list
-  sedrnf gwt-"$book"/anybas-in-si.sed gwt-"$book"/anycap-raw.pat >> 10_nom_anybas_si.list
-  sedrnf gwt-"$book"/anylex-in-dq.sed gwt-"$book"/anycap-lex.pat >> 05_nom_anylex_dq.list
-  sedrnf gwt-"$book"/anylex-in-si.sed gwt-"$book"/anycap-lex.pat >> 06_nom_anylex_si.list
-  sedrnf gwt-"$book"/surbas-in-dq.sed gwt-"$book"/surcap-raw.pat >> 07_nom_surbas_dq.list
-  sedrnf gwt-"$book"/surbas-in-si.sed gwt-"$book"/surcap-raw.pat >> 08_nom_surbas_si.list
-  sedrnf gwt-"$book"/surlex-in-dq.sed gwt-"$book"/surcap-raw.pat >> 03_nom_surlex_dq.list
-  sedrnf gwt-"$book"/surlex-in-si.sed gwt-"$book"/surcap-raw.pat >> 04_nom_surlex_si.list
+  sedrnf $tmpdir/anybas-in-dq.sed $tmpdir/anycap-raw.pat >> 09_nom_anybas_dq.list
+  sedrnf $tmpdir/anybas-in-si.sed $tmpdir/anycap-raw.pat >> 10_nom_anybas_si.list
+  sedrnf $tmpdir/anylex-in-dq.sed $tmpdir/anycap-lex.pat >> 05_nom_anylex_dq.list
+  sedrnf $tmpdir/anylex-in-si.sed $tmpdir/anycap-lex.pat >> 06_nom_anylex_si.list
+  sedrnf $tmpdir/surbas-in-dq.sed $tmpdir/surcap-raw.pat >> 07_nom_surbas_dq.list
+  sedrnf $tmpdir/surbas-in-si.sed $tmpdir/surcap-raw.pat >> 08_nom_surbas_si.list
+  sedrnf $tmpdir/surlex-in-dq.sed $tmpdir/surcap-raw.pat >> 03_nom_surlex_dq.list
+  sedrnf $tmpdir/surlex-in-si.sed $tmpdir/surcap-raw.pat >> 04_nom_surlex_si.list
 
 # gw_m13=$(date +%s.%N); duration=$( echo $gw_m13 - $gw_m12 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 13:" $duration "сек" #dbgtime
@@ -296,7 +298,7 @@ sed -ri "
          s=X8Ъ=\xe2\x80\xa4=g
          s=X7Ъ=\xe2\x80\xa7=g
          s=(\xcc\x81)+=\xcc\x81=g
-        " gwt-"$book"/text-book.txt
+        " $tmpdir/text-book.txt
 
 # gw_m14=$(date +%s.%N); duration=$( echo $gw_m14 - $gw_m13 | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 14:" $duration "сек" #dbgtime
@@ -310,8 +312,8 @@ printf '\e[36m%s\e[0m ' "Расстановка ударений в именах
 # gw_m15=$(date +%s.%N); duration=$( echo $gw_m15 - $gw_pre | bc ) #dbgtime
 # LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Метка 15:" $duration "сек" #dbgtime
 
-awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/namedef.awk gwt-"$book"/text-book.txt > gwt-"$book"/text-book.awk.txt
-mv gwt-"$book"/text-book.awk.txt gwt-"$book"/text-book.txt
+awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/namedef.awk $tmpdir/text-book.txt > $tmpdir/text-book.awk.txt
+mv $tmpdir/text-book.awk.txt $tmpdir/text-book.txt
 
 gw_sed=$(date +%s.%N); duration=$( echo $gw_sed - $gw_pre | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "выполнена за" $duration "сек"
@@ -339,63 +341,61 @@ if [[ $key = "wonly" ]]; then sed -ri "
 	s=X5Ъ=\xcc\xad=g
 	s=X6Ъ=\xcc\xb0=g
 	s=X8Ъ=\xe2\x80\xa4=g
-	s=X7Ъ=\xe2\x80\xa7=g" gwt-"$book"/text-book.txt; fi
+	s=X7Ъ=\xe2\x80\xa7=g
+    " $tmpdir/text-book.txt; fi
 
 # --------------------- Блок формирования дискретных скриптов для омографов --------------------------------------
 # Создаем папку для "именных" омографов для конкретной книги. Только, если ее еще нет.
-if [[ ! -d nomo-"$book" ]]; then
-	printf '\e[36m%s \e[33m%s\e[0m\n' "Найденные имена омографы и скрипты для их обработки сохранены в" nomo-"$book"
-	mkdir nomo-"$book"
-	grep -Ff <(zcat scriptaux/nomo.pat.gz) gwt-"$book"/anycap-all.pat >  nomo-"$book"/nomo-all.pat
-	grep -Ff <(zcat scriptaux/nomo.pat.gz) gwt-"$book"/surcap-all.pat >> nomo-"$book"/nomo-all.pat
-	sort -u -o nomo-"$book"/nomo-all.pat nomo-"$book"/nomo-all.pat
+if [[ ! -d $bookwrkdir ]]; then
+	printf '\e[36m%s \e[33m%s\e[0m\n' "Найденные имена омографы и скрипты для их обработки сохранены в" $bookwrkdir
+	mkdir $bookwrkdir
+	grep -Ff <(zcat scriptaux/nomo.pat.gz) $tmpdir/anycap-all.pat >  $bookwrkdir/nomo-all.pat
+	grep -Ff <(zcat scriptaux/nomo.pat.gz) $tmpdir/surcap-all.pat >> $bookwrkdir/nomo-all.pat
+	sort -u -o $bookwrkdir/nomo-all.pat $bookwrkdir/nomo-all.pat
 
-	zgrep -Fif nomo-"$book"/nomo-all.pat <(zcat scriptdb/nomo.txt.gz) | sed -r "\
+	zgrep -Fif $bookwrkdir/nomo-all.pat <(zcat scriptdb/nomo.txt.gz) | sed -r "
 		s/^_(.+)=/\1/g
 		s/([АЕЁИОУЫЭЮЯаеёиоуыэюя])\x27/\1\xcc\x81/g
 		s/\\\xcc\\\xa0/\xcc\xa0/g
 		s/\\\xcc\\\xa3/\xcc\xa3/g
 		s/\\\xcc\\\xa4/\xcc\xa4/g
 		s/\\\xcc\\\xad/\xcc\xad/g
-		s/\\\xcc\\\xb0/\xcc\xb0/g" | sort -u > nomo-"$book"/omo-luc.lst
-	rm nomo-"$book"/nomo-all.pat
+		s/\\\xcc\\\xb0/\xcc\xb0/g
+        " | sort -u > $bookwrkdir/omo-luc.lst
+	rm $bookwrkdir/nomo-all.pat
 fi
-# Создать дискретные скрипты обработки омографов в nomo-"$book"
+# Создать дискретные скрипты обработки омографов в nomo-$book
 # Дискретные скрипты запускаются из директории nomo-$book по отдельности каждый.
 # ВНИМАНИЕ: для этой операции необходимо иметь навыки работы в редакторе vim !!!
 # Работает только при установленом плагине vim PatternsOnText (https://github.com/inkarkat/vim-PatternsOnText)
 
-cd nomo-"$book"
-
-if [[ -s omo-luc.lst ]]; then # Проверка найдены ли имена-омографы для ручной обработки. maomchk 0 
+if [[ -s $bookwrkdir/omo-luc.lst ]]; then # Проверка найдены ли имена-омографы для ручной обработки. maomchk 0 
 
 # Формируем дискретные скрипты пословно
 printf '\e[32m%s\n' "Создание дискретных скриптов обработки имён-омографов:"
 twd=$(tput cols)
 
-zgrep -Ff <(grep -Fof <(zcat ../scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' omo-luc.lst | sort -u)) ../scriptaux/tts0.$suf.gz |\
-       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > omo-lexx.txt
+zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\
+       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
-sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" ../gwt-"$book"/text-book.txt | \
-    awk -v obook=$obook -v twd=$twd -v preview=$preview -v termcor=$termcor -v editor=$edi -f ../scriptdb/preview.awk
+sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $tmpdir/text-book.txt | \
+    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -f scriptdb/preview.awk
 
-printf '\e[36m%s \e[093m%s\e[36m%s\e[0m\n' "Найдено имён-омографов:" $(ls -l *.sh | wc -l)
+printf '\e[36m%s \e[093m%s\e[36m%s \e[36m%s\e[0m\n' "Найдено имён-омографов:" $(ls -l $bookwrkdir/*.sh | wc -l) "шт."
 
-	chmod +x *.sh
-	cd ..
+	chmod +x $bookwrkdir/*.sh
 
 else # Если не нашли имён-омографов для ручной обработки maomchk 1
 	printf '\e[36m%s\e[0m\n' "Омографов для ручной обработки не найдено."
-	cd ..
-	rm -rf nomo-"$book"
+	rm -rf $bookwrkdir
 fi # maomchk 2
 
 
 # Возвращаем графику назад
-cat gwt-"$book"/text-book.txt gwt-"$book"/binary-book.txt > "$book"
+cat $tmpdir/text-book.txt $tmpdir/binary-book.txt > "$book"
 
 # Удаляем временные файлы
- rm -rf gwt-"$book"
+ rm -rf $tmpdir
 
 gw_proc=$(date +%s.%N); duration=$( echo $gw_proc - $gw_sed | bc ); tot_dur=$( echo $gw_proc - $gw_time0 | bc )
 
@@ -412,40 +412,40 @@ if [[ $key = "-ld" ]] || [[ $key = "-old" ]] ; then
 # Подготовка текста книги к обработке
 	printf '\e[32m%s \e[93m%s\e[0m\n' "Создание частного словаря для файла книги:" "$book"
 	dos2unix "$book" &>/dev/null
-	if [[ -d gwt-"$book" ]]; then rm -rf gwt-"$book" && mkdir gwt-"$book"
-	else mkdir gwt-"$book"; fi
+	if [[ -d $tmpdir ]]; then rm -rf $tmpdir && mkdir $tmpdir
+	else mkdir $tmpdir; fi
 
-	sed '/<binary/Q' "$book" | sed -r 's/\xc2\xa0/ /g' > gwt-"$book"/text-book.txt
-#	sed -n '/<binary/,$p' "$book" > gwt-"$book"/binary-book.txt
+	sed '/<binary/Q' "$book" | sed -r 's/\xc2\xa0/ /g' > $tmpdir/text-book.txt
+#	sed -n '/<binary/,$p' "$book" > $tmpdir/binary-book.txt
 
 # Создание списка обрабатываемых шаблонов: " слово"=" сло'во" и слово=сло'во, шаблоны других типов могут добавляться без обработки
-	sed -nr 's/^(\" )([^ "]+)(\"=.+)$/_\2 #\1\2\3/gp' tts.txt > gwt-"$book"/q_wq.txt
-	sed -nr 's/^([^"=]+)(=.+)$/_\1= #\1\2/gp'         tts.txt > gwt-"$book"/w.txt
+	sed -nr 's/^(\" )([^ "]+)(\"=.+)$/_\2 #\1\2\3/gp' tts.txt > $tmpdir/q_wq.txt
+	sed -nr 's/^([^"=]+)(=.+)$/_\1= #\1\2/gp'         tts.txt > $tmpdir/w.txt
 
 # Создаем список слов в книге
-	grep -Po "(?<=[^$RUUC$rulc])[$RUUC$rulc]+" gwt-"$book"/text-book.txt | sed -r 's/^.+$/_\L\0=/g' | sort -u > gwt-"$book"/book-words.txt
-	printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36%s\e[0m\n' "Книга" "$book" "содержит" $(wc -l < gwt-"$book"/book-words.txt) "словоформ."
+	grep -Po "(?<=[^$RUUC$rulc])[$RUUC$rulc]+" $tmpdir/text-book.txt | sed -r 's/^.+$/_\L\0=/g' | sort -u > $tmpdir/book-words.txt
+	printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36%s\e[0m\n' "Книга" "$book" "содержит" $(wc -l < $tmpdir/book-words.txt) "словоформ."
 # Находим сработавшие шаблоны
-	grep -Fof <(zcat scriptaux/tts.pat.gz) gwt-"$book"/book-words.txt > gwt-"$book"/book-words-o.pat
+	grep -Fof <(zcat scriptaux/tts.pat.gz) $tmpdir/book-words.txt > $tmpdir/book-words-o.pat
 
 # Формируем локальный словарь lexx, 2 типа шаблонов на основе списка слов из книги
-	grep -Ff gwt-"$book"/book-words-o.pat gwt-"$book"/q_wq.txt | sed -r 's/_.+#//g' >  gwt-"$book"/booklexx.txt
-	grep -Ff gwt-"$book"/book-words-o.pat gwt-"$book"/w.txt    | sed -r 's/_.+#//g' >> gwt-"$book"/booklexx.txt
-	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Найдено сработавших шаблонов" $(wc -l < gwt-"$book"/booklexx.txt) "Добавляем опциональные шаблоны."	
+	grep -Ff $tmpdir/book-words-o.pat $tmpdir/q_wq.txt | sed -r 's/_.+#//g' >  $tmpdir/booklexx.txt
+	grep -Ff $tmpdir/book-words-o.pat $tmpdir/w.txt    | sed -r 's/_.+#//g' >> $tmpdir/booklexx.txt
+	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Найдено сработавших шаблонов" $(wc -l < $tmpdir/booklexx.txt) "Добавляем опциональные шаблоны."	
 
 
 # Добавляем необрабатываемые секции "полного" словаря. ЛИШНИЕ МОЖНО ЗАКОММЕНТИРОВАТЬ!!!
-	grep "regex"               tts.txt >> gwt-"$book"/booklexx.txt		# Секция regex
-	grep -P '\^"[^ ]+\"='      tts.txt >> gwt-"$book"/booklexx.txt		# Секция "слово"="сло'во"
-	grep -P '^\" .+ \"='       tts.txt >> gwt-"$book"/booklexx.txt		# " два слова "=" два сло'ва "
-	grep -P '^\"[^ ].+ \"='    tts.txt >> gwt-"$book"/booklexx.txt		# "два слова "="два сло'ва "
-	grep -P '^\" .+ .+[^ ]\"=' tts.txt >> gwt-"$book"/booklexx.txt		# " два слова"=" два сло'ва"
-	grep -P '^\"[^ ]+ "='      tts.txt >> gwt-"$book"/booklexx.txt		# "слово "="сло'во "
-	grep -P '^\" [^ ]+\-"='    tts.txt >> gwt-"$book"/booklexx.txt		# " слово-"=" сло'во "
-	grep -P '^\"\-[^ ]+\"='    tts.txt >> gwt-"$book"/booklexx.txt		# "-слово"=" сло'во"
+	grep "regex"               tts.txt >> $tmpdir/booklexx.txt		# Секция regex
+	grep -P '\^"[^ ]+\"='      tts.txt >> $tmpdir/booklexx.txt		# Секция "слово"="сло'во"
+	grep -P '^\" .+ \"='       tts.txt >> $tmpdir/booklexx.txt		# " два слова "=" два сло'ва "
+	grep -P '^\"[^ ].+ \"='    tts.txt >> $tmpdir/booklexx.txt		# "два слова "="два сло'ва "
+	grep -P '^\" .+ .+[^ ]\"=' tts.txt >> $tmpdir/booklexx.txt		# " два слова"=" два сло'ва"
+	grep -P '^\"[^ ]+ "='      tts.txt >> $tmpdir/booklexx.txt		# "слово "="сло'во "
+	grep -P '^\" [^ ]+\-"='    tts.txt >> $tmpdir/booklexx.txt		# " слово-"=" сло'во "
+	grep -P '^\"\-[^ ]+\"='    tts.txt >> $tmpdir/booklexx.txt		# "-слово"=" сло'во"
 
 # Сортируем и преобразуем словарь в lexx
-	sed -r "s/([$rvlc])\x27/\1\xcc\x81/g" gwt-"$book"/booklexx.txt | sort -u > "$book".lexx
+	sed -r "s/([$rvlc])\x27/\1\xcc\x81/g" $tmpdir/booklexx.txt | sort -u > "$book".lexx
 
 	printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' \
 		"Для книги" "$book" "сформирован локальный словарь" "$book".lexx ", который содержит" $(wc -l < "$book".lexx) "строк."
@@ -462,14 +462,15 @@ if [[ $key = "-ld" ]] || [[ $key = "-old" ]] ; then
 	s/^\"([^\"]+)\"=\"([^\"]+)\"$/\1=\2/g
 	s/^\"([^ ]*)\s\"=\"([^ ]*)\s\"$/\1\\\b=\2/g
 	s/^/s=/g
-	s/$/=gI/g" gwt-"$book"/booklexx.txt | sort -u > gwt-"$book"/booksed-main.txt
+	s/$/=gI/g
+    " $tmpdir/booklexx.txt | sort -u > $tmpdir/booksed-main.txt
 
-	echo "s=\xcc\x81=ЪЪЪ=g" | cat - gwt-"$book"/booksed-main.txt > "$book".sed
+	echo "s=\xcc\x81=ЪЪЪ=g" | cat - $tmpdir/booksed-main.txt > "$book".sed
 	echo "s=ЪЪЪ=\xcc\x81=g" >> "$book".sed
 	
 	printf '\e[32;4;1m%s\e[0m \e[32m%s \e[93m%s \e[32m%s \e[93m%s \e[36m%s\e[0m\n' \
 		"\"Имена:\"" "Для книги" "$book" "сформирован служебный скрипт" "$book.sed" "простановки ударений во всех известных словах книги."
 
-	rm -rf gwt-"$book"/
+	rm -rf $tmpdir/
 fi
 
