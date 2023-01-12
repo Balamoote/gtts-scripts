@@ -2,6 +2,7 @@
 # Последняя версия файла находится тут: https://github.com/Balamoote/gtts-scripts
 # При запуске требует следующие переменные (-v):
 #   obook = имя файла книги, которую будут править дискретные скрипты: имя файла
+#   bkwrkdir = временная директория книги
 #   twd = ширина терминала: целое положительное число
 #   preview = печатать или нет превью: 1 или не 1
 #   termcor = величина корректировки ширины терминала: любое целое число
@@ -28,11 +29,14 @@ BEGIN {
     wrdmark = "================================================================================"
     nummark = "###########"
 
-    olexqty = split(readfile("omo-lexx.txt"), olex, "\n"); delete olex[olexqty];
+    omolexxtxt = bkwrkdir "omo-lexx.txt"
+    omoluclst  = bkwrkdir "omo-luc.lst"
+
+    olexqty = split(readfile(omolexxtxt), olex, "\n"); delete olex[olexqty];
     for ( l in olex ) { split(olex[l], olx, "#"); omolexx[olx[1]] = olx[2] };
     delete olex; delete olx;
 
-    omoqty = split(readfile("omo-luc.lst"), omlst, "\n"); delete omlst[omoqty];
+    omoqty = split(readfile(omoluclst), omlst, "\n"); delete omlst[omoqty];
     for (i in omlst) { #b1
         le = split (omlst[i], arr, " ");
         omos[arr[1]]; lcm = tolower(arr[1]); oml = length(lcm); ompad = sprintf("%" oml+5 "s", "" );
@@ -168,7 +172,7 @@ for ( wrd in omos ) { #e2
             ennum=0; delete prevar;
 
         }; #preview
-        ofile = wrd ".sh"
+        ofile = bkwrkdir wrd ".sh"
         outblock = shblock[wrd] prevblock
         print outblock >> ofile; fflush();
         close(ofile);
