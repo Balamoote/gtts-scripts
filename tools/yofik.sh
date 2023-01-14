@@ -110,13 +110,14 @@ if [[ $fixomo -eq "1" ]]; then # fimomochk 0
 yo_time1=$(date +%s.%N); duration=$( echo $yo_time1 - $yo_time0 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предварительная подготовка скриптов ёфикации заняла:" $duration "сек"
 
- awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/yodef.awk $tmpdir/text-book.txt > $tmpdir/text-book.awk.txt
+ awk -vindb="scriptdb/" -vinax="scriptaux/" -f scriptdb/yodef.awk $tmpdir/text-book.txt > $tmpdir/text-book.awk.txt
  mv $tmpdir/text-book.awk.txt $tmpdir/text-book.txt
 
 yo_time2=$(date +%s.%N); duration=$( echo $yo_time2 - $yo_time1 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация однозначных случаев заняла:" $duration "сек"
-
- awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/deomo.awk $tmpdir/text-book.txt > $tmpdir/text-book.awk.txt
+ # выключить все сканирующие строки, кроме "все"
+ awk -vindb="scriptdb/" -vinax="scriptaux/" -f <(sed -r "/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^/#/g; s/^#(.+)(#_#_# vsez !_#_!)$/\1\2/g" scriptdb/deomo.awk) \
+    $tmpdir/text-book.txt > $tmpdir/text-book.awk.txt
  mv $tmpdir/text-book.awk.txt $tmpdir/text-book.txt
 
 yo_time3=$(date +%s.%N); duration=$( echo $yo_time3 - $yo_time2 | bc )

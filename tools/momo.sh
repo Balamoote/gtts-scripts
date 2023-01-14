@@ -15,7 +15,7 @@ book="$2"
 bookwrkdir=mano-"$book"
 suf=man
 backup="$book".$suf
-debug=1   # Если 1, то сделать отладку скриптов омографов: поиск искажений текста в "пастеризованных" версиях исходника и результата 
+debug=0   # Если 1, то сделать отладку скриптов омографов: поиск искажений текста в "пастеризованных" версиях исходника и результата 
 nocaps=0  # Если 1, то капсов в "пастеризованых" не будет
 
 # Установка редактора: vim или neovim
@@ -106,6 +106,24 @@ sed -n '/<binary/,$p' "$book" > $bookwrkdir/binary-book.txt
 mo_uni=$(date +%s.%N); duration=$( echo $mo_uni - $mo_time0 | bc )
 if [[ $fixomo == "1" ]]; then
 
+# Проверить наличие необработанных "все": если есть, применить все правила, иначе выключить пару "все/всё"
+yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
+if [[ ! $yop -eq 0 ]]; then
+	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m … ' "Все (" $yop ") ==> Все́/Всё"
+	
+  awk -v indb="scriptdb/" -v inax="scriptaux/" -vbkwrkdir="$bookwrkdir/" -f scriptdb/deomo.awk $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+  mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+
+yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
+mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "обработано за" $duration "сек. Остаток:" $yop
+
+else
+  awk -v indb="scriptdb/" -v inax="scriptaux/" -vbkwrkdir="$bookwrkdir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+)(#_#_# vsez !_#_!)$/#\1\2/g' scriptdb/deomo.awk) \
+     $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+  mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+fi # все
+
 rexsed="scriptdb/omo-index.sed"
 
 awk -vtmpdir=$bookwrkdir -vrexfile=$rexsed -f scriptdb/omopick.awk $bookwrkdir/text-book.txt >/dev/null 2>&1
@@ -117,24 +135,8 @@ printf '\e[36m%s \e[93m%s %s%s%s\e[0m … ' "Омографов для авто�
 
 sedroll $bookwrkdir/book-index.sed $bookwrkdir/text-book.txt
 
-mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "обработано за" $duration "сек"
-
-# Проверить наличие необработанных "все" и подключить пару "все/всё"
-yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
-if [[ ! $yop -eq 0 ]]; then
-	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m … ' "Все (" $yop ") ==> Все́/Всё"
-#   sed -r '/##START_END##/q' scriptdb/omo-index.sed > "$bookwrkdir/vsex.sed"
-#   cat scriptdb/vse.sed >> $bookwrkdir/vsex.sed
-#   sed -rn '/###\sTHE_x_END\s!_#_!/,/#::end::/p' scriptdb/omo-index.sed >> $bookwrkdir/vsex.sed
-	
-awk -v indb="scriptdb/" -v inax="scriptaux/" -f scriptdb/deomo.awk $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
-mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
-
-yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
 mo_uni2=$(date +%s.%N); duration=$( echo $mo_uni2 - $mo_uni1 | bc )
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "обработано за" $duration "сек. Остаток:" $yop
-fi # все
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "обработано за" $duration "сек"
 
 fi # fixomo?
 

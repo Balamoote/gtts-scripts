@@ -1,6 +1,8 @@
 # Библиотека различных функций обработки текста
 # Последняя версия файла тут: https://github.com/Balamoote/gtts-scripts
 # служебные фунции
+function readfile(file,  tmp, save_rs)            # Функция чтения файла в скаляр
+                { save_rs = RS; RS = "^$"; getline tmp < file; close(file); RS = save_rs; return tmp }
 function joinpat(array, seps, nuf,    rett, i, k) # Склеить строку обратно
                 { rett = seps [0]; for (i=1; i<= nuf; i++) {rett = rett array[i] seps[i]}; return rett }
 function pusha(arr, arrto,    k)                  # добывать массив выдать 1-й символ строки-сеператора
@@ -12,8 +14,10 @@ function hyphback(hystring,  hyw)
                 { l[i] = l[i] sep[i] l[i+1]; delete sep[i]; delete l[i+1]; nf=arrpack(i+1, l); arrpack(i, sep) }; }; }; };}
 function splitline(instring,    rett)
                 { rett=patsplit(instring,l,patword,sep); return rett }
-function getwpos(word)
-                { for(i=1;i<=nf;i++) {if(tolower(l[i])==word) wpos[i]}; }
+function getwpos(word,    n)
+                { for(n=1;n<=nf;n++) {if(tolower(l[n])==word) wpos[n]} }
+function regwpos(word,    n)
+                { for(n=1;n<=nf;n++) {if(l[n]==word) wpos[n]} }
 function arrpack(n, array,   i, rett)             # устранить пропуск в массиве
                 { rett = length(array); for (i=n; i<=rett; i++) {array[i] = array[i+1]}; delete array[rett+1]; return rett }
 
@@ -51,19 +55,19 @@ function p(n,wl,    rett)                         # разделитель со�
 function cap(n,    el, rett)                      # Слово с заглавной буквы?
                 { el = l[i+n]; if ( substr(el,1,1) ~ RUUC ) {rett=1} else {rett=0}; return rett }
 function m(wl,    wrds, k, el, lk, rett)          # нахождение в списке? = "одно из слов"
-                { lk=split(wl, wrds, " "); for (k=1; k<=lk; k++) { el = "_" wrds[k] "_"; if (fi3 ~ el) {rett=1; break} else {rett=0};}; return rett }
+                { lk=split(wl, wrds, "[ |]"); for (k=1; k<=lk; k++) { el = "_" wrds[k] "_"; if (fi3 ~ el) {rett=1; break} else {rett=0};}; return rett }
 function w(n, wl,    wrds, rett)                  # нахождение в списке? = "одно из слов"
-                { stoar(wl, wrds, " "); if (lc(n) in wrds) {rett=1} else {rett=0}; return rett }
+                { stoar(wl, wrds, "[ |]"); if (lc(n) in wrds) {rett=1} else {rett=0}; return rett }
 function wc(n, wl,    wrds, k, lk, rett)          # нахождение части слова в списке? = "один из набора"
-                { lk=split(wl, wrds, " "); for (k=1; k<=lk; k++) { if (lc(n)~wrds[k]) {rett=1; break} else {rett=0};}; return rett }
+                { lk=split(wl, wrds, "[ |]"); for (k=1; k<=lk; k++) { if (lc(n)~wrds[k]) {rett=1; break} else {rett=0};}; return rett }
 function wv(n, wl,    wrds, k, lk, rett)          # НЕ нахождение части слова в списке? = "один из набора"
-                { lk=split(wl, wrds, " "); for (k=1; k<=lk; k++) { if (lc(n)~wrds[k]) {rett=0; break} else {rett=1};}; return rett }
+                { lk=split(wl, wrds, "[ |]"); for (k=1; k<=lk; k++) { if (lc(n)~wrds[k]) {rett=0; break} else {rett=1};}; return rett }
 function W(n, wl,    wrds, rett)                  # НЕнахождение в списке? != "одно из слов"
-                { stoar(wl, wrds, " "); if (lc(n) in wrds) {rett=0} else {rett=1}; return rett }
+                { stoar(wl, wrds, "[ |]"); if (lc(n) in wrds) {rett=0} else {rett=1}; return rett }
 function wb(n, wl,    wrds, k, rett)              # поиск на n шагов назад слова из списка
-                { rett=0; wbn=""; stoar(wl, wrds, " "); for (k=-1; k>=n; k--) { if (lc(k) in wrds) {rett=1; wbn=k; break};}; return rett }
+                { rett=0; wbn=""; stoar(wl, wrds, "[ |]"); for (k=-1; k>=n; k--) { if (lc(k) in wrds) {rett=1; wbn=k; break};}; return rett }
 function wf(n, wl,    wrds, k, rett)              # поиск на n шагов вперёд наличия слова в массиве
-                { rett=0; wfn=""; stoar(wl, wrds, " "); for (k= 1; k<=n; k++) { if (lc(k) in wrds) {rett=1; wfn=k; break};}; return rett }
+                { rett=0; wfn=""; stoar(wl, wrds, "[ |]"); for (k= 1; k<=n; k++) { if (lc(k) in wrds) {rett=1; wfn=k; break};}; return rett }
 function s(m, n,    k, rett)                      # разделители в диапазоне НЕ содержат препинаний? = пробел (не видит дефис)
                 { for (k=m; k<=n; k++) { if (sep[i+k] ~ "[…,.:;!?—]" ) {rett=0; break} else {rett=1}; }; return rett }
 function sc(n, sym,    el, k, rett)               # поиск символа в разделителе: "содержит"
@@ -90,14 +94,23 @@ function geo_sr(n,        wd,rett) { wd = lc(n); if (wd in geo_edsrim)          
 function geo_mn(n,        wd,rett) { wd = lc(n); if (wd in geo_mnim)                                                                           {rett=1} else {rett=0}; return rett}
                                                                                                                                               
 # глаголы кастомных классов                                                                                                                   
-function glc_mn(n,wl,     el,k,wrds,wd,rett) {stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in gc_mn && gc_mn[wd]~el) {rett=1;break} else {rett=0}}; return rett}
-function glc_in(n,wl,     el,k,wrds,wd,rett) {stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in gc_in && gc_in[wd]~el) {rett=1;break} else {rett=0}}; return rett}
-function glc_po(n,wl,     el,k,wrds,wd,rett) {stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in gc_po && gc_po[wd]~el) {rett=1;break} else {rett=0}}; return rett}
+function glc_mn(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd in gc_mn)                                                      {rett=1} else {rett=0}}  else
+                                             { stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in gc_mn && gc_mn[wd]~el){rett=1;break} else {rett=0}}};return rett}
+function glc_in(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd in gc_in)                                                      {rett=1} else {rett=0}}  else
+                                             { stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in gc_in && gc_in[wd]~el){rett=1;break} else {rett=0}}};return rett}
+function glc_po(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd in gc_po)                                                      {rett=1} else {rett=0}}  else
+                                             { stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in gc_po && gc_po[wd]~el){rett=1;break} else {rett=0}}};return rett}
                           
 # модальные слова         
-function mod_bz(n,        wd,rett) { fi3 =""; wd = lc(n); if (wd in md_bz)                                                      {fi3=md_bz[wd]; rett=1} else {rett=0}; return rett}
-function mod_ed(n,        wd,rett) { fi3 =""; wd = lc(n); if (wd in md_ed)                                                      {fi3=md_ed[wd]; rett=1} else {rett=0}; return rett}
-function mod_mn(n,        wd,rett) { fi3 =""; wd = lc(n); if (wd in md_mn)                                                      {fi3=md_mn[wd]; rett=1} else {rett=0}; return rett}
+function mod_bz(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd in md_bz)                                                      {rett=1} else {rett=0}}  else
+                                             { stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in md_bz && md_bz[wd]~el){rett=1;break} else {rett=0}}};return rett}
+function mod_ed(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd in md_ed)                                                      {rett=1} else {rett=0}}  else
+                                             { stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in md_ed && md_ed[wd]~el){rett=1;break} else {rett=0}}};return rett}
+function mod_mn(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd in md_mn)                                                      {rett=1} else {rett=0}}  else
+                                             { stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in md_mn && md_mn[wd]~el){rett=1;break} else {rett=0}}};return rett}
+#function mod_bz(n,        wd,rett) { fi3 =""; wd = lc(n); if (wd in md_bz)                                                      {fi3=md_bz[wd]; rett=1} else {rett=0}; return rett}
+#function mod_ed(n,        wd,rett) { fi3 =""; wd = lc(n); if (wd in md_ed)                                                      {fi3=md_ed[wd]; rett=1} else {rett=0}; return rett}
+#function mod_mn(n,        wd,rett) { fi3 =""; wd = lc(n); if (wd in md_mn)                                                      {fi3=md_mn[wd]; rett=1} else {rett=0}; return rett}
                           
 # кастомные наречия       
 function narc_srav(n,     wd,rett) { wd = lc(n); if (wd in nrc_srv)                                                                            {rett=1} else {rett=0}; return rett}
@@ -133,6 +146,10 @@ function muk_mn(n,        wd,rett) { wd = lc(n); if (wd in muc_mnim||wd in muc_m
 
 # кастомные местоимения
 function mest_it(n,       wd,rett) { wd = lc(n); if (wd in mst_it && sep[i+n-1]!="-")                                                          {rett=1} else {rett=0}; return rett}
+
+# двойственное число
+function qi_duom(n,       wd,rett) { wd = lc(n); if (wd in qd_duom)                                                                            {rett=1} else {rett=0}; return rett}
+function qi_duoz(n,       wd,rett) { wd = lc(n); if (wd in qd_duoz)                                                                            {rett=1} else {rett=0}; return rett}
                                                                                                                                               
 # прилагательные                                                                                                                              
 function prl_kred_mu(n,   wd,rett) { wd = lc(n); if (wd in pl_kred_mu)                                                                         {rett=1} else {rett=0}; return rett}
@@ -316,6 +333,8 @@ function suw_oded(n,                                                            
                           wd in swo_edob_tv||wd in swo_edob_vi||wd in swo_edsr_da||wd in swo_edsr_im||wd in swo_edsr_pr||wd in swo_edsr_ro||
                           wd in swo_edsr_tv||wd in swo_edsr_vi||wd in swo_edze_da||wd in swo_edze_im||wd in swo_edze_ne||wd in swo_edze_pr||
                           wd in swo_edze_ro||wd in swo_edze_tv||wd in swo_edze_vi||wd in swo_edze_zv)                                           {rett=1} else {rett=0}; return rett}
+function suw_odedim(n,                                                                                                                          wd,rett) { wd = lc(n);
+                      if (wd in swo_edmu_im||wd in swo_edob_im||wd in swo_edsr_im||wd in swo_edze_im)                                           {rett=1} else {rett=0}; return rett}
 function suw_odmn(n,                                                                                                                            wd,rett) { wd = lc(n);
                       if (wd in swo_mn_da||wd in swo_mn_im||wd in swo_mn_ne||wd in swo_mn_pr||wd in swo_mn_ro||wd in swo_mn_sq||
                           wd in swo_mn_tv)                                                                                                      {rett=1} else {rett=0}; return rett}
@@ -351,6 +370,8 @@ function mest_mn(n,                                                             
 function mest_edmu(n,                                                                                                                           wd,rett) { wd = lc(n);
                       if (wd in mst_ed_mu||wd in mst_ed_mu_da||wd in mst_ed_mu_im||wd in mst_ed_mu_pr||wd in mst_ed_mu_ro||                     
                           wd in mst_ed_mu_tv||wd in mst_ed_mu_vi)                                                                               {rett=1} else {rett=0}; return rett}
+function mest_edmuim(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_mu_im)                                                                        {rett=1} else {rett=0}; return rett}
+function mest_edsrim(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_sr_im||wd in mst_ed_sr)                                                       {rett=1} else {rett=0}; return rett}
 function mest_edze(n,                                                                                                                           wd,rett) { wd = lc(n);
                       if (wd in mst_ed_ze_vi||wd in mst_ed_ze_da||wd in mst_ed_ze_im||wd in mst_ed_ze_pr||wd in mst_ed_ze_ro||                  
                           wd in mst_ed_ze_tv||wd in mst_ed_ze)                                                                                  {rett=1} else {rett=0}; return rett}
@@ -374,7 +395,6 @@ function mest_pr(n,                                                             
                       if (wd in mst_ed_mu_pr||wd in mst_ed_ze_pr||wd in mst_ed_sr_pr||wd in mst_mn_pr||wd in mst_ed_pr||wd in mst_pr)           {rett=1} else {rett=0}; return rett}
 function mest_mnim(n,     wd,rett) { wd = lc(n); if (wd in mst_mn_im)                                                                           {rett=1} else {rett=0}; return rett}
 function mest_mnvi(n,     wd,rett) { wd = lc(n); if (wd in mst_mn_im||wd in mst_mn_ro||wd in mst_mn_vi)                                         {rett=1} else {rett=0}; return rett}
-function mest_edsrim(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_sr_im||wd in mst_ed_sr)                                                       {rett=1} else {rett=0}; return rett}
                                                                                                                                                 
 # наречия                                                                                                                                       
 function nar_srav(n,    wd,rett) { wd = lc(n); if (wd in nr_srv)                                                                                {rett=1} else {rett=0}; return rett}

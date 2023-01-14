@@ -963,21 +963,34 @@ BEGIN {
    if ($2~ /^zvat_/                                 ){  zvt               [$1]=""; continue };
 
    if ($2~ /^md/) {                                                     
-        if($2~  /^mdbz_/                            ){  md_bz             [$1]=""; continue };
-        if($2~  /^mded_/                            ){  md_ed             [$1]=""; continue };
-        if($2~  /^mdmn_/                            ){  md_mn             [$1]=""; continue };
+        if($2~  /^mdbz_/                            ){  md_bz             [$1]=$3; continue };
+        if($2~  /^mded_/                            ){  md_ed             [$1]=$3; continue };
+        if($2~  /^mdmn_/                            ){  md_mn             [$1]=$3; continue };
       };
    if ($2~ /^geo_/) {                                                     
         if($2~  /^geo_ед_ср_им$/                    ){  geo_edsrim        [$1]=""; continue };
         if($2~  /^geo_мн_им$/                       ){  geo_mnim          [$1]=""; continue };
       };
    } close(cmd);
+ 
+   cmd = "zcat " indb "automo.gz | sed -r 's/([аеёиоуыэюя])\\x27/\\1\\xcc\\x81/g; s/\\\\xcc\\\\xa0/\\xcc\\xa0/g; s/\\\\xcc\\\\xa3/\\xcc\\xa3/g; s/\\\\xcc\\\\xa4/\\xcc\\xa4/g; s/\\\\xcc\\\\xad/\\xcc\\xad/g; s/\\\\xcc\\\\xb0/\\xcc\\xb0/g; s/^(.)(.+)\\s(.)(.+)\\s(.+)$/\\1\\2 \\3\\4 \\u\\1\\2 \\u\\3\\4 \\5/g'";
+   while ((cmd|getline) > 0) {
+
+        if($5~  /^mn1e_/ && /_мн_1е$/               ){  ogl_mn1e  [$1]=$2; ogl_mn1e  [$3]=$4; continue };
+        if($5~  /^mn2e_/ && /_мн_2е$/               ){  ogl_mn2e  [$1]=$2; ogl_mn2e  [$3]=$4; continue };
+        if($5~  /^mn3e_/ && /_мн_3е$/               ){  ogl_mn3e  [$1]=$2; ogl_mn3e  [$3]=$4; continue };
+        if($5~  /^pomn_/ && /_пов_мн$/              ){  ogl_pomn  [$1]=$2; ogl_pomn  [$3]=$4; continue };
+        if($5~  /^plkred_прл_крат_ед_муж$/          ){  opl_kredmu[$1]=$2; opl_kredmu[$3]=$4; continue };
+        if($5~  /^pqkred_прч_крат/ && /_ед_муж$/    ){  opq_kredmu[$1]=$2; opq_kredmu[$3]=$4; continue };
+
+   } close(cmd);
+
  # Записать состояние словарных массивов
   if (gawk52 == 1) { writeall(classcache) };
-  cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " indb "dic_rest.gz " indb "dic_suw.gz > " inax "classes.md5"
+  cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " indb "dic_rest.gz " indb "dic_suw.gz " \
+         indb "automo.gz" " > " inax "classes.md5"
   system(cmd); close(cmd)
    } #gnuawk
-
 
  # Коррекции - удаление омографов из массивов
  delete g2_nena_e1["есть"];delete g2_nena_e2["есть"];delete g2_nena_e3["есть"];delete g2_nena_m1["есть"];delete g2_nena_m2["есть"];delete g2_nena_m3["есть"];delete qst["есть"];
