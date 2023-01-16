@@ -57,13 +57,14 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
 
     for (i=1; i<=NF; i++) { ci=tolower($i);
 #_#_#txtmppra
-        if(ci in vsez       && num!=om000)     {vsez   ["все"]=vsez   ["все"] " " num; om000    =num}; # "все" не делим по регистрам #_#_# vsez !_#_!
-        if(ci in ogl_mn1e   && num!=om001[$i]) {oglTmn1e  [$i]=oglTmn1e  [$i] " " num; om001[$i]=num}; # глаголы 1е л. мн.ч.         #_#_# ogl_mn1e !_#_!
-        if(ci in ogl_mn2e   && num!=om002[$i]) {oglTmn2e  [$i]=oglTmn2e  [$i] " " num; om002[$i]=num}; # глаголы 2е л. мн.ч.         #_#_# ogl_mn2e !_#_!
-        if(ci in ogl_mn3e   && num!=om003[$i]) {oglTmn3e  [$i]=oglTmn3e  [$i] " " num; om003[$i]=num}; # глаголы 3е л. мн.ч.         #_#_# ogl_mn3e !_#_!
-        if(ci in ogl_pomn   && num!=om004[$i]) {oglTpomn  [$i]=oglTpomn  [$i] " " num; om004[$i]=num}; # глаголы пов.накл. мн.ч.     #_#_# ogl_pomn !_#_!
-        if(ci in opl_kredmu && num!=om005[$i]) {oplTkredmu[$i]=oplTkredmu[$i] " " num; om005[$i]=num}; # глаголы пов.накл. мн.ч.     #_#_# opl_kredmu !_#_!
-        if(ci in opq_kredmu && num!=om006[$i]) {opqTkredmu[$i]=opqTkredmu[$i] " " num; om006[$i]=num}; # глаголы пов.накл. мн.ч.     #_#_# opq_kredmu !_#_!
+        if(ci in vsez        && num!=om000)     {vsez    ["все"]=vsez    ["все"] " " num; om000    =num}; # "все" не делим по регистрам #_#_# vsez !_#_!
+        if(ci in ogl_mn1e    && num!=om001[$i]) {oglTmn1e   [$i]=oglTmn1e   [$i] " " num; om001[$i]=num}; # глаголы 1е л. мн.ч.         #_#_# ogl_mn1e !_#_!
+        if(ci in ogl_mn2e    && num!=om002[$i]) {oglTmn2e   [$i]=oglTmn2e   [$i] " " num; om002[$i]=num}; # глаголы 2е л. мн.ч.         #_#_# ogl_mn2e !_#_!
+        if(ci in ogl_mn3e    && num!=om003[$i]) {oglTmn3e   [$i]=oglTmn3e   [$i] " " num; om003[$i]=num}; # глаголы 3е л. мн.ч.         #_#_# ogl_mn3e !_#_!
+        if(ci in ogl_pomn    && num!=om004[$i]) {oglTpomn   [$i]=oglTpomn   [$i] " " num; om004[$i]=num}; # глаголы пов.накл. мн.ч.     #_#_# ogl_pomn !_#_!
+        if(ci in opl_kredmu  && num!=om005[$i]) {oplTkredmu [$i]=oplTkredmu [$i] " " num; om005[$i]=num}; # глаголы пов.накл. мн.ч.     #_#_# opl_kredmu !_#_!
+        if(ci in opq_kredmu  && num!=om006[$i]) {opqTkredmu [$i]=opqTkredmu [$i] " " num; om006[$i]=num}; # глаголы пов.накл. мн.ч.     #_#_# opq_kredmu !_#_!
+        if(ci in osw_edmu_ro && num!=om007[$i]) {oswTedmu_ro[$i]=oswTedmu_ro[$i] " " num; om007[$i]=num}; # сущ. ед.ч. м.р. р.п.ч.      #_#_# osw_edmu_ro !_#_!
 #_#_#txtmpprb
   };
 
@@ -2669,6 +2670,21 @@ for(wrd in opqTkredmu){wln=split(opqTkredmu[wrd],omlin," ");subomo=opq_kredmu[wr
  { if ( l[i] ~ capword ) { l[i]=toupper(subomo) } else { l[i]=subomo }; r[650]++; if(dbg){print "R650"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                          ##_opq_kredmu
+
+### osw_edmu_ro !_#_!
+for(wrd in oswTedmu_ro){wln=split(oswTedmu_ro[wrd],omlin," ");subomo=osw_edmu_ro[wrd];for(y=1;y<=wln;y++)# header1
+{b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i); # header2
+ #
+ if ( (w(-2,"нет")||pre_ro(-2)||qi_duom(-2)) && Q(-2,"nar_mest") &&
+       (prl_edro(-1)||prq_edro(-1)) &&
+         s(-2,-1) )
+ { if ( l[i] ~ capword ) { l[i]=toupper(subomo) } else { l[i]=subomo }; r[650]++; if(dbg){print "R650"}; continue};
+ #
+ if ( (w(-1,"нет")||pre_ro(-1)||qi_duom(-1)) && Q(-1,"nar_mest") &&
+        s(-1,-1) )
+ { if ( l[i] ~ capword ) { l[i]=toupper(subomo) } else { l[i]=subomo }; r[650]++; if(dbg){print "R650"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                          ##_osw_edmu_ro
 
 ### THE_x_END !_#_!
 

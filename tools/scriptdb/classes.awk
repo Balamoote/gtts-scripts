@@ -976,12 +976,65 @@ BEGIN {
    cmd = "zcat " indb "automo.gz | sed -r 's/([аеёиоуыэюя])\\x27/\\1\\xcc\\x81/g; s/\\\\xcc\\\\xa0/\\xcc\\xa0/g; s/\\\\xcc\\\\xa3/\\xcc\\xa3/g; s/\\\\xcc\\\\xa4/\\xcc\\xa4/g; s/\\\\xcc\\\\xad/\\xcc\\xad/g; s/\\\\xcc\\\\xb0/\\xcc\\xb0/g; s/^(.)(.+)\\s(.)(.+)\\s(.+)$/\\1\\2 \\3\\4 \\u\\1\\2 \\u\\3\\4 \\5/g'";
    while ((cmd|getline) > 0) {
 
-        if($5~  /^mn1e_/ && /_мн_1е$/               ){  ogl_mn1e  [$1]=$2; ogl_mn1e  [$3]=$4; continue };
-        if($5~  /^mn2e_/ && /_мн_2е$/               ){  ogl_mn2e  [$1]=$2; ogl_mn2e  [$3]=$4; continue };
-        if($5~  /^mn3e_/ && /_мн_3е$/               ){  ogl_mn3e  [$1]=$2; ogl_mn3e  [$3]=$4; continue };
-        if($5~  /^pomn_/ && /_пов_мн$/              ){  ogl_pomn  [$1]=$2; ogl_pomn  [$3]=$4; continue };
-        if($5~  /^plkred_прл_крат_ед_муж$/          ){  opl_kredmu[$1]=$2; opl_kredmu[$3]=$4; continue };
-        if($5~  /^pqkred_прч_крат/ && /_ед_муж$/    ){  opq_kredmu[$1]=$2; opq_kredmu[$3]=$4; continue };
+        if($5~  /^mn1e_/ && /_мн_1е$/               ){  ogl_mn1e    [$1]=$2; ogl_mn1e    [$3]=$4; continue };
+        if($5~  /^mn2e_/ && /_мн_2е$/               ){  ogl_mn2e    [$1]=$2; ogl_mn2e    [$3]=$4; continue };
+        if($5~  /^mn3e_/ && /_мн_3е$/               ){  ogl_mn3e    [$1]=$2; ogl_mn3e    [$3]=$4; continue };
+        if($5~  /^pomn_/ && /_пов_мн$/              ){  ogl_pomn    [$1]=$2; ogl_pomn    [$3]=$4; continue };
+                                                                                         
+        if($5~  /^plkred_прл_крат_ед_муж$/          ){  opl_kredmu  [$1]=$2; opl_kredmu  [$3]=$4; continue };
+        if($5~  /^pqkred_прч_крат/ && /_ед_муж$/    ){  opq_kredmu  [$1]=$2; opq_kredmu  [$3]=$4; continue };
+
+        if($5~  /^osw_сущ_/ && /_ед_муж_им$/        ){  osw_edmu_im [$1]=$2; osw_edmu_im [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_муж_вин$/       ){  osw_edmu_vi [$1]=$2; osw_edmu_vi [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_муж_род$/       ){  osw_edmu_ro [$1]=$2; osw_edmu_ro [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_муж_дат$/       ){  osw_edmu_da [$1]=$2; osw_edmu_da [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_муж_тв$/        ){  osw_edmu_tv [$1]=$2; osw_edmu_tv [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_муж_пр$/        ){  osw_edmu_pr [$1]=$2; osw_edmu_pr [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_муж_мест$/      ){  osw_edmu_me [$1]=$2; osw_edmu_me [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_муж_нескл$/     ){  osw_edmu_ne [$1]=$2; osw_edmu_ne [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_муж_парт$/      ){  osw_edmu_pa [$1]=$2; osw_edmu_pa [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_муж_счет$/      ){  osw_edmu_sq [$1]=$2; osw_edmu_sq [$3]=$4; continue };
+                                                                               
+        if($5~  /^osw_сущ_/ && /_ед_жен_им$/        ){  osw_edze_im [$1]=$2; osw_edze_im [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_жен_вин$/       ){  osw_edze_vi [$1]=$2; osw_edze_vi [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_жен_род$/       ){  osw_edze_ro [$1]=$2; osw_edze_ro [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_жен_дат$/       ){  osw_edze_da [$1]=$2; osw_edze_da [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_жен_тв$/        ){  osw_edze_tv [$1]=$2; osw_edze_tv [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_жен_пр$/        ){  osw_edze_pr [$1]=$2; osw_edze_pr [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_жен_мест$/      ){  osw_edze_me [$1]=$2; osw_edze_me [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_жен_нескл$/     ){  osw_edze_ne [$1]=$2; osw_edze_ne [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_жен_парт$/      ){  osw_edze_pa [$1]=$2; osw_edze_pa [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_жен_счет$/      ){  osw_edze_sq [$1]=$2; osw_edze_sq [$3]=$4; continue };
+                                                                             
+        if($5~  /^osw_сущ_/ && /_ед_ср_им$/         ){  osw_edsr_im [$1]=$2; osw_edsr_im [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_ср_вин$/        ){  osw_edsr_vi [$1]=$2; osw_edsr_vi [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_ср_род$/        ){  osw_edsr_ro [$1]=$2; osw_edsr_ro [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_ср_дат$/        ){  osw_edsr_da [$1]=$2; osw_edsr_da [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_ср_тв$/         ){  osw_edsr_tv [$1]=$2; osw_edsr_tv [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_ср_пр$/         ){  osw_edsr_pr [$1]=$2; osw_edsr_pr [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_ср_мест$/       ){  osw_edsr_me [$1]=$2; osw_edsr_me [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_ср_нескл$/      ){  osw_edsr_ne [$1]=$2; osw_edsr_ne [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_ср_парт$/       ){  osw_edsr_pa [$1]=$2; osw_edsr_pa [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_ед_ср_счет$/       ){  osw_edsr_sq [$1]=$2; osw_edsr_sq [$3]=$4; continue };
+
+        if($5~  /^osw_сущ_/ && /_мн_им$/            ){  osw_mn_im   [$1]=$2; osw_mn_im   [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_мн_вин$/           ){  osw_mn_vi   [$1]=$2; osw_mn_vi   [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_мн_род$/           ){  osw_mn_ro   [$1]=$2; osw_mn_ro   [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_мн_дат$/           ){  osw_mn_da   [$1]=$2; osw_mn_da   [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_мн_тв$/            ){  osw_mn_tv   [$1]=$2; osw_mn_tv   [$3]=$4; continue };
+        if($5~  /^osw_сущ_/ && /_мн_пр$/            ){  osw_mn_pr   [$1]=$2; osw_mn_pr   [$3]=$4; continue };
+                                                                                           
+        if($5~  /^osw_сущ_одуш_ед_общ_им$/          ){  osw_edob_im [$1]=$2; osw_edob_im [$3]=$4; continue };
+        if($5~  /^osw_сущ_одуш_ед_общ_вин$/         ){  osw_edob_vi [$1]=$2; osw_edob_vi [$3]=$4; continue };
+        if($5~  /^osw_сущ_одуш_ед_общ_род$/         ){  osw_edob_ro [$1]=$2; osw_edob_ro [$3]=$4; continue };
+        if($5~  /^osw_сущ_одуш_ед_общ_дат$/         ){  osw_edob_da [$1]=$2; osw_edob_da [$3]=$4; continue };
+        if($5~  /^osw_сущ_одуш_ед_общ_тв$/          ){  osw_edob_tv [$1]=$2; osw_edob_tv [$3]=$4; continue };
+        if($5~  /^osw_сущ_одуш_ед_общ_пр$/          ){  osw_edob_pr [$1]=$2; osw_edob_pr [$3]=$4; continue };
+
+        if($5~  /^osw_сущ_ед_общ_им$/               ){  osw_edob_im [$1]=$2; osw_edob_im [$3]=$4; continue };
+        if($5~  /^osw_сущ_ед_общ_вин$/              ){  osw_edob_vi [$1]=$2; osw_edob_vi [$3]=$4; continue };
+        if($5~  /^osw_сущ_ед_общ_род$/              ){  osw_edob_ro [$1]=$2; osw_edob_ro [$3]=$4; continue };
+        if($5~  /^osw_сущ_ед_общ_тв$/               ){  osw_edob_tv [$1]=$2; osw_edob_tv [$3]=$4; continue };
 
    } close(cmd);
 
