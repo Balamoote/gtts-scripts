@@ -73,8 +73,8 @@ FS = savefs
 ###START_END###
 
 ### все !_#_!
-for(wrd in vsez){wln=split(vsez[wrd],omlin," "); for(y=1;y<=wln;y++){b=strtonum(omlin[y]); # header1
-nf=splitline(book[b]); hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonum(i);      # header2
+for(wrd in vsez){wln=split(vsez[wrd],omlin," "); for(y=1;y<=wln;y++){b=strtonum(omlin[y]);nf=splitline(book[b]);             # header1
+hyphback(book[b]); getwpos(wrd); for(i in wpos){i=strtonum(i);if(tolower(l[i])!=wrd)continue;if(tolower(l[i])!=wrd)continue; # header2
 
  #v всё же
  if ( w(-1,"не") &&
@@ -2584,8 +2584,8 @@ if ( gl_nemn(1) &&
  book[b]=gensub(/<_([Ее])_>/,"\\1\xcc\x81","g",book[b]) };};                                             ##_footer_vsez
 
 ### ogl_pomn !_#_!
-for(wrd in oglTpomn){wln=split(oglTpomn[wrd],omlin," ");subomo=ogl_pomn[wrd];for(y=1;y<=wln;y++)         # header1
-{b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i); # header2
+for(wrd in oglTpomn){wln=split(oglTpomn[wrd],omlin," ");subomo=ogl_pomn[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]); # header1
+nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=wrd)continue;      # header2
  #
  if ( (gl_poed(-4)||gl_pomn(-4)||gl_povzmn(-4)) &&
         w(-3,"что") &&
@@ -2597,11 +2597,11 @@ for(wrd in oglTpomn){wln=split(oglTpomn[wrd],omlin," ");subomo=ogl_pomn[wrd];for
        w(-1,"что вот") && s(-2,-1) )
  { if ( l[i] ~ capword ) { lcf=tolower(l[i]); l[i]=toupper(subomo) } else { l[i]=subomo }; r[643]++; if(dbg){print "R643"}; continue};
 
- }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                          ##_ogl_pomn
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                                         ##_ogl_pomn
 
 ### ogl_mn1e !_#_!
-for(wrd in oglTmn1e){wln=split(oglTmn1e[wrd],omlin," ");subomo=ogl_mn1e[wrd];for(y=1;y<=wln;y++)         # header1
-{b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i); # header2
+for(wrd in oglTmn1e){wln=split(oglTmn1e[wrd],omlin," ");subomo=ogl_mn1e[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]); # header1
+nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=wrd)continue;      # header2
  #
  if ( w(-1,"мы все сами") && s(-1,-1) )
  { if ( l[i] ~ capword ) { l[i]=toupper(subomo) } else { l[i]=subomo }; r[644]++; if(dbg){print "R644"}; continue};
@@ -2625,11 +2625,11 @@ for(wrd in oglTmn1e){wln=split(oglTmn1e[wrd],omlin," ");subomo=ogl_mn1e[wrd];for
        w(-1,"не") && s(hsn-1,-1) )
  { if ( l[i] ~ capword ) { l[i]=toupper(subomo) } else { l[i]=subomo }; r[644]++; if(dbg){print "R644"}; continue};
 
- }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                          ##_ogl_mn3e
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                                        ##_ogl_mn3e
 
 ### ogl_mn2e !_#_!
-for(wrd in oglTmn2e){wln=split(oglTmn2e[wrd],omlin," ");subomo=ogl_mn2e[wrd];for(y=1;y<=wln;y++)         # header1
-{b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i); # header2
+for(wrd in oglTmn2e){wln=split(oglTmn2e[wrd],omlin," ");subomo=ogl_mn2e[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]); # header1
+nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=wrd)continue;      # header2
  #
  if ( wb(-5,"будто где если зачем когда коли которого которую которые который которых куда насколько небось откуда пока почему пошто сколько что") &&
       (p(wbn-1)||sc(wbn-1,"[pv]")||souz(wbn-1)||qast(wbn-1)) && s(wbn,-1) )
@@ -2642,38 +2642,38 @@ for(wrd in oglTmn2e){wln=split(oglTmn2e[wrd],omlin," ");subomo=ogl_mn2e[wrd];for
  if ( sc(0,"?") )
  { if ( l[i] ~ capword ) { l[i]=toupper(subomo) } else { l[i]=subomo }; r[647]++; if(dbg){print "R647"}; continue};
 
- }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                          ##_ogl_mn2e
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                                        ##_ogl_mn2e
 
 ### ogl_mn3e !_#_!
-for(wrd in oglTmn3e){wln=split(oglTmn3e[wrd],omlin," ");subomo=ogl_mn3e[wrd];for(y=1;y<=wln;y++)         # header1
-{b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i); # header2
+for(wrd in oglTmn3e){wln=split(oglTmn3e[wrd],omlin," ");subomo=ogl_mn3e[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]); # header1
+nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=wrd)continue;      # header2
  #
  if ( (mest_mnim(-1)||suw_mnim(-1)) && s(-1,-1) )
  { if ( l[i] ~ capword ) { l[i]=toupper(subomo) } else { l[i]=subomo }; r[648]++; if(dbg){print "R648"}; continue};
 
- }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                          ##_ogl_mn3e
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                                              ##_ogl_mn3e
 
 ### opl_kredmu !_#_!
-for(wrd in oplTkredmu){wln=split(oplTkredmu[wrd],omlin," ");subomo=opl_kredmu[wrd];for(y=1;y<=wln;y++)   # header1
-{b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i); # header2
+for(wrd in oplTkredmu){wln=split(oplTkredmu[wrd],omlin," ");subomo=opl_kredmu[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]); # header1
+nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=wrd)continue;            # header2
  #
  if ( (w(-1,"я ты он аз")||mod_ed(-1,"mu")||suw_odedim(-1)) && s(-1,-1) )
  { if ( l[i] ~ capword ) { l[i]=toupper(subomo) } else { l[i]=subomo }; r[649]++; if(dbg){print "R649"}; continue};
 
- }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                          ##_opl_kredmu
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                                              ##_opl_kredmu
 
 ### opq_kredmu !_#_!
-for(wrd in opqTkredmu){wln=split(opqTkredmu[wrd],omlin," ");subomo=opq_kredmu[wrd];for(y=1;y<=wln;y++)   # header1
-{b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i); # header2
+for(wrd in opqTkredmu){wln=split(opqTkredmu[wrd],omlin," ");subomo=opq_kredmu[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]); # header1
+nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=wrd)continue;            # header2
  #
  if ( (w(-1,"я ты он аз")||mod_ed(-1,"mu")||suw_odedim(-1)) && s(-1,-1) )
  { if ( l[i] ~ capword ) { l[i]=toupper(subomo) } else { l[i]=subomo }; r[650]++; if(dbg){print "R650"}; continue};
 
- }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                          ##_opq_kredmu
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                                                 ##_opq_kredmu
 
 ### osw_edmu_ro !_#_!
-for(wrd in oswTedmu_ro){wln=split(oswTedmu_ro[wrd],omlin," ");subomo=osw_edmu_ro[wrd];for(y=1;y<=wln;y++)# header1
-{b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i); # header2
+for(wrd in oswTedmu_ro){wln=split(oswTedmu_ro[wrd],omlin," ");subomo=osw_edmu_ro[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]); # header1
+nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=wrd)continue;               # header2
  #
  if ( (w(-2,"нет")||pre_ro(-2)||qi_duom(-2)) && Q(-2,"nar_mest") &&
        (prl_edro(-1)||prq_edro(-1)) &&
@@ -2684,7 +2684,7 @@ for(wrd in oswTedmu_ro){wln=split(oswTedmu_ro[wrd],omlin," ");subomo=osw_edmu_ro
         s(-1,-1) )
  { if ( l[i] ~ capword ) { l[i]=toupper(subomo) } else { l[i]=subomo }; r[650]++; if(dbg){print "R650"}; continue};
 
- }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                          ##_osw_edmu_ro
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                                                 ##_osw_edmu_ro
 
 ### THE_x_END !_#_!
 
