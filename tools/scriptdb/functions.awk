@@ -58,6 +58,8 @@ function m(wl,    wrds, k, el, lk, rett)          # нахождение в сп
                 { lk=split(wl, wrds, "[ |]"); for (k=1; k<=lk; k++) { el = "_" wrds[k] "_"; if (fi3 ~ el) {rett=1; break} else {rett=0};}; return rett }
 function w(n, wl,    wrds, rett)                  # нахождение в списке? = "одно из слов"
                 { stoar(wl, wrds, "[ |]"); if (lc(n) in wrds) {rett=1} else {rett=0}; return rett }
+function w_raw(n, wl,    wrds, rett)                  # нахождение в списке? = "одно из слов"
+                { stoar(wl, wrds, "[ |]"); if (tolower(l[i+n]) in wrds) {rett=1} else {rett=0}; return rett }
 function wc(n, wl,    wrds, k, lk, rett)          # нахождение части слова в списке? = "один из набора"
                 { lk=split(wl, wrds, "[ |]"); for (k=1; k<=lk; k++) { if (lc(n)~wrds[k]) {rett=1; break} else {rett=0};}; return rett }
 function wv(n, wl,    wrds, k, lk, rett)          # НЕ нахождение части слова в списке? = "один из набора"
@@ -66,6 +68,8 @@ function W(n, wl,    wrds, rett)                  # НЕнахождение в 
                 { stoar(wl, wrds, "[ |]"); if (lc(n) in wrds) {rett=0} else {rett=1}; return rett }
 function wb(n, wl,    wrds, k, rett)              # поиск на n шагов назад слова из списка
                 { rett=0; wbn=""; stoar(wl, wrds, "[ |]"); for (k=-1; k>=n; k--) { if (lc(k) in wrds) {rett=1; wbn=k; break};}; return rett }
+function wb_raw(n, wl,    wrds, k, rett)              # поиск на n шагов назад слова из списка
+                { rett=0; wbn=""; stoar(wl, wrds, "[ |]"); for (k=-1; k>=n; k--) { if (tolower(l[i+k]) in wrds) {rett=1; wbn=k; break};}; return rett }
 function wf(n, wl,    wrds, k, rett)              # поиск на n шагов вперёд наличия слова в массиве
                 { rett=0; wfn=""; stoar(wl, wrds, "[ |]"); for (k= 1; k<=n; k++) { if (lc(k) in wrds) {rett=1; wfn=k; break};}; return rett }
 function s(m, n,    k, rett)                      # разделители в диапазоне НЕ содержат препинаний? = пробел (не видит дефис)

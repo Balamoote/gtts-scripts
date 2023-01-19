@@ -45,9 +45,23 @@ BEGIN {
    } #gnuawk
 
 
-       cst = "таки всем моем нем сем чем е желто зелено пестро припеку твердо тепло темно черно черт";
-           stoar(cst,omoz," ");
+#      cst = "таки всем моем нем сем чем е желто зелено пестро припеку твердо тепло темно черно черт";
+#          stoar(cst,omoz," ");
+#      cst = "Таки Всем Моем Нем Сем Чем Е Желто Зелено Пестро Припеку Твердо Тепло Темно Черно Черт";
+#          stoar(cst,omoz," ");
+#      cst = "ТАКИ ВСЕМ МОЕМ НЕМ СЕМ ЧЕМ Е ЖЕЛТО ЗЕЛЕНО ПЕСТРО ПРИПЕКУ ТВЕРДО ТЕПЛО ТЕМНО ЧЕРНО ЧЕРТ";
+#          stoar(cst,omoz," ");
+       vsyo["все"]="всё";vsyo["Все"]="Всё";vsyo["ВСЕ"]="ВСЁ";
+       omoz["таки"]="";omoz["всем"]="всём";omoz["моем"]="моём";omoz["нем"]="нём";omoz["сем"]="сём";omoz["чем"]="чём";omoz["е"]="ё";omoz["припеку"]="припёку";omoz["черт"]="чёрт";
+       omoz["Таки"]="";omoz["Всем"]="Всём";omoz["Моем"]="Моём";omoz["Нем"]="Нём";omoz["Сем"]="Сём";omoz["Чем"]="Чём";omoz["Е"]="Ё";omoz["Припеку"]="Припёку";omoz["Черт"]="Чёрт";
+       omoz["ТАКИ"]="";omoz["ВСЕМ"]="ВСЁМ";omoz["МОЕМ"]="МОЁМ";omoz["НЕМ"]="НЁМ";omoz["СЕМ"]="СЁМ";omoz["ЧЕМ"]="ЧЁМ";omoz["Е"]="Ё";omoz["ПРИПЕКУ"]="ПРИПЁКУ";omoz["ЧЕРТ"]="ЧЁРТ";
 
+       cmpy["желто"]="жёлто";cmpy["зелено"]="зелёно";cmpy["пестро"]="пёстро";cmpy["твердо"]="твёрдо";cmpy["тепло"]="тёпло";cmpy["темно"]="тёмно";cmpy["черно"]="чёрно";
+       cmpy["Желто"]="Жёлто";cmpy["Зелено"]="Зелёно";cmpy["Пестро"]="Пёстро";cmpy["Твердо"]="Твёрдо";cmpy["Тепло"]="Тёпло";cmpy["Темно"]="Тёмно";cmpy["Черно"]="Чёрно";
+       cmpy["ЖЕЛТО"]="ЖЁЛТО";cmpy["ЗЕЛЕНО"]="ЗЕЛЁНО";cmpy["ПЕСТРО"]="ПЁСТРО";cmpy["ТВЕРДО"]="ТВЁРДО";cmpy["ТЕПЛО"]="ТЁПЛО";cmpy["ТЕМНО"]="ТЁМНО";cmpy["ЧЕРНО"]="ЧЁРНО";
+
+       trex["трех"]="трёх";trex["Трех"]="Трёх";trex["ТРЕХ"]="ТРЁХ";
+       qetyrex["четырех"]="четырёх";qetyrex["Четырех"]="Четырёх";qetyrex["ЧЕТЫРЕХ"]="ЧЕТЫРЁХ";
 
    savefs = FS;
    FS = fsword;
@@ -55,9 +69,11 @@ BEGIN {
     num++; book[num] = $0;
 
     for ( i=1; i<=NF; i++ ) { ci = tolower($i);
-        if ( ci in yodef && num != prevnum0[$i] ) { yods[$i] = yods[$i] " " num; prevnum0[$i] = num; continue };
-        if ( ci in omoz  && num != prevnum1[$i] ) { omos[$i] = omos[$i] " " num; prevnum1[$i] = num; continue };
-        if ( ci ~ /^(трех|четырех)\S/ && num != prevnum2[$i] ) { trex[$i] = trex[$i] " " num; prevnum2[$i] = num; continue };
+        if ( ci in yodef && num != num00[$i] ) { yods[$i] = yods[$i] " " num; num00[$i] = num; continue };
+        if ( $i in omoz  && num != num01[$i] ) { omos[$i] = omos[$i] " " num; num01[$i] = num; continue };
+        if ( $i in cmpy  && num != num02[$i] ) { cmps[$i] = cmps[$i] " " num; num02[$i] = num; continue };
+        if ( $i ~ /(^|десяти|дцати|сорока|исяти|ста|тысяче)трех\S/    && num != num03[$i] ) { Trex[$i]    = Trex[$i]    " " num; num03[$i] = num; continue };
+        if ( $i ~ /(^|десяти|дцати|сорока|исяти|ста|тысяче)четырех\S/ && num != num04[$i] ) { qeTyrex[$i] = qeTyrex[$i] " " num; num04[$i] = num; continue };
         };
    }
 END {
@@ -72,21 +88,29 @@ FS = savefs
 
 
 ### трех- !_#_!
-    for(wrd in trex ){wln=split(trex[wrd],omlin," ");for(y=1;y<=wln;y++){b=strtonum(omlin[y]); nf=splitline(book[b]); # header1
-    regwpos(wrd);for(i in wpos){i=strtonum(i);                                                        # header2
+    for(wrd in Trex ){wln=split(Trex[wrd],omlin," ");elpos=index(tolower(wrd),"трех");rexa=substr(wrd,elpos,4);somo=trex[rexa];for(y=1;y<=wln;y++)      # header1
+    {b=strtonum(omlin[y]);nf=splitline(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continue; # header2
 
-      sub(/рех/, "рёх", l[i]); r[2]++; if(dbg){print "R2"}; continue; # Первое самое левое вхождение!
+      sub(rexa,somo,l[i]); r[2]++; if(dbg){print "R2"}; continue;
+  
+    }; delete wpos; book[b]=joinpat(l,sep,nf);};}; # footer
+### четырех- !_#_!
+    for(wrd in qeTyrex ){wln=split(qeTyrex[wrd],omlin," ");elpos=index(tolower(wrd),"четырех");rexa=substr(wrd,elpos,7);somo=qetyrex[rexa];for(y=1;y<=wln;y++) # header1
+    {b=strtonum(omlin[y]);nf=splitline(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continue; # header2
+
+      sub(rexa,somo,l[i]); r[2]++; if(dbg){print "R2"}; continue;
   
     }; delete wpos; book[b]=joinpat(l,sep,nf);};}; # footer
 
+
 # Различные слова из omoz
-    for(wrd in omos){wln=split(omos[wrd],omlin," ");for(y=1;y<=wln;y++){b=strtonum(omlin[y]); nf=splitline(book[b]); # wrd in omos
+    for(wrd in omos){wln=split(omos[wrd],omlin," ");somo=omoz[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]);nf=splitline(book[b]); # wrd in omos
 
 ### всем !_#_!
     if(tolower(wrd)== "всем" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
 
       if ( w(-1,"во о обо на при") && s(-1,-1) )
-      { sub(/[Ее]/, "ё", l[i]); r[2]++; if(dbg){print "R2"}; continue;};
+      { l[i]=somo; r[2]++; if(dbg){print "R2"}; continue;};
   
     }; delete wpos; book[b]=joinpat(l,sep,nf);}; # footer
 
@@ -94,7 +118,7 @@ FS = savefs
     if(tolower(wrd)== "моем" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
 
       if ( w(-1,"в о об на при") && s(-1,-1) )
-      { sub(/[Ее]/, "ё", l[i]); r[3]++; if(dbg){print "R3"}; continue;};
+      { l[i]=somo; r[3]++; if(dbg){print "R3"}; continue;};
    
     }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
 
@@ -102,7 +126,15 @@ FS = savefs
     if(tolower(wrd)== "нем" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
 
       if ( w(-1,"в о об на при по") && s(-1,-1) )
-      { sub(/[Ее]/, "ё", l[i]); r[4]++; if(dbg){print "R4"}; continue;};
+      { l[i]=somo; r[4]++; if(dbg){print "R4"}; continue;};
+   
+    }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
+
+### припеку !_#_!
+    if(tolower(wrd)== "припеку" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
+
+      if ( w(-1,"сбоку") && se(-1,"-") )
+      { l[i]=somo; r[13]++; if(dbg){print "R13"}; continue;};
    
     }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
 
@@ -110,7 +142,7 @@ FS = savefs
     if(tolower(wrd)== "сем" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
 
       if ( w(-1,"в о об на при по") && s(-1,-1) )
-      { sub(/[Ее]/, "ё", l[i]); r[5]++; if(dbg){print "R5"}; continue;};
+      { l[i]=somo; r[5]++; if(dbg){print "R5"}; continue;};
 
     }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
 
@@ -119,7 +151,7 @@ FS = savefs
 
       if ( !(w(-2,"не") && s(-2,-2)) && 
               w(-1,"в о об на при по") && s(-1,-1) )
-      { sub(/[Ее]/, "ё", l[i]); r[7]++; if(dbg){print "R7"}; continue;};
+      { l[i]=somo; r[7]++; if(dbg){print "R7"}; continue;};
    
     }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
 
@@ -127,94 +159,37 @@ FS = savefs
     if(tolower(wrd)== "таки" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
 
       if ( w(-1,"все") && se(-1,"-") )
-      { sub(/[Ее]/, "ё", l[i-1]); r[8]++; if(dbg){print "R8"}; continue;};
+      { somo=vsyo[l[i-1]];l[i-1]=somo; r[8]++; if(dbg){print "R8"}; continue;};
    
     }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
 
 ### е !_#_!
     if(tolower(wrd)== "е" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
 
-       if ( se(0,"-") && w(1,"мое") )
-       { sub(/Е/, "Ё", l[i]); sub(/е/, "ё", l[i]); sub(/[Ее]/, "ё", l[i+1]); r[9]++; if(dbg){print "R9"}; continue;};
+       if ( se(0,"-") && w(1,"моё") )
+       { l[i]=somo; r[9]++; if(dbg){print "R9"}; continue;};
    
-    }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
-
-### желто !_#_!
-    if(tolower(wrd)== "желто" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
-
-      if ( s1(0,"-") )
-      { sub(/[Ее]/, "ё", l[i]); r[10]++; if(dbg){print "R10"}; continue;};
-           
-    }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
-
-### зелено !_#_!
-    if(tolower(wrd)== "зелено" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
-
-      if ( s1(0,"-") )
-      { l[i] = gensub(/[Ее]([Нн])/, "ё\\1", "g", l[i]); r[11]++; if(dbg){print "R11"}; continue;};
-          
-    }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
-
-### пестро !_#_!
-    if(tolower(wrd)== "пестро" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
-
-      if ( s1(0,"-") )
-      { sub(/[Ее]/, "ё", l[i]); r[12]++; if(dbg){print "R12"}; continue;};
-   
-    }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
-
-### припеку !_#_!
-    if(tolower(wrd)== "припеку" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
-
-      if ( w(-1,"сбоку") && se(-1,"-") )
-      { sub(/[Ее]/, "ё", l[i]); r[13]++; if(dbg){print "R13"}; continue;};
-   
-    }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
-
-### твердо !_#_!
-    if(tolower(wrd)== "твердо" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
-
-      if ( s1(0,"-") )
-      { sub(/[Ее]/, "ё", l[i]); r[14]++; if(dbg){print "R14"}; continue;};
-   
-    }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
-
-### темно !_#_!
-    if(tolower(wrd)== "темно" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
-
-       if ( s1(0,"-") )
-       { sub(/[Ее]/, "ё", l[i]); r[15]++; if(dbg){print "R15"}; continue;};
-   
-    }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
-
-### тепло !_#_!
-    if(tolower(wrd)== "тепло" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
-
-      if ( s1(0,"-") )
-      { sub(/[Ее]/, "ё", l[i]); r[16]++; if(dbg){print "R16"}; continue;};
-   
-    }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
-
-### черно !_#_!
-    if(tolower(wrd)== "черно" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
-
-       if ( s1(0,"-") )
-       { sub(/[Ее]/, "ё", l[i]); r[17]++; if(dbg){print "R17"}; continue;};
-
     }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
 
 ### черт !_#_!
     if(tolower(wrd)== "черт" ){for(i=1; i<=nf; i++){if(l[i]==wrd)wpos[i];};for(i in wpos){i=strtonum(i); # header
 
        if ( se(0,"-") && w(-1,"те") )
-       { sub(/[Ее]/, "ё", l[i]); r[18]++; if(dbg){print "R18"}; continue;};
+       { l[i]=somo; r[18]++; if(dbg){print "R18"}; continue;};
 
     }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
 
-    book[b] = gensub(/<_([Ее])_>/, "\\1\xcc\x81", "g", book[b])
-
        }; # b in omos
    }; # omos
+
+### cmpy !_#_!
+    for(wrd in cmps){wln=split(cmps[wrd],omlin," ");somo=cmpy[wrd];for(y=1;y<=wln;y++) # wrd in omos
+    {b=strtonum(omlin[y]);nf=splitline(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i); # header
+
+      if ( s1(0,"-")||s1(-1,"-") )
+      { l[i]=somo; r[10]++; if(dbg){print "R10"}; continue;};
+           
+    }; delete wpos; book[b]=joinpat(l,sep,nf)};}; # footer
 
 ### END_SECTION !_#_!
  # вывести изменённую строку
