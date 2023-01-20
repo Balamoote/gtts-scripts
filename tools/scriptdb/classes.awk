@@ -1063,7 +1063,7 @@ BEGIN {
  delete swn_edsr_ne["надо"];
  delete swn_edze_da["были"];delete swn_edze_pr["были"];delete swn_edze_ro["были"];delete swn_mn_im["были"];
  delete swo_edmu_tv["им"];
- delete swo_edmu_ro["его"];
+ delete swo_edmu_ro["его"];delete swo_edmu_ro["этого"];delete sw_edmu_ro["этого"];
  delete swn_edsr_im["сто"]; delete swn_edsr_vi["сто"];
  delete swn_edmu_im["сорок"]
  delete swn_edmu_im["тут"]; delete swn_mn_ro["тут"];

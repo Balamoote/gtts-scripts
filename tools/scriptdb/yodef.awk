@@ -44,24 +44,21 @@ BEGIN {
   system(cmd); close(cmd);
    } #gnuawk
 
-
-#      cst = "таки всем моем нем сем чем е желто зелено пестро припеку твердо тепло темно черно черт";
-#          stoar(cst,omoz," ");
-#      cst = "Таки Всем Моем Нем Сем Чем Е Желто Зелено Пестро Припеку Твердо Тепло Темно Черно Черт";
-#          stoar(cst,omoz," ");
-#      cst = "ТАКИ ВСЕМ МОЕМ НЕМ СЕМ ЧЕМ Е ЖЕЛТО ЗЕЛЕНО ПЕСТРО ПРИПЕКУ ТВЕРДО ТЕПЛО ТЕМНО ЧЕРНО ЧЕРТ";
-#          stoar(cst,omoz," ");
+       # Всё с регистрами
        vsyo["все"]="всё";vsyo["Все"]="Всё";vsyo["ВСЕ"]="ВСЁ";
-       omoz["таки"]="";omoz["всем"]="всём";omoz["моем"]="моём";omoz["нем"]="нём";omoz["сем"]="сём";omoz["чем"]="чём";omoz["е"]="ё";omoz["припеку"]="припёку";omoz["черт"]="чёрт";
-       omoz["Таки"]="";omoz["Всем"]="Всём";omoz["Моем"]="Моём";omoz["Нем"]="Нём";omoz["Сем"]="Сём";omoz["Чем"]="Чём";omoz["Е"]="Ё";omoz["Припеку"]="Припёку";omoz["Черт"]="Чёрт";
-       omoz["ТАКИ"]="";omoz["ВСЕМ"]="ВСЁМ";omoz["МОЕМ"]="МОЁМ";omoz["НЕМ"]="НЁМ";omoz["СЕМ"]="СЁМ";omoz["ЧЕМ"]="ЧЁМ";omoz["Е"]="Ё";omoz["ПРИПЕКУ"]="ПРИПЁКУ";omoz["ЧЕРТ"]="ЧЁРТ";
 
+       # Омографы с относительно простыми правилами
+       omoz["таки"];omoz["всем"]="всём";omoz["моем"]="моём";omoz["нем"]="нём";omoz["сем"]="сём";omoz["чем"]="чём";omoz["е"]="ё";omoz["припеку"]="припёку";omoz["черт"]="чёрт";
+       omoz["Таки"];omoz["Всем"]="Всём";omoz["Моем"]="Моём";omoz["Нем"]="Нём";omoz["Сем"]="Сём";omoz["Чем"]="Чём";omoz["Е"]="Ё";omoz["Припеку"]="Припёку";omoz["Черт"]="Чёрт";
+       omoz["ТАКИ"];omoz["ВСЕМ"]="ВСЁМ";omoz["МОЕМ"]="МОЁМ";omoz["НЕМ"]="НЁМ";omoz["СЕМ"]="СЁМ";omoz["ЧЕМ"]="ЧЁМ";omoz["Е"]="Ё";omoz["ПРИПЕКУ"]="ПРИПЁКУ";omoz["ЧЕРТ"]="ЧЁРТ";
+
+       # Компоненты составных слов с ё
        cmpy["желто"]="жёлто";cmpy["зелено"]="зелёно";cmpy["пестро"]="пёстро";cmpy["твердо"]="твёрдо";cmpy["тепло"]="тёпло";cmpy["темно"]="тёмно";cmpy["черно"]="чёрно";
        cmpy["Желто"]="Жёлто";cmpy["Зелено"]="Зелёно";cmpy["Пестро"]="Пёстро";cmpy["Твердо"]="Твёрдо";cmpy["Тепло"]="Тёпло";cmpy["Темно"]="Тёмно";cmpy["Черно"]="Чёрно";
        cmpy["ЖЕЛТО"]="ЖЁЛТО";cmpy["ЗЕЛЕНО"]="ЗЕЛЁНО";cmpy["ПЕСТРО"]="ПЁСТРО";cmpy["ТВЕРДО"]="ТВЁРДО";cmpy["ТЕПЛО"]="ТЁПЛО";cmpy["ТЕМНО"]="ТЁМНО";cmpy["ЧЕРНО"]="ЧЁРНО";
 
-       trex["трех"]="трёх";trex["Трех"]="Трёх";trex["ТРЕХ"]="ТРЁХ";
-       qetyrex["четырех"]="четырёх";qetyrex["Четырех"]="Четырёх";qetyrex["ЧЕТЫРЕХ"]="ЧЕТЫРЁХ";
+       trex["трех"]   ="трёх"   ;trex["Трех"]   ="Трёх"   ;trex["ТРЕХ"]   ="ТРЁХ"  ;
+       qtrx["четырех"]="четырёх";qtrx["Четырех"]="Четырёх";qtrx["ЧЕТЫРЕХ"]="ЧЕТЫРЁХ";
 
    savefs = FS;
    FS = fsword;
@@ -72,8 +69,8 @@ BEGIN {
         if ( ci in yodef && num != num00[$i] ) { yods[$i] = yods[$i] " " num; num00[$i] = num; continue };
         if ( $i in omoz  && num != num01[$i] ) { omos[$i] = omos[$i] " " num; num01[$i] = num; continue };
         if ( $i in cmpy  && num != num02[$i] ) { cmps[$i] = cmps[$i] " " num; num02[$i] = num; continue };
-        if ( $i ~ /(^|десяти|дцати|сорока|исяти|ста|тысяче)трех\S/    && num != num03[$i] ) { Trex[$i]    = Trex[$i]    " " num; num03[$i] = num; continue };
-        if ( $i ~ /(^|десяти|дцати|сорока|исяти|ста|тысяче)четырех\S/ && num != num04[$i] ) { qeTyrex[$i] = qeTyrex[$i] " " num; num04[$i] = num; continue };
+        if ( $i ~ /(^|десяти|дцати|сорока|исяти|ста|тысяче)трех\S/    && num != num03[$i] ) { Trex[$i] = Trex[$i] " " num; num03[$i] = num; continue };
+        if ( $i ~ /(^|десяти|дцати|сорока|исяти|ста|тысяче)четырех\S/ && num != num04[$i] ) { qTrx[$i] = qTrx[$i] " " num; num04[$i] = num; continue };
         };
    }
 END {
@@ -88,20 +85,27 @@ FS = savefs
 
 
 ### трех- !_#_!
-    for(wrd in Trex ){wln=split(Trex[wrd],omlin," ");elpos=index(tolower(wrd),"трех");rexa=substr(wrd,elpos,4);somo=trex[rexa];for(y=1;y<=wln;y++)      # header1
+    for(wrd in Trex ){wln=split(Trex[wrd],omlin," ");rexa=regwpart(wrd,"трех");somo=trex[rexa];for(y=1;y<=wln;y++)                 # header1
     {b=strtonum(omlin[y]);nf=splitline(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continue; # header2
 
       sub(rexa,somo,l[i]); r[2]++; if(dbg){print "R2"}; continue;
   
     }; delete wpos; book[b]=joinpat(l,sep,nf);};}; # footer
 ### четырех- !_#_!
-    for(wrd in qeTyrex ){wln=split(qeTyrex[wrd],omlin," ");elpos=index(tolower(wrd),"четырех");rexa=substr(wrd,elpos,7);somo=qetyrex[rexa];for(y=1;y<=wln;y++) # header1
+    for(wrd in qTrx ){wln=split(qTrx[wrd],omlin," ");rexa=regwpart(wrd,"четырех");somo=qtrx[rexa];for(y=1;y<=wln;y++)              # header1
     {b=strtonum(omlin[y]);nf=splitline(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continue; # header2
 
       sub(rexa,somo,l[i]); r[2]++; if(dbg){print "R2"}; continue;
   
     }; delete wpos; book[b]=joinpat(l,sep,nf);};}; # footer
+### cmpy !_#_!
+    for(wrd in cmps){wln=split(cmps[wrd],omlin," ");somo=cmpy[wrd];for(y=1;y<=wln;y++)     # header1
+    {b=strtonum(omlin[y]);nf=splitline(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i); # header2
 
+      if ( s1(0,"-")||s1(-1,"-") )
+      { l[i]=somo; r[10]++; if(dbg){print "R10"}; continue;};
+           
+    }; delete wpos; book[b]=joinpat(l,sep,nf)};}; # footer
 
 # Различные слова из omoz
     for(wrd in omos){wln=split(omos[wrd],omlin," ");somo=omoz[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]);nf=splitline(book[b]); # wrd in omos
@@ -181,15 +185,6 @@ FS = savefs
 
        }; # b in omos
    }; # omos
-
-### cmpy !_#_!
-    for(wrd in cmps){wln=split(cmps[wrd],omlin," ");somo=cmpy[wrd];for(y=1;y<=wln;y++) # wrd in omos
-    {b=strtonum(omlin[y]);nf=splitline(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i); # header
-
-      if ( s1(0,"-")||s1(-1,"-") )
-      { l[i]=somo; r[10]++; if(dbg){print "R10"}; continue;};
-           
-    }; delete wpos; book[b]=joinpat(l,sep,nf)};}; # footer
 
 ### END_SECTION !_#_!
  # вывести изменённую строку

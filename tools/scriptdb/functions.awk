@@ -9,14 +9,16 @@ function pusha(arr, arrto,    k)                  # добывать масси�
                 { for (k in arr) {arrto[k]}; }
 function stoar(string, arrto, sepr,    i,arrt)    # добывать массив выдать 1-й символ строки-сеператора
                 { split(string, arrt, sepr); for (i in arrt) {arrto[arrt[i]]}; delete arrt; }
-function hyphback(hystring,  hyw)
+function hyphback(hystring,  hyw)                 # Склеить слова с дефисом, присутствующие в словаре
                 {if (hystring ~ hysnip) { for (i=1; i<=nf-1; i++) { if ( se(0,"-") ) { hyw = lc(0) sep[i] lc(1); if ( hyw in dichyph )
                 { l[i] = l[i] sep[i] l[i+1]; delete sep[i]; delete l[i+1]; nf=arrpack(i+1, l); arrpack(i, sep) }; }; }; };}
-function splitline(instring,    rett)
+function splitline(instring,    rett)             # Разбить строку на слова
                 { rett=patsplit(instring,l,patword,sep); return rett }
-function getwpos(word,    n)
+function regwpart(word, part,    rett)            # Получить заменяемую часть слова в нужном регистре
+                { rett=substr(word,index(tolower(word),part),length(part)); return rett }
+function getwpos(word,    n)                      # Получить адрес слова в строке, Без учёта регистра
                 { for(n=1;n<=nf;n++) {if(tolower(l[n])==word) wpos[n]} }
-function regwpos(word,    n)
+function regwpos(word,    n)                      # Получить адрес слова в строке, с учётом регистра
                 { for(n=1;n<=nf;n++) {if(l[n]==word) wpos[n]} }
 function arrpack(n, array,   i, rett)             # устранить пропуск в массиве
                 { rett = length(array); for (i=n; i<=rett; i++) {array[i] = array[i+1]}; delete array[rett+1]; return rett }
@@ -307,6 +309,7 @@ function gl_pemn(n,                                                             
 # существительные
 function suw_edsrim(n,    wd,rett) { wd = lc(n); if (wd in sw_edsr_im||wd in swn_edsr_im||wd in swo_edsr_im)                                    {rett=1} else {rett=0}; return rett}
 function suw_edsrvi(n,    wd,rett) { wd = lc(n); if (wd in sw_edsr_vi||wd in swn_edsr_vi||wd in swo_edsr_vi)                                    {rett=1} else {rett=0}; return rett}
+function suw_edzeim(n,    wd,rett) { wd = lc(n); if (wd in swn_edze_im||wd in sw_edze_im||wd in swo_edze_im)                                    {rett=1} else {rett=0}; return rett}
 function suw_edim(n,                                                                                                                            wd,rett) { wd = lc(n);
                       if (wd in sw_edmu_im||wd in sw_edob_im||wd in sw_edsr_im||wd in sw_edze_im||wd in swn_edmu_im||wd in swn_edob_im||
                           wd in swn_edsr_im||wd in swn_edze_im||wd in swo_edmu_im||wd in swo_edob_im||wd in swo_edsr_im||wd in swo_edze_im)     {rett=1} else {rett=0}; return rett}
@@ -375,6 +378,7 @@ function mest_edmu(n,                                                           
                       if (wd in mst_ed_mu||wd in mst_ed_mu_da||wd in mst_ed_mu_im||wd in mst_ed_mu_pr||wd in mst_ed_mu_ro||                     
                           wd in mst_ed_mu_tv||wd in mst_ed_mu_vi)                                                                               {rett=1} else {rett=0}; return rett}
 function mest_edmuim(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_mu_im)                                                                        {rett=1} else {rett=0}; return rett}
+function mest_edmuro(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_mu_ro)                                                                        {rett=1} else {rett=0}; return rett}
 function mest_edsrim(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_sr_im||wd in mst_ed_sr)                                                       {rett=1} else {rett=0}; return rett}
 function mest_edze(n,                                                                                                                           wd,rett) { wd = lc(n);
                       if (wd in mst_ed_ze_vi||wd in mst_ed_ze_da||wd in mst_ed_ze_im||wd in mst_ed_ze_pr||wd in mst_ed_ze_ro||                  

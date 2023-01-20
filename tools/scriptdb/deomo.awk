@@ -35,7 +35,7 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
     cst = "это то се сие оно сё";
         stoar(cst,mst_it," ");
 
-    cst = "оба два три четыре";
+    cst = "оба полтора два три четыре";
         stoar(cst,qd_duom," ");
     cst = "обе две три четыре";
         stoar(cst,qd_duoz," ");
@@ -64,8 +64,8 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
         if(ci in ogl_mn2e    && num!=om002[$i]) {oglTmn2e   [$i]=oglTmn2e   [$i] " " num; om002[$i]=num}; # глаголы 2е л. мн.ч.         #_#_# ogl_mn2e !_#_!
         if(ci in ogl_mn3e    && num!=om003[$i]) {oglTmn3e   [$i]=oglTmn3e   [$i] " " num; om003[$i]=num}; # глаголы 3е л. мн.ч.         #_#_# ogl_mn3e !_#_!
         if(ci in ogl_pomn    && num!=om004[$i]) {oglTpomn   [$i]=oglTpomn   [$i] " " num; om004[$i]=num}; # глаголы пов.накл. мн.ч.     #_#_# ogl_pomn !_#_!
-        if(ci in opl_kredmu  && num!=om005[$i]) {oplTkredmu [$i]=oplTkredmu [$i] " " num; om005[$i]=num}; # глаголы пов.накл. мн.ч.     #_#_# opl_kredmu !_#_!
-        if(ci in opq_kredmu  && num!=om006[$i]) {opqTkredmu [$i]=opqTkredmu [$i] " " num; om006[$i]=num}; # глаголы пов.накл. мн.ч.     #_#_# opq_kredmu !_#_!
+        if(ci in opl_kredmu  && num!=om005[$i]) {oplTkredmu [$i]=oplTkredmu [$i] " " num; om005[$i]=num}; # кр.прил. ед.ч. м.р.         #_#_# opl_kredmu !_#_!
+        if(ci in opq_kredmu  && num!=om006[$i]) {opqTkredmu [$i]=opqTkredmu [$i] " " num; om006[$i]=num}; # кр.прич. ед.ч. м.р.         #_#_# opq_kredmu !_#_!
         if(ci in osw_edmu_ro && num!=om007[$i]) {oswTedmu_ro[$i]=oswTedmu_ro[$i] " " num; om007[$i]=num}; # сущ. ед.ч. м.р. р.п.ч.      #_#_# osw_edmu_ro !_#_!
 #_#_#txtmpprb
   };
@@ -2678,12 +2678,18 @@ nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i
 for(wrd in oswTedmu_ro){wln=split(oswTedmu_ro[wrd],omlin," ");somo=osw_edmu_ro[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]);   # header1
 nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continue;      # header2
  #
- if ( (w(-2,"нет")||pre_ro(-2)||qi_duom(-2)) && Q(-2,"nar_mest") &&
-       (prl_edro(-1)||prq_edro(-1)) &&
+ if ( W(-3,"нет") &&
+       w(-2,"у") &&
+       (w(-1,"меня тебя него её нас вас них")||suw_edro(-1)||suw_mnro(-1)) &&
+         s(-2,-1) )
+ { r[650]++; if(dbg){print "R650"}; continue};
+ #
+ if ( (w(-2,"нет")||pre_ro(-2)||qi_duom(-2)) &&
+       (prl_edro(-1)||prq_edro(-1)||mest_edmuro(-1)) &&
          s(-2,-1) )
  { if ( l[i] ~ capword ) { l[i]=toupper(somo) } else { l[i]=somo }; r[650]++; if(dbg){print "R650"}; continue};
  #
- if ( (w(-1,"нет")||pre_ro(-1)||qi_duom(-1)) && Q(-1,"nar_mest") &&
+ if ( (w(-1,"нет")||pre_ro(-1)||qi_duom(-1)) &&
         s(-1,-1) )
  { if ( l[i] ~ capword ) { l[i]=toupper(somo) } else { l[i]=somo }; r[650]++; if(dbg){print "R650"}; continue};
 
