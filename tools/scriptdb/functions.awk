@@ -371,15 +371,30 @@ function mest_ed(n,                                                             
                           wd in mst_ed_sr_da||wd in mst_ed_sr_im||wd in mst_ed_sr_pr||wd in mst_ed_sr_ro||wd in mst_ed_sr_tv||                  
                           wd in mst_ed_sr_vi||wd in mst_ed_tv||wd in mst_ed_vi||wd in mst_ed_ze||wd in mst_ed_ze_da||wd in mst_ed_ze_im||       
                           wd in mst_ed_ze_pr||wd in mst_ed_ze_ro||wd in mst_ed_ze_tv||wd in mst_ed_ze_vi)                                       {rett=1} else {rett=0}; return rett}
-function mest_mn(n,                                                                                                                             wd,rett) { wd = lc(n);
-                      if (wd in mst_mn_im||wd in mst_mn_ro||wd in mst_mn_vi||wd in mst_mn_da||wd in mst_mn_im||wd in mst_mn_pr||                
-                          wd in mst_mn_ro||wd in mst_mn_tv||wd in mst_mn)                                                                       {rett=1} else {rett=0}; return rett}
+function mest_mn(n,       wd,rett) { wd = lc(n); if (wd in mst_mn_im||wd in mst_mn_ro||wd in mst_mn_vi||wd in mst_mn_da||wd in mst_mn_pr||                
+                          wd in mst_mn_tv||wd in mst_mn)                                                                                        {rett=1} else {rett=0}; return rett}
 function mest_edmu(n,                                                                                                                           wd,rett) { wd = lc(n);
                       if (wd in mst_ed_mu||wd in mst_ed_mu_da||wd in mst_ed_mu_im||wd in mst_ed_mu_pr||wd in mst_ed_mu_ro||                     
                           wd in mst_ed_mu_tv||wd in mst_ed_mu_vi)                                                                               {rett=1} else {rett=0}; return rett}
-function mest_edmuim(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_mu_im)                                                                        {rett=1} else {rett=0}; return rett}
-function mest_edmuro(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_mu_ro)                                                                        {rett=1} else {rett=0}; return rett}
+function mest_edmuim(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_mu_im||wd in mst_ed_im||wd in mst_im)                                         {rett=1} else {rett=0}; return rett}
+function mest_edmuvi(n,                                                                                                                         wd,rett) { wd = lc(n);
+                      if (wd in mst_ed_mu_vi||wd in mst_ed_mu_im||wd in mst_ed_mu_ro||wd in mst_mn_ro||wd in mst_ed_vi||wd in mst_vi)           {rett=1} else {rett=0}; return rett}
+function mest_edmuro(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_mu_ro||wd in mst_ed_ro||wd in mst_ro)                                         {rett=1} else {rett=0}; return rett}
+function mest_edmuda(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_mu_da||wd in mst_ed_da||wd in mst_da)                                         {rett=1} else {rett=0}; return rett}
+function mest_edmutv(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_mu_tv||wd in mst_ed_tv||wd in mst_tv)                                         {rett=1} else {rett=0}; return rett}
+function mest_edmupr(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_mu_pr||wd in mst_ed_pr||wd in mst_pr)                                         {rett=1} else {rett=0}; return rett}
 function mest_edsrim(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_sr_im||wd in mst_ed_sr)                                                       {rett=1} else {rett=0}; return rett}
+function mest_edsrvi(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_sr_im||wd in mst_ed_sr_vi||wd in mst_ed_sr_ro||wd in mst_ed_sr)               {rett=1} else {rett=0}; return rett}
+function mest_edsrro(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_sr_ro||wd in mst_ed_ro||wd in mst_ro)                                         {rett=1} else {rett=0}; return rett}
+function mest_edsrda(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_sr_da||wd in mst_ed_da||wd in mst_da)                                         {rett=1} else {rett=0}; return rett}
+function mest_edsrtv(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_sr_tv||wd in mst_ed_tv||wd in mst_tv)                                         {rett=1} else {rett=0}; return rett}
+function mest_edsrpr(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_sr_pr||wd in mst_ed_pr||wd in mst_pr)                                         {rett=1} else {rett=0}; return rett}
+function mest_edzeim(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_ze_im)                                                                        {rett=1} else {rett=0}; return rett}
+function mest_edzevi(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_ze_vi)                                                                        {rett=1} else {rett=0}; return rett}
+function mest_edzero(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_ze_ro)                                                                        {rett=1} else {rett=0}; return rett}
+function mest_edzeda(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_ze_da)                                                                        {rett=1} else {rett=0}; return rett}
+function mest_edzetv(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_ze_tv)                                                                        {rett=1} else {rett=0}; return rett}
+function mest_edzepr(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_ze_pr)                                                                        {rett=1} else {rett=0}; return rett}
 function mest_edze(n,                                                                                                                           wd,rett) { wd = lc(n);
                       if (wd in mst_ed_ze_vi||wd in mst_ed_ze_da||wd in mst_ed_ze_im||wd in mst_ed_ze_pr||wd in mst_ed_ze_ro||                  
                           wd in mst_ed_ze_tv||wd in mst_ed_ze)                                                                                  {rett=1} else {rett=0}; return rett}
@@ -403,6 +418,10 @@ function mest_pr(n,                                                             
                       if (wd in mst_ed_mu_pr||wd in mst_ed_ze_pr||wd in mst_ed_sr_pr||wd in mst_mn_pr||wd in mst_ed_pr||wd in mst_pr)           {rett=1} else {rett=0}; return rett}
 function mest_mnim(n,     wd,rett) { wd = lc(n); if (wd in mst_mn_im)                                                                           {rett=1} else {rett=0}; return rett}
 function mest_mnvi(n,     wd,rett) { wd = lc(n); if (wd in mst_mn_im||wd in mst_mn_ro||wd in mst_mn_vi)                                         {rett=1} else {rett=0}; return rett}
+function mest_mnro(n,     wd,rett) { wd = lc(n); if (wd in mst_mn_ro)                                                                           {rett=1} else {rett=0}; return rett}
+function mest_mnda(n,     wd,rett) { wd = lc(n); if (wd in mst_mn_da)                                                                           {rett=1} else {rett=0}; return rett}
+function mest_mntv(n,     wd,rett) { wd = lc(n); if (wd in mst_mn_tv)                                                                           {rett=1} else {rett=0}; return rett}
+function mest_mnpr(n,     wd,rett) { wd = lc(n); if (wd in mst_mn_pr)                                                                           {rett=1} else {rett=0}; return rett}
                                                                                                                                                 
 # наречия                                                                                                                                       
 function nar_srav(n,    wd,rett) { wd = lc(n); if (wd in nr_srv)                                                                                {rett=1} else {rett=0}; return rett}

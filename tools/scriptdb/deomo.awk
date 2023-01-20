@@ -64,9 +64,44 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
         if(ci in ogl_mn2e    && num!=om002[$i]) {oglTmn2e   [$i]=oglTmn2e   [$i] " " num; om002[$i]=num}; # глаголы 2е л. мн.ч.         #_#_# ogl_mn2e !_#_!
         if(ci in ogl_mn3e    && num!=om003[$i]) {oglTmn3e   [$i]=oglTmn3e   [$i] " " num; om003[$i]=num}; # глаголы 3е л. мн.ч.         #_#_# ogl_mn3e !_#_!
         if(ci in ogl_pomn    && num!=om004[$i]) {oglTpomn   [$i]=oglTpomn   [$i] " " num; om004[$i]=num}; # глаголы пов.накл. мн.ч.     #_#_# ogl_pomn !_#_!
-        if(ci in opl_kredmu  && num!=om005[$i]) {oplTkredmu [$i]=oplTkredmu [$i] " " num; om005[$i]=num}; # кр.прил. ед.ч. м.р.         #_#_# opl_kredmu !_#_!
-        if(ci in opq_kredmu  && num!=om006[$i]) {opqTkredmu [$i]=opqTkredmu [$i] " " num; om006[$i]=num}; # кр.прич. ед.ч. м.р.         #_#_# opq_kredmu !_#_!
-        if(ci in osw_edmu_ro && num!=om007[$i]) {oswTedmu_ro[$i]=oswTedmu_ro[$i] " " num; om007[$i]=num}; # сущ. ед.ч. м.р. р.п.ч.      #_#_# osw_edmu_ro !_#_!
+        if(ci in opl_kredmu  && num!=om005[$i]) {oplTkredmu [$i]=oplTkredmu [$i] " " num; om005[$i]=num}; # крат.прил. ед.ч. м.р.       #_#_# opl_kredmu !_#_!
+        if(ci in opq_kredmu  && num!=om006[$i]) {opqTkredmu [$i]=opqTkredmu [$i] " " num; om006[$i]=num}; # крат.прич. ед.ч. м.р.       #_#_# opq_kredmu !_#_!
+        if(ci in osw_edmu_im && num!=om007[$i]) {oswTedmu_im[$i]=oswTedmu_im[$i] " " num; om007[$i]=num}; # сущ. ед.ч. м.р. и.п.        #_#_# osw_edmu_im !_#_!
+        if(ci in osw_edmu_vi && num!=om008[$i]) {oswTedmu_vi[$i]=oswTedmu_vi[$i] " " num; om008[$i]=num}; # сущ. ед.ч. м.р. в.п.        #_#_# osw_edmu_vi !_#_!
+        if(ci in osw_edmu_ro && num!=om009[$i]) {oswTedmu_ro[$i]=oswTedmu_ro[$i] " " num; om009[$i]=num}; # сущ. ед.ч. м.р. р.п.        #_#_# osw_edmu_ro !_#_!
+        if(ci in osw_edmu_da && num!=om010[$i]) {oswTedmu_da[$i]=oswTedmu_da[$i] " " num; om010[$i]=num}; # сущ. ед.ч. м.р. д.п.        #_#_# osw_edmu_da !_#_!
+        if(ci in osw_edmu_tv && num!=om011[$i]) {oswTedmu_tv[$i]=oswTedmu_tv[$i] " " num; om011[$i]=num}; # сущ. ед.ч. м.р. т.п.        #_#_# osw_edmu_tv !_#_!
+        if(ci in osw_edmu_pr && num!=om012[$i]) {oswTedmu_pr[$i]=oswTedmu_pr[$i] " " num; om012[$i]=num}; # сущ. ед.ч. м.р. п.п.        #_#_# osw_edmu_pr !_#_!
+        if(ci in osw_edmu_me && num!=om013[$i]) {oswTedmu_me[$i]=oswTedmu_me[$i] " " num; om013[$i]=num}; # сущ. ед.ч. м.р. мест.п.     #_#_# osw_edmu_me !_#_!
+        if(ci in osw_edmu_ne && num!=om014[$i]) {oswTedmu_ne[$i]=oswTedmu_ne[$i] " " num; om014[$i]=num}; # сущ. ед.ч. м.р. неизм.      #_#_# osw_edmu_ne !_#_!
+        if(ci in osw_edmu_pa && num!=om015[$i]) {oswTedmu_pa[$i]=oswTedmu_pa[$i] " " num; om015[$i]=num}; # сущ. ед.ч. м.р. парт.п.     #_#_# osw_edmu_pa !_#_!
+        if(ci in osw_edmu_sq && num!=om016[$i]) {oswTedmu_sq[$i]=oswTedmu_sq[$i] " " num; om016[$i]=num}; # сущ. ед.ч. м.р. счет.п.     #_#_# osw_edmu_sq !_#_!
+        if(ci in osw_edze_im && num!=om017[$i]) {oswTedze_im[$i]=oswTedze_im[$i] " " num; om017[$i]=num}; # сущ. ед.ч. ж.р. и.п.        #_#_# osw_edze_im !_#_!
+        if(ci in osw_edze_vi && num!=om018[$i]) {oswTedze_vi[$i]=oswTedze_vi[$i] " " num; om018[$i]=num}; # сущ. ед.ч. ж.р. в.п.        #_#_# osw_edze_vi !_#_!
+        if(ci in osw_edze_ro && num!=om019[$i]) {oswTedze_ro[$i]=oswTedze_ro[$i] " " num; om019[$i]=num}; # сущ. ед.ч. ж.р. р.п.        #_#_# osw_edze_ro !_#_!
+        if(ci in osw_edze_da && num!=om020[$i]) {oswTedze_da[$i]=oswTedze_da[$i] " " num; om020[$i]=num}; # сущ. ед.ч. ж.р. д.п.        #_#_# osw_edze_da !_#_!
+        if(ci in osw_edze_tv && num!=om021[$i]) {oswTedze_tv[$i]=oswTedze_tv[$i] " " num; om021[$i]=num}; # сущ. ед.ч. ж.р. т.п.        #_#_# osw_edze_tv !_#_!
+        if(ci in osw_edze_pr && num!=om022[$i]) {oswTedze_pr[$i]=oswTedze_pr[$i] " " num; om022[$i]=num}; # сущ. ед.ч. ж.р. п.п.        #_#_# osw_edze_pr !_#_!
+        if(ci in osw_edze_me && num!=om023[$i]) {oswTedze_me[$i]=oswTedze_me[$i] " " num; om023[$i]=num}; # сущ. ед.ч. ж.р. мест.п.     #_#_# osw_edze_me !_#_!
+        if(ci in osw_edze_ne && num!=om024[$i]) {oswTedze_ne[$i]=oswTedze_ne[$i] " " num; om024[$i]=num}; # сущ. ед.ч. ж.р. неизм.      #_#_# osw_edze_ne !_#_!
+        if(ci in osw_edze_pa && num!=om025[$i]) {oswTedze_pa[$i]=oswTedze_pa[$i] " " num; om025[$i]=num}; # сущ. ед.ч. ж.р. парт.п.     #_#_# osw_edze_pa !_#_!
+        if(ci in osw_edze_sq && num!=om026[$i]) {oswTedze_sq[$i]=oswTedze_sq[$i] " " num; om026[$i]=num}; # сущ. ед.ч. ж.р. счет.п.     #_#_# osw_edze_sq !_#_!
+        if(ci in osw_edsr_im && num!=om027[$i]) {oswTedsr_im[$i]=oswTedsr_im[$i] " " num; om027[$i]=num}; # сущ. ед.ч. с.р. и.п.        #_#_# osw_edsr_im !_#_!
+        if(ci in osw_edsr_vi && num!=om028[$i]) {oswTedsr_vi[$i]=oswTedsr_vi[$i] " " num; om028[$i]=num}; # сущ. ед.ч. с.р. в.п.        #_#_# osw_edsr_vi !_#_!
+        if(ci in osw_edsr_ro && num!=om029[$i]) {oswTedsr_ro[$i]=oswTedsr_ro[$i] " " num; om029[$i]=num}; # сущ. ед.ч. с.р. р.п.        #_#_# osw_edsr_ro !_#_!
+        if(ci in osw_edsr_da && num!=om030[$i]) {oswTedsr_da[$i]=oswTedsr_da[$i] " " num; om030[$i]=num}; # сущ. ед.ч. с.р. д.п.        #_#_# osw_edsr_da !_#_!
+        if(ci in osw_edsr_tv && num!=om031[$i]) {oswTedsr_tv[$i]=oswTedsr_tv[$i] " " num; om031[$i]=num}; # сущ. ед.ч. с.р. т.п.        #_#_# osw_edsr_tv !_#_!
+        if(ci in osw_edsr_pr && num!=om032[$i]) {oswTedsr_pr[$i]=oswTedsr_pr[$i] " " num; om032[$i]=num}; # сущ. ед.ч. с.р. п.п.        #_#_# osw_edsr_pr !_#_!
+        if(ci in osw_edsr_me && num!=om033[$i]) {oswTedsr_me[$i]=oswTedsr_me[$i] " " num; om033[$i]=num}; # сущ. ед.ч. с.р. мест.п.     #_#_# osw_edsr_me !_#_!
+        if(ci in osw_edsr_ne && num!=om034[$i]) {oswTedsr_ne[$i]=oswTedsr_ne[$i] " " num; om034[$i]=num}; # сущ. ед.ч. с.р. неизм.      #_#_# osw_edsr_ne !_#_!
+        if(ci in osw_edsr_pa && num!=om035[$i]) {oswTedsr_pa[$i]=oswTedsr_pa[$i] " " num; om035[$i]=num}; # сущ. ед.ч. с.р. парт.п.     #_#_# osw_edsr_pa !_#_!
+        if(ci in osw_edsr_sq && num!=om036[$i]) {oswTedsr_sq[$i]=oswTedsr_sq[$i] " " num; om036[$i]=num}; # сущ. ед.ч. с.р. счет.п.     #_#_# osw_edsr_sq !_#_!
+        if(ci in osw_mn_im   && num!=om037[$i]) {oswTmn_im  [$i]=oswTmn_im  [$i] " " num; om037[$i]=num}; # сущ. мн.ч. и.п.             #_#_# osw_mn_im !_#_!
+        if(ci in osw_mn_vi   && num!=om038[$i]) {oswTmn_vi  [$i]=oswTmn_vi  [$i] " " num; om038[$i]=num}; # сущ. мн.ч. в.п.             #_#_# osw_mn_vi !_#_!
+        if(ci in osw_mn_ro   && num!=om039[$i]) {oswTmn_ro  [$i]=oswTmn_ro  [$i] " " num; om039[$i]=num}; # сущ. мн.ч. р.п.             #_#_# osw_mn_ro !_#_!
+        if(ci in osw_mn_da   && num!=om040[$i]) {oswTmn_da  [$i]=oswTmn_da  [$i] " " num; om040[$i]=num}; # сущ. мн.ч. д.п.             #_#_# osw_mn_da !_#_!
+        if(ci in osw_mn_tv   && num!=om041[$i]) {oswTmn_tv  [$i]=oswTmn_tv  [$i] " " num; om041[$i]=num}; # сущ. мн.ч. т.п.             #_#_# osw_mn_tv !_#_!
+        if(ci in osw_mn_pr   && num!=om042[$i]) {oswTmn_pr  [$i]=oswTmn_pr  [$i] " " num; om042[$i]=num}; # сущ. мн.ч. п.п.             #_#_# osw_mn_pr !_#_!
 #_#_#txtmpprb
   };
 } END {
@@ -2680,20 +2715,61 @@ nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i
  #
  if ( W(-3,"нет") &&
        w(-2,"у") &&
-       (w(-1,"меня тебя него её нас вас них")||suw_edro(-1)||suw_mnro(-1)) &&
-         s(-2,-1) )
+       (w(-1,"меня тебя него её нас вас них")||suw_edro(-1)||suw_mnro(-1)) && s(-3,-1) )
  { r[650]++; if(dbg){print "R650"}; continue};
  #
  if ( (w(-2,"нет")||pre_ro(-2)||qi_duom(-2)) &&
-       (prl_edro(-1)||prq_edro(-1)||mest_edmuro(-1)) &&
-         s(-2,-1) )
+       (prl_edro(-1)||prq_edro(-1)||mest_edmuro(-1)) && s(-2,-1) )
  { if ( l[i] ~ capword ) { l[i]=toupper(somo) } else { l[i]=somo }; r[650]++; if(dbg){print "R650"}; continue};
  #
- if ( (w(-1,"нет")||pre_ro(-1)||qi_duom(-1)) &&
-        s(-1,-1) )
+ if ( (w(-1,"нет")||pre_ro(-1)||qi_duom(-1)) && s(-1,-1) )
  { if ( l[i] ~ capword ) { l[i]=toupper(somo) } else { l[i]=somo }; r[650]++; if(dbg){print "R650"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                                                 ##_osw_edmu_ro
+
+### osw_edmu_da !_#_!
+for(wrd in oswTedmu_da){wln=split(oswTedmu_da[wrd],omlin," ");somo=osw_edmu_da[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]);   # header1
+nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continue;      # header2
+ #
+ if ( (pre_da(-1)||prl_edmuda(-1)||prq_edmuda(-1)||mest_edmuda(-1)) && s(-1,-1) )
+ { if ( l[i] ~ capword ) { l[i]=toupper(somo) } else { l[i]=somo }; r[650]++; if(dbg){print "R650"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                                                 ##_osw_edmu_da
+
+### osw_edmu_tv !_#_!
+for(wrd in oswTedmu_tv){wln=split(oswTedmu_tv[wrd],omlin," ");somo=osw_edmu_tv[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]);   # header1
+nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continue;      # header2
+ #
+ if ( (pre_tv(-1)||prl_edmutv(-1)||prq_edmutv(-1)||mest_edmutv(-1)) && s(-1,-1) )
+ { if ( l[i] ~ capword ) { l[i]=toupper(somo) } else { l[i]=somo }; r[650]++; if(dbg){print "R650"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                                                 ##_osw_edmu_tv
+
+### osw_edmu_pr !_#_!
+for(wrd in oswTedmu_pr){wln=split(oswTedmu_pr[wrd],omlin," ");somo=osw_edmu_pr[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]);   # header1
+nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continue;      # header2
+ #
+ if ( pre_pr(-1) &&
+      (prl_edmupr(-1)||prq_edmupr(-1)||mest_edmupr(-1)) && s(-1,-1) )
+ { if ( l[i] ~ capword ) { l[i]=toupper(somo) } else { l[i]=somo }; r[650]++; if(dbg){print "R650"}; continue};
+ #
+ if ( pre_pr(-1) && s(-1,-1) )
+ { if ( l[i] ~ capword ) { l[i]=toupper(somo) } else { l[i]=somo }; r[650]++; if(dbg){print "R650"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                                                 ##_osw_edmu_pr
+
+### osw_edmu_me !_#_!
+for(wrd in oswTedmu_me){wln=split(oswTedmu_me[wrd],omlin," ");somo=osw_edmu_me[wrd];for(y=1;y<=wln;y++){b=strtonum(omlin[y]);   # header1
+nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continue;      # header2
+ #
+ if ( w(-2,"в на") &&
+       (prl_edmupr(-1)||prq_edmupr(-1)||mest_edmupr(-1)) && s(-2,-1) )
+ { if ( l[i] ~ capword ) { l[i]=toupper(somo) } else { l[i]=somo }; r[650]++; if(dbg){print "R650"}; continue};
+ #
+ if ( w(-1,"в на") && s(-1,-1) )
+ { if ( l[i] ~ capword ) { l[i]=toupper(somo) } else { l[i]=somo }; r[650]++; if(dbg){print "R650"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                                                                 ##_osw_edmu_me
 
 ### THE_x_END !_#_!
 
