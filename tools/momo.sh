@@ -131,7 +131,7 @@ awk -vtmpdir=$bookwrkdir -vrexfile=$rexsed -f scriptdb/omopick.awk $bookwrkdir/t
 # При подсчете блоков омографов вычитаем стационарные блоки шаблонов
 statblock=4
 locomo=$(( $( grep -c "###" $bookwrkdir/book-index.sed ) - $statblock ))
-printf '\e[36m%s \e[93m%s %s%s%s\e[0m … ' "Омографов для автообработки:" $locomo "(" $statblock ")"
+printf '\e[36m%s \e[93m%s %s%s%s\e[0m … ' "Омографов для sed-обработки:" $locomo "(" $statblock ")"
 
 sedroll $bookwrkdir/book-index.sed $bookwrkdir/text-book.txt
 

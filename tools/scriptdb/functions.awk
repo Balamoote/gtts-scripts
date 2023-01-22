@@ -60,8 +60,12 @@ function m(wl,    wrds, k, el, lk, rett)          # нахождение в сп
                 { lk=split(wl, wrds, "[ |]"); for (k=1; k<=lk; k++) { el = "_" wrds[k] "_"; if (fi3 ~ el) {rett=1; break} else {rett=0};}; return rett }
 function w(n, wl,    wrds, rett)                  # нахождение в списке? = "одно из слов"
                 { stoar(wl, wrds, "[ |]"); if (lc(n) in wrds) {rett=1} else {rett=0}; return rett }
-function w_raw(n, wl,    wrds, rett)                  # нахождение в списке? = "одно из слов"
+function wist(n, wl,    wrds, rett)               # нахождение в списке? = "одно из слов" ist = слово со всеми правками
                 { stoar(wl, wrds, "[ |]"); if (tolower(l[i+n]) in wrds) {rett=1} else {rett=0}; return rett }
+function isw(n, wl,    rett)                      # слово = "слово"
+                { if (tolower(l[i+n]) == wl) {rett=1} else {rett=0}; return rett }
+function we(n, wl,    rett)                       # слово = "слово" с очисткой
+                { if (lc(n) == wl) {rett=1} else {rett=0}; return rett }
 function wc(n, wl,    wrds, k, lk, rett)          # нахождение части слова в списке? = "один из набора"
                 { lk=split(wl, wrds, "[ |]"); for (k=1; k<=lk; k++) { if (lc(n)~wrds[k]) {rett=1; break} else {rett=0};}; return rett }
 function wv(n, wl,    wrds, k, lk, rett)          # НЕ нахождение части слова в списке? = "один из набора"
@@ -92,6 +96,10 @@ function phs(n, wl,    wrds, k, lk, cnt, rett)    # кусок фразы ДО �
 function phf(n, wl,    wrds, k, lk, cnt, rett)    # кусок фразы ПОСЛЕ слова
                 {hfn="";lk=split(wl,wrds," "); for(k=1;k<=lk;k++) {if(lc(n+k-1)==wrds[k]) {cnt++} else {cnt=0; break};};
                     if(cnt==lk) {rett=1;hfn=n+lk} else {rett=0}; return rett}
+function ismark(n,mrk,    k, el, marka, rett)     # нахождение слова в метке переменная winfo: для управления омонимами из automo.gz
+                { el = "_" tolower(l[i+n]) "_";marka= "^" mrk;split(winfo,wrds,"#");for(k in wrds){if(wrds[k]~marka&&wrds[k]~el){rett=1;break}else{rett=0};}; return rett }
+function notmark(n,mrk,    k, el, marka, rett)    # НЕ нахождение слова в метке переменная winfo: для управления омонимами из automo.gz
+                { rett=1;el="_" tolower(l[i+n]) "_";marka= "^" mrk;split(winfo,wrds,"#");for(k in wrds){if(wrds[k]~marka&&wrds[k]~el){rett=0;break}else{rett=1};}; return rett }
 
 
 # функции проверки принадлежности к классам. "Классы" собираются из "базовых массивов", которые формируются при чтении словаря посредством classes.awk
@@ -152,6 +160,8 @@ function muk_mn(n,        wd,rett) { wd = lc(n); if (wd in muc_mnim||wd in muc_m
 
 # кастомные местоимения
 function mest_it(n,       wd,rett) { wd = lc(n); if (wd in mst_it && sep[i+n-1]!="-")                                                          {rett=1} else {rett=0}; return rett}
+function mest_pedmuro(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmuro && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
+function mest_pedmupr(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmupr && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
 
 # двойственное число
 function qi_duom(n,       wd,rett) { wd = lc(n); if (wd in qd_duom)                                                                            {rett=1} else {rett=0}; return rett}
