@@ -140,6 +140,19 @@ function narc_vopr(n,     wd,rett) { wd = lc(n); if (wd in nrc_vopr)            
 function narc_prev(n,     wd,rett) { wd = lc(n); if (wd in nrc_pv)                                                                             {rett=1} else {rett=0}; return rett}
 function narc_nar(n,      wd,rett) { wd = lc(n); if (wd in nrc_nar)                                                                            {rett=1} else {rett=0}; return rett}
 
+# принадлежность к классам существительных-омографов по падежам (например, для prem_vi и т.д.)
+function omsw_im(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_im||wd in osw_edze_im||wd in osw_edsr_im||wd in osw_mn_im||
+	                                             wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
+function omsw_vi(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_vi||wd in osw_edze_vi||wd in osw_edsr_vi||wd in osw_mn_vi||
+                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
+function omsw_ro(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_ro||wd in osw_edze_ro||wd in osw_edsr_ro||wd in osw_mn_ro||
+                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
+function omsw_da(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_da||wd in osw_edze_da||wd in osw_edsr_da||wd in osw_mn_da||
+                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
+function omsw_tv(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_tv||wd in osw_edze_tv||wd in osw_edsr_tv||wd in osw_mn_tv||
+                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
+function omsw_pr(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_pr||wd in osw_edze_pr||wd in osw_edsr_pr||wd in osw_mn_pr||
+                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
 
 # указательные местоимения
 function muk_edim(n,      wd,rett) { wd = lc(n); if (wd in muc_edmuim||wd in muc_edzeim||wd in muc_edsrim)                                     {rett=1} else {rett=0}; return rett}
@@ -160,13 +173,32 @@ function muk_mn(n,        wd,rett) { wd = lc(n); if (wd in muc_mnim||wd in muc_m
 
 # кастомные местоимения
 function mest_it(n,       wd,rett) { wd = lc(n); if (wd in mst_it && sep[i+n-1]!="-")                                                          {rett=1} else {rett=0}; return rett}
+function mest_pedmuim(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmupr && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
 function mest_pedmuro(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmuro && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
+function mest_pedmuda(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmuda && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
+function mest_pedmutv(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmutv && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
 function mest_pedmupr(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmupr && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
 
 # двойственное число
 function qi_duom(n,       wd,rett) { wd = lc(n); if (wd in qd_duom)                                                                            {rett=1} else {rett=0}; return rett}
 function qi_duoz(n,       wd,rett) { wd = lc(n); if (wd in qd_duoz)                                                                            {rett=1} else {rett=0}; return rett}
-                                                                                                                                              
+
+# кастомные предлоги
+# возможен однин падеж
+function prex_im(n,       wd,rett) { wd = lc(n); if (wd in predc_im)                                                                           {rett=1} else {rett=0}; return rett}
+function prex_vi(n,       wd,rett) { wd = lc(n); if (wd in predc_vi)                                                                           {rett=1} else {rett=0}; return rett}
+function prex_ro(n,       wd,rett) { wd = lc(n); if (wd in predc_ro)                                                                           {rett=1} else {rett=0}; return rett}
+function prex_da(n,       wd,rett) { wd = lc(n); if (wd in predc_da)                                                                           {rett=1} else {rett=0}; return rett}
+function prex_tv(n,       wd,rett) { wd = lc(n); if (wd in predc_tv)                                                                           {rett=1} else {rett=0}; return rett}
+function prex_pr(n,       wd,rett) { wd = lc(n); if (wd in predc_pr)                                                                           {rett=1} else {rett=0}; return rett}
+# возможны несколько падежей
+function prem_imvipr(n,   wd,rett) { wd = lc(n); if (wd in predc_imvipr)                                                                       {rett=1} else {rett=0}; return rett}
+function prem_vipr(n,     wd,rett) { wd = lc(n); if (wd in predc_vipr)                                                                         {rett=1} else {rett=0}; return rett}
+function prem_vitv(n,     wd,rett) { wd = lc(n); if (wd in predc_vitv)                                                                         {rett=1} else {rett=0}; return rett}
+function prem_rotv(n,     wd,rett) { wd = lc(n); if (wd in predc_rotv)                                                                         {rett=1} else {rett=0}; return rett}
+function prem_virotv(n,   wd,rett) { wd = lc(n); if (wd in predc_virotv)                                                                       {rett=1} else {rett=0}; return rett}
+function prem_vidapr(n,   wd,rett) { wd = lc(n); if (wd in predc_vidapr)                                                                       {rett=1} else {rett=0}; return rett}
+
 # прилагательные                                                                                                                              
 function prl_kred_mu(n,   wd,rett) { wd = lc(n); if (wd in pl_kred_mu)                                                                         {rett=1} else {rett=0}; return rett}
 function prl_kred_ze(n,   wd,rett) { wd = lc(n); if (wd in pl_kred_ze)                                                                         {rett=1} else {rett=0}; return rett}
