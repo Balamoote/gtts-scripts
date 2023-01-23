@@ -22,6 +22,10 @@ function regwpos(word,    n)                      # Получить адрес 
                 { for(n=1;n<=nf;n++) {if(l[n]==word) wpos[n]} }
 function arrpack(n, array,   i, rett)             # устранить пропуск в массиве
                 { rett = length(array); for (i=n; i<=rett; i++) {array[i] = array[i+1]}; delete array[rett+1]; return rett }
+function omakevars(basearr,maparr)                # определить переменные iwrd, winfo, somo
+                { iwrd=tolower(wrd);winfo=basearr[iwrd,"info"];if(wrd ~ capword){somo=toupper(basearr[iwrd])}else{somo=basearr[wrd]};wln=split(maparr[wrd],omlin," ")}
+function makebookvars()                           # определить переменные iwrd, winfo, somo
+                { b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd) }
 
 # функции обработки слов
 function s1(n,wl,    rett)                        # выдать 1-й символ строки-сеператора
@@ -178,6 +182,7 @@ function mest_pedmuro(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmuro && sep[i+
 function mest_pedmuda(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmuda && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
 function mest_pedmutv(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmutv && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
 function mest_pedmupr(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmupr && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
+function mest_pmnim(n,    wd,rett) { wd = lc(n); if (wd in mstc_muim   && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
 
 # двойственное число
 function qi_duom(n,       wd,rett) { wd = lc(n); if (wd in qd_duom)                                                                            {rett=1} else {rett=0}; return rett}
