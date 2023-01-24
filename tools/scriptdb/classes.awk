@@ -976,10 +976,11 @@ BEGIN {
    cmd = "zcat " indb "automo.gz | sed -r 's/([аеёиоуыэюя])\\x27/\\1\\xcc\\x81/g; s/\\\\xcc\\\\xa0/\\xcc\\xa0/g; s/\\\\xcc\\\\xa3/\\xcc\\xa3/g; s/\\\\xcc\\\\xa4/\\xcc\\xa4/g; s/\\\\xcc\\\\xad/\\xcc\\xad/g; s/\\\\xcc\\\\xb0/\\xcc\\xb0/g; s/^([^ ]+)\\s([^ ]+)\\s(.+)$/\\1 \\2 \\u\\1 \\u\\2 \\3/g'";
    while ((cmd|getline) > 0) {
 
-        if($5~  /^mn1e_/ &&$5~ /_мн_1е$/            ){  ogl_mn1e    [$1]=$2; ogl_mn1e    [$3]=$4; ogl_mn1e    [$1,"info"]=$6; continue };
-        if($5~  /^mn2e_/ &&$5~ /_мн_2е$/            ){  ogl_mn2e    [$1]=$2; ogl_mn2e    [$3]=$4; ogl_mn2e    [$1,"info"]=$6; continue };
-        if($5~  /^mn3e_/ &&$5~ /_мн_3е$/            ){  ogl_mn3e    [$1]=$2; ogl_mn3e    [$3]=$4; ogl_mn3e    [$1,"info"]=$6; continue };
-        if($5~  /^pomn_/ &&$5~ /_пов_мн$/           ){  ogl_pomn    [$1]=$2; ogl_pomn    [$3]=$4; ogl_pomn    [$1,"info"]=$6; continue };
+        if($5~  /^mn1e_/    &&$5~ /_мн_1е$/         ){  ogl_mn1e    [$1]=$2; ogl_mn1e    [$3]=$4; ogl_mn1e    [$1,"info"]=$6; continue };
+        if($5~  /^mn2e_/    &&$5~ /_мн_2е$/         ){  ogl_mn2e    [$1]=$2; ogl_mn2e    [$3]=$4; ogl_mn2e    [$1,"info"]=$6; continue };
+        if($5~  /^mn3e_/    &&$5~ /_мн_3е$/         ){  ogl_mn3e    [$1]=$2; ogl_mn3e    [$3]=$4; ogl_mn3e    [$1,"info"]=$6; continue };
+        if($5~  /^pamn_/    &&$5~ /_прош_мн$/       ){  ogl_pamn    [$1]=$2; ogl_pamn    [$3]=$4; ogl_pamn    [$1,"info"]=$6; continue };
+        if($5~  /^pomn_/    &&$5~ /_пов_мн$/        ){  ogl_pomn    [$1]=$2; ogl_pomn    [$3]=$4; ogl_pomn    [$1,"info"]=$6; continue };
                                                                                       
         if($5~  /^plkred_прл_крат/ &&$5~ /_ед_муж$/ ){  opl_kredmu  [$1]=$2; opl_kredmu  [$3]=$4; opl_kredmu  [$1,"info"]=$6; continue };
         if($5~  /^pqkred_прч_крат/ &&$5~ /_ед_муж$/ ){  opq_kredmu  [$1]=$2; opq_kredmu  [$3]=$4; opq_kredmu  [$1,"info"]=$6; continue };

@@ -47,6 +47,7 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
         if(ci in ogl_mn1e    && num!=om001[$i]) {oglTmn1e   [$i]=oglTmn1e   [$i] " " num; om001[$i]=num}; # глаголы 1е л. мн.ч.         #_#_# ogl_mn1e !_#_!
         if(ci in ogl_mn2e    && num!=om002[$i]) {oglTmn2e   [$i]=oglTmn2e   [$i] " " num; om002[$i]=num}; # глаголы 2е л. мн.ч.         #_#_# ogl_mn2e !_#_!
         if(ci in ogl_mn3e    && num!=om003[$i]) {oglTmn3e   [$i]=oglTmn3e   [$i] " " num; om003[$i]=num}; # глаголы 3е л. мн.ч.         #_#_# ogl_mn3e !_#_!
+        if(ci in ogl_pamn    && num!=om004[$i]) {oglTpamn   [$i]=oglTpamn   [$i] " " num; om004[$i]=num}; # глаголы мн.ч. прош.вр.      #_#_# ogl_pamn !_#_!
         if(ci in ogl_pomn    && num!=om004[$i]) {oglTpomn   [$i]=oglTpomn   [$i] " " num; om004[$i]=num}; # глаголы пов.накл. мн.ч.     #_#_# ogl_pomn !_#_!
         if(ci in opl_kredmu  && num!=om005[$i]) {oplTkredmu [$i]=oplTkredmu [$i] " " num; om005[$i]=num}; # крат.прил. ед.ч. м.р.       #_#_# opl_kredmu !_#_!
         if(ci in opq_kredmu  && num!=om006[$i]) {opqTkredmu [$i]=opqTkredmu [$i] " " num; om006[$i]=num}; # крат.прич. ед.ч. м.р.       #_#_# opq_kredmu !_#_!
@@ -2630,7 +2631,7 @@ for(wrd in oglTmn1e){omakevars(ogl_mn1e,oglTmn1e);for(y=1;y<=wln;y++)         # 
  { l[i]=somo; r[645]++; if(dbg){print "R645"}; continue};
  #
  if ( (p(-1)||sc(-1,"[pv]")) &&
-        (p(0)||sc(0,"[pv]")) )
+       (p(0)||sc(0,"[pv]")) )
  { l[i]=somo; r[646]++; if(dbg){print "R646"}; continue};
  #
  if ( w(-2,"мы") &&
@@ -2638,14 +2639,14 @@ for(wrd in oglTmn1e){omakevars(ogl_mn1e,oglTmn1e);for(y=1;y<=wln;y++)         # 
  { l[i]=somo; r[647]++; if(dbg){print "R647"}; continue};
  #
  if ( w(-3,"мы") &&
-       (mest_ro(-2)||suw_edro(-2)||suw_mnro(-2)) &&
+      (mest_ro(-2)||suw_edro(-2)||suw_mnro(-2)) &&
         w(-1,"не") &&  s(-3,-1) )
  { l[i]=somo; r[648]++; if(dbg){print "R648"}; continue};
  #
  if ( (phs(-2,"никогда")||
        phs(-2,"ни за что")) &&
-      w(hsn-1,"мы") &&
-       w(-1,"не") && s(hsn-1,-1) )
+       w(hsn-1,"мы") &&
+        w(-1,"не") && s(hsn-1,-1) )
  { l[i]=somo; r[649]++; if(dbg){print "R649"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_ogl_mn3e
