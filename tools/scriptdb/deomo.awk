@@ -95,6 +95,9 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
 FS = savefs
 ###START_END###
 
+# Разбивка найденного на омографические пары
+
+
 ### все !_#_!
 for(wrd in vseT){wln=split(vseT[wrd],omlin," ");for(y=1;y<=wln;y++){b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);  # header1
 getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continue;is_vsyo=vsyo[l[i]];is_vsje=vsje[l[i]]; # header2
