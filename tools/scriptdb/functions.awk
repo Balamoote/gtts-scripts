@@ -23,7 +23,9 @@ function regwpos(word,    n)                      # Получить адрес 
 function arrpack(n, array,   i, rett)             # устранить пропуск в массиве
                 { rett = length(array); for (i=n; i<=rett; i++) {array[i] = array[i+1]}; delete array[rett+1]; return rett }
 function omakevars(basearr,maparr)                # определить переменные iwrd, winfo, somo
-                { iwrd=tolower(wrd);winfo=basearr[iwrd,"info"];if(wrd ~ capword){somo=toupper(basearr[iwrd])}else{somo=basearr[wrd]};wln=split(maparr[wrd],omlin," ")}
+                { iwrd=tolower(wrd);winfo=basearr[iwrd]["info"];if(wrd ~ capword){somo=toupper(basearr[iwrd])}else{somo=basearr[wrd]};wln=split(maparr[wrd],omlin," ")}
+function o2makevars(basearr,xklass)                # определить переменные iwrd, winfo, somo
+                { iwrd=tolower(wrd);winfo=basearr["info"][iwrd][xklass];omo1=basearr[xclass[xklass][1]][wrd];omo2=basearr[xclass[xklass][2]][wrd];wln=split(omap[xklass][wrd],omlin," ")}
 function makebookvars()                           # определить переменные iwrd, winfo, somo
                 { b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd) }
 
@@ -354,6 +356,8 @@ function gl_pemn(n,                                                             
                           wd in g2_pena_m2||wd in g2_pena_m3||wd in g2_pepa_mn)                                                                 {rett=1} else {rett=0}; return rett}
 
 # существительные
+function suw_edmuim(n,                                                                                                                          wd,rett) { wd = lc(n);
+                      if (wd in sw_edmu_im||wd in sw_edob_im||wd in swn_edmu_im||wd in swn_edob_im||wd in swo_edmu_im||wd in swo_edob_im)       {rett=1} else {rett=0}; return rett}
 function suw_edsrim(n,    wd,rett) { wd = lc(n); if (wd in sw_edsr_im||wd in swn_edsr_im||wd in swo_edsr_im)                                    {rett=1} else {rett=0}; return rett}
 function suw_edsrvi(n,    wd,rett) { wd = lc(n); if (wd in sw_edsr_vi||wd in swn_edsr_vi||wd in swo_edsr_vi)                                    {rett=1} else {rett=0}; return rett}
 function suw_edzeim(n,    wd,rett) { wd = lc(n); if (wd in swn_edze_im||wd in sw_edze_im||wd in swo_edze_im)                                    {rett=1} else {rett=0}; return rett}

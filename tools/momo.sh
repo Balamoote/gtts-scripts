@@ -133,7 +133,7 @@ statblock=4
 locomo=$(( $( grep -c "###" $bookwrkdir/book-index.sed ) - $statblock ))
 printf '\e[36m%s \e[93m%s %s%s%s\e[0m … ' "Омографов для sed-обработки:" $locomo "(" $statblock ")"
 
-sedroll $bookwrkdir/book-index.sed $bookwrkdir/text-book.txt
+ sedroll $bookwrkdir/book-index.sed $bookwrkdir/text-book.txt
 
 mo_uni2=$(date +%s.%N); duration=$( echo $mo_uni2 - $mo_uni1 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "обработано за" $duration "сек"
