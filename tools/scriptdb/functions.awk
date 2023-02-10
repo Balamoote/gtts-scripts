@@ -22,10 +22,9 @@ function regwpos(word,    n)                      # Получить адрес 
                 { for(n=1;n<=nf;n++) {if(l[n]==word) wpos[n]} }
 function arrpack(n, array,   i, rett)             # устранить пропуск в массиве
                 { rett = length(array); for (i=n; i<=rett; i++) {array[i] = array[i+1]}; delete array[rett+1]; return rett }
-function omakevars(basearr,maparr)                # определить переменные iwrd, winfo, somo
-                { iwrd=tolower(wrd);winfo=basearr[iwrd]["info"];if(wrd ~ capword){somo=toupper(basearr[iwrd])}else{somo=basearr[wrd]};wln=split(maparr[wrd],omlin," ")}
-function o2makevars(basearr,xklass)                # определить переменные iwrd, winfo, somo
-                { iwrd=tolower(wrd);winfo=basearr["info"][iwrd][xklass];omo1=basearr[xclass[xklass][1]][wrd];omo2=basearr[xclass[xklass][2]][wrd];wln=split(omap[xklass][wrd],omlin," ")}
+function omakevars(basearr,xklass)                # определить переменные iwrd, winfo, somo
+                { iwrd=tolower(wrd);winfo=basearr["info"][iwrd][xklass];wln=split(omap[xklass][wrd],omlin," ");
+                  omo1=basearr[xclass[xklass][1]][wrd];omo2=basearr[xclass[xklass][2]][wrd];omo3=basearr[xclass[xklass][3]][wrd] }
 function makebookvars()                           # определить переменные iwrd, winfo, somo
                 { b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd) }
 
@@ -507,6 +506,12 @@ function souz(n,        wd,rett) { wd = lc(n); if (wd in soyz)                  
 function zvat(n,        wd,rett) { wd = lc(n); if (wd in zvt)                                                                                   {rett=1} else {rett=0}; return rett}
                                                                                                                                                 
 # Числительные                                                                                                                                  
+function qik_im(n,      wd,rett) { wd = lc(n); if (wd in qko_im)                                                                                {rett=1} else {rett=0}; return rett}
+function qik_vi(n,      wd,rett) { wd = lc(n); if (wd in qko_vi)                                                                                {rett=1} else {rett=0}; return rett}
+function qik_ro(n,      wd,rett) { wd = lc(n); if (wd in qko_ro)                                                                                {rett=1} else {rett=0}; return rett}
+function qik_da(n,      wd,rett) { wd = lc(n); if (wd in qko_da)                                                                                {rett=1} else {rett=0}; return rett}
+function qik_tv(n,      wd,rett) { wd = lc(n); if (wd in qko_tv)                                                                                {rett=1} else {rett=0}; return rett}
+function qik_pr(n,      wd,rett) { wd = lc(n); if (wd in qko_pr)                                                                                {rett=1} else {rett=0}; return rett}
 function qik_edim(n,    wd,rett) { wd = lc(n); if (wd in qko_ed_ze_im||wd in qko_ed_mu_im||wd in qko_ed_sr_im||wd in qko_im)                    {rett=1} else {rett=0}; return rett}
 function qik_edvi(n,    wd,rett) { wd = lc(n); if (wd in qko_ed_ze_vi||wd in qko_ed_mu_vi||wd in qko_ed_sr_vi||wd in qko_vi)                    {rett=1} else {rett=0}; return rett}
 function qik_edro(n,    wd,rett) { wd = lc(n); if (wd in qko_ed_ze_ro||wd in qko_ed_mu_ro||wd in qko_ed_sr_ro||wd in qko_ro)                    {rett=1} else {rett=0}; return rett}
@@ -531,12 +536,12 @@ function qip_mnro(n,    wd,rett) { wd = lc(n); if (wd in qpo_mn_ro)             
 function qip_mnda(n,    wd,rett) { wd = lc(n); if (wd in qpo_mn_da)                                                                             {rett=1} else {rett=0}; return rett}
 function qip_mntv(n,    wd,rett) { wd = lc(n); if (wd in qpo_mn_tv)                                                                             {rett=1} else {rett=0}; return rett}
 function qip_mnpr(n,    wd,rett) { wd = lc(n); if (wd in qpo_mn_pr)                                                                             {rett=1} else {rett=0}; return rett}
-function qi_neoim(n,    wd,rett) { wd = lc(n); if (wd in qne_im)                                                                                {rett=1} else {rett=0}; return rett}
-function qi_nevi(n,     wd,rett) { wd = lc(n); if (wd in qne_vi)                                                                                {rett=1} else {rett=0}; return rett}
-function qi_nero(n,     wd,rett) { wd = lc(n); if (wd in qne_ro)                                                                                {rett=1} else {rett=0}; return rett}
-function qi_neda(n,     wd,rett) { wd = lc(n); if (wd in qne_da)                                                                                {rett=1} else {rett=0}; return rett}
-function qi_netv(n,     wd,rett) { wd = lc(n); if (wd in qne_tv)                                                                                {rett=1} else {rett=0}; return rett}
-function qi_nepr(n,     wd,rett) { wd = lc(n); if (wd in qne_pr)                                                                                {rett=1} else {rett=0}; return rett}
+function qin_im(n,      wd,rett) { wd = lc(n); if (wd in qne_im)                                                                                {rett=1} else {rett=0}; return rett}
+function qin_vi(n,      wd,rett) { wd = lc(n); if (wd in qne_vi)                                                                                {rett=1} else {rett=0}; return rett}
+function qin_ro(n,      wd,rett) { wd = lc(n); if (wd in qne_ro)                                                                                {rett=1} else {rett=0}; return rett}
+function qin_da(n,      wd,rett) { wd = lc(n); if (wd in qne_da)                                                                                {rett=1} else {rett=0}; return rett}
+function qin_tv(n,      wd,rett) { wd = lc(n); if (wd in qne_tv)                                                                                {rett=1} else {rett=0}; return rett}
+function qin_pr(n,      wd,rett) { wd = lc(n); if (wd in qne_pr)                                                                                {rett=1} else {rett=0}; return rett}
 function qis_im(n,      wd,rett) { wd = lc(n); if (wd in qso_ze_im||wd in qso_im||wd in qso_mu_im||wd in qso_sr_im)                             {rett=1} else {rett=0}; return rett}
 function qis_vi(n,      wd,rett) { wd = lc(n); if (wd in qso_vi||wd in qso_ze_vi||wd in qso_mu_vi||wd in qso_sr_vi)                             {rett=1} else {rett=0}; return rett}
 function qis_ro(n,      wd,rett) { wd = lc(n); if (wd in qso_ze_ro||wd in qso_mu_ro||wd in qso_ro||wd in qso_sr_ro)                             {rett=1} else {rett=0}; return rett}
