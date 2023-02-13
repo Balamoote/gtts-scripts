@@ -1,13 +1,42 @@
 # Набор правил обработки для deomo.awk в виде специфицеских для класса слова. Вынесены в отдельный файл, чтобы не загромождать основной файл.
 # При срабатывании функции выдают значение TRUE, при вызове аргументы НЕ указываются.
 
-function sw_em_iv_f(rett, stopper) { while (stopper == 0) {
+function sw_em_i_f(rett, stopper) { while (stopper == 0) {
  #_#_#
  if (prex == 1) {
- if ( (prex_im(-1)||prex_vi(-1)||prl_edmuim(-1)||prl_edmuvi(-1)||prq_edmuim(-1)||prq_edmuvi(-1)||muk_edim(-1)||muk_edvi(-1)) && s(-1,-1) )
+ if ( (prex_im(-1)||prl_edmuim(-1)||prq_edmuim(-1)||muk_edim(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  } else {#
- if ( (pre_im(-1)||pre_vi(-1)||prl_edmuim(-1)||prl_edmuvi(-1)||prq_edmuim(-1)||prq_edmuvi(-1)||muk_edim(-1)||muk_edvi(-1)) && s(-1,-1) )
+ if ( (pre_im(-1)||prl_edmuim(-1)||prq_edmuim(-1)||muk_edim(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ };#_#_#
+break}; return rett }
+
+function sw_em_v_f(rett, stopper) { while (stopper == 0) {
+ #_#_#
+ if (prex == 1) {
+ if ( (prex_vi(-1)||prl_edmuvi(-1)||prq_edmuvi(-1)||muk_edvi(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ } else {#
+ if ( (pre_vi(-1)||prl_edmuvi(-1)||prq_edmuvi(-1)||muk_edvi(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ };#_#_#
+break}; return rett }
+
+function sw_em_d_f(rett, stopper) { while (stopper == 0) {
+ #
+ #_#_#
+ if (prex == 1) {
+ if ( prex_da(-2) &&
+      (prl_edmuda(-1)||prq_edmuda(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (prex_da(-1)||prl_edmuda(-1)||prq_edmuda(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ } else {#
+ if ( pre_da(-2) &&
+      (prl_edmuda(-1)||prq_edmuda(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (pre_da(-1)||prl_edmuda(-1)||prq_edmuda(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  };#_#_#
 break}; return rett }
@@ -34,10 +63,48 @@ function sw_em_r_f(rett, stopper) { while (stopper == 0) {
  };#_#_#
 break}; return rett }
 
+function sw_em_t_f(rett, stopper) { while (stopper == 0) {
+ #
+ #_#_#
+ if (prex == 1) {
+ if ( prex_tv(-2) &&
+      (prl_edmutv(-1)||prq_edmutv(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (prex_tv(-1)||prl_edmutv(-1)||prq_edmutv(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ } else {#
+ if ( pre_tv(-2) &&
+      (prl_edmutv(-1)||prq_edmutv(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (pre_tv(-1)||prl_edmutv(-1)||prq_edmutv(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ };#_#_#
+break}; return rett }
+
+function sw_em_p_f(rett, stopper) { while (stopper == 0) {
+ #
+ #_#_#
+ if (prex == 1) {
+ if ( prex_pr(-2) &&
+      (prl_edmupr(-1)||prq_edmupr(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (prex_pr(-1)||prl_edmupr(-1)||prq_edmupr(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ } else {#
+ if ( pre_pr(-2) &&
+      (prl_edmupr(-1)||prq_edmupr(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (pre_pr(-1)||prl_edmupr(-1)||prq_edmupr(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ };#_#_#
+break}; return rett }
+
 function sw_es_r_f(rett, stopper) { while (stopper == 0) {
  #
  if ( (w(-2,"нет")||pre_ro(-2)||qi_duom(-2)) &&
        (prl_mnro(-1)||prq_mnro(-1)||mest_mnro(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (w(-1,"нет")||qi_duom(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
 
  #_#_#
@@ -71,6 +138,20 @@ function sw_ez_d_f(rett, stopper) { while (stopper == 0) {
  if ( (pre_da(-1)||prl_edzeda(-1)||prq_edzeda(-1)||mest_da(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  };#_#_#
+break}; return rett }
+
+function sw_em_l_f(rett, stopper) { while (stopper == 0) {
+ #
+ if ( w(-2,"в на") &&
+      (prl_edmupr(-1)||prq_edmupr(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ #
+ if ( w(-1,"в во на") && s(-1,-1) )
+ { rett=stopper=1; continue };
+ #
+ if ( (w(-2,"нет")||qi_duom(-2)) &&
+         (prl_mnim(-1)||prl_mnvi(-1)||prq_mnim(-1)||prq_mnvi(-1)||mest_im(-1)||mest_vi(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
 break}; return rett }
 
 function sw_ez_l_f(rett, stopper) { while (stopper == 0) {
@@ -109,6 +190,23 @@ function sw_ez_r_f(rett, stopper) { while (stopper == 0) {
  };#_#_#
 break}; return rett }
 
+function sw_ez_t_f(rett, stopper) { while (stopper == 0) {
+ #_#_#
+ if (prex == 1) {
+ if (prex_pr(-2) &&
+     (prl_edzetv(-1)||prq_edzetv(-1)||mest_tv(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (prex_tv(-1)||prl_edzetv(-1)||prq_edzetv(-1)||mest_tv(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ } else {#
+ if (pre_tv(-2) &&
+     (prl_edzetv(-1)||prq_edzetv(-1)||mest_tv(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (pre_tv(-1)||prl_edzetv(-1)||prq_edzetv(-1)||mest_tv(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ };#_#_#
+break}; return rett }
+
 function sw_ez_p_f(rett, stopper) { while (stopper == 0) {
  #_#_#
  if (prex == 1) {
@@ -126,13 +224,24 @@ function sw_ez_p_f(rett, stopper) { while (stopper == 0) {
  };#_#_#
 break}; return rett }
 
-function sw_mn_iv_f(rett, stopper) { while (stopper == 0) {
+function sw_mn_i_f(rett, stopper) { while (stopper == 0) {
  #_#_#
  if (prex == 1) {
- if ( (prex_im(-1)||prex_vi(-1)||prl_mnim(-1)||prl_mnvi(-1)||prq_mnim(-1)||prq_mnvi(-1)||mest_pmnim(-1)) && s(-1,-1) )
+ if ( (prex_im(-1)||prl_mnim(-1)||prq_mnim(-1)||mest_pmnim(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  } else {#
- if ( (pre_im(-1)||pre_vi(-1)||prl_mnim(-1)||prl_mnvi(-1)||prq_mnim(-1)||prq_mnvi(-1)||mest_pmnim(-1)) && s(-1,-1) )
+ if ( (pre_im(-1)||prl_mnim(-1)||prq_mnim(-1)||mest_pmnim(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ };#_#_#
+break}; return rett }
+
+function sw_mn_v_f(rett, stopper) { while (stopper == 0) {
+ #_#_#
+ if (prex == 1) {
+ if ( (prex_vi(-1)||prl_mnvi(-1)||prq_mnvi(-1)||mest_pmnim(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ } else {#
+ if ( (pre_vi(-1)||prl_mnvi(-1)||prq_mnvi(-1)||mest_pmnim(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  };#_#_#
 break}; return rett }
