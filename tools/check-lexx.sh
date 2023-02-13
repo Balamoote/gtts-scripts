@@ -152,6 +152,7 @@ else rm _2x-right-quick.txt; fi
 
 # Проверка ошибок шаблонов, если найдена "двойная ковычка", то в шаблоне ошибка…
 zgrep -e \" -e "=[^=]*=" scriptaux/tts.pat.gz | grep -v "^regex" > _pat-error.txt
+awk '{q=0; split($0,quo,""); for(i in quo) {if(quo[i]=="\x22") q++}; if(q!=0 && q!=4) {print $0, q};}' tts.txt >> _pat-error.txt
 if [[ -s _pat-error.txt ]]; then printf '\e[31;5;1m%s\e[0m \e[93m%s \e[33m%s\e[0m\n' "Шаблоны с ошибками :" $(wc -l _pat-error.txt); md5sum tts.txt > _err-msg.md5; lexxerr=1
 else rm _pat-error.txt; fi 
 
