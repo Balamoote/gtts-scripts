@@ -23,10 +23,12 @@ function regwpos(word,    n)                      # Получить адрес 
 function arrpack(n, array,   i, rett)             # устранить пропуск в массиве
                 { rett = length(array); for (i=n; i<=rett; i++) {array[i] = array[i+1]}; delete array[rett+1]; return rett }
 function omakevars(basearr,xklass)                # определить переменные iwrd, winfo, somo
-                { iwrd=tolower(wrd);winfo=basearr["info"][iwrd][xklass];wln=split(omap[xklass][wrd],omlin," ");
+                { iwrd=tolower(wrd);winfo=basearr["info"][iwrd];wln=split(omap[xklass][wrd],omlin," ");
                   omo1=basearr[xclass[xklass][1]][wrd];omo2=basearr[xclass[xklass][2]][wrd];omo3=basearr[xclass[xklass][3]][wrd] }
 function makebookvars()                           # определить переменные iwrd, winfo, somo
-                { b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd) }
+                { b=strtonum(omlin[y]);nf=splitline(book[b]);hyphback(book[b]);regwpos(wrd); prex="" }
+function makebookvars_nohyphback()                # определить переменные iwrd, winfo, somo
+                { b=strtonum(omlin[y]);nf=splitline(book[b]);regwpos(wrd); prex="" }
 
 # функции обработки слов
 function s1(n,wl,    rett)                        # выдать 1-й символ строки-сеператора
@@ -45,8 +47,8 @@ function Qb(n, class,    k, rett)                 # поиск на n шагов
                 { rett=1; for (k=-1; k>=n; k--)   { if ( @class(k) ) {rett=0; break}; }; return rett }
 function Qf(n, class,    k, rett)                 # поиск на n шагов вперёд отсутствия слова в классе
                 { rett=1; for (k= 1; k<=n; k++)   { if ( @class(k) ) {rett=0; break}; }; return rett }
-function Q(n, class,    rett)                     # слово НЕ в классе?
-                { if ( @class(n) ) {rett=0} else {rett=1}; return rett }
+function Q(n, isclass,    rett)                     # слово НЕ в классе?
+                { if ( @isclass(n) ) {rett=0} else {rett=1}; return rett }
 function qb_(n, array,    k, rett)                # поиск на n шагов назад наличия слова в БАЗОВОМ массиве
                 { rett=0; qbn=""; for (k=-1; k>=n; k--) { if (lc(k) in array) {rett=1; qbn=k; break}; }; return rett }
 function qf_(n, array,    k, rett)                # поиск на n шагов вперёд наличия слова в БАЗОВОМ массиве
@@ -79,7 +81,7 @@ function W(n, wl,    wrds, rett)                  # НЕнахождение в 
                 { stoar(wl, wrds, "[ |]"); if (lc(n) in wrds) {rett=0} else {rett=1}; return rett }
 function wb(n, wl,    wrds, k, rett)              # поиск на n шагов назад слова из списка
                 { rett=0; wbn=""; stoar(wl, wrds, "[ |]"); for (k=-1; k>=n; k--) { if (lc(k) in wrds) {rett=1; wbn=k; break};}; return rett }
-function wb_raw(n, wl,    wrds, k, rett)              # поиск на n шагов назад слова из списка
+function wb_raw(n, wl,    wrds, k, rett)          # поиск на n шагов назад слова из списка
                 { rett=0; wbn=""; stoar(wl, wrds, "[ |]"); for (k=-1; k>=n; k--) { if (tolower(l[i+k]) in wrds) {rett=1; wbn=k; break};}; return rett }
 function wf(n, wl,    wrds, k, rett)              # поиск на n шагов вперёд наличия слова в массиве
                 { rett=0; wfn=""; stoar(wl, wrds, "[ |]"); for (k= 1; k<=n; k++) { if (lc(k) in wrds) {rett=1; wfn=k; break};}; return rett }
@@ -102,15 +104,17 @@ function phf(n, wl,    wrds, k, lk, cnt, rett)    # кусок фразы ПОС
                 {hfn="";lk=split(wl,wrds," "); for(k=1;k<=lk;k++) {if(lc(n+k-1)==wrds[k]) {cnt++} else {cnt=0; break};};
                     if(cnt==lk) {rett=1;hfn=n+lk} else {rett=0}; return rett}
 function ismark(n,mrk,    k, el, marka, rett)     # нахождение слова в метке переменная winfo: для управления омонимами из automo.gz
-                { el = "_" tolower(l[i+n]) "_";marka= "^" mrk;split(winfo,wrds,"#");for(k in wrds){if(wrds[k]~marka&&wrds[k]~el){rett=1;break}else{rett=0};}; return rett }
+                { el="_" tolower(l[i+n]) "_";marka= "^" mrk;split(winfo,wrds,"#");for(k in wrds){if(wrds[k]~marka&&wrds[k]~el){rett=1;break}else{rett=0};}; return rett }
 function notmark(n,mrk,    k, el, marka, rett)    # НЕ нахождение слова в метке переменная winfo: для управления омонимами из automo.gz
-                { rett=1;el="_" tolower(l[i+n]) "_";marka= "^" mrk;split(winfo,wrds,"#");for(k in wrds){if(wrds[k]~marka&&wrds[k]~el){rett=0;break}else{rett=1};}; return rett }
+                { el="_" tolower(l[i+n]) "_";marka= "^" mrk;split(winfo,wrds,"#");for(k in wrds){if(wrds[k]~marka&&wrds[k]~el){rett=0;break}else{rett=1};}; return rett }
+function notsym(n,sym,    rett)                   # НЕ нахождение символа в слове
+                { if (l[i+n] !~ sym) {rett=1} else {rett=0}; return rett }
 
 
 # функции проверки принадлежности к классам. "Классы" собираются из "базовых массивов", которые формируются при чтении словаря посредством classes.awk
 # география
-function geo_sr(n,        wd,rett) { wd = lc(n); if (wd in geo_edsrim)                                                                         {rett=1} else {rett=0}; return rett}
-function geo_mn(n,        wd,rett) { wd = lc(n); if (wd in geo_mnim)                                                                           {rett=1} else {rett=0}; return rett}
+function geo_sr(n,        wd,rett) { wd = lc(n); if (wd in geo_edsrim)                                                                        {rett=1} else {rett=0};  return rett}
+function geo_mn(n,        wd,rett) { wd = lc(n); if (wd in geo_mnim)                                                                          {rett=1} else {rett=0};  return rett}
                                                                                                                                               
 # глаголы кастомных классов                                                                                                                   
 function glc_mn(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd in gc_mn)                                                      {rett=1} else {rett=0}}  else
@@ -183,7 +187,7 @@ function mest_pedmuro(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmuro && sep[i+
 function mest_pedmuda(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmuda && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
 function mest_pedmutv(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmutv && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
 function mest_pedmupr(n,  wd,rett) { wd = lc(n); if (wd in mstc_edmupr && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
-function mest_pmnim(n,    wd,rett) { wd = lc(n); if (wd in mstc_muim   && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
+function mest_pmnim(n,    wd,rett) { wd = lc(n); if (wd in mstc_mnim   && sep[i+n-1]!="-")                                                     {rett=1} else {rett=0}; return rett}
 
 # двойственное число
 function qi_duom(n,       wd,rett) { wd = lc(n); if (wd in qd_duom)                                                                            {rett=1} else {rett=0}; return rett}
@@ -357,6 +361,9 @@ function gl_pemn(n,                                                             
 # существительные
 function suw_edmuim(n,                                                                                                                          wd,rett) { wd = lc(n);
                       if (wd in sw_edmu_im||wd in sw_edob_im||wd in swn_edmu_im||wd in swn_edob_im||wd in swo_edmu_im||wd in swo_edob_im)       {rett=1} else {rett=0}; return rett}
+function suw_edmuvi(n,                                                                                                                          wd,rett) { wd = lc(n);
+                      if (wd in sw_edmu_vi||wd in sw_edmu_vi||wd in sw_edob_vi||wd in swn_edmu_im||wd in swn_edob_vi||wd in swo_edmu_ro||
+                          wd in swo_edob_vi)                                                                                                    {rett=1} else {rett=0}; return rett}
 function suw_edsrim(n,    wd,rett) { wd = lc(n); if (wd in sw_edsr_im||wd in swn_edsr_im||wd in swo_edsr_im)                                    {rett=1} else {rett=0}; return rett}
 function suw_edsrvi(n,    wd,rett) { wd = lc(n); if (wd in sw_edsr_vi||wd in swn_edsr_vi||wd in swo_edsr_vi)                                    {rett=1} else {rett=0}; return rett}
 function suw_edzeim(n,    wd,rett) { wd = lc(n); if (wd in swn_edze_im||wd in sw_edze_im||wd in swo_edze_im)                                    {rett=1} else {rett=0}; return rett}
