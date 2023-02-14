@@ -2697,6 +2697,8 @@ for(wrd in omap["x1006"]){omakevars(x1006,"x1006");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x1007"]){omakevars(x1007,"x1007");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_em_i_f() )
+ { l[i]=omo1; r[657]++; if(dbg){print "R657"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x1007
 
 ### x1008 !_#_!
@@ -2827,6 +2829,9 @@ for(wrd in omap["x2003"]){omakevars(x2003,"x2003");for(y=1;y<=wln;y++)        # 
  #  x2004 deep_na_      sw_em_vr_
 for(wrd in omap["x2004"]){omakevars(x2004,"x2004");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( sw_em_v_f() )
+ { l[i]=omo2; r[770]++; if(dbg){print "R770"}; continue};
  #
  if ( sw_em_r_f() )
  { l[i]=omo2; r[770]++; if(dbg){print "R770"}; continue};
@@ -3210,6 +3215,11 @@ for(wrd in omap["x2043"]){omakevars(x2043,"x2043");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2044"]){omakevars(x2044,"x2044");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
+ #
+ if ( sw_mn_r_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2044
 
 ### x2045 !_#_!
@@ -3236,6 +3246,9 @@ for(wrd in omap["x2047"]){omakevars(x2047,"x2047");for(y=1;y<=wln;y++)        # 
  #
  if ( gl_paedmu_f() )
  { l[i]=omo1; r[684]++; if(dbg){print "R684"}; continue};
+ #
+ if ( sw_em_i_f() )
+ { l[i]=omo2; r[657]++; if(dbg){print "R657"}; continue};
  #
  if ( sw_mn_r_f() )
  { l[i]=omo2; r[685]++; if(dbg){print "R685"}; continue};
@@ -3268,6 +3281,9 @@ for(wrd in omap["x2049"]){omakevars(x2049,"x2049");for(y=1;y<=wln;y++)        # 
  #
  if ( gl_paedmu_f() )
  { l[i]=omo1; r[689]++; if(dbg){print "R689"}; continue};
+ #
+ if ( sw_em_i_f() )
+ { l[i]=omo2; r[657]++; if(dbg){print "R657"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2049
 
@@ -3307,6 +3323,12 @@ for(wrd in omap["x2052"]){omakevars(x2052,"x2052");for(y=1;y<=wln;y++)        # 
  #
  if ( gl_paedmu_f() )
  { l[i]=omo1; r[694]++; if(dbg){print "R694"}; continue};
+ #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
+ #
+ if ( sw_mn_r_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2052
 
@@ -3351,6 +3373,8 @@ for(wrd in omap["x2055"]){omakevars(x2055,"x2055");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2056"]){omakevars(x2056,"x2056");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_em_i_f() )
+ { l[i]=omo2; r[657]++; if(dbg){print "R657"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2056
 
 ### x2057 !_#_!
@@ -3564,6 +3588,8 @@ for(wrd in omap["x2070"]){omakevars(x2070,"x2070");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2071"]){omakevars(x2071,"x2071");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_em_i_f() )
+ { l[i]=omo2; r[657]++; if(dbg){print "R657"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2071
 
 ### x2072 !_#_!
@@ -3627,6 +3653,8 @@ for(wrd in omap["x2077"]){omakevars(x2077,"x2077");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2078"]){omakevars(x2078,"x2078");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_mn_i_f() )
+ { l[i]=omo2; r[729]++; if(dbg){print "R729"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2078
 
 ### x2079 !_#_!
@@ -4034,6 +4062,9 @@ for(wrd in omap["x2110"]){omakevars(x2110,"x2110");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2111"]){omakevars(x2111,"x2111");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_em_i_f() )
+ { l[i]=omo1; r[657]++; if(dbg){print "R657"}; continue};
+ #
  if ( sw_ez_t_f() )
  { l[i]=omo2; r[863]++; if(dbg){print "R863"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2111
@@ -4128,9 +4159,15 @@ for(wrd in omap["x2119"]){omakevars(x2119,"x2119");for(y=1;y<=wln;y++)        # 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2119
 
 ### x2120 !_#_!
- #  x2120 nar_vrem_     sw_em_t_    по́том    пото́м
+ #  x2120 nar_vrem_     sw_em_t_   потом    пото́м    по́том
 for(wrd in omap["x2120"]){omakevars(x2120,"x2120");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( p(-2) &&
+       w(-1,"а и но однако") && s(-1,-1) )
+ { l[i]=omo1; r[770]++; if(dbg){print "R770"}; continue};
+ if ( p(-1) )
+ { l[i]=omo1; r[770]++; if(dbg){print "R770"}; continue};
  #
  if ( sw_em_t_f() )
  { l[i]=omo2; r[770]++; if(dbg){print "R770"}; continue};
@@ -4161,6 +4198,9 @@ for(wrd in omap["x2122"]){omakevars(x2122,"x2122");for(y=1;y<=wln;y++)        # 
  #  x2123 phrase_       sw_em_vr_
 for(wrd in omap["x2123"]){omakevars(x2123,"x2123");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( sw_em_v_f() )
+ { l[i]=omo2; r[770]++; if(dbg){print "R770"}; continue};
  #
  if ( sw_em_r_f() )
  { l[i]=omo2; r[770]++; if(dbg){print "R770"}; continue};
@@ -4203,6 +4243,11 @@ for(wrd in omap["x2126"]){omakevars(x2126,"x2126");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2127"]){omakevars(x2127,"x2127");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
+ #
+ if ( sw_mn_r_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2127
 
 ### x2128 !_#_!
@@ -4342,6 +4387,8 @@ for(wrd in omap["x2140"]){omakevars(x2140,"x2140");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2141"]){omakevars(x2141,"x2141");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_mn_i_f() )
+ { l[i]=omo2; r[871]++; if(dbg){print "R871"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2141
 
 ### x2142 !_#_!
@@ -4368,6 +4415,8 @@ for(wrd in omap["x2143"]){omakevars(x2143,"x2143");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2144"]){omakevars(x2144,"x2144");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_em_i_f() )
+ { l[i]=omo2; r[657]++; if(dbg){print "R657"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2144
 
 ### x2145 !_#_!
@@ -4406,6 +4455,11 @@ for(wrd in omap["x2147"]){omakevars(x2147,"x2147");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2148"]){omakevars(x2148,"x2148");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
+ #
+ if ( sw_mn_r_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2148
 
 ### x2149 !_#_!
@@ -4444,6 +4498,9 @@ for(wrd in omap["x2151"]){omakevars(x2151,"x2151");for(y=1;y<=wln;y++)        # 
  #  x2152 pl_kr_ez_		sw_em_vr_
 for(wrd in omap["x2152"]){omakevars(x2152,"x2152");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( sw_em_v_f() )
+ { l[i]=omo2; r[770]++; if(dbg){print "R770"}; continue};
  #
  if ( sw_em_r_f() )
  { l[i]=omo2; r[770]++; if(dbg){print "R770"}; continue};
@@ -4497,6 +4554,8 @@ for(wrd in omap["x2156"]){omakevars(x2156,"x2156");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2157"]){omakevars(x2157,"x2157");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_mn_i_f() )
+ { l[i]=omo2; r[729]++; if(dbg){print "R729"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2157
 
 ### x2158 !_#_!
@@ -4579,6 +4638,12 @@ for(wrd in omap["x2165"]){omakevars(x2165,"x2165");for(y=1;y<=wln;y++)        # 
  #
  if ( sw_em_v_f() )
  { l[i]=omo2; r[791]++; if(dbg){print "R791"}; continue};
+ #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
+ #
+ if ( sw_mn_r_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2165
 
 ### x2166 !_#_!
@@ -4626,6 +4691,9 @@ for(wrd in omap["x2170"]){omakevars(x2170,"x2170");for(y=1;y<=wln;y++)        # 
  #
  if ( sw_ez_r_f() )
  { l[i]=omo2; r[795]++; if(dbg){print "R795"}; continue};
+ #
+ if ( sw_mn_i_f() )
+ { l[i]=omo2; r[729]++; if(dbg){print "R729"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2170
 
@@ -4818,6 +4886,9 @@ for(wrd in omap["x2186"]){omakevars(x2186,"x2186");for(y=1;y<=wln;y++)        # 
  #
  if ( sw_em_r_f() )
  { l[i]=omo1; r[805]++; if(dbg){print "R805"}; continue};
+ #
+ if ( sw_mn_i_f() )
+ { l[i]=omo2; r[871]++; if(dbg){print "R871"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2186
 
 ### x2187 !_#_!
@@ -4850,6 +4921,9 @@ for(wrd in omap["x2188"]){omakevars(x2188,"x2188");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2189"]){omakevars(x2189,"x2189");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_em_v_f() )
+ { l[i]=omo1; r[770]++; if(dbg){print "R770"}; continue};
+ #
  if ( sw_em_r_f() )
  { l[i]=omo1; r[770]++; if(dbg){print "R770"}; continue};
  #
@@ -4865,6 +4939,9 @@ for(wrd in omap["x2189"]){omakevars(x2189,"x2189");for(y=1;y<=wln;y++)        # 
  #  x2190 sw_1em_vr_2ez_r_		sw_mn_iv_
 for(wrd in omap["x2190"]){omakevars(x2190,"x2190");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( sw_em_v_f() )
+ { l[i]=omo1; r[770]++; if(dbg){print "R770"}; continue};
  #
  if ( sw_em_r_f() )
  { l[i]=omo1; r[770]++; if(dbg){print "R770"}; continue};
@@ -4887,6 +4964,9 @@ for(wrd in omap["x2191"]){omakevars(x2191,"x2191");for(y=1;y<=wln;y++)        # 
  #
  if ( sw_ez_r_f() )
  { l[i]=omo1; r[811]++; if(dbg){print "R811"}; continue};
+ #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[871]++; if(dbg){print "R871"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2191
 
@@ -5036,12 +5116,6 @@ for(wrd in omap["x2199"]){omakevars(x2199,"x2199");for(y=1;y<=wln;y++)        # 
  #
  if ( sw_mn_v_f() )
  { l[i]=omo1; r[831]++; if(dbg){print "R831"}; continue};
- #
- if ( sw_mn_i_f() )
- { l[i]=omo1; r[832]++; if(dbg){print "R832"}; continue};
- #
- if ( sw_mn_v_f() )
- { l[i]=omo1; r[832]++; if(dbg){print "R832"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2199
 
@@ -5192,6 +5266,9 @@ for(wrd in omap["x2213"]){omakevars(x2213,"x2213");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2214"]){omakevars(x2214,"x2214");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_em_i_f() )
+ { l[i]=omo1; r[657]++; if(dbg){print "R657"}; continue};
+ #
  if ( sw_em_t_f() )
  { l[i]=omo2; r[770]++; if(dbg){print "R770"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2214
@@ -5201,6 +5278,12 @@ for(wrd in omap["x2214"]){omakevars(x2214,"x2214");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2215"]){omakevars(x2215,"x2215");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_em_i_f() )
+ { l[i]=omo1; r[657]++; if(dbg){print "R657"}; continue};
+ #
+ if ( sw_em_v_f() )
+ { l[i]=omo2; r[657]++; if(dbg){print "R657"}; continue};
+ #
  if ( sw_em_r_f() )
  { l[i]=omo2; r[770]++; if(dbg){print "R770"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2215
@@ -5209,6 +5292,9 @@ for(wrd in omap["x2215"]){omakevars(x2215,"x2215");for(y=1;y<=wln;y++)        # 
  #  x2216 sw_em_i_		sw_mn_r_
 for(wrd in omap["x2216"]){omakevars(x2216,"x2216");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( sw_em_i_f() )
+ { l[i]=omo1; r[657]++; if(dbg){print "R657"}; continue};
  #
  if ( sw_mn_r_f() )
  { l[i]=omo2; r[836]++; if(dbg){print "R836"}; continue};
@@ -5220,6 +5306,14 @@ for(wrd in omap["x2216"]){omakevars(x2216,"x2216");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2217"]){omakevars(x2217,"x2217");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_em_i_f() )
+ { l[i]=omo1; r[657]++; if(dbg){print "R657"}; continue};
+ #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
+ #
+ if ( sw_mn_r_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2217
 
 ### x2218 !_#_!
@@ -5275,6 +5369,12 @@ for(wrd in omap["x2221"]){omakevars(x2221,"x2221");for(y=1;y<=wln;y++)        # 
  #
  if ( sw_em_v_f() )
  { l[i]=omo1; r[841]++; if(dbg){print "R841"}; continue};
+ #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
+ #
+ if ( sw_mn_r_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2221
 
 ### x2222 !_#_!
@@ -5313,6 +5413,11 @@ for(wrd in omap["x2224"]){omakevars(x2224,"x2224");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2225"]){omakevars(x2225,"x2225");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
+ #
+ if ( sw_mn_r_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2225
 
 ### x2226 !_#_!
@@ -5358,6 +5463,7 @@ for(wrd in omap["x2229"]){omakevars(x2229,"x2229");for(y=1;y<=wln;y++)        # 
  #  x2230 sw_em_p_		sw_ez_dp_
 for(wrd in omap["x2230"]){omakevars(x2230,"x2230");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
+ prex=1
  #
  if ( sw_em_p_f() )
  { l[i]=omo1; r[675]++; if(dbg){print "R675"}; continue};
@@ -5403,6 +5509,9 @@ for(wrd in omap["x2234"]){omakevars(x2234,"x2234");for(y=1;y<=wln;y++)        # 
  #
  if ( sw_em_r_f() )
  { l[i]=omo1; r[846]++; if(dbg){print "R846"}; continue};
+ #
+ if ( sw_mn_i_f() )
+ { l[i]=omo2; r[729]++; if(dbg){print "R729"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2234
 
 ### x2235 !_#_!
@@ -5477,6 +5586,9 @@ for(wrd in omap["x2240"]){omakevars(x2240,"x2240");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2241"]){omakevars(x2241,"x2241");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_em_v_f() )
+ { l[i]=omo1; r[770]++; if(dbg){print "R770"}; continue};
+ #
  if ( sw_em_r_f() )
  { l[i]=omo1; r[770]++; if(dbg){print "R770"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2241
@@ -5486,14 +5598,23 @@ for(wrd in omap["x2241"]){omakevars(x2241,"x2241");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2242"]){omakevars(x2242,"x2242");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_em_v_f() )
+ { l[i]=omo1; r[770]++; if(dbg){print "R770"}; continue};
+ #
  if ( sw_em_r_f() )
  { l[i]=omo1; r[770]++; if(dbg){print "R770"}; continue};
+ #
+ if ( sw_mn_i_f() )
+ { l[i]=omo2; r[729]++; if(dbg){print "R729"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2242
 
 ### x2243 !_#_!
  #  x2243 sw_em_vr_		sw_mn_iv_
 for(wrd in omap["x2243"]){omakevars(x2243,"x2243");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( sw_em_v_f() )
+ { l[i]=omo1; r[770]++; if(dbg){print "R770"}; continue};
  #
  if ( sw_em_r_f() )
  { l[i]=omo1; r[770]++; if(dbg){print "R770"}; continue};
@@ -5626,6 +5747,9 @@ for(wrd in omap["x2255"]){omakevars(x2255,"x2255");for(y=1;y<=wln;y++)        # 
  #
  if ( sw_es_r_f() )
  { l[i]=omo1; r[858]++; if(dbg){print "R858"}; continue};
+ #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[871]++; if(dbg){print "R871"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2255
 
@@ -5646,6 +5770,9 @@ for(wrd in omap["x2257"]){omakevars(x2257,"x2257");for(y=1;y<=wln;y++)        # 
  #
  if ( sw_ez_r_f() )
  { l[i]=omo1; r[860]++; if(dbg){print "R860"}; continue};
+ #
+ if ( sw_mn_i_f() )
+ { l[i]=omo2; r[729]++; if(dbg){print "R729"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2257
 
@@ -5672,6 +5799,9 @@ for(wrd in omap["x2259"]){omakevars(x2259,"x2259");for(y=1;y<=wln;y++)        # 
  #
  if ( sw_ez_r_f() )
  { l[i]=omo1; r[863]++; if(dbg){print "R863"}; continue};
+ #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[871]++; if(dbg){print "R871"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2259
 
@@ -5704,6 +5834,12 @@ for(wrd in omap["x2262"]){omakevars(x2262,"x2262");for(y=1;y<=wln;y++)        # 
  #
  if ( sw_ez_t_f() )
  { l[i]=omo1; r[863]++; if(dbg){print "R863"}; continue};
+ #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
+ #
+ if ( sw_mn_r_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2262
 
 ### x2263 !_#_!
@@ -5721,6 +5857,11 @@ for(wrd in omap["x2263"]){omakevars(x2263,"x2263");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x2264"]){omakevars(x2264,"x2264");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
+ #
+ if ( sw_mn_r_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2264
 
 ### x2265 !_#_!
@@ -5749,6 +5890,31 @@ for(wrd in omap["x2266"]){omakevars(x2266,"x2266");for(y=1;y<=wln;y++)        # 
  { l[i]=omo1; r[869]++; if(dbg){print "R869"}; continue;};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2266
+
+### x2267 !_#_!
+ #  x2267 qip_iv_       sw_mn_vr_   < сорок > со́рок соро́к
+for(wrd in omap["x2267"]){omakevars(x2267,"x2267");for(y=1;y<=wln;y++)        # header1
+{makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( (suw_mnro(1)||suw_mnsq(1)||qi_ed(1)||qi_mn(1)) && s(0,0) )
+ { l[i]=omo1; r[869]++; if(dbg){print "R869"}; continue;};
+
+ #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
+ #
+ if ( sw_mn_r_f() )
+ { l[i]=omo2; r[682]++; if(dbg){print "R682"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2267
+
+### x2268 !_#_!
+ #  x2268 qip_dprt_     sw_ez_i_   соро́ка сорока́
+for(wrd in omap["x2268"]){omakevars(x2268,"x2268");for(y=1;y<=wln;y++)        # header1
+{makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
+ #
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x2268
 
 ### x3001 !_#_!
  #  x3001 gl_paedze_    sw_em_r_   sw_mn_iv_
@@ -5800,6 +5966,12 @@ for(wrd in omap["x3003"]){omakevars(x3003,"x3003");for(y=1;y<=wln;y++)        # 
 for(wrd in omap["x3004"]){omakevars(x3004,"x3004");for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){i=strtonum(i);if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( sw_mn_i_f() )
+ { l[i]=omo1; r[729]++; if(dbg){print "R729"}; continue};
+ #
+ if ( sw_em_v_f() )
+ { l[i]=omo2; r[770]++; if(dbg){print "R770"}; continue};
+ #
  if ( sw_em_r_f() )
  { l[i]=omo2; r[770]++; if(dbg){print "R770"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x3004
@@ -5827,6 +5999,9 @@ for(wrd in omap["x3007"]){omakevars(x3007,"x3007");for(y=1;y<=wln;y++)        # 
  #
  if ( sw_em_r_f() )
  { l[i]=omo1; r[875]++; if(dbg){print "R875"}; continue};
+ #
+ if ( sw_mn_v_f() )
+ { l[i]=omo3; r[871]++; if(dbg){print "R871"}; continue};
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                               ##_footer_x3007
 
 ### x3008 !_#_!

@@ -60,7 +60,7 @@ function Qf_(n, array,    k, rett)                # поиск на n шагов
 function Q_(n, array,    rett)                    # слово НЕ в БАЗОВОМ массиве?
                 { if (lc(n) in array) {rett=0} else {rett=1}; return rett }
 function p(n,wl,    rett)                         # разделитель содержит препинания, кроме указанных wl?
-                { if(length(wl)) {if(sep[i+n]~"[…,.:;!?—]" && sep[i+n]!~wl){rett=1} else {rett=0}} else {if( sep[i+n]~"[…,.:;!?—]"){rett=1} else {rett=0}}; return rett}
+                { if(length(wl)) {if(sep[i+n]~"[p…,.:;!?—]" && sep[i+n]!~wl){rett=1} else {rett=0}} else {if( sep[i+n]~"[p…,.:;!?—]"){rett=1} else {rett=0}}; return rett}
 function cap(n,    el, rett)                      # Слово с заглавной буквы?
                 { el = l[i+n]; if ( substr(el,1,1) ~ RUUC ) {rett=1} else {rett=0}; return rett }
 function m(wl,    wrds, k, el, lk, rett)          # нахождение в списке? = "одно из слов"
@@ -413,13 +413,13 @@ function suw_noedim(n,                                                          
                       if (wd in swn_edmu_im||wd in swn_edob_im||wd in swn_edsr_im||wd in swn_edze_im)                                           {rett=1} else {rett=0}; return rett}
 function suw_nomnim(n,    wd,rett) { wd = lc(n); if (wd in swn_mn_im)                                                                           {rett=1} else {rett=0}; return rett}
 function suw_nomn(n,                                                                                                                            wd,rett) { wd = lc(n);
-                      if (wd in swn_mn_da||wd in swn_mn_im||wd in swn_mn_ne||wd in swn_mn_pr||wd in swn_mn_ro||wd in swn_mn_sq||                
-                          wd in swn_mn_tv)                                                                                                      {rett=1} else {rett=0}; return rett}
+                      if (wd in swn_mn_da||wd in swn_mn_im||wd in swn_mn_ne||wd in swn_mn_pr||wd in swn_mn_ro||wd in swn_mn_sq||wd in swn_mn_tv){rett=1} else {rett=0}; return rett}
 function suw_edme(n,      wd,rett) { wd = lc(n); if (wd in swn_edmu_me||wd in swn_edze_me)                                                      {rett=1} else {rett=0}; return rett}
 function suw_edne(n,                                                                                                                            wd,rett) { wd = lc(n);
                       if (wd in sw_edmu_ne||wd in sw_edob_ne||wd in swn_edmu_ne||wd in swn_edob_ne||wd in swn_edsr_ne||wd in swn_edze_ne||      
                           wd in swo_edmu_ne||wd in swo_edob_ne||wd in swo_edze_ne)                                                              {rett=1} else {rett=0}; return rett}
 function suw_mnne(n,      wd,rett) { wd = lc(n); if (wd in sw_mn_ne||wd in swn_mn_ne||wd in swo_mn_ne)                                          {rett=1} else {rett=0}; return rett}
+function suw_mnsq(n,      wd,rett) { wd = lc(n); if (wd in swn_mn_sq||wd in swo_mn_sq)                                                          {rett=1} else {rett=0}; return rett}
                                                                                                                                                 
 # местоимения                                                                                                                                   
 function mest_ed(n,                                                                                                                             wd,rett) { wd = lc(n);
