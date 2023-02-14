@@ -39,15 +39,15 @@ function q_(n, array,    el, rett)                # слово в БАЗОВОМ
                 { if(lc(n) in array) {rett=1} else {rett=0}; return rett}
 function qq(m, n,    rett)                        # слово m равно слово n?
                 { if ( lc(m) == lc(n) ) {rett=1} else {rett=0}; return rett}
-function qb(n, class,    k, rett)                 # поиск на n шагов назад наличия слова в классе
-                { rett=0; qbn=""; for (k=-1; k>=n; k--) { if ( @class(k) ) {rett=1; qbn=k; break}; }; return rett }
-function qf(n, class,    k, rett)                 # поиск на n шагов вперёд наличия слова в классе
-                { rett=0; qfn=""; for (k= 1; k<=n; k++) { if ( @class(k) ) {rett=1; qfn=k; break}; }; return rett }
-function Qb(n, class,    k, rett)                 # поиск на n шагов назад отсутствия слова в слассе
-                { rett=1; for (k=-1; k>=n; k--)   { if ( @class(k) ) {rett=0; break}; }; return rett }
-function Qf(n, class,    k, rett)                 # поиск на n шагов вперёд отсутствия слова в классе
-                { rett=1; for (k= 1; k<=n; k++)   { if ( @class(k) ) {rett=0; break}; }; return rett }
-function Q(n, isclass,    rett)                     # слово НЕ в классе?
+function qb(n, isclass,    k, rett)               # поиск на n шагов назад наличия слова в классе
+                { rett=qbn=""; for (k=-1; k>=n; k--) { if ( @isclass(k) ) {rett=1; qbn=k; break}; }; return rett }
+function qf(n, isclass,    k, rett)               # поиск на n шагов вперёд наличия слова в классе
+                { rett=qfn=""; for (k= 1; k<=n; k++) { if ( @isclass(k) ) {rett=1; qfn=k; break}; }; return rett }
+function Qb(n, isclass,    k, rett)               # поиск на n шагов назад отсутствия слова в слассе
+                { rett=1; for (k=-1; k>=n; k--)   { if ( @isclass(k) ) {rett=0; break}; }; return rett }
+function Qf(n, isclass,    k, rett)               # поиск на n шагов вперёд отсутствия слова в классе
+                { rett=1; for (k= 1; k<=n; k++)   { if ( @isclass(k) ) {rett=0; break}; }; return rett }
+function Q(n, isclass,    rett)                   # слово НЕ в классе?
                 { if ( @isclass(n) ) {rett=0} else {rett=1}; return rett }
 function qb_(n, array,    k, rett)                # поиск на n шагов назад наличия слова в БАЗОВОМ массиве
                 { rett=0; qbn=""; for (k=-1; k>=n; k--) { if (lc(k) in array) {rett=1; qbn=k; break}; }; return rett }
@@ -103,9 +103,9 @@ function phs(n, wl,    wrds, k, lk, cnt, rett)    # кусок фразы ДО �
 function phf(n, wl,    wrds, k, lk, cnt, rett)    # кусок фразы ПОСЛЕ слова
                 {hfn="";lk=split(wl,wrds," "); for(k=1;k<=lk;k++) {if(lc(n+k-1)==wrds[k]) {cnt++} else {cnt=0; break};};
                     if(cnt==lk) {rett=1;hfn=n+lk} else {rett=0}; return rett}
-function ismark(n,mrk,    k, el, marka, rett)     # нахождение слова в метке переменная winfo: для управления омонимами из automo.gz
+function ismark(n,mrk,    k, el, marka, rett)     # нахождение слова в метке, начинающейся с mrk (переменная winfo): для управления омонимами из automo.gz
                 { el="_" tolower(l[i+n]) "_";marka= "^" mrk;split(winfo,wrds,"#");for(k in wrds){if(wrds[k]~marka&&wrds[k]~el){rett=1;break}else{rett=0};}; return rett }
-function notmark(n,mrk,    k, el, marka, rett)    # НЕ нахождение слова в метке переменная winfo: для управления омонимами из automo.gz
+function notmark(n,mrk,    k, el, marka, rett)    # НЕ нахождение слова в метке, начинающейся с mrk (переменная winfo): для управления омонимами из automo.gz
                 { el="_" tolower(l[i+n]) "_";marka= "^" mrk;split(winfo,wrds,"#");for(k in wrds){if(wrds[k]~marka&&wrds[k]~el){rett=0;break}else{rett=1};}; return rett }
 function notsym(n,sym,    rett)                   # НЕ нахождение символа в слове
                 { if (l[i+n] !~ sym) {rett=1} else {rett=0}; return rett }
@@ -364,8 +364,16 @@ function suw_edmuim(n,                                                          
 function suw_edmuvi(n,                                                                                                                          wd,rett) { wd = lc(n);
                       if (wd in sw_edmu_vi||wd in sw_edmu_vi||wd in sw_edob_vi||wd in swn_edmu_im||wd in swn_edob_vi||wd in swo_edmu_ro||
                           wd in swo_edob_vi)                                                                                                    {rett=1} else {rett=0}; return rett}
+function suw_edmuda(n,                                                                                                                          wd,rett) { wd = lc(n);
+                      if (wd in sw_edmu_da||wd in sw_edob_da||wd in swn_edmu_da||wd in swn_edob_da||wd in swo_edmu_da||wd in swo_edob_da)       {rett=1} else {rett=0}; return rett}
+function suw_edmuro(n,                                                                                                                          wd,rett) { wd = lc(n);
+                      if (wd in sw_edmu_ro||wd in sw_edob_ro||wd in swn_edmu_ro||wd in swn_edob_ro||wd in swo_edmu_ro||wd in swo_edob_ro)       {rett=1} else {rett=0}; return rett}
 function suw_edsrim(n,    wd,rett) { wd = lc(n); if (wd in sw_edsr_im||wd in swn_edsr_im||wd in swo_edsr_im)                                    {rett=1} else {rett=0}; return rett}
 function suw_edsrvi(n,    wd,rett) { wd = lc(n); if (wd in sw_edsr_vi||wd in swn_edsr_vi||wd in swo_edsr_vi)                                    {rett=1} else {rett=0}; return rett}
+function suw_edsrda(n,                                                                                                                          wd,rett) { wd = lc(n);
+                      if (wd in sw_edob_da||wd in sw_edsr_da||wd in swn_edob_da||wd in swn_edsr_da||wd in swo_edob_da||wd in swo_edsr_da)       {rett=1} else {rett=0}; return rett}
+function suw_edsrro(n,                                                                                                                          wd,rett) { wd = lc(n);
+                      if (wd in sw_edob_ro||wd in sw_edsr_ro||wd in swn_edob_ro||wd in swn_edsr_ro||wd in swo_edob_ro||wd in swo_edsr_ro)       {rett=1} else {rett=0}; return rett}
 function suw_edzeim(n,    wd,rett) { wd = lc(n); if (wd in swn_edze_im||wd in sw_edze_im||wd in swo_edze_im)                                    {rett=1} else {rett=0}; return rett}
 function suw_edim(n,                                                                                                                            wd,rett) { wd = lc(n);
                       if (wd in sw_edmu_im||wd in sw_edob_im||wd in sw_edsr_im||wd in sw_edze_im||wd in swn_edmu_im||wd in swn_edob_im||

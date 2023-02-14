@@ -46,7 +46,7 @@ function sw_em_r_f(rett, stopper) { while (stopper == 0) {
  if ( (w(-2,"нет")||pre_ro(-2)||qi_duom(-2)) &&
        (prl_mnro(-1)||prq_mnro(-1)||mest_mnro(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
- if ( (w(-1,"нет")||pre_ro(-1)||qi_duom(-1)) )
+ if ( (w(-1,"нет")||pre_ro(-1)||qi_duom(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
 
  #_#_#
@@ -83,6 +83,34 @@ function sw_em_t_f(rett, stopper) { while (stopper == 0) {
  };#_#_#
 break}; return rett }
 
+function sw_em_q_f(rett, stopper) { while (stopper == 0) {
+ #
+ if ( qi_duom(-2) &&
+       (prl_edmuro(-1)||prq_edmuro(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( qi_duom(-1) && s(-1,-1) )
+ { rett=stopper=1; continue };
+
+break}; return rett }
+
+function sw_es_d_f(rett, stopper) { while (stopper == 0) {
+ #
+ #_#_#
+ if (prex == 1) {
+ if ( prex_da(-2) &&
+      (prl_edsrda(-1)||prq_edsrda(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (prex_da(-1)||prl_edsrda(-1)||prq_edsrda(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ } else {#
+ if ( pre_da(-2) &&
+      (prl_edsrda(-1)||prq_edsrda(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (pre_da(-1)||prl_edsrda(-1)||prq_edsrda(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ };#_#_#
+break}; return rett }
+
 function sw_em_p_f(rett, stopper) { while (stopper == 0) {
  #
  #_#_#
@@ -97,6 +125,23 @@ function sw_em_p_f(rett, stopper) { while (stopper == 0) {
       (prl_edmupr(-1)||prq_edmupr(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
  if ( (pre_pr(-1)||prl_edmupr(-1)||prq_edmupr(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ };#_#_#
+break}; return rett }
+
+function sw_ez_v_f(rett, stopper) { while (stopper == 0) {
+ #_#_#
+ if (prex == 1) {
+ if ( prex_vi(-2) && 
+      (prl_edzevi(-1)||prq_edzevi(-1)||mest_edzevi(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (prex_vi(-1)||prl_edzevi(-1)||prq_edzevi(-1)||mest_edzevi(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ } else {#
+ if ( pre_vi(-2) && 
+      (prl_edzevi(-1)||prq_edzevi(-1)||mest_edzevi(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (pre_vi(-1)||prl_edzevi(-1)||prq_edzevi(-1)||mest_edzevi(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  };#_#_#
 break}; return rett }
@@ -154,6 +199,9 @@ function sw_em_l_f(rett, stopper) { while (stopper == 0) {
  if ( (w(-2,"нет")||qi_duom(-2)) &&
          (prl_mnim(-1)||prl_mnvi(-1)||prq_mnim(-1)||prq_mnvi(-1)||mest_im(-1)||mest_vi(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
+ #
+ if ( (w(-1,"нет")||qi_duom(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
 break}; return rett }
 
 function sw_ez_l_f(rett, stopper) { while (stopper == 0) {
@@ -168,12 +216,18 @@ function sw_ez_l_f(rett, stopper) { while (stopper == 0) {
  if ( (w(-2,"нет")||qi_duoz(-2)) &&
          (prl_mnim(-1)||prl_mnvi(-1)||prq_mnim(-1)||prq_mnvi(-1)||mest_im(-1)||mest_vi(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
+ #
+ if ( (w(-1,"нет")||qi_duoz(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
 break}; return rett }
 
 function sw_ez_r_f(rett, stopper) { while (stopper == 0) {
  #
  if ( (w(-2,"нет")||qi_duoz(-2)) &&
          (prl_mnim(-1)||prl_mnvi(-1)||prq_mnim(-1)||prq_mnvi(-1)||mest_im(-1)||mest_vi(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ #
+ if ( (w(-1,"нет")||qi_duoz(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
 
  #_#_#
