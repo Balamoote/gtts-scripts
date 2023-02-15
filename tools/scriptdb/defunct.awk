@@ -464,19 +464,35 @@ function sw_mn_p_f(rett, stopper) { while (stopper == 0) {
  };#_#_#
 break}; return rett }
 
+function pl_kr_em_f(rett, stopper) { while (stopper == 0) {
+ if ( (w(-2,"я ты он был стал")||suw_edmuim(-2)) &&
+      prl_kred_sr(-1) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (w(-1,"я ты он был стал")||suw_edmuim(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+break}; return rett }
+
+function pl_kr_ez_f(rett, stopper) { while (stopper == 0) {
+ if ( (w(-2,"я ты она была стала")||suw_edzeim(-2)) &&
+      prl_kred_sr(-1) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (w(-1,"я ты она была стала")||suw_edzeim(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+break}; return rett }
+
 function gl_paedmu_f(rett, stopper) { while (stopper == 0) {
  #
  if ( (w(-1,"я ты он")||suw_edmuim(-1)||prl_kred_sr(-1)||gl_in(-1)) && Q(-1,"prl_edmuim") && s(-1,-1) )
  { rett=stopper=1; continue };
  if ( (w(-2,"я ты он")||suw_edmuim(-2)) && 
-       (nar_spos(-1)||prl_kred_sr(-1)) && s(-2,-1) )
+       (nar_spos(-1)||prl_kred_sr(-1)) && Q(-1,"prl_edmuim") && s(-2,-1) )
  { rett=stopper=1; continue };
  #
  if ( (w(1,"я ты он")||suw_edmuim(1)) &&
-       (prl_kred_sr(2)||gl_in(2)) && s(0,1) )
+       (prl_kred_sr(2)||gl_in(2)) && Q(1,"prl_edmuim") && s(0,1) )
  { rett=stopper=1; continue };
  #
- if ( (w(1,"я ты он")||suw_edmuim(1)||prl_kred_sr(1)) && s(0,0) )
+ if ( (w(1,"я ты он")||suw_edmuim(1)||prl_kred_sr(1)) && Q(1,"prl_edmuim") && s(0,0) )
  { rett=stopper=1; continue };
 break}; return rett }
 
