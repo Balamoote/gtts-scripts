@@ -230,7 +230,7 @@ function prl_edsrda(n,    wd,rett) { wd = lc(n); if (wd in pl_edsr_da||wd in pl_
 function prl_edsrtv(n,    wd,rett) { wd = lc(n); if (wd in pl_edsr_tv||wd in pl_pv_edsr_tv)                                                    {rett=1} else {rett=0}; return rett}
 function prl_edsrpr(n,    wd,rett) { wd = lc(n); if (wd in pl_edsr_pr||wd in pl_pv_edsr_pr)                                                    {rett=1} else {rett=0}; return rett}
 function prl_edzeim(n,    wd,rett) { wd = lc(n); if (wd in pl_edze_im||wd in pl_pv_edze_im)                                                    {rett=1} else {rett=0}; return rett}
-function prl_edzevi(n,    wd,rett) { wd = lc(n); if (wd in pl_edze_dr||wd in pl_pv_edze_dr)                                                    {rett=1} else {rett=0}; return rett}
+function prl_edzevi(n,    wd,rett) { wd = lc(n); if (wd in pl_edze_vi||wd in pl_pv_edze_vi)                                                    {rett=1} else {rett=0}; return rett}
 function prl_edzero(n,    wd,rett) { wd = lc(n); if (wd in pl_edze_dr||wd in pl_pv_edze_dr)                                                    {rett=1} else {rett=0}; return rett}
 function prl_edzeda(n,    wd,rett) { wd = lc(n); if (wd in pl_edze_dr||wd in pl_pv_edze_dr)                                                    {rett=1} else {rett=0}; return rett}
 function prl_edzetv(n,    wd,rett) { wd = lc(n); if (wd in pl_edze_tv||wd in pl_pv_edze_tv||wd in pl_edze_dr||wd in pl_pv_edze_dr)             {rett=1} else {rett=0}; return rett}
@@ -238,8 +238,8 @@ function prl_edzepr(n,    wd,rett) { wd = lc(n); if (wd in pl_edze_dr||wd in pl_
 function prl_edim(n,                                                                                                                           wd,rett) { wd = lc(n);
                       if (wd in pl_edmu_im||wd in pl_edsr_im||wd in pl_edze_im||wd in pl_pv_edmu_im||wd in pl_pv_edsr_im||wd in pl_pv_edze_im) {rett=1} else {rett=0}; return rett}
 function prl_edvi(n,                                                                                                                           wd,rett) { wd = lc(n);
-                      if (wd in pl_edmu_im||wd in pl_edmu_ro||wd in pl_edsr_im||wd in pl_edze_dr||wd in pl_pv_edmu_im||wd in pl_pv_edmu_ro||    
-                          wd in pl_pv_edsr_im||wd in pl_pv_edze_dr)                                                                            {rett=1} else {rett=0}; return rett}
+                      if (wd in pl_edmu_im||wd in pl_edmu_ro||wd in pl_edsr_im||wd in pl_edze_vi||wd in pl_pv_edmu_im||wd in pl_pv_edmu_ro||    
+                          wd in pl_pv_edsr_im||wd in pl_pv_edze_vi)                                                                            {rett=1} else {rett=0}; return rett}
 function prl_edro(n,                                                                                                                           wd,rett) { wd = lc(n);
                       if (wd in pl_edmu_ro||wd in pl_edsr_ro||wd in pl_edze_dr||wd in pl_pv_edmu_ro||wd in pl_pv_edsr_ro||wd in pl_pv_edze_dr) {rett=1} else {rett=0}; return rett}
 function prl_edda(n,                                                                                                                           wd,rett) { wd = lc(n);
@@ -269,7 +269,7 @@ function prq_edsrim(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_im)          
 function prq_edzeim(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_im)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edmuvi(n,    wd,rett) { wd = lc(n); if (wd in pq_edmu_vi)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edsrvi(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_vi)                                                                         {rett=1} else {rett=0}; return rett}
-function prq_edzevi(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_dr)                                                                         {rett=1} else {rett=0}; return rett}
+function prq_edzevi(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_vi)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edmuro(n,    wd,rett) { wd = lc(n); if (wd in pq_edmu_ro)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edsrro(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_ro)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edzero(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_dr)                                                                         {rett=1} else {rett=0}; return rett}
@@ -283,7 +283,7 @@ function prq_edmupr(n,    wd,rett) { wd = lc(n); if (wd in pq_edmu_pr)          
 function prq_edsrpr(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_pr)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edzepr(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_dr)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edim(n,      wd,rett) { wd = lc(n); if (wd in pq_edmu_im||wd in pq_edsr_im||wd in pq_edze_im)                                     {rett=1} else {rett=0}; return rett}
-function prq_edvi(n,      wd,rett) { wd = lc(n); if (wd in pq_edmu_im||wd in pq_edmu_ro||wd in pq_edsr_im||wd in pq_edze_dr)                   {rett=1} else {rett=0}; return rett}
+function prq_edvi(n,      wd,rett) { wd = lc(n); if (wd in pq_edmu_im||wd in pq_edmu_ro||wd in pq_edsr_im||wd in pq_edze_vi)                   {rett=1} else {rett=0}; return rett}
 function prq_edro(n,      wd,rett) { wd = lc(n); if (wd in pq_edmu_ro||wd in pq_edsr_ro||wd in pq_edze_dr)                                     {rett=1} else {rett=0}; return rett}
 function prq_edda(n,      wd,rett) { wd = lc(n); if (wd in pq_edmu_da||wd in pq_edsr_da||wd in pq_edze_dr)                                     {rett=1} else {rett=0}; return rett}
 function prq_edtv(n,      wd,rett) { wd = lc(n); if (wd in pq_edmu_tv||wd in pq_edsr_tv||wd in pq_edze_tv||wd in pq_edze_dr)                   {rett=1} else {rett=0}; return rett}

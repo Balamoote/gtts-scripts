@@ -64,15 +64,15 @@ function sw_em_r_f(rett, stopper) { while (stopper == 0) {
  #_#_#
  if (prex == 1) {
  if ( prex_ro(-2) &&
-      (prl_edmuro(-1)||prq_edmuro(-1)) && s(-2,-1) )
+      (prl_edmuro(-1)||prq_edmuro(-1)||mest_edmuro(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
- if ( (prex_ro(-1)||prl_edmuro(-1)||prq_edmuro(-1)) && s(-1,-1) )
+ if ( (prex_ro(-1)||prl_edmuro(-1)||prq_edmuro(-1)||mest_edmuro(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  } else {#
  if ( pre_ro(-2) &&
-      (prl_edmuro(-1)||prq_edmuro(-1)) && s(-2,-1) )
+      (prl_edmuro(-1)||prq_edmuro(-1)||mest_edmuro(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
- if ( (pre_ro(-1)||prl_edmuro(-1)||prq_edmuro(-1)) && s(-1,-1) )
+ if ( (pre_ro(-1)||prl_edmuro(-1)||prq_edmuro(-1)||mest_edmuro(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  };#_#_#
 break}; return rett }
@@ -175,15 +175,15 @@ function sw_es_r_f(rett, stopper) { while (stopper == 0) {
  #_#_#
  if (prex == 1) {
  if ( prex_ro(-2) &&
-      (prl_edsrro(-1)||prq_edsrro(-1)) && s(-2,-1) )
+      (prl_edsrro(-1)||prq_edsrro(-1)||mest_edsrro(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
- if ( (prex_ro(-1)||prl_edsrro(-1)||prq_edsrro(-1)) && s(-1,-1) )
+ if ( (prex_ro(-1)||prl_edsrro(-1)||prq_edsrro(-1)||mest_edsrro(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  } else {#
  if ( pre_ro(-2) &&
-      (prl_edsrro(-1)||prq_edsrro(-1)) && s(-2,-1) )
+      (prl_edsrro(-1)||prq_edsrro(-1)||mest_edsrro(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
- if ( (pre_ro(-1)||prl_edsrro(-1)||prq_edsrro(-1)) && s(-1,-1) )
+ if ( (pre_ro(-1)||prl_edsrro(-1)||prq_edsrro(-1)||mest_edsrro(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  };#_#_#
 break}; return rett }
