@@ -269,19 +269,19 @@ function prq_edsrim(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_im)          
 function prq_edzeim(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_im)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edmuvi(n,    wd,rett) { wd = lc(n); if (wd in pq_edmu_vi)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edsrvi(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_vi)                                                                         {rett=1} else {rett=0}; return rett}
-function prq_edzevi(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_vi)                                                                         {rett=1} else {rett=0}; return rett}
+function prq_edzevi(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_dr)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edmuro(n,    wd,rett) { wd = lc(n); if (wd in pq_edmu_ro)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edsrro(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_ro)                                                                         {rett=1} else {rett=0}; return rett}
-function prq_edzero(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_ro)                                                                         {rett=1} else {rett=0}; return rett}
+function prq_edzero(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_dr)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edmuda(n,    wd,rett) { wd = lc(n); if (wd in pq_edmu_da)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edsrda(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_da)                                                                         {rett=1} else {rett=0}; return rett}
-function prq_edzeda(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_da)                                                                         {rett=1} else {rett=0}; return rett}
+function prq_edzeda(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_dr)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edmutv(n,    wd,rett) { wd = lc(n); if (wd in pq_edmu_tv)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edsrtv(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_tv)                                                                         {rett=1} else {rett=0}; return rett}
-function prq_edzetv(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_tv)                                                                         {rett=1} else {rett=0}; return rett}
+function prq_edzetv(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_tv||wd in pq_edze_dr)                                                       {rett=1} else {rett=0}; return rett}
 function prq_edmupr(n,    wd,rett) { wd = lc(n); if (wd in pq_edmu_pr)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edsrpr(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_pr)                                                                         {rett=1} else {rett=0}; return rett}
-function prq_edzepr(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_pr)                                                                         {rett=1} else {rett=0}; return rett}
+function prq_edzepr(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_dr)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edim(n,      wd,rett) { wd = lc(n); if (wd in pq_edmu_im||wd in pq_edsr_im||wd in pq_edze_im)                                     {rett=1} else {rett=0}; return rett}
 function prq_edvi(n,      wd,rett) { wd = lc(n); if (wd in pq_edmu_im||wd in pq_edmu_ro||wd in pq_edsr_im||wd in pq_edze_dr)                   {rett=1} else {rett=0}; return rett}
 function prq_edro(n,      wd,rett) { wd = lc(n); if (wd in pq_edmu_ro||wd in pq_edsr_ro||wd in pq_edze_dr)                                     {rett=1} else {rett=0}; return rett}
@@ -428,6 +428,25 @@ function suw_edne(n,                                                            
                           wd in swo_edmu_ne||wd in swo_edob_ne||wd in swo_edze_ne)                                                              {rett=1} else {rett=0}; return rett}
 function suw_mnne(n,      wd,rett) { wd = lc(n); if (wd in sw_mn_ne||wd in swn_mn_ne||wd in swo_mn_ne)                                          {rett=1} else {rett=0}; return rett}
 function suw_mnsq(n,      wd,rett) { wd = lc(n); if (wd in swn_mn_sq||wd in swo_mn_sq)                                                          {rett=1} else {rett=0}; return rett}
+function suw_all(n,                                                                                                                             wd,rett) { wd = lc(n);
+                      if (wd in sw_edmu_da||wd in sw_edmu_im||wd in sw_edmu_ne||wd in sw_edmu_pr||wd in sw_edmu_ro||wd in sw_edmu_tv||
+                          wd in sw_edmu_vi||wd in sw_edob_da||wd in sw_edob_im||wd in sw_edob_ne||wd in sw_edob_pr||wd in sw_edob_ro||
+                          wd in sw_edob_tv||wd in sw_edob_vi||wd in sw_edsr_da||wd in sw_edsr_im||wd in sw_edsr_pr||wd in sw_edsr_ro||
+                          wd in sw_edsr_tv||wd in sw_edsr_vi||wd in sw_edze_da||wd in sw_edze_im||wd in sw_edze_pr||wd in sw_edze_ro||
+                          wd in sw_edze_tv||wd in sw_edze_vi||wd in sw_mn_da||wd in sw_mn_im||wd in sw_mn_ne||wd in sw_mn_pr||wd in sw_mn_ro||
+                          wd in sw_mn_tv||wd in sw_mn_vi||wd in swn_edmu_da||wd in swn_edmu_im||wd in swn_edmu_me||wd in swn_edmu_ne||
+                          wd in swn_edmu_pr||wd in swn_edmu_pt||wd in swn_edmu_ro||wd in swn_edmu_sq||wd in swn_edmu_tv||wd in swn_edob_da||
+                          wd in swn_edob_im||wd in swn_edob_ne||wd in swn_edob_pr||wd in swn_edob_ro||wd in swn_edob_tv||wd in swn_edob_vi||
+                          wd in swn_edsr_da||wd in swn_edsr_im||wd in swn_edsr_ne||wd in swn_edsr_pr||wd in swn_edsr_ro||wd in swn_edsr_tv||
+                          wd in swn_edsr_vi||wd in swn_edze_da||wd in swn_edze_im||wd in swn_edze_me||wd in swn_edze_ne||wd in swn_edze_pr||
+                          wd in swn_edze_ro||wd in swn_edze_tv||wd in swn_edze_vi||wd in swn_mn_da||wd in swn_mn_im||wd in swn_mn_ne||
+                          wd in swn_mn_pr||wd in swn_mn_ro||wd in swn_mn_sq||wd in swn_mn_tv||wd in swo_edmu_da||wd in swo_edmu_im||
+                          wd in swo_edmu_ne||wd in swo_edmu_pr||wd in swo_edmu_ro||wd in swo_edmu_tv||wd in swo_edmu_zv||wd in swo_edob_da||
+                          wd in swo_edob_im||wd in swo_edob_ne||wd in swo_edob_pr||wd in swo_edob_ro||wd in swo_edob_tv||wd in swo_edob_vi||
+                          wd in swo_edsr_da||wd in swo_edsr_im||wd in swo_edsr_pr||wd in swo_edsr_ro||wd in swo_edsr_tv||wd in swo_edsr_vi||
+                          wd in swo_edze_da||wd in swo_edze_im||wd in swo_edze_ne||wd in swo_edze_pr||wd in swo_edze_ro||wd in swo_edze_tv||
+                          wd in swo_edze_vi||wd in swo_edze_zv||wd in swo_mn_da||wd in swo_mn_im||wd in swo_mn_ne||wd in swo_mn_pr||
+                          wd in swo_mn_ro||wd in swo_mn_sq||wd in swo_mn_tv)                                                                    {rett=1} else {rett=0}; return rett}
                                                                                                                                                 
 # местоимения                                                                                                                                   
 function mest_ed(n,                                                                                                                             wd,rett) { wd = lc(n);
