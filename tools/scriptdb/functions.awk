@@ -301,6 +301,8 @@ function prq_any(n,       wd,rett) {if (prq_edim(n)||prq_edvi(n)||prq_edro(n)||p
 function deep(n,                                                                                                                                wd,rett) { wd = lc(n);
                       if (wd in dps_pe_pa||wd in dps_vz_ne_pa||wd in dpn_vz_ne_na||wd in dpn_pe_na||wd in dps_ne_pa||wd in dps_pn_pa||          
                           wd in dpn_ne_na||wd in dpn_pn_na||wd in dpn_pe_pa||wd in dpn_pn_pa||wd in dpn_ne_pa)                                  {rett=1} else {rett=0}; return rett}
+function deep_pe(n,                                                                                                                             wd,rett) { wd = lc(n);
+                      if (wd in dps_pe_pa||wd in dpn_pe_na||wd in dpn_pe_pa)                                                                    {rett=1} else {rett=0}; return rett}
 
 # глаголы
 function gl_ed(n,         wd,rett) { wd = lc(n);
@@ -319,10 +321,17 @@ function gl_ed(n,         wd,rett) { wd = lc(n);
                           wd in g2_vz_nepa_edsr||wd in g2_nena_e1||wd in g2_nena_e2||wd in g2_nena_e3||wd in g2_nepa_edze||wd in g2_nepa_edmu||
                           wd in g2_nepa_edsr||wd in g2_pnbu_e1||wd in g2_pnbu_e2||wd in g2_pnbu_e3||wd in g2_pnna_e1||wd in g2_pnna_e2||
                           wd in g2_pnna_e3||wd in g2_pnpa_edze||wd in g2_pnpa_edmu||wd in g2_pnpa_edsr )                                        {rett=1} else {rett=0}; return rett}
+function gl_peed(n,       wd,rett) { wd = lc(n);
+                      if (wd in gn_pena_e1||wd in gn_pena_e2||wd in gn_pena_e3||wd in gn_pepa_edze||wd in gn_pepa_edmu||wd in gn_pepa_edsr||
+			  wd in gs_pebu_e1||wd in gs_pebu_e2||wd in gs_pebu_e3||wd in gs_pepa_edze||wd in gs_pepa_edmu||wd in gs_pepa_edsr||
+                          wd in g2_pebu_e1||wd in g2_pebu_e2||wd in g2_pebu_e3||wd in g2_pena_e1||wd in g2_pena_e2||wd in g2_pena_e3||
+			  wd in g2_pepa_edze||wd in g2_pepa_edmu||wd in g2_pepa_edsr )                                                          {rett=1} else {rett=0}; return rett}
 function gl_in(n,         wd,rett) { wd = lc(n);
                       if (wd in gn_vz_ne_in||wd in gn_nein||wd in gn_nein_bz||wd in gn_vz_nein_bz||wd in gn_pein||wd in gn_pein_bz||
                           wd in gn_pnin||wd in gs_vz_nein||wd in gs_nein||wd in gs_vz_nein_bz||wd in gs_nein_bz||wd in gs_pein||
                           wd in gs_pein_bz||wd in gs_pnin||wd in g2_pein||wd in g2_vz_nein||wd in g2_nein||wd in g2_pnin )                      {rett=1} else {rett=0}; return rett}
+function gl_pein(n,       wd,rett) { wd = lc(n);
+                      if (wd in gn_pein||wd in gn_pein_bz||wd in gs_pein||wd in gs_pein_bz||wd in g2_pein )                                     {rett=1} else {rett=0}; return rett}
 function gl_vzed(n,                                                                                                                             wd,rett) { wd = lc(n);
                       if (wd in gn_vz_nena_e1||wd in gn_vz_nena_e2||wd in gn_vz_nena_e3||wd in gn_vz_nepo_ed||wd in gn_vz_nepa_edze||
                           wd in gn_vz_nepa_edmu||wd in gn_vz_nepa_edsr||wd in gs_vz_nebu_e1||wd in gs_vz_nebu_e2||wd in gs_vz_nebu_e3||

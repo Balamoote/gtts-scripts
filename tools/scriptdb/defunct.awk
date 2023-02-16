@@ -372,6 +372,18 @@ function sw_ez_p_f(rett, stopper) { while (stopper == 0) {
 break}; return rett }
 
 function sw_mn_i_f(rett, stopper) { while (stopper == 0) {
+ #
+ if ( gl_vzmn(-1) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ if ( gl_vzmn(1) && s(0,0) )
+ { rett=stopper=1; continue };
+ if ( (w(-1,"мы вы они")||suw_mnim(-1)) &&
+       (suw_edro(1)||suw_mnro(1)) && sc(-1,"—") )
+ { rett=stopper=1; continue };
+ if ( (w(-1,"мы вы они")||suw_mnim(-1)) &&
+       (suw_edro(1)||suw_mnro(1)) && s(-1,0) )
+ { rett=stopper=1; continue };
+
  #_#_#
  if (prex == 1) {
  if ( prex_im(-2) &&
@@ -389,6 +401,13 @@ function sw_mn_i_f(rett, stopper) { while (stopper == 0) {
 break}; return rett }
 
 function sw_mn_v_f(rett, stopper) { while (stopper == 0) {
+ #
+ if ( W(-2,"не") &&
+      (deep_pe(-1)||gl_peed(-1)||gl_pein(-1)||gl_pemn(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+ if ( (deep_pe(1)||gl_peed(1)||gl_pein(1)||gl_pemn(1)) && s(0,0) )
+ { rett=stopper=1; continue };
+
  #_#_#
  if (prex == 1) {
  if ( prex_vi(-2) &&
@@ -506,6 +525,15 @@ function gl_pomn_f(rett, stopper) { while (stopper == 0) {
  #
  if ( w(-2,"так") &&
        w(-1,"что вот") && s(-2,-1) )
+ { rett=stopper=1; continue };
+break}; return rett }
+
+function gl_mn1e_f(rett, stopper) { while (stopper == 0) {
+ #
+ if ( wb(-5,"мы если когда коли куда") && s(wbn,-1) )
+ { rett=stopper=1; continue };
+ #
+ if ( p(-1) && p(0) )
  { rett=stopper=1; continue };
 break}; return rett }
 
