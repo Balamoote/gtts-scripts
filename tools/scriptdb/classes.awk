@@ -1377,6 +1377,7 @@ BEGIN {
     vsyo["все"]="всё";vsyo["Все"]="Всё";vsyo["ВСЕ"]="ВСЁ";vsje["все"]="все́";vsje["Все"]="Все́";vsje["ВСЕ"]="ВСЕ́";
     vsyos["всё"];vsyos["Всё"];vsyos["ВСЁ"];vsjes["все́"];vsjes["Все́"];vsjes["ВСЕ́"];
 
+   dbg=dbgstat=""
 
  # Записать состояние словарных массивов
   if (gawk52 == 1) { writeall(classcache) };

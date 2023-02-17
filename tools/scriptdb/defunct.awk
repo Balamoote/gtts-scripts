@@ -405,7 +405,8 @@ function sw_mn_v_f(rett, stopper) { while (stopper == 0) {
  if ( W(-2,"не") &&
       (deep_pe(-1)||gl_peed(-1)||gl_pein(-1)||gl_pemn(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
- if ( (deep_pe(1)||gl_peed(1)||gl_pein(1)||gl_pemn(1)) && s(0,0) )
+ if ( !(suw_all(-1) && s(-1,-1) && suw_edro(0)) &&
+        (deep_pe(1)||gl_peed(1)||gl_pein(1)||gl_pemn(1)) && s(0,0) )
  { rett=stopper=1; continue };
 
  #_#_#
@@ -485,9 +486,9 @@ break}; return rett }
 
 function pl_kr_em_f(rett, stopper) { while (stopper == 0) {
  if ( (w(-2,"я ты он был стал")||suw_edmuim(-2)) &&
-      prl_kred_sr(-1) && s(-2,-1) )
+      prl_kred_sr(-1) && s(-2,-1) && p(0) )
  { rett=stopper=1; continue };
- if ( (w(-1,"я ты он был стал")||suw_edmuim(-1)) && s(-1,-1) )
+ if ( (w(-1,"я ты он был стал")||suw_edmuim(-1)) && s(-1,-1) && p(0) )
  { rett=stopper=1; continue };
 break}; return rett }
 

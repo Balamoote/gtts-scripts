@@ -81,7 +81,7 @@ function W(n, wl,    wrds, rett)                  # НЕнахождение в 
                 { stoar(wl, wrds, "[ |]"); if (lc(n) in wrds) {rett=0} else {rett=1}; return rett }
 function wb(n, wl,    wrds, k, rett)              # поиск на n шагов назад слова из списка
                 { rett=0; wbn=""; stoar(wl, wrds, "[ |]"); for (k=-1; k>=n; k--) { if (lc(k) in wrds) {rett=1; wbn=k; break};}; return rett }
-function wb_raw(n, wl,    wrds, k, rett)          # поиск на n шагов назад слова из списка
+function wb_raw(n, wl,    wrds, k, rett)          # поиск на n шагов назад НЕОЧИЩЕННОГО слова из списка
                 { rett=0; wbn=""; stoar(wl, wrds, "[ |]"); for (k=-1; k>=n; k--) { if (tolower(l[i+k]) in wrds) {rett=1; wbn=k; break};}; return rett }
 function wf(n, wl,    wrds, k, rett)              # поиск на n шагов вперёд наличия слова в массиве
                 { rett=0; wfn=""; stoar(wl, wrds, "[ |]"); for (k= 1; k<=n; k++) { if (lc(k) in wrds) {rett=1; wfn=k; break};}; return rett }
