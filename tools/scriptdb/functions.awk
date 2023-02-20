@@ -117,16 +117,16 @@ function notsym(n,sym,    rett)                   # НЕ нахождение с
 # география
 function geo_sr(n,        wd,rett) { wd = lc(n); if (wd in geo_edsrim)                                                                        {rett=1} else {rett=0};  return rett}
 function geo_mn(n,        wd,rett) { wd = lc(n); if (wd in geo_mnim)                                                                          {rett=1} else {rett=0};  return rett}
-                                                                                                                                              
-# глаголы кастомных классов                                                                                                                   
+
+# глаголы кастомных классов
 function glc_mn(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd in gc_mn)                                                      {rett=1} else {rett=0}}  else
                                              { stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in gc_mn && gc_mn[wd]~el){rett=1;break} else {rett=0}}};return rett}
 function glc_in(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd in gc_in)                                                      {rett=1} else {rett=0}}  else
                                              { stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in gc_in && gc_in[wd]~el){rett=1;break} else {rett=0}}};return rett}
 function glc_po(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd in gc_po)                                                      {rett=1} else {rett=0}}  else
                                              { stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in gc_po && gc_po[wd]~el){rett=1;break} else {rett=0}}};return rett}
-                          
-# модальные слова         
+
+# модальные слова
 function mod_bz(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd in md_bz)                                                      {rett=1} else {rett=0}}  else
                                              { stoar(wl,wrds," ");for(k in wrds){el="_" k "_"; wd=lc(n); if(wd in md_bz && md_bz[wd]~el){rett=1;break} else {rett=0}}};return rett}
 function mod_ed(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd in md_ed)                                                      {rett=1} else {rett=0}}  else
@@ -136,8 +136,8 @@ function mod_mn(n,wl,     el,k,wrds,wd,rett) { if(wl=="") { wd = lc(n); if (wd i
 #function mod_bz(n,        wd,rett) { fi3 =""; wd = lc(n); if (wd in md_bz)                                                      {fi3=md_bz[wd]; rett=1} else {rett=0}; return rett}
 #function mod_ed(n,        wd,rett) { fi3 =""; wd = lc(n); if (wd in md_ed)                                                      {fi3=md_ed[wd]; rett=1} else {rett=0}; return rett}
 #function mod_mn(n,        wd,rett) { fi3 =""; wd = lc(n); if (wd in md_mn)                                                      {fi3=md_mn[wd]; rett=1} else {rett=0}; return rett}
-                          
-# кастомные наречия       
+
+# кастомные наречия
 function narc_srav(n,     wd,rett) { wd = lc(n); if (wd in nrc_srv)                                                                            {rett=1} else {rett=0}; return rett}
 function narc_kaq(n,      wd,rett) { wd = lc(n); if (wd in nrc_opka)                                                                           {rett=1} else {rett=0}; return rett}
 function narc_spos(n,     wd,rett) { wd = lc(n); if (wd in nrc_opsp)                                                                           {rett=1} else {rett=0}; return rett}
@@ -276,7 +276,7 @@ function preph_tv(n,                                                            
 function preph_vi(n,                                                                                                                           rett) {
                      if ( (w(n-2,"в") && w(n-1,"обмен ответ расчете") && w(n,"на") && s(n-2,n))||
                           (w(n-1,"невзирая несмотря") && w(n,"на") && s(n-1,n)) )                                                              {rett=1} else {rett=0}; return rett}
-# прилагательные                                                                                                                              
+# прилагательные
 function prl_kred_mu(n,   wd,rett) { wd = lc(n); if (wd in pl_kred_mu)                                                                         {rett=1} else {rett=0}; return rett}
 function prl_kred_ze(n,   wd,rett) { wd = lc(n); if (wd in pl_kred_ze)                                                                         {rett=1} else {rett=0}; return rett}
 function prl_kred_sr(n,   wd,rett) { wd = lc(n); if (wd in pl_kred_sr)                                                                         {rett=1} else {rett=0}; return rett}
@@ -305,14 +305,14 @@ function prl_edzepr(n,    wd,rett) { wd = lc(n); if (wd in pl_edze_dr||wd in pl_
 function prl_edim(n,                                                                                                                           wd,rett) { wd = lc(n);
                       if (wd in pl_edmu_im||wd in pl_edsr_im||wd in pl_edze_im||wd in pl_pv_edmu_im||wd in pl_pv_edsr_im||wd in pl_pv_edze_im) {rett=1} else {rett=0}; return rett}
 function prl_edvi(n,                                                                                                                           wd,rett) { wd = lc(n);
-                      if (wd in pl_edmu_im||wd in pl_edmu_ro||wd in pl_edsr_im||wd in pl_edze_vi||wd in pl_pv_edmu_im||wd in pl_pv_edmu_ro||    
+                      if (wd in pl_edmu_im||wd in pl_edmu_ro||wd in pl_edsr_im||wd in pl_edze_vi||wd in pl_pv_edmu_im||wd in pl_pv_edmu_ro||
                           wd in pl_pv_edsr_im||wd in pl_pv_edze_vi)                                                                            {rett=1} else {rett=0}; return rett}
 function prl_edro(n,                                                                                                                           wd,rett) { wd = lc(n);
                       if (wd in pl_edmu_ro||wd in pl_edsr_ro||wd in pl_edze_dr||wd in pl_pv_edmu_ro||wd in pl_pv_edsr_ro||wd in pl_pv_edze_dr) {rett=1} else {rett=0}; return rett}
 function prl_edda(n,                                                                                                                           wd,rett) { wd = lc(n);
                       if (wd in pl_edmu_da||wd in pl_edsr_da||wd in pl_edze_dr||wd in pl_pv_edmu_da||wd in pl_pv_edsr_da||wd in pl_pv_edze_dr) {rett=1} else {rett=0}; return rett}
 function prl_edtv(n,                                                                                                                           wd,rett) { wd = lc(n);
-                      if (wd in pl_edmu_tv||wd in pl_edsr_tv||wd in pl_edze_tv||wd in pl_edze_dr||wd in pl_pv_edmu_tv||wd in pl_pv_edsr_tv||    
+                      if (wd in pl_edmu_tv||wd in pl_edsr_tv||wd in pl_edze_tv||wd in pl_edze_dr||wd in pl_pv_edmu_tv||wd in pl_pv_edsr_tv||
                           wd in pl_pv_edze_tv||wd in pl_pv_edze_dr)                                                                            {rett=1} else {rett=0}; return rett}
 function prl_edpr(n,                                                                                                                           wd,rett) { wd = lc(n);
                       if (wd in pl_edmu_pr||wd in pl_edsr_pr||wd in pl_edze_dr||wd in pl_pv_edmu_pr||wd in pl_pv_edsr_pr||wd in pl_pv_edze_dr) {rett=1} else {rett=0}; return rett}
@@ -341,8 +341,8 @@ function prl_any(n,                                                             
                           wd in pl_pv_edsr_tv||wd in pl_pv_edze_tv||wd in pl_edsr_pr||wd in pl_pv_edmu_pr||wd in pl_pv_edsr_pr||
                           wd in pl_mn_im||wd in pl_pv_mn_im||wd in pl_mn_ro||wd in pl_pv_mn_ro||wd in pl_mn_da||wd in pl_pv_mn_da||
                           wd in pl_mn_tv||wd in pl_pv_mn_tv||wd in pl_pv_mn_pr||wd in pl_pv_edmu_tv||wd in pl_pv_edsr_tv||wd in pl_pv_edze_tv) {rett=1} else {rett=0}; return rett}
-                                                                                                                                              
-# причастия                                                                                                                                   
+
+# причастия
 function prq_kred_mu(n,   wd,rett) { wd = lc(n); if (wd in pq_kred_mu)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_kred_ze(n,   wd,rett) { wd = lc(n); if (wd in pq_kred_ze)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_kred_sr(n,   wd,rett) { wd = lc(n); if (wd in pq_kred_sr)                                                                         {rett=1} else {rett=0}; return rett}
@@ -378,21 +378,21 @@ function prq_mnro(n,      wd,rett) { wd = lc(n); if (wd in pq_mn_ro)            
 function prq_mnda(n,      wd,rett) { wd = lc(n); if (wd in pq_mn_da)                                                                           {rett=1} else {rett=0}; return rett}
 function prq_mntv(n,      wd,rett) { wd = lc(n); if (wd in pq_mn_tv)                                                                           {rett=1} else {rett=0}; return rett}
 function prq_mnpr(n,      wd,rett) { wd = lc(n); if (wd in pq_mn_ro)                                                                           {rett=1} else {rett=0}; return rett}
-#function prq_any(n,       wd,rett) {if (prq_edim(n)||prq_edvi(n)||prq_edro(n)||prq_edda(n)||prq_edtv(n)||prq_edpr(n)||prq_mnim(n)||             
+#function prq_any(n,       wd,rett) {if (prq_edim(n)||prq_edvi(n)||prq_edro(n)||prq_edda(n)||prq_edtv(n)||prq_edpr(n)||prq_mnim(n)||
 #                                        prq_mnvi(n)||prq_mnro(n)||prq_mnda(n)||prq_mntv(n)||prq_mnpr(n))                                       {rett=1} else {rett=0}; return rett}
 function prq_ed(n,                                                                                                                             wd,rett) { wd = lc(n);
                       if (wd in pq_edmu_im||wd in pq_edsr_im||wd in pq_edze_im||wd in pq_edmu_ro||wd in pq_edze_vi||wd in pq_edsr_ro||
                           wd in pq_edze_dr||wd in pq_edmu_da||wd in pq_edsr_da||wd in pq_edmu_tv||wd in pq_edsr_tv||wd in pq_edze_tv||
-                          wd in pq_edmu_pr||wd in pq_edsr_pr)                                                                                  
+                          wd in pq_edmu_pr||wd in pq_edsr_pr)                                                                                  {rett=1} else {rett=0}; return rett}
 function prq_mn(n,        wd,rett) { wd = lc(n); if (wd in pq_mn_im||wd in pq_mn_ro||wd in pq_mn_da||wd in pq_mn_tv)                           {rett=1} else {rett=0}; return rett}
 function prq_any(n,                                                                                                                            wd,rett) { wd = lc(n);
                       if (wd in pq_edmu_im||wd in pq_edsr_im||wd in pq_edze_im||wd in pq_edmu_ro||wd in pq_edze_vi||wd in pq_edsr_ro||
                           wd in pq_edze_dr||wd in pq_edmu_da||wd in pq_edsr_da||wd in pq_edmu_tv||wd in pq_edsr_tv||wd in pq_edze_tv||
                           wd in pq_edmu_pr||wd in pq_edsr_pr||wd in pq_mn_im||wd in pq_mn_ro||wd in pq_mn_da||wd in pq_mn_tv)                  {rett=1} else {rett=0}; return rett}
-                                                                                                                                              
-# деепричастия                                                                                                                                
+
+# деепричастия
 function deep(n,                                                                                                                               wd,rett) { wd = lc(n);
-                      if (wd in dps_pe_pa||wd in dps_vz_ne_pa||wd in dpn_vz_ne_na||wd in dpn_pe_na||wd in dps_ne_pa||wd in dps_pn_pa||          
+                      if (wd in dps_pe_pa||wd in dps_vz_ne_pa||wd in dpn_vz_ne_na||wd in dpn_pe_na||wd in dps_ne_pa||wd in dps_pn_pa||
                           wd in dpn_ne_na||wd in dpn_pn_na||wd in dpn_pe_pa||wd in dpn_pn_pa||wd in dpn_ne_pa)                                 {rett=1} else {rett=0}; return rett}
 function deep_pe(n,       wd,rett) { wd = lc(n); if (wd in dps_pe_pa||wd in dpn_pe_na||wd in dpn_pe_pa)                                        {rett=1} else {rett=0}; return rett}
 function deep_pn(n,       wd,rett) { wd = lc(n); if (wd in dps_pn_pa||wd in dpn_pn_na||wd in dpn_pn_pa)                                        {rett=1} else {rett=0}; return rett}
@@ -547,7 +547,7 @@ function suw_edme(n,      wd,rett) { wd = lc(n); if (wd in swn_edmu_me||wd in sw
 function suw_edmume(n,    wd,rett) { wd = lc(n); if (wd in swn_edmu_me)                                                                         {rett=1} else {rett=0}; return rett}
 function suw_edzeme(n,    wd,rett) { wd = lc(n); if (wd in swn_edze_me)                                                                         {rett=1} else {rett=0}; return rett}
 function suw_edne(n,                                                                                                                            wd,rett) { wd = lc(n);
-                      if (wd in sw_edmu_ne||wd in sw_edob_ne||wd in swn_edmu_ne||wd in swn_edob_ne||wd in swn_edsr_ne||wd in swn_edze_ne||      
+                      if (wd in sw_edmu_ne||wd in sw_edob_ne||wd in swn_edmu_ne||wd in swn_edob_ne||wd in swn_edsr_ne||wd in swn_edze_ne||
                           wd in swo_edmu_ne||wd in swo_edob_ne||wd in swo_edze_ne)                                                              {rett=1} else {rett=0}; return rett}
 function suw_mnne(n,      wd,rett) { wd = lc(n); if (wd in sw_mn_ne||wd in swn_mn_ne||wd in swo_mn_ne)                                          {rett=1} else {rett=0}; return rett}
 function suw_mnsq(n,      wd,rett) { wd = lc(n); if (wd in swn_mn_sq||wd in swo_mn_sq)                                                          {rett=1} else {rett=0}; return rett}
@@ -570,18 +570,18 @@ function suw_all(n,                                                             
                           wd in swo_edze_da||wd in swo_edze_im||wd in swo_edze_ne||wd in swo_edze_pr||wd in swo_edze_ro||wd in swo_edze_tv||
                           wd in swo_edze_vi||wd in swo_edze_zv||wd in swo_mn_da||wd in swo_mn_im||wd in swo_mn_ne||wd in swo_mn_pr||
                           wd in swo_mn_ro||wd in swo_mn_sq||wd in swo_mn_tv)                                                                    {rett=1} else {rett=0}; return rett}
-                                                                                                                                                
-# местоимения                                                                                                                                   
+
+# местоимения
 function mest_ed(n,                                                                                                                             wd,rett) { wd = lc(n);
-                      if (wd in mst_ed_da||wd in mst_ed_im||wd in mst_ed_mu||wd in mst_ed_mu_da||wd in mst_ed_mu_im||wd in mst_ed_mu_pr||       
-                          wd in mst_ed_mu_ro||wd in mst_ed_mu_tv||wd in mst_ed_mu_vi||wd in mst_ed_pr||wd in mst_ed_ro||wd in mst_ed_sr||       
-                          wd in mst_ed_sr_da||wd in mst_ed_sr_im||wd in mst_ed_sr_pr||wd in mst_ed_sr_ro||wd in mst_ed_sr_tv||                  
-                          wd in mst_ed_sr_vi||wd in mst_ed_tv||wd in mst_ed_vi||wd in mst_ed_ze||wd in mst_ed_ze_da||wd in mst_ed_ze_im||       
+                      if (wd in mst_ed_da||wd in mst_ed_im||wd in mst_ed_mu||wd in mst_ed_mu_da||wd in mst_ed_mu_im||wd in mst_ed_mu_pr||
+                          wd in mst_ed_mu_ro||wd in mst_ed_mu_tv||wd in mst_ed_mu_vi||wd in mst_ed_pr||wd in mst_ed_ro||wd in mst_ed_sr||
+                          wd in mst_ed_sr_da||wd in mst_ed_sr_im||wd in mst_ed_sr_pr||wd in mst_ed_sr_ro||wd in mst_ed_sr_tv||
+                          wd in mst_ed_sr_vi||wd in mst_ed_tv||wd in mst_ed_vi||wd in mst_ed_ze||wd in mst_ed_ze_da||wd in mst_ed_ze_im||
                           wd in mst_ed_ze_pr||wd in mst_ed_ze_ro||wd in mst_ed_ze_tv||wd in mst_ed_ze_vi)                                       {rett=1} else {rett=0}; return rett}
-function mest_mn(n,       wd,rett) { wd = lc(n); if (wd in mst_mn_im||wd in mst_mn_ro||wd in mst_mn_vi||wd in mst_mn_da||wd in mst_mn_pr||                
+function mest_mn(n,       wd,rett) { wd = lc(n); if (wd in mst_mn_im||wd in mst_mn_ro||wd in mst_mn_vi||wd in mst_mn_da||wd in mst_mn_pr||
                           wd in mst_mn_tv||wd in mst_mn)                                                                                        {rett=1} else {rett=0}; return rett}
 function mest_edmu(n,                                                                                                                           wd,rett) { wd = lc(n);
-                      if (wd in mst_ed_mu||wd in mst_ed_mu_da||wd in mst_ed_mu_im||wd in mst_ed_mu_pr||wd in mst_ed_mu_ro||                     
+                      if (wd in mst_ed_mu||wd in mst_ed_mu_da||wd in mst_ed_mu_im||wd in mst_ed_mu_pr||wd in mst_ed_mu_ro||
                           wd in mst_ed_mu_tv||wd in mst_ed_mu_vi)                                                                               {rett=1} else {rett=0}; return rett}
 function mest_edmuim(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_mu_im||wd in mst_ed_im||wd in mst_im)                                         {rett=1} else {rett=0}; return rett}
 function mest_edmuvi(n,                                                                                                                         wd,rett) { wd = lc(n);
@@ -603,17 +603,17 @@ function mest_edzeda(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_ze_da)        
 function mest_edzetv(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_ze_tv)                                                                        {rett=1} else {rett=0}; return rett}
 function mest_edzepr(n,   wd,rett) { wd = lc(n); if (wd in mst_ed_ze_pr)                                                                        {rett=1} else {rett=0}; return rett}
 function mest_edze(n,                                                                                                                           wd,rett) { wd = lc(n);
-                      if (wd in mst_ed_ze_vi||wd in mst_ed_ze_da||wd in mst_ed_ze_im||wd in mst_ed_ze_pr||wd in mst_ed_ze_ro||                  
+                      if (wd in mst_ed_ze_vi||wd in mst_ed_ze_da||wd in mst_ed_ze_im||wd in mst_ed_ze_pr||wd in mst_ed_ze_ro||
                           wd in mst_ed_ze_tv||wd in mst_ed_ze)                                                                                  {rett=1} else {rett=0}; return rett}
 function mest_edsr(n,                                                                                                                           wd,rett) { wd = lc(n);
-                      if (wd in mst_ed_sr_vi||wd in mst_ed_sr_da||wd in mst_ed_sr_im||wd in mst_ed_sr_pr||wd in mst_ed_sr_ro||                  
+                      if (wd in mst_ed_sr_vi||wd in mst_ed_sr_da||wd in mst_ed_sr_im||wd in mst_ed_sr_pr||wd in mst_ed_sr_ro||
                           wd in mst_ed_sr_tv||wd in mst_ed_sr)                                                                                  {rett=1} else {rett=0}; return rett}
 function mest_edim(n,                                                                                                                           wd,rett) { wd = lc(n);
                       if (wd in mst_ed_mu_im||wd in mst_ed_ze_im||wd in mst_ed_sr_im||wd in mst_ed_im||wd in mst_im)                            {rett=1} else {rett=0}; return rett}
 function mest_im(n,                                                                                                                             wd,rett) { wd = lc(n);
                       if (wd in mst_ed_mu_im||wd in mst_ed_ze_im||wd in mst_ed_sr_im||wd in mst_mn_im||wd in mst_ed_im||wd in mst_im)           {rett=1} else {rett=0}; return rett}
 function mest_vi(n,                                                                                                                             wd,rett) { wd = lc(n);
-                      if (wd in mst_ed_mu_vi||wd in mst_ed_mu_im||wd in mst_ed_mu_ro||wd in mst_ed_ze_vi||wd in mst_ed_sr_vi||                  
+                      if (wd in mst_ed_mu_vi||wd in mst_ed_mu_im||wd in mst_ed_mu_ro||wd in mst_ed_ze_vi||wd in mst_ed_sr_vi||
                           wd in mst_mn_im||wd in mst_mn_ro||wd in mst_mn_vi||wd in mst_ed_vi||wd in mst_vi)                                     {rett=1} else {rett=0}; return rett}
 function mest_ro(n,                                                                                                                             wd,rett) { wd = lc(n);
                       if (wd in mst_ed_mu_ro||wd in mst_ed_ze_ro||wd in mst_ed_sr_ro||wd in mst_mn_ro||wd in mst_ed_ro||wd in mst_ro)           {rett=1} else {rett=0}; return rett}
@@ -629,8 +629,8 @@ function mest_mnro(n,     wd,rett) { wd = lc(n); if (wd in mst_mn_ro)           
 function mest_mnda(n,     wd,rett) { wd = lc(n); if (wd in mst_mn_da)                                                                           {rett=1} else {rett=0}; return rett}
 function mest_mntv(n,     wd,rett) { wd = lc(n); if (wd in mst_mn_tv)                                                                           {rett=1} else {rett=0}; return rett}
 function mest_mnpr(n,     wd,rett) { wd = lc(n); if (wd in mst_mn_pr)                                                                           {rett=1} else {rett=0}; return rett}
-                                                                                                                                                
-# наречия                                                                                                                                       
+
+# наречия
 function nar_srav(n,    wd,rett) { wd = lc(n); if (wd in nr_srv)                                                                                {rett=1} else {rett=0}; return rett}
 function nar_kaq(n,     wd,rett) { wd = lc(n); if (wd in nr_opka)                                                                               {rett=1} else {rett=0}; return rett}
 function nar_spos(n,    wd,rett) { wd = lc(n); if (wd in nr_opsp)                                                                               {rett=1} else {rett=0}; return rett}
@@ -644,8 +644,8 @@ function nar_vopr(n,    wd,rett) { wd = lc(n); if (wd in nr_vopr)               
 #function nar_pron(n,    wd,rett) { wd = lc(n); if (wd in nr_mest)                                                                               {rett=1} else {rett=0}; return rett}
 function nar_prev(n,    wd,rett) { wd = lc(n); if (wd in nr_pv)                                                                                 {rett=1} else {rett=0}; return rett}
 function nar_nar(n,     wd,rett) { wd = lc(n); if (wd in nr_nar)                                                                                {rett=1} else {rett=0}; return rett}
-                                                                                                                                                
-# предлоги                                                                                                                                      
+
+# предлоги
 function pre_im(n,      wd,rett) { wd = lc(n); if (wd in pred_im)                                                                               {rett=1} else {rett=0}; return rett}
 function pre_vi(n,      wd,rett) { wd = lc(n); if (wd in pred_vi)                                                                               {rett=1} else {rett=0}; return rett}
 function pre_da(n,      wd,rett) { wd = lc(n); if (wd in pred_da)                                                                               {rett=1} else {rett=0}; return rett}
@@ -653,16 +653,16 @@ function pre_pr(n,      wd,rett) { wd = lc(n); if (wd in pred_pr)               
 function pre_ro(n,      wd,rett) { wd = lc(n); if (wd in pred_ro)                                                                               {rett=1} else {rett=0}; return rett}
 function pre_tv(n,      wd,rett) { wd = lc(n); if (wd in pred_tv)                                                                               {rett=1} else {rett=0}; return rett}
 function pre_any(n,     wd,rett) { wd = lc(n); if (wd in pred_im||wd in pred_vi||wd in pred_da||wd in pred_pr||wd in pred_ro||wd in pred_tv)    {rett=1} else {rett=0}; return rett}
-                                                                                                                                                
-# Одиночные классы                                                                                                                              
+
+# Одиночные классы
 function predik(n,      wd,rett) { wd = lc(n); if (wd in predk)                                                                                 {rett=1} else {rett=0}; return rett}
 function mezd(n,        wd,rett) { wd = lc(n); if (wd in mzd)                                                                                   {rett=1} else {rett=0}; return rett}
 function qast(n,        wd,rett) { wd = lc(n); if (wd in qst)                                                                                   {rett=1} else {rett=0}; return rett}
 function vvod(n,        wd,rett) { wd = lc(n); if (wd in vvodn)                                                                                 {rett=1} else {rett=0}; return rett}
 function souz(n,        wd,rett) { wd = lc(n); if (wd in soyz)                                                                                  {rett=1} else {rett=0}; return rett}
 function zvat(n,        wd,rett) { wd = lc(n); if (wd in zvt)                                                                                   {rett=1} else {rett=0}; return rett}
-                                                                                                                                                
-# Числительные                                                                                                                                  
+
+# Числительные
 function qik_im(n,      wd,rett) { wd = lc(n); if (wd in qko_im||wd in qko_ze_im)                                                               {rett=1} else {rett=0}; return rett}
 function qik_vi(n,      wd,rett) { wd = lc(n); if (wd in qko_vi||wd in qko_ze_vi)                                                               {rett=1} else {rett=0}; return rett}
 function qik_ro(n,      wd,rett) { wd = lc(n); if (wd in qko_ro)                                                                                {rett=1} else {rett=0}; return rett}
@@ -706,16 +706,16 @@ function qis_da(n,      wd,rett) { wd = lc(n); if (wd in qso_da||wd in qso_ze_da
 function qis_tv(n,      wd,rett) { wd = lc(n); if (wd in qso_ze_tv||wd in qso_mu_tv||wd in qso_sr_tv||wd in qso_tv)                             {rett=1} else {rett=0}; return rett}
 function qis_pr(n,      wd,rett) { wd = lc(n); if (wd in qso_ze_pr||wd in qso_mu_pr||wd in qso_pr||wd in qso_sr_pr)                             {rett=1} else {rett=0}; return rett}
 function qi_ed(n,                                                                                                                               wd,rett) { wd = lc(n);
-                    if (wd in qko_ed_mu_da||wd in qko_ed_mu_im||wd in qko_ed_mu_pr||wd in qko_ed_mu_ro||wd in qko_ed_mu_tv||wd in qko_im||                    
-                        wd in qko_ed_mu_vi||wd in qko_ed_sr_da||wd in qko_ed_sr_im||wd in qko_ed_sr_pr||wd in qko_ed_sr_ro||wd in qko_vi||                    
-                        wd in qko_ed_sr_tv||wd in qko_ed_sr_vi||wd in qko_ed_ze_da||wd in qko_ed_ze_im||wd in qko_ed_ze_pr||wd in qko_ro||                    
-                        wd in qko_ed_ze_ro||wd in qko_ed_ze_tv||wd in qko_ed_ze_vi||wd in qpo_ed_mu_da||wd in qpo_ed_mu_im||wd in qko_da||                    
-                        wd in qpo_ed_mu_pr||wd in qpo_ed_mu_ro||wd in qpo_ed_mu_tv||wd in qpo_ed_sr_da||wd in qpo_ed_sr_im||wd in qko_tv||                    
-                        wd in qpo_ed_sr_pr||wd in qpo_ed_sr_ro||wd in qpo_ed_sr_tv||wd in qpo_ed_sr_vi||wd in qpo_ed_ze_da||wd in qko_pr||                    
+                    if (wd in qko_ed_mu_da||wd in qko_ed_mu_im||wd in qko_ed_mu_pr||wd in qko_ed_mu_ro||wd in qko_ed_mu_tv||wd in qko_im||
+                        wd in qko_ed_mu_vi||wd in qko_ed_sr_da||wd in qko_ed_sr_im||wd in qko_ed_sr_pr||wd in qko_ed_sr_ro||wd in qko_vi||
+                        wd in qko_ed_sr_tv||wd in qko_ed_sr_vi||wd in qko_ed_ze_da||wd in qko_ed_ze_im||wd in qko_ed_ze_pr||wd in qko_ro||
+                        wd in qko_ed_ze_ro||wd in qko_ed_ze_tv||wd in qko_ed_ze_vi||wd in qpo_ed_mu_da||wd in qpo_ed_mu_im||wd in qko_da||
+                        wd in qpo_ed_mu_pr||wd in qpo_ed_mu_ro||wd in qpo_ed_mu_tv||wd in qpo_ed_sr_da||wd in qpo_ed_sr_im||wd in qko_tv||
+                        wd in qpo_ed_sr_pr||wd in qpo_ed_sr_ro||wd in qpo_ed_sr_tv||wd in qpo_ed_sr_vi||wd in qpo_ed_ze_da||wd in qko_pr||
                         wd in qpo_ed_ze_im||wd in qpo_ed_ze_pr||wd in qpo_ed_ze_ro||wd in qpo_ed_ze_tv||wd in qpo_ed_ze_vi)                     {rett=1} else {rett=0}; return rett}
 function qi_mn(n,                                                                                                                               wd,rett) { wd = lc(n);
-                    if (wd in qko_mn_vi||wd in qko_mn_da||wd in qko_mn_im||wd in qko_mn_pr||wd in qko_mn_ro||wd in qko_mn_tv||                  
-                        wd in qpo_mn_im||wd in qpo_mn_ro||wd in qpo_mn_da||wd in qpo_mn_im||wd in qpo_mn_pr||wd in qpo_mn_ro||                  
+                    if (wd in qko_mn_vi||wd in qko_mn_da||wd in qko_mn_im||wd in qko_mn_pr||wd in qko_mn_ro||wd in qko_mn_tv||
+                        wd in qpo_mn_im||wd in qpo_mn_ro||wd in qpo_mn_da||wd in qpo_mn_im||wd in qpo_mn_pr||wd in qpo_mn_ro||
                         wd in qpo_mn_tv||wd in qko_ze_im||wd in qko_ze_vi||wd in qne_im||wd in qne_vi||wd in qne_ro||wd in qne_da||
                         wd in qne_tv||wd in qne_pr)                                                                                             {rett=1} else {rett=0}; return rett}
 
