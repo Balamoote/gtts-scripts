@@ -1,15 +1,30 @@
 # Набор правил обработки для deomo.awk в виде специфицеских для класса слова. Вынесены в отдельный файл, чтобы не загромождать основной файл.
 # При срабатывании функции выдают значение TRUE, при вызове аргументы НЕ указываются.
 function sw_edro_f(rett, stopper) { while (stopper == 0) {
- # род.пад.
+ # родительный падеж: массовая обработка
+ if ( !(w(-2,"не") && s(-2,-2)) &&
+      deep_na(-1) && s(-1,-1) )
+ { rett=0; stopper=1; continue };
+ if ( suw_edzeim(-1) && (mark("Ycla","paedze")||mark("Ycla","plkrez")) && s(-1,-1) )
+ { rett=0; stopper=1; continue };
+ if ( suw_mnim(-1) && mark("Ycla","pamn") && s(-1,-1) )
+ { rett=0; stopper=1; continue };
+
  if ( p(-2) &&
-         suw_all(-1) && !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) && s(-1,-1) )
+       suw_any(-1) && s(-1,-1) && sv(-1,-1,"-") &&
+   !(souz(-1)||qast(-1)||pre_any(-1)||prl_any(-1)||prq_any(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) )
  { rett=stopper=1; continue };
- if ( suw_all(-1) &&
-         !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) && s(-1,-1) && p(0) )
+ if ( !(pre_any(-2) && s(-2,-2)) &&
+      suw_any(-1) && s(-1,-1) && p(0) &&
+   !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) )
+ { rett=stopper=1; continue };
+ if ( suw_edzeim(-1) && qf(5,"gl_paedze") && s(-1,qfn-1) &&
+   !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) )
+ { rett=stopper=1; continue };
+ if ( w(-1,"пол") && sc(-1,"-") )
  { rett=stopper=1; continue };
 #if ( !((qb(-5,"prl_mnim")||qb(-5,"prq_mnim")) && s(qbn,-1)) &&
-#        suw_all(-1) && !(souz(-1)||qast(-1)||pre_any(-1)||prl_edzeim(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) && s(-1,-1) )
+#        suw_any(-1) && !(souz(-1)||qast(-1)||pre_any(-1)||prl_edzeim(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) && s(-1,-1) )
 #{ rett=stopper=1; continue };
 
 break}; return rett }
@@ -117,7 +132,7 @@ function sw_em_t_f(rett, stopper) { while (stopper == 0) {
 break}; return rett }
 
 function sw_em_p_f(rett, stopper) { while (stopper == 0) {
- # 
+ #
  if ( ismark(-1,"Npre") )
  { rett=0; stopper=1; continue };
  #_#_#
@@ -264,21 +279,25 @@ function sw_es_p_f(rett, stopper) { while (stopper == 0) {
  } else {#
  if ( pre_pr(-2) &&
       (prl_edsrpr(-1)||prq_edsrpr(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
  if ( pre_pr(-1) && s(-1,-1) )
  { rett=stopper=1; continue };
  };#_#_#
 break}; return rett }
 
 function sw_ez_i_f(rett, stopper) { while (stopper == 0) {
+ if ( qf(5,"gl_paedze") && s(0,qfn-1) )
+ { rett=stopper=1; continue };
+
  #_#_#
  if (prex == 1) {
- if ( prex_im(-2) && 
+ if ( prex_im(-2) &&
       (prl_edzeim(-1)||prq_edzeim(-1)||mest_edzeim(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
  if ( (prex_im(-1)||prl_edzeim(-1)||prq_edzeim(-1)||mest_edzeim(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  } else {#
- if ( pre_im(-2) && 
+ if ( pre_im(-2) &&
       (prl_edzeim(-1)||prq_edzeim(-1)||mest_edzeim(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
  if ( (pre_im(-1)||prl_edzeim(-1)||prq_edzeim(-1)||mest_edzeim(-1)) && s(-1,-1) )
@@ -289,13 +308,13 @@ break}; return rett }
 function sw_ez_v_f(rett, stopper) { while (stopper == 0) {
  #_#_#
  if (prex == 1) {
- if ( (prex_vi(-2)||preph_vi(-2)) && 
+ if ( (prex_vi(-2)||preph_vi(-2)) &&
       (prl_edzevi(-1)||prq_edzevi(-1)||mest_edzevi(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
  if ( (prex_vi(-1)||preph_vi(-1)||prl_edzevi(-1)||prq_edzevi(-1)||mest_edzevi(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  } else {#
- if ( (pre_vi(-2)||preph_vi(-2)) && 
+ if ( (pre_vi(-2)||preph_vi(-2)) &&
       (prl_edzevi(-1)||prq_edzevi(-1)||mest_edzevi(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
  if ( (pre_vi(-1)||preph_vi(-1)||prl_edzevi(-1)||prq_edzevi(-1)||mest_edzevi(-1)) && s(-1,-1) )
@@ -306,13 +325,13 @@ break}; return rett }
 function sw_ez_d_f(rett, stopper) { while (stopper == 0) {
  #_#_#
  if (prex == 1) {
- if ( (prex_da(-2)||preph_da(-2)) && 
+ if ( (prex_da(-2)||preph_da(-2)) &&
       (prl_edzeda(-1)||prq_edzeda(-1)||mest_da(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
  if ( (prex_da(-1)||preph_da(-1)||prl_edzeda(-1)||prq_edzeda(-1)||mest_da(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  } else {#
- if ( (pre_da(-2)||preph_da(-2)) && 
+ if ( (pre_da(-2)||preph_da(-2)) &&
       (prl_edzeda(-1)||prq_edzeda(-1)||mest_da(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
  if ( (pre_da(-1)||preph_da(-1)||prl_edzeda(-1)||prq_edzeda(-1)||mest_da(-1)) && s(-1,-1) )
@@ -354,13 +373,13 @@ function sw_ez_r_f(rett, stopper) { while (stopper == 0) {
 
  #_#_#
  if (prex == 1) {
- if ( (prex_ro(-2)||preph_ro(-2)) && 
+ if ( (prex_ro(-2)||preph_ro(-2)) &&
       (prl_edzero(-1)||prq_edzero(-1)||mest_ro(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
  if ( (prex_ro(-1)||preph_ro(-1)||prl_edzero(-1)||prq_edzero(-1)||mest_pedzero(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  } else {#
- if ( (pre_ro(-2)||preph_ro(-2)) && 
+ if ( (pre_ro(-2)||preph_ro(-2)) &&
       (prl_edzero(-1)||prq_edzero(-1)||mest_ro(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
  if ( (pre_ro(-1)||preph_ro(-1)||prl_edzero(-1)||prq_edzero(-1)||mest_pedzero(-1)) && s(-1,-1) )
@@ -406,7 +425,6 @@ function sw_ez_p_f(rett, stopper) { while (stopper == 0) {
 break}; return rett }
 
 function sw_mn_i_f(rett, stopper) { while (stopper == 0) {
- #
  if ( gl_vzmn(-1) && s(-1,-1) )
  { rett=stopper=1; continue };
  if ( (qf(5,"gl_vzmn")||qf(5,"gl_nemn")) && s(0,qfn-1) )
@@ -417,6 +435,8 @@ function sw_mn_i_f(rett, stopper) { while (stopper == 0) {
  if ( (w(-1,"мы вы они")||suw_mnim(-1)) &&
        (suw_edro(1)||suw_mnro(1)) && s(-1,0) )
  { rett=stopper=1; continue };
+ #
+
 
  #_#_#
  if (prex == 1) {
@@ -443,7 +463,7 @@ function sw_mn_v_f(rett, stopper) { while (stopper == 0) {
  if ( W(-2,"не") &&
       (deep_pe(-1)||gl_peed(-1)||gl_pein(-1)||gl_pemn(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
-#if ( !(suw_all(-1) && s(-1,-1) && suw_edro(0)) &&
+#if ( !(suw_any(-1) && s(-1,-1) && suw_edro(0)) &&
 #       (deep_pn(1)||gl_pned(1)||gl_pnin(1)||gl_pnmn(1)) && s(0,0) )
 #{ rett=stopper=1; continue };
 
@@ -465,7 +485,7 @@ break}; return rett }
 
 function sw_mn_r_f(rett, stopper) { while (stopper == 0) {
  #
-#if ( suw_all(-1) && s(-1,-1) )
+#if ( suw_any(-1) && s(-1,-1) )
 #{ rett=stopper=1; continue };
 
  #_#_#
@@ -561,7 +581,7 @@ function gl_paedmu_f(rett, stopper) { while (stopper == 0) {
  #
  if ( (w(-1,"я ты он")||suw_edmuim(-1)||prl_kred_sr(-1)||gl_in(-1)) && Q(-1,"prl_edmuim") && s(-1,-1) )
  { rett=stopper=1; continue };
- if ( (w(-2,"я ты он")||suw_edmuim(-2)) && 
+ if ( (w(-2,"я ты он")||suw_edmuim(-2)) &&
        (nar_spos(-1)||prl_kred_sr(-1)) && Q(-1,"prl_edmuim") && s(-2,-1) )
  { rett=stopper=1; continue };
  #
@@ -570,6 +590,16 @@ function gl_paedmu_f(rett, stopper) { while (stopper == 0) {
  { rett=stopper=1; continue };
  #
  if ( (w(1,"я ты он")||suw_edmuim(1)||prl_kred_sr(1)) && Q(1,"prl_edmuim") && s(0,0) )
+ { rett=stopper=1; continue };
+break}; return rett }
+
+function gl_pamn_f(rett, stopper) { while (stopper == 0) {
+ #
+ if ( (suw_mnim(-2)||w(-2,"мы вы они")) &&
+        prl_kred_sr(-1) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ #
+ if ( (suw_mnim(-1)||w(-1,"мы вы они")) && s(-1,-1) )
  { rett=stopper=1; continue };
 break}; return rett }
 

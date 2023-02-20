@@ -65,8 +65,10 @@ function isname(n,    el, rett)                   # Слово с заглавн
                 { el = "^" RUUC rulc "+$"; if ( l[i+n] ~ el ) {rett=1} else {rett=0}; return rett }
 function cap(n,    rett)                          # Слово с заглавной буквы?
                 { if ( substr(l[i+n],1,1) ~ RUUC ) {rett=1} else {rett=0}; return rett }
-function m(wl,    wrds, k, el, lk, rett)          # нахождение в списке? = "одно из слов"
-                { lk=split(wl, wrds, "[ |]"); for (k=1; k<=lk; k++) { el = "_" wrds[k] "_"; if (fi3 ~ el) {rett=1; break} else {rett=0};}; return rett }
+#function m(wl,    wrds, k, el, lk, rett)   # нахождение в подстроке #xxx (mrk) метки wl
+#                { lk=split(wl, wrds, "[ |]"); for (k=1; k<=lk; k++) { el = "_" wrds[k] "_"; if (fi3 ~ el) {rett=1; break} else {rett=0};}; return rett }
+function mark(mrk,wl,    k, el, marka, rett)    # нахождение в подстроке #xxx (mrk) метки wl
+                { marka= "^" mrk;el="_" wl "_";split(winfo,wrds,"#");for(k in wrds){if(wrds[k]~marka&&wrds[k]~el){rett=1;break}else{rett=0};}; return rett }
 function w(n, wl,    wrds, rett)                  # нахождение в списке? = "одно из слов"
                 { stoar(wl, wrds, "[ |]"); if (lc(n) in wrds) {rett=1} else {rett=0}; return rett }
 function wist(n, wl,    wrds, rett)               # нахождение в списке? = "одно из слов" ist = слово со всеми правками
@@ -109,7 +111,7 @@ function ismark(n,mrk,    k, el, marka, rett)     # нахождение сло�
                 { el="_" tolower(l[i+n]) "_";marka= "^" mrk;split(winfo,wrds,"#");for(k in wrds){if(wrds[k]~marka&&wrds[k]~el){rett=1;break}else{rett=0};}; return rett }
 function notmark(n,mrk,    k, el, marka, rett)    # НЕ нахождение слова в метке, начинающейся с mrk (переменная winfo): для управления омонимами из automo.gz
                 { el="_" tolower(l[i+n]) "_";marka= "^" mrk;split(winfo,wrds,"#");for(k in wrds){if(wrds[k]~marka&&wrds[k]~el){rett=0;break}else{rett=1};}; return rett }
-function notsym(n,sym,    rett)                   # НЕ нахождение символа в слове
+function notsym(n,sym,    rett)                   # НЕ нахождение подстроки sym в слове
                 { if (l[i+n] !~ sym) {rett=1} else {rett=0}; return rett }
 
 
@@ -394,6 +396,8 @@ function prq_any(n,                                                             
 function deep(n,                                                                                                                               wd,rett) { wd = lc(n);
                       if (wd in dps_pe_pa||wd in dps_vz_ne_pa||wd in dpn_vz_ne_na||wd in dpn_pe_na||wd in dps_ne_pa||wd in dps_pn_pa||
                           wd in dpn_ne_na||wd in dpn_pn_na||wd in dpn_pe_pa||wd in dpn_pn_pa||wd in dpn_ne_pa)                                 {rett=1} else {rett=0}; return rett}
+function deep_ne(n,       wd,rett) { wd = lc(n);
+                      if (wd in dps_vz_ne_pa||wd in dpn_vz_ne_na||wd in dps_ne_pa||wd in dpn_ne_na||wd in dpn_ne_pa)                           {rett=1} else {rett=0}; return rett}
 function deep_pe(n,       wd,rett) { wd = lc(n); if (wd in dps_pe_pa||wd in dpn_pe_na||wd in dpn_pe_pa)                                        {rett=1} else {rett=0}; return rett}
 function deep_pn(n,       wd,rett) { wd = lc(n); if (wd in dps_pn_pa||wd in dpn_pn_na||wd in dpn_pn_pa)                                        {rett=1} else {rett=0}; return rett}
 function deep_pa(n,       wd,rett) { wd = lc(n); if (wd in dps_pe_pa||wd in dps_pn_pa||wd in dpn_pe_pa||wd in dpn_pn_pa)                       {rett=1} else {rett=0}; return rett}
@@ -416,6 +420,10 @@ function gl_ed(n,         wd,rett) { wd = lc(n);
                           wd in g2_vz_nepa_edsr||wd in g2_nena_e1||wd in g2_nena_e2||wd in g2_nena_e3||wd in g2_nepa_edze||wd in g2_nepa_edmu||
                           wd in g2_nepa_edsr||wd in g2_pnbu_e1||wd in g2_pnbu_e2||wd in g2_pnbu_e3||wd in g2_pnna_e1||wd in g2_pnna_e2||
                           wd in g2_pnna_e3||wd in g2_pnpa_edze||wd in g2_pnpa_edmu||wd in g2_pnpa_edsr)                                         {rett=1} else {rett=0}; return rett}
+function gl_paedze(n,     wd,rett) { wd = lc(n);
+                      if (wd in gn_vz_nepa_edze||wd in gn_nepa_edze||wd in gn_pepa_edze||wd in gn_pnpa_edze||wd in gs_vz_nepa_edze||
+			  wd in gs_nepa_edze||wd in gs_pepa_edze||wd in gs_pnpa_edze||wd in g2_pepa_edze||wd in g2_vz_nepa_edze||
+                          wd in g2_nepa_edze||wd in g2_pnpa_edze)                                                                               {rett=1} else {rett=0}; return rett}
 function gl_peed(n,       wd,rett) { wd = lc(n);
                       if (wd in gn_pena_e1||wd in gn_pena_e2||wd in gn_pena_e3||wd in gn_pepa_edze||wd in gn_pepa_edmu||wd in gn_pepa_edsr||
                           wd in gs_pebu_e1||wd in gs_pebu_e2||wd in gs_pebu_e3||wd in gs_pepa_edze||wd in gs_pepa_edmu||wd in gs_pepa_edsr||
@@ -467,6 +475,19 @@ function gl_pemn(n,                                                             
                       if (wd in gn_pena_m1||wd in gn_pena_m2||wd in gn_pena_m3||wd in gn_pepa_mn||wd in gs_pebu_m1||wd in gs_pebu_m2||
                           wd in gs_pebu_m3||wd in gs_pepa_mn||wd in g2_pebu_m1||wd in g2_pebu_m2||wd in g2_pebu_m3||wd in g2_pena_m1||
                           wd in g2_pena_m2||wd in g2_pena_m3||wd in g2_pepa_mn)                                                                 {rett=1} else {rett=0}; return rett}
+function gl_pamn(n,                                                                                                                             wd,rett) { wd = lc(n);
+                      if (wd in gn_nena_m1||wd in gn_nena_m2||wd in gn_nena_m3||wd in gn_nepa_mn||wd in gs_nebu_m1||wd in gs_nebu_m2||
+                          wd in gs_nebu_m3||wd in gs_nepa_mn||wd in g2_nebu_m1||wd in g2_nebu_m2||wd in g2_nebu_m3||wd in g2_nena_m1||
+                          wd in g2_nena_m2||wd in g2_nena_m3||wd in g2_nepa_mn||                                                                
+                          wd in gn_pnna_m1||wd in gn_pnna_m2||wd in gn_pnna_m3||wd in gn_pnpa_mn||wd in gs_pnbu_m1||wd in gs_pnbu_m2||
+                          wd in gs_pnbu_m3||wd in gs_pnpa_mn||wd in g2_pnbu_m1||wd in g2_pnbu_m2||wd in g2_pnbu_m3||wd in g2_pnna_m1||
+                          wd in g2_pnna_m2||wd in g2_pnna_m3||wd in g2_pnpa_mn||                                                                
+                          wd in gn_pena_m1||wd in gn_pena_m2||wd in gn_pena_m3||wd in gn_pepa_mn||wd in gs_pebu_m1||wd in gs_pebu_m2||
+                          wd in gs_pebu_m3||wd in gs_pepa_mn||wd in g2_pebu_m1||wd in g2_pebu_m2||wd in g2_pebu_m3||wd in g2_pena_m1||
+                          wd in g2_pena_m2||wd in g2_pena_m3||wd in g2_pepa_mn||                                                                 
+                          wd in gn_vz_nena_m1||wd in gn_vz_nena_m2||wd in gn_vz_nena_m3||wd in gn_vz_nepa_mn||wd in g2_vz_nena_m1||
+                          wd in gs_vz_nebu_m1||wd in gs_vz_nebu_m2||wd in gs_vz_nebu_m3||wd in gs_vz_nepa_mn||wd in g2_vz_nena_m2||
+                          wd in g2_vz_nebu_m1||wd in g2_vz_nebu_m2||wd in g2_vz_nebu_m3||wd in g2_vz_nepa_mn||wd in g2_vz_nena_m3)              {rett=1} else {rett=0}; return rett}
 
 # существительные
 function suw_edmuim(n,                                                                                                                          wd,rett) { wd = lc(n);
@@ -551,7 +572,7 @@ function suw_edne(n,                                                            
                           wd in swo_edmu_ne||wd in swo_edob_ne||wd in swo_edze_ne)                                                              {rett=1} else {rett=0}; return rett}
 function suw_mnne(n,      wd,rett) { wd = lc(n); if (wd in sw_mn_ne||wd in swn_mn_ne||wd in swo_mn_ne)                                          {rett=1} else {rett=0}; return rett}
 function suw_mnsq(n,      wd,rett) { wd = lc(n); if (wd in swn_mn_sq||wd in swo_mn_sq)                                                          {rett=1} else {rett=0}; return rett}
-function suw_all(n,                                                                                                                             wd,rett) { wd = lc(n);
+function suw_any(n,                                                                                                                             wd,rett) { wd = lc(n);
                       if (wd in sw_edmu_da||wd in sw_edmu_im||wd in sw_edmu_ne||wd in sw_edmu_pr||wd in sw_edmu_ro||wd in sw_edmu_tv||
                           wd in sw_edmu_vi||wd in sw_edob_da||wd in sw_edob_im||wd in sw_edob_ne||wd in sw_edob_pr||wd in sw_edob_ro||
                           wd in sw_edob_tv||wd in sw_edob_vi||wd in sw_edsr_da||wd in sw_edsr_im||wd in sw_edsr_pr||wd in sw_edsr_ro||
