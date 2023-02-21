@@ -6029,6 +6029,10 @@ for(wrd in omap["x2235"]){omakevars(x2235,"x2235");for(y=1;y<=wln;y++)        # 
    if ( w(-1,"смелость") && w(1,"берёт") && s(0,0) )
    { l[i]=omo2; r[1238]++; if(dbg){print "R1238"}; continue};
  };
+ if(iwrd=="шенкеля") {
+   if ( wb(-3,"дать дал дала дав") && s(wbn,-1) )
+   { l[i]=omo2; r[1238]++; if(dbg){print "R1238"}; continue};
+ };
  #
  if ( sw_em_r_f() )
  { l[i]=omo1; r[1239]++; if(dbg){print "R1239"}; continue};

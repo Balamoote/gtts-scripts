@@ -2,6 +2,7 @@
 # При срабатывании функции выдают значение TRUE, при вызове аргументы НЕ указываются.
 function sw_edro_f(rett, stopper) { while (stopper == 0) {
  # родительный падеж: массовая обработка
+  
  if ( !(w(-2,"не") && s(-2,-2)) &&
       deep_na(-1) && s(-1,-1) )
  { rett=0; stopper=1; continue };
@@ -9,20 +10,37 @@ function sw_edro_f(rett, stopper) { while (stopper == 0) {
  { rett=0; stopper=1; continue };
  if ( suw_mnim(-1) && mark("Ycla","pamn") && s(-1,-1) )
  { rett=0; stopper=1; continue };
+ if ( preph_vi(-1)||preph_da(-1)||preph_tv(-1) )
+ { rett=0; stopper=1; continue };
+ if ( !(w(-3,"не") && s(-3,-3)) &&
+        (gl_pein(-2)||gl_peed(-2)||gl_pemn(-2)||deep_pe(-2)) &&
+         (suw_edtv(-1)||suw_mntv(-1)) && suw_mnim(0) && s(-2,-1) )
+ { rett=0; stopper=1; continue };
+ if ( swc_edtv(-1) &&
+      !(w(xsn-2,"не") && s(xsn-2,xsn-2)) &&
+        (gl_pnin(xsn-1)||gl_pned(xsn-1)||gl_pnmn(xsn-1)||deep_pn(xsn-1)) &&
+          suw_mnim(0) && s(xsn-1,-1) )
+ { rett=0; stopper=1; continue };
+ if ( (prl_mnim(-4)||prq_mnim(-4)) &&
+        pre_ro(-3) &&
+         (prl_edro(-2)||prl_mnro(-2)) &&
+          (suw_edro(-1)||suw_mnro(-1)) && s(-4,-1) )
+ { rett=0; stopper=1; continue };
 
  if ( p(-2) &&
        suw_any(-1) && s(-1,-1) && sv(-1,-1,"-") &&
-   !(souz(-1)||qast(-1)||pre_any(-1)||prl_any(-1)||prq_any(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) )
+   !(souz(-1)||qast(-1)||pre_any(-1)||prl_any(-1)||prq_any(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph(-1)) )
  { rett=stopper=1; continue };
  if ( !(pre_any(-2) && s(-2,-2)) &&
       suw_any(-1) && s(-1,-1) && p(0) &&
-   !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) )
+   !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph(-1)) )
  { rett=stopper=1; continue };
  if ( suw_edzeim(-1) && qf(5,"gl_paedze") && s(-1,qfn-1) &&
-   !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) )
+   !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph(-1)) )
  { rett=stopper=1; continue };
  if ( w(-1,"пол") && sc(-1,"-") )
  { rett=stopper=1; continue };
+
 #if ( !((qb(-5,"prl_mnim")||qb(-5,"prq_mnim")) && s(qbn,-1)) &&
 #        suw_any(-1) && !(souz(-1)||qast(-1)||pre_any(-1)||prl_edzeim(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) && s(-1,-1) )
 #{ rett=stopper=1; continue };
@@ -435,7 +453,21 @@ function sw_mn_i_f(rett, stopper) { while (stopper == 0) {
  if ( (w(-1,"мы вы они")||suw_mnim(-1)) &&
        (suw_edro(1)||suw_mnro(1)) && s(-1,0) )
  { rett=stopper=1; continue };
- #
+ if ( !(w(-3,"не") && s(-3,-3)) &&
+        (gl_pein(-2)||gl_peed(-2)||gl_pemn(-2)||deep_pe(-2)) &&
+         (suw_edtv(-1)||suw_mntv(-1)) && suw_mnim(0) && s(-2,-1) )
+ { rett=stopper=1; continue };
+  if ( swc_edtv(-1) &&
+      !(w(xsn-2,"не") && s(xsn-2,xsn-2)) &&
+        (gl_pnin(xsn-1)||gl_pned(xsn-1)||gl_pnmn(xsn-1)||deep_pn(xsn-1)) &&
+          suw_mnim(0) && s(xsn-1,-1) )
+ { rett=stopper=1; continue };
+ if ( (prl_mnim(-4)||prq_mnim(-4)) &&
+        pre_ro(-3) &&
+         (prl_edro(-2)||prl_mnro(-2)) &&
+          (suw_edro(-1)||suw_mnro(-1)) && s(-4,-1) )
+ { rett=stopper=1; continue };
+#
 
 
  #_#_#
