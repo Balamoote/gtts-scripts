@@ -195,6 +195,18 @@ function sw_em_q_f(rett, stopper) { while (stopper == 0) {
 
 break}; return rett }
 
+function sw_em_z_f(rett, stopper) { while (stopper == 0) {
+ #
+ if ( (w(-2,"с немного чуть-чуть")||suw_edtv(-2)||gl_in(-2)||gl_ed(-2)||gl_nemn(-2)||gl_pnmn(-2)||gl_pemn(-2)) &&
+       (prl_edmuro(-1)||prq_edmuro(-1)||mest_pedmuro(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (gl_in(-2)||gl_ed(-2)||gl_nemn(-2)||gl_pnmn(-2)||gl_pemn(-2)) &&
+       (w(-1,"с немного чуть-чуть")||suw_edtv(-1)||prl_edmuro(-1)||prq_edmuro(-1)||mest_pedmuro(-1)) && s(-2,-1) )
+ { rett=stopper=1; continue };
+ if ( (w(-1,"с немного чуть-чуть")||suw_edtv(-1)||prl_edmuro(-1)||prq_edmuro(-1)||mest_pedmuro(-1)) && s(-1,-1) )
+ { rett=stopper=1; continue };
+break}; return rett }
+
 function sw_es_i_f(rett, stopper) { while (stopper == 0) {
  #_#_#
  if (prex == 1) {
@@ -322,6 +334,8 @@ break}; return rett }
 function sw_ez_i_f(rett, stopper) { while (stopper == 0) {
  if ( qf(5,"gl_paedze") && s(0,qfn-1) )
  { rett=stopper=1; continue };
+ if ( w(-1,"она") && gl_paedze(0) && s(0,0) )
+ { rett=0; stopper=1; continue };
 
  #_#_#
  if (prex == 1) {
@@ -694,6 +708,15 @@ function gl_mn1e_f(rett, stopper) { while (stopper == 0) {
  { rett=stopper=1; continue };
  #
  if ( p(-1) && p(0) )
+ { rett=stopper=1; continue };
+break}; return rett }
+
+function gl_paedze_f(rett, stopper) { while (stopper == 0) {
+ #
+ if ( wb(-5,"я ты вы она") && s(wbn,-1) )
+ { rett=stopper=1; continue };
+ #
+ if ( qb(-5,"suw_edzeim") && s(qbn,-1) )
  { rett=stopper=1; continue };
 break}; return rett }
 
