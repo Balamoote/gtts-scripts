@@ -52,6 +52,10 @@ function sw_edro_f(rett, stopper) { while (stopper == 0) {
  { rett=stopper=1; continue };
  if ( w(-1,"пол") && sc(-1,"-") )
  { rett=stopper=1; continue };
+ if ( w(-1,"ни") && sc(0,",") && w(1,"ни") && (suw_edro(2)||suw_mnro(2)) && !(suw_mnim(2)) ) 
+ { rett=stopper=1; continue };
+ if ( w(-3,"ни") && suw_edro(-2) && suw_mnim(-2) && sc(2,",") && w(-1,"ни") ) 
+ { rett=stopper=1; continue };
 
 #if ( !((qb(-5,"prl_mnim")||qb(-5,"prq_mnim")) && s(qbn,-1)) &&
 #        suw_any(-1) && !(souz(-1)||qast(-1)||pre_any(-1)||prl_edzeim(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) && s(-1,-1) )
@@ -492,15 +496,15 @@ function sw_mn_i_f(rett, stopper) { while (stopper == 0) {
  #_#_#
  if (prex == 1) {
  if ( prex_im(-2) &&
-      (prl_mnim(-1)||prq_mnim(-1)||mest_pmnim(-1)||muk_mnim(-1)) && s(-2,-1) )
+      (prl_mnim(-1)||prq_mnim(-1)||mest_mnim(-1)||muk_mnim(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
- if ( (prex_im(-1)||prl_mnim(-1)||prq_mnim(-1)||mest_pmnim(-1)||muk_mnim(-1)) && s(-1,-1) )
+ if ( (prex_im(-1)||prl_mnim(-1)||prq_mnim(-1)||mest_mnim(-1)||muk_mnim(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  } else {#
  if ( pre_im(-2) &&
-      (prl_mnim(-1)||prq_mnim(-1)||mest_pmnim(-1)||muk_mnim(-1)) && s(-2,-1) )
+      (prl_mnim(-1)||prq_mnim(-1)||mest_mnim(-1)||muk_mnim(-1)) && s(-2,-1) )
  { rett=stopper=1; continue };
- if ( (pre_im(-1)||prl_mnim(-1)||prq_mnim(-1)||mest_pmnim(-1)||muk_mnim(-1)) && s(-1,-1) )
+ if ( (pre_im(-1)||prl_mnim(-1)||prq_mnim(-1)||mest_mnim(-1)||muk_mnim(-1)) && s(-1,-1) )
  { rett=stopper=1; continue };
  };#_#_#
 break}; return rett }
@@ -556,7 +560,7 @@ function sw_mn_r_f(rett, stopper) { while (stopper == 0) {
 
  #
 #if ( (qik_im(-1)||qik_mnim(-1)||qik_mnro(-1)) && s(-1,-1) )
- if ( (qi_ed(-1)||qi_mn(-1)||wc(-1,"^[0-9]+$")) && s(-1,-1) )
+ if ( (qi_ed(-1)||qi_mn(-1)||wc(-1,"^[0-9]+$")||w(-1,"пару")) && s(-1,-1) )
  { rett=stopper=1; continue };
  if ( (qi_ed(1)||qi_mn(1)||wc(1,"^[0-9]+$")) && s(0,0) )
  { rett=stopper=1; continue };
