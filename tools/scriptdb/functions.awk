@@ -30,7 +30,7 @@ function makebookvars()                           # определить пер�
 function makebookvars_nohyphback()                # определить переменные iwrd, winfo, somo
                 { b=strtonum(omlin[y]);nf=splitline(book[b]);regwpos(wrd); }
 function makewposvars()                           # определить переменные внутри цикла для слова в позиции i
-                { i=strtonum(i); prex=ro2mn="" }
+                { i=strtonum(i); prex=edro2mni="" }
 
 # функции обработки слов
 function s1(n,wl,    rett)                        # выдать 1-й символ строки-сеператора
@@ -259,16 +259,16 @@ function preph_ro(n,                                                            
                      if ( qxs(n,"без","согласования","с со") ||
                           qxs(n,"без","ведома помощи согласия") ||
                           qxs(n,"в","близи далеке дали зависимости отдалении отличие отрыве стороне сторону шаге","от") ||
-                          qxs(n,"в","авангард авангарде адрес аспекте виде возрасте границах глазах глубь деле довершение доказательство должности духе завершение заключение зачёт защиту знак ипостаси исходе интересах качестве количестве компании конце курс курсе лице меру мире направлении нарушение начале области область обстановке обход ознаменование окружении отношении отмену отсутствие память плане поисках пользу порядке предвидении предвкушении преддверии пределах присутствии продолжение процессе разгар разрезе размере районе рамках рамки распоряжение распоряжении середине рассуждении результате роли русле ряде ряду свете силу случае смысле сопровождении составе стенах сторону сумме сфере счет течение торце условиях форме характере ходе целях части честь честь числе число") ||
+                          qxs(n,"в","авангард авангарде адрес аспекте виде возрасте границах глазах глубь гуще деле довершение доказательство должности духе завершение заключение зачёт защиту знак ипостаси исходе интересах качестве количестве компании конце курс курсе лице меру мире направлении нарушение начале области область обстановке обход ознаменование окружении отношении отмену отсутствие память плане поисках пользу порядке предвидении предвкушении преддверии пределах присутствии продолжение процессе разгар разрезе размере районе рамках рамки распоряжение распоряжении середине рассуждении результате роли русле ряде ряду свете силу случае смысле сопровождении составе стенах сторону сумме сфере счет течение торце условиях форме характере ходе целях части честь честь числе число") ||
                           qxs(n,"вне","зависимости","от") ||
                           qxs(n,"вне","границ пределов рамок сферы") ||
                           qxs(n,"во","вкусе власти время главе здравие избежание изменение имя исполнение славу") ||
                           qxs(n,"вплоть впредь что","до") ||
-                          qxs(n,"до","завершения истечения конца начала прихода") ||
+                          qxs(n,"до","завершения истечения конца наступления начала прихода") ||
                           qxs(n,"за","исключением неимением счет") ||
                           qxs(n,"из","числа") ||
                           qxs(n,"исходя","из") ||
-                          qxs(n,"к","краю чести числу") ||
+                          qxs(n,"к","исходу концу краю чести числу") ||
                           qxs(n,"на","глазах","у") ||
                           qxs(n,"на","базе благо грани имя краю манер основании основе почве правах предмет протяжении пути путях случай стороне сторону углу уровне фоне") ||
                           qxs(n,"над","краем уровнем") ||
@@ -276,7 +276,7 @@ function preph_ro(n,                                                            
                           qxs(n,"начиная","с со") ||
                           qxs(n,"не","без до доходя считая") ||
                           qxs(n,"перед","лицом") ||
-                          qxs(n,"по","адресу вине выражению долгу истечении линии мановению мере милости мнению направлению поводу поручению праву примеру принципу причине прошествии пути сведениям случаю стопам части ходу") ||
+                          qxs(n,"по","адресу вине выражению долгу истечении линии мановению мере милости мнению направлению поводу поручению праву примеру принципу причине прошествии пути сведениям случаю стопам сути части ходу") ||
                           qxs(n,"под","видом знаком предлогом председательством эгидой") ||
                           qxs(n,"при","помощи посредстве условии") ||
                           qxs(n,"от","имени лица") ||
@@ -435,7 +435,7 @@ function gl_ed(n,         wd,rett) { wd = lc(n);
                           wd in g2_pnna_e3||wd in g2_pnpa_edze||wd in g2_pnpa_edmu||wd in g2_pnpa_edsr)                                         {rett=1} else {rett=0}; return rett}
 function gl_paedze(n,     wd,rett) { wd = lc(n);
                       if (wd in gn_vz_nepa_edze||wd in gn_nepa_edze||wd in gn_pepa_edze||wd in gn_pnpa_edze||wd in gs_vz_nepa_edze||
-			  wd in gs_nepa_edze||wd in gs_pepa_edze||wd in gs_pnpa_edze||wd in g2_pepa_edze||wd in g2_vz_nepa_edze||
+                          wd in gs_nepa_edze||wd in gs_pepa_edze||wd in gs_pnpa_edze||wd in g2_pepa_edze||wd in g2_vz_nepa_edze||
                           wd in g2_nepa_edze||wd in g2_pnpa_edze)                                                                               {rett=1} else {rett=0}; return rett}
 function gl_peed(n,       wd,rett) { wd = lc(n);
                       if (wd in gn_pena_e1||wd in gn_pena_e2||wd in gn_pena_e3||wd in gn_pepa_edze||wd in gn_pepa_edmu||wd in gn_pepa_edsr||
@@ -447,6 +447,15 @@ function gl_pned(n,       wd,rett) { wd = lc(n);
                           wd in gs_pnbu_e1||wd in gs_pnbu_e2||wd in gs_pnbu_e3||wd in gs_pnpa_edze||wd in gs_pnpa_edmu||wd in gs_pnpa_edsr||
                           wd in g2_pnbu_e1||wd in g2_pnbu_e2||wd in g2_pnbu_e3||wd in g2_pnna_e1||wd in g2_pnna_e2||wd in g2_pnna_e3||
                           wd in g2_pnpa_edze||wd in g2_pnpa_edmu||wd in g2_pnpa_edsr)                                                           {rett=1} else {rett=0}; return rett}
+function gl_need(n,       wd,rett) { wd = lc(n);
+                      if (wd in gn_vz_nena_e1||wd in gn_vz_nena_e2||wd in gn_vz_nena_e3||wd in gn_vz_nepa_edze||wd in gn_vz_nepa_edmu||
+                          wd in gn_vz_nepa_edsr||wd in gn_nena_e1||wd in gn_nena_e2||wd in gn_nena_e3||wd in gn_nepa_edze||wd in gn_nepa_edmu||
+                          wd in gn_nepa_edsr||wd in gs_nebu_e1||wd in gs_nebu_e2||wd in gs_nebu_e3||wd in gs_vz_nebu_e1||wd in gs_vz_nebu_e2||
+                          wd in gs_vz_nebu_e3||wd in gs_vz_nepa_edze||wd in gs_vz_nepa_edmu||wd in gs_vz_nepa_edsr||wd in gs_nepa_edze||
+                          wd in gs_nepa_edmu||wd in gs_nepa_edsr||wd in g2_nebu_e1||wd in g2_nebu_e2||wd in g2_nebu_e3||wd in g2_vz_nebu_e1||
+                          wd in g2_vz_nebu_e2||wd in g2_vz_nebu_e3||wd in g2_vz_nena_e1||wd in g2_vz_nena_e2||wd in g2_vz_nena_e3||
+                          wd in g2_vz_nepa_edze||wd in g2_vz_nepa_edmu||wd in g2_vz_nepa_edsr||wd in g2_nena_e1||wd in g2_nena_e2||
+                          wd in g2_nena_e3||wd in g2_nepa_edze||wd in g2_nepa_edmu||wd in g2_nepa_edsr)                                         {rett=1} else {rett=0}; return rett}
 function gl_in(n,         wd,rett) { wd = lc(n);
                       if (wd in gn_vz_ne_in||wd in gn_nein||wd in gn_nein_bz||wd in gn_vz_nein_bz||wd in gn_pein||wd in gn_pein_bz||
                           wd in gn_pnin||wd in gs_vz_nein||wd in gs_nein||wd in gs_vz_nein_bz||wd in gs_nein_bz||wd in gs_pein||
@@ -454,6 +463,9 @@ function gl_in(n,         wd,rett) { wd = lc(n);
 function gl_pein(n,       wd,rett) { wd = lc(n);
                       if (wd in gn_pein||wd in gn_pein_bz||wd in gs_pein||wd in gs_pein_bz||wd in g2_pein)                                      {rett=1} else {rett=0}; return rett}
 function gl_pnin(n,       wd,rett) { wd = lc(n); if (wd in gn_pnin||wd in gs_pnin||wd in g2_pnin)                                               {rett=1} else {rett=0}; return rett}
+function gl_nein(n,       wd,rett) { wd = lc(n);
+                      if (wd in gn_vz_ne_in||wd in gn_nein||wd in gn_nein_bz||wd in gn_vz_nein_bz||wd in gs_vz_nein||wd in gs_nein||
+                          wd in gs_vz_nein_bz||wd in gs_nein_bz||wd in g2_vz_nein||wd in g2_nein)                                               {rett=1} else {rett=0}; return rett}
 function gl_vzed(n,                                                                                                                             wd,rett) { wd = lc(n);
                       if (wd in gn_vz_nena_e1||wd in gn_vz_nena_e2||wd in gn_vz_nena_e3||wd in gn_vz_nepo_ed||wd in gn_vz_nepa_edze||
                           wd in gn_vz_nepa_edmu||wd in gn_vz_nepa_edsr||wd in gs_vz_nebu_e1||wd in gs_vz_nebu_e2||wd in gs_vz_nebu_e3||
@@ -488,19 +500,16 @@ function gl_pemn(n,                                                             
                       if (wd in gn_pena_m1||wd in gn_pena_m2||wd in gn_pena_m3||wd in gn_pepa_mn||wd in gs_pebu_m1||wd in gs_pebu_m2||
                           wd in gs_pebu_m3||wd in gs_pepa_mn||wd in g2_pebu_m1||wd in g2_pebu_m2||wd in g2_pebu_m3||wd in g2_pena_m1||
                           wd in g2_pena_m2||wd in g2_pena_m3||wd in g2_pepa_mn)                                                                 {rett=1} else {rett=0}; return rett}
-function gl_pamn(n,                                                                                                                             wd,rett) { wd = lc(n);
+function gl_mn(n,                                                                                                                               wd,rett) { wd = lc(n);
                       if (wd in gn_nena_m1||wd in gn_nena_m2||wd in gn_nena_m3||wd in gn_nepa_mn||wd in gs_nebu_m1||wd in gs_nebu_m2||
                           wd in gs_nebu_m3||wd in gs_nepa_mn||wd in g2_nebu_m1||wd in g2_nebu_m2||wd in g2_nebu_m3||wd in g2_nena_m1||
-                          wd in g2_nena_m2||wd in g2_nena_m3||wd in g2_nepa_mn||                                                                
+                          wd in g2_nena_m2||wd in g2_nena_m3||wd in g2_nepa_mn||
                           wd in gn_pnna_m1||wd in gn_pnna_m2||wd in gn_pnna_m3||wd in gn_pnpa_mn||wd in gs_pnbu_m1||wd in gs_pnbu_m2||
                           wd in gs_pnbu_m3||wd in gs_pnpa_mn||wd in g2_pnbu_m1||wd in g2_pnbu_m2||wd in g2_pnbu_m3||wd in g2_pnna_m1||
-                          wd in g2_pnna_m2||wd in g2_pnna_m3||wd in g2_pnpa_mn||                                                                
+                          wd in g2_pnna_m2||wd in g2_pnna_m3||wd in g2_pnpa_mn||
                           wd in gn_pena_m1||wd in gn_pena_m2||wd in gn_pena_m3||wd in gn_pepa_mn||wd in gs_pebu_m1||wd in gs_pebu_m2||
                           wd in gs_pebu_m3||wd in gs_pepa_mn||wd in g2_pebu_m1||wd in g2_pebu_m2||wd in g2_pebu_m3||wd in g2_pena_m1||
-                          wd in g2_pena_m2||wd in g2_pena_m3||wd in g2_pepa_mn||                                                                 
-                          wd in gn_vz_nena_m1||wd in gn_vz_nena_m2||wd in gn_vz_nena_m3||wd in gn_vz_nepa_mn||wd in g2_vz_nena_m1||
-                          wd in gs_vz_nebu_m1||wd in gs_vz_nebu_m2||wd in gs_vz_nebu_m3||wd in gs_vz_nepa_mn||wd in g2_vz_nena_m2||
-                          wd in g2_vz_nebu_m1||wd in g2_vz_nebu_m2||wd in g2_vz_nebu_m3||wd in g2_vz_nepa_mn||wd in g2_vz_nena_m3)              {rett=1} else {rett=0}; return rett}
+                          wd in g2_pena_m2||wd in g2_pena_m3||wd in g2_pepa_mn)                                                                 {rett=1} else {rett=0}; return rett}
 
 # существительные
 function suw_edmuim(n,                                                                                                                          wd,rett) { wd = lc(n);
@@ -758,6 +767,13 @@ function qi_mn(n,                                                               
                         wd in qne_tv||wd in qne_pr)                                                                                             {rett=1} else {rett=0}; return rett}
 
 
+# наречные обороты
+ function narph_vrem(n,                                                                                                                         rett) {
+                     if ( qxs(n,"на","мгновение") )                                                                                             {rett=1} else {rett=0}; return rett }
+ function narph_spos(n,                                                                                                                         rett) {
+                     if ( qxs(n,"с","ходу") )                                                                                                   {rett=1} else {rett=0}; return rett }
+ function narph_any(n,                                                                                                                          rett) {
+                     if ( narph_vrem(n)||narph_spos(n) )                                                                                        {rett=1} else {rett=0}; return rett }
 # составные "существительные" - обороты
 function swc_edtv(n,                                                                                                                            rett) {
                      if ( qxs(n,"друг","другу дружке") )                                                                                        {rett=1} else {rett=0}; return rett }
