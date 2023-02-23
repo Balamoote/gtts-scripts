@@ -31,6 +31,11 @@ function sw_edro_f(rett, stopp) { while (stopp == 0) {
         (gl_pnin(-2)||gl_pnin(-2)||gl_pned(-2)||gl_pnmn(-2)||deep_pn(-2)) &&
          (suw_edda(-1)||suw_mnda(-1)) && Q(-1,"mest_da") && suw_mnim(0) && Q(0,"gl_in") && s(-2,-1) )
  { rett=0; edro2mni=stopp=1; d[9]++; if(dbg){print "D9"}; continue };
+ if ( !(w(-3,"не") && s(-3,-3)) && !(mark("Yro","part")) &&
+        (gl_pnin(-2)||gl_pnin(-2)||gl_pned(-2)||gl_pnmn(-2)||deep_pn(-2)) &&
+         (suw_edda(-1)||suw_mnda(-1)) &&
+	   suw_mnro(1) && suw_mnim(0) && Q(0,"gl_in") && s(-2,0) )
+ { rett=0; edro2mni=stopp=1; d[9]++; if(dbg){print "D9"}; continue };
  if ( swc_edtv(-1) &&
      !(w(xsn-2,"не") && s(xsn-2,xsn-2)) &&
        (gl_pnin(xsn-1)||gl_pned(xsn-1)||gl_pnmn(xsn-1)||deep_pn(xsn-1)) &&
@@ -94,13 +99,13 @@ function sw_edro_f(rett, stopp) { while (stopp == 0) {
  { rett=stopp=1; d[25]++; if(dbg){print "D25"}; continue };
  if ( w(1,"не") && (gl_pein(2)||gl_pnin(2)) && s(0,1) )
  { rett=stopp=1; d[26]++; if(dbg){print "D26"}; continue };
-#if ( (gl_pnin(-2)||gl_pnin(-2)||gl_pned(-2)||gl_pnmn(-2)||deep_pn(-2)||gl_nein(-2)||gl_nein(-2)||gl_need(-2)||gl_nemn(-2)||deep_ne(-2)) &&
-#        (suw_edda(-1)||suw_mnda(-1)||mest_da(-1)) && suw_mnim(0) && Q(0,"gl_in") && s(-2,-1) )
-#{ rett=stopp=1; d[27]++; if(dbg){print "D27"}; continue };
+ if ( (gl_pnin(-2)||gl_pnin(-2)||gl_pned(-2)||gl_pnmn(-2)||deep_pn(-2)) && !(gl_poed(-2)||gl_pomn(-2)) &&
+         (suw_edda(-1)||suw_mnda(-1)||mest_da(-1)) && suw_mnim(0) && Q(0,"gl_in") && s(-2,-1) && p(0) )
+ { rett=stopp=1; d[27]++; if(dbg){print "D27"}; continue };
+ if ( (gl_nein(-2)||gl_nein(-2)||gl_need(-2)||gl_nemn(-2)||deep_ne(-2)) && !(gl_poed(-2)||gl_pomn(-2)) &&
+         (suw_edda(-1)||suw_mnda(-1)||mest_da(-1)) && suw_mnim(0) && Q(0,"gl_in") && s(-2,-1) && p(0) )
+ { rett=stopp=1; d[27]++; if(dbg){print "D27"}; continue };
 
-#if ( !((qb(-5,"prl_mnim")||qb(-5,"prq_mnim")) && s(qbn,-1)) &&
-#        suw_any(-1) && !(souz(-1)||qast(-1)||pre_any(-1)||prl_edzeim(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)) && s(-1,-1) )
-#{ rett=stopp=1; d[28]++; if(dbg){print "D28"}; continue };
 
 break}; return rett }
 
