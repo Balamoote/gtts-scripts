@@ -304,7 +304,7 @@ BEGIN {
       };
     }; # чтение suw-dic
    close(cmd);
-   cmd = "zcat " indb "dic_gl.gz dic_diff_gl.gz";
+   cmd = "zcat " indb "dic_gl.gz " indb "dic_gl_diff.gz";
    while ((cmd|getline) > 0) {
 
       if ($1~ "-") { dichyph [$1] };
@@ -616,7 +616,7 @@ BEGIN {
       };
     }; # чтение gl-dic
    close(cmd);
-   cmd = "zcat " indb "dic_rest.gz";
+   cmd = "zcat " indb "dic_rest.gz " indb "dic_rest_diff.gz";
    while ((cmd|getline) > 0) {
 
     if ($1~ "-") { dichyph [$1] };

@@ -1,14 +1,20 @@
 # Набор правил обработки для deomo.awk в виде специфицеских для класса слова. Вынесены в отдельный файл, чтобы не загромождать основной файл.
 # let @a=1|%s/"D\zs\d\+\ze"/\=''.(@a+setreg('a',@a+1))/g|%s/ d\[\zs\d\+\ze\]++; if(dbg){print "D\(\d\+\)"/\1/g 
 # При срабатывании функции выдают значение TRUE, при вызове аргументы НЕ указываются.
-function sw_edro_f(rett, stopp) { while (stopp == 0) {
+function sw_edro_f(rett,   stopp) { edro2mni=""; while (stopp == 0) {
  # родительный падеж: массовая обработка
+
+#if ( gg=nmark(-2,"GG","di") )
+#{ rett=0; edro2mni=stopp=1; d[9]++; if(dbg){print "D9"}; continue };
+#if ( !(w(-3,"не") && s(-3,-3)) && wordmark(-2)=="GG_di_" &&
+#       (gl_pnin(-2)||gl_pned(-2)||gl_pnmn(-2)||deep_pn(-2)) &&
+#        (suw_edda(-1)||suw_mnda(-1)||mest_da(-1)) && Q(0,"gl_in") && s(-2,-1) )
+#{ rett=0; edro2mni=stopp=1; d[9]++; if(dbg){print "D9"}; continue };
 
  if ( se(-1,"-") && suw_mnim(0) && suw_mnim(-1) && prl_mnim(-2) )
  { rett=0; edro2mni=stopp=1; d[1]++; if(dbg){print "D1"}; continue };
  if ( se(-1,"-") && suw_mnim(0) && suw_mnim(-1) && Q(-1,"suw_edro") )
  { rett=0; edro2mni=stopp=1; d[2]++; if(dbg){print "D2"}; continue };
-
 
  if ( !(w(-2,"не") && s(-2,-2)) &&
       deep_na(-1) && s(-1,-1) )
@@ -28,11 +34,11 @@ function sw_edro_f(rett, stopp) { while (stopp == 0) {
          (suw_edda(-1)||suw_mnda(-1)||mest_da(-1)) && suw_mnim(0) && Q(0,"gl_in") && s(-2,-1) )
  { rett=0; edro2mni=stopp=1; d[8]++; if(dbg){print "D8"}; continue };
  if ( !(w(-3,"не") && s(-3,-3)) && !(mark("Yro","part")) &&
-        (gl_pnin(-2)||gl_pnin(-2)||gl_pned(-2)||gl_pnmn(-2)||deep_pn(-2)) &&
+        (gl_pnin(-2)||gl_pned(-2)||gl_pnmn(-2)||deep_pn(-2)) &&
          (suw_edda(-1)||suw_mnda(-1)) && Q(-1,"mest_da") && suw_mnim(0) && Q(0,"gl_in") && s(-2,-1) )
  { rett=0; edro2mni=stopp=1; d[9]++; if(dbg){print "D9"}; continue };
  if ( !(w(-3,"не") && s(-3,-3)) && !(mark("Yro","part")) &&
-        (gl_pnin(-2)||gl_pnin(-2)||gl_pned(-2)||gl_pnmn(-2)||deep_pn(-2)) &&
+        (gl_pnin(-2)||gl_pned(-2)||gl_pnmn(-2)||deep_pn(-2)) &&
          (suw_edda(-1)||suw_mnda(-1)) &&
 	   suw_mnro(1) && suw_mnim(0) && Q(0,"gl_in") && s(-2,0) )
  { rett=0; edro2mni=stopp=1; d[9]++; if(dbg){print "D9"}; continue };
