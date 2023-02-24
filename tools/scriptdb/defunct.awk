@@ -1,12 +1,12 @@
 # Набор правил обработки для deomo.awk в виде специфицеских для класса слова. Вынесены в отдельный файл, чтобы не загромождать основной файл.
 # let @a=1|%s/"D\zs\d\+\ze"/\=''.(@a+setreg('a',@a+1))/g|%s/ d\[\zs\d\+\ze\]++; if(dbg){print "D\(\d\+\)"/\1/g 
 # При срабатывании функции выдают значение TRUE, при вызове аргументы НЕ указываются.
-function sw_edro_f(rett,   stopp) { edro2mni=""; while (stopp == 0) {
+function sw_edro_f(rett,   stopp) { while (stopp == 0) {
  # родительный падеж: массовая обработка
 
 #if ( gg=nmark(-2,"GG","di") )
 #{ rett=0; edro2mni=stopp=1; d[9]++; if(dbg){print "D9"}; continue };
-#if ( !(w(-3,"не") && s(-3,-3)) && wordmark(-2)=="GG_di_" &&
+#if ( !(w(-3,"не") && s(-3,-3)) && wordmark(-2) &&
 #       (gl_pnin(-2)||gl_pned(-2)||gl_pnmn(-2)||deep_pn(-2)) &&
 #        (suw_edda(-1)||suw_mnda(-1)||mest_da(-1)) && Q(0,"gl_in") && s(-2,-1) )
 #{ rett=0; edro2mni=stopp=1; d[9]++; if(dbg){print "D9"}; continue };
@@ -203,7 +203,8 @@ function sw_em_r_f(rett, stopp) { while (stopp == 0) {
  if ( (preph_ro(-1)||prl_edmuro(-1)||prq_edmuro(-1)||mest_pedmuro(-1)||wc(-1,"^[0-9]+$")) && s(-1,-1) )
  { rett=stopp=1; d[51]++; if(dbg){print "D51"}; continue };
 
- rett=sw_edro_f()
+ if ( sw_edro_f() )
+ { rett=stopp=1; d[51]++; if(dbg){print "D51"}; continue };
 
 break}; return rett }
 
@@ -341,7 +342,8 @@ function sw_es_r_f(rett, stopp) { while (stopp == 0) {
  if ( (preph_ro(-1)||prl_edsrro(-1)||prq_edsrro(-1)||mest_pedmuro(-1)) && s(-1,-1) )
  { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
 
- rett=sw_edro_f()
+ if ( sw_edro_f() )
+ { rett=stopp=1; d[51]++; if(dbg){print "D51"}; continue };
 
 break}; return rett }
 
@@ -514,7 +516,8 @@ function sw_ez_r_f(rett, stopp) { while (stopp == 0) {
  if ( (preph_ro(-1)||prl_edzero(-1)||prq_edzero(-1)||mest_pedzero(-1)) && s(-1,-1) )
  { rett=stopp=1; d[128]++; if(dbg){print "D128"}; continue };
 
- rett=sw_edro_f()
+ if ( sw_edro_f() )
+ { rett=stopp=1; d[51]++; if(dbg){print "D51"}; continue };
 
 break}; return rett }
 
@@ -587,7 +590,7 @@ function sw_mn_i_f(rett, stopp) { while (stopp == 0) {
  };#_#_#
  if ( (prl_mnim(-1)||prq_mnim(-1)||(mest_mnim(-1) && Q(0,"prl_krmn"))||muk_mnim(-1)) && s(-1,-1) )
  { rett=stopp=1; d[147]++; if(dbg){print "D147"}; continue };
-break}; return rett }
+break}; edro2mni=0; return rett }
 
 function sw_mn_v_f(rett, stopp) { while (stopp == 0) {
  #

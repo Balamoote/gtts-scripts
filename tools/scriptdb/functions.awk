@@ -172,18 +172,18 @@ function narc_prev(n,     wd,rett) { wd = lc(n); if (wd in nrc_pv)              
 function narc_nar(n,      wd,rett) { wd = lc(n); if (wd in nrc_nar)                                                                            {rett=1} else {rett=0}; return rett}
 
 # принадлежность к классам существительных-омографов по падежам (например, для prem_vi и т.д.)
-function omsw_im(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_im||wd in osw_edze_im||wd in osw_edsr_im||wd in osw_mn_im||
-	                                                 wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
-function omsw_vi(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_vi||wd in osw_edze_vi||wd in osw_edsr_vi||wd in osw_mn_vi||
-                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
-function omsw_ro(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_ro||wd in osw_edze_ro||wd in osw_edsr_ro||wd in osw_mn_ro||
-                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
-function omsw_da(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_da||wd in osw_edze_da||wd in osw_edsr_da||wd in osw_mn_da||
-                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
-function omsw_tv(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_tv||wd in osw_edze_tv||wd in osw_edsr_tv||wd in osw_mn_tv||
-                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
-function omsw_pr(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_pr||wd in osw_edze_pr||wd in osw_edsr_pr||wd in osw_mn_pr||
-                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
+#function omsw_im(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_im||wd in osw_edze_im||wd in osw_edsr_im||wd in osw_mn_im||
+#	                                                 wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                               {rett=1} else {rett=0}; return rett}
+#function omsw_vi(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_vi||wd in osw_edze_vi||wd in osw_edsr_vi||wd in osw_mn_vi||
+#                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
+#function omsw_ro(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_ro||wd in osw_edze_ro||wd in osw_edsr_ro||wd in osw_mn_ro||
+#                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
+#function omsw_da(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_da||wd in osw_edze_da||wd in osw_edsr_da||wd in osw_mn_da||
+#                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
+#function omsw_tv(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_tv||wd in osw_edze_tv||wd in osw_edsr_tv||wd in osw_mn_tv||
+#                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
+#function omsw_pr(n,       wd,rett) { wd = lc(n); if (wd in osw_edmu_pr||wd in osw_edze_pr||wd in osw_edsr_pr||wd in osw_mn_pr||
+#                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
 
 # указательные местоимения
 function muk_edim(n,      wd,rett) { wd = lc(n); if (wd in muc_edmuim||wd in muc_edzeim||wd in muc_edsrim)                                     {rett=1} else {rett=0}; return rett}
@@ -366,8 +366,8 @@ function prq_krmn(n,      wd,rett) { wd = lc(n); if (wd in pq_krmn)             
 function prq_edmuim(n,    wd,rett) { wd = lc(n); if (wd in pq_edmu_im)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edsrim(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_im)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edzeim(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_im)                                                                         {rett=1} else {rett=0}; return rett}
-function prq_edmuvi(n,    wd,rett) { wd = lc(n); if (wd in pq_edmu_vi)                                                                         {rett=1} else {rett=0}; return rett}
-function prq_edsrvi(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_vi)                                                                         {rett=1} else {rett=0}; return rett}
+function prq_edmuvi(n,    wd,rett) { wd = lc(n); if (wd in pq_edmu_im||wd in pq_edmu_ro)                                                       {rett=1} else {rett=0}; return rett}
+function prq_edsrvi(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_im)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edzevi(n,    wd,rett) { wd = lc(n); if (wd in pq_edze_vi)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edmuro(n,    wd,rett) { wd = lc(n); if (wd in pq_edmu_ro)                                                                         {rett=1} else {rett=0}; return rett}
 function prq_edsrro(n,    wd,rett) { wd = lc(n); if (wd in pq_edsr_ro)                                                                         {rett=1} else {rett=0}; return rett}
@@ -866,78 +866,10 @@ function wordmark(n,   el, stoppe, rett) { el=lc(n); while (stoppe == 0) {
    if(g2_vz_nepa_mn     [el]) { rett = g2_vz_nepa_mn     [el]; stoppe=1; continue };
    if(g2_vz_nepo_ed     [el]) { rett = g2_vz_nepo_ed     [el]; stoppe=1; continue };
    if(g2_vz_nepo_mn     [el]) { rett = g2_vz_nepo_mn     [el]; stoppe=1; continue };
-   if(gc2_nebu_m1       [el]) { rett = gc2_nebu_m1       [el]; stoppe=1; continue };
-   if(gc2_nebu_m2       [el]) { rett = gc2_nebu_m2       [el]; stoppe=1; continue };
-   if(gc2_nebu_m3       [el]) { rett = gc2_nebu_m3       [el]; stoppe=1; continue };
-   if(gc2_nena_m1       [el]) { rett = gc2_nena_m1       [el]; stoppe=1; continue };
-   if(gc2_nena_m2       [el]) { rett = gc2_nena_m2       [el]; stoppe=1; continue };
-   if(gc2_nena_m3       [el]) { rett = gc2_nena_m3       [el]; stoppe=1; continue };
-   if(gc2_nepa_mn       [el]) { rett = gc2_nepa_mn       [el]; stoppe=1; continue };
-   if(gc2_nepo_mn       [el]) { rett = gc2_nepo_mn       [el]; stoppe=1; continue };
-   if(gc2_pebu_m1       [el]) { rett = gc2_pebu_m1       [el]; stoppe=1; continue };
-   if(gc2_pebu_m2       [el]) { rett = gc2_pebu_m2       [el]; stoppe=1; continue };
-   if(gc2_pebu_m3       [el]) { rett = gc2_pebu_m3       [el]; stoppe=1; continue };
-   if(gc2_pena_m1       [el]) { rett = gc2_pena_m1       [el]; stoppe=1; continue };
-   if(gc2_pena_m2       [el]) { rett = gc2_pena_m2       [el]; stoppe=1; continue };
-   if(gc2_pena_m3       [el]) { rett = gc2_pena_m3       [el]; stoppe=1; continue };
-   if(gc2_pepa_mn       [el]) { rett = gc2_pepa_mn       [el]; stoppe=1; continue };
-   if(gc2_pepo_mn       [el]) { rett = gc2_pepo_mn       [el]; stoppe=1; continue };
-   if(gc2_pnbu_m1       [el]) { rett = gc2_pnbu_m1       [el]; stoppe=1; continue };
-   if(gc2_pnbu_m2       [el]) { rett = gc2_pnbu_m2       [el]; stoppe=1; continue };
-   if(gc2_pnbu_m3       [el]) { rett = gc2_pnbu_m3       [el]; stoppe=1; continue };
-   if(gc2_pnna_m1       [el]) { rett = gc2_pnna_m1       [el]; stoppe=1; continue };
-   if(gc2_pnna_m2       [el]) { rett = gc2_pnna_m2       [el]; stoppe=1; continue };
-   if(gc2_pnna_m3       [el]) { rett = gc2_pnna_m3       [el]; stoppe=1; continue };
-   if(gc2_pnpa_mn       [el]) { rett = gc2_pnpa_mn       [el]; stoppe=1; continue };
-   if(gc2_pnpo_mn       [el]) { rett = gc2_pnpo_mn       [el]; stoppe=1; continue };
-   if(gc2_vz_nebu_m1    [el]) { rett = gc2_vz_nebu_m1    [el]; stoppe=1; continue };
-   if(gc2_vz_nebu_m2    [el]) { rett = gc2_vz_nebu_m2    [el]; stoppe=1; continue };
-   if(gc2_vz_nebu_m3    [el]) { rett = gc2_vz_nebu_m3    [el]; stoppe=1; continue };
-   if(gc2_vz_nena_m1    [el]) { rett = gc2_vz_nena_m1    [el]; stoppe=1; continue };
-   if(gc2_vz_nena_m2    [el]) { rett = gc2_vz_nena_m2    [el]; stoppe=1; continue };
-   if(gc2_vz_nena_m3    [el]) { rett = gc2_vz_nena_m3    [el]; stoppe=1; continue };
-   if(gc2_vz_nepa_mn    [el]) { rett = gc2_vz_nepa_mn    [el]; stoppe=1; continue };
-   if(gc2_vz_nepo_mn    [el]) { rett = gc2_vz_nepo_mn    [el]; stoppe=1; continue };
-   if(gcn_nena_m1       [el]) { rett = gcn_nena_m1       [el]; stoppe=1; continue };
-   if(gcn_nena_m2       [el]) { rett = gcn_nena_m2       [el]; stoppe=1; continue };
-   if(gcn_nena_m3       [el]) { rett = gcn_nena_m3       [el]; stoppe=1; continue };
-   if(gcn_nepa_mn       [el]) { rett = gcn_nepa_mn       [el]; stoppe=1; continue };
-   if(gcn_nepo_mn       [el]) { rett = gcn_nepo_mn       [el]; stoppe=1; continue };
-   if(gcn_pena_m1       [el]) { rett = gcn_pena_m1       [el]; stoppe=1; continue };
-   if(gcn_pena_m2       [el]) { rett = gcn_pena_m2       [el]; stoppe=1; continue };
-   if(gcn_pena_m3       [el]) { rett = gcn_pena_m3       [el]; stoppe=1; continue };
-   if(gcn_pepa_mn       [el]) { rett = gcn_pepa_mn       [el]; stoppe=1; continue };
-   if(gcn_pepo_mn       [el]) { rett = gcn_pepo_mn       [el]; stoppe=1; continue };
-   if(gcn_pnna_m1       [el]) { rett = gcn_pnna_m1       [el]; stoppe=1; continue };
-   if(gcn_pnna_m2       [el]) { rett = gcn_pnna_m2       [el]; stoppe=1; continue };
-   if(gcn_pnna_m3       [el]) { rett = gcn_pnna_m3       [el]; stoppe=1; continue };
-   if(gcn_pnpa_mn       [el]) { rett = gcn_pnpa_mn       [el]; stoppe=1; continue };
-   if(gcn_pnpo_mn       [el]) { rett = gcn_pnpo_mn       [el]; stoppe=1; continue };
-   if(gcn_vz_nena_m1    [el]) { rett = gcn_vz_nena_m1    [el]; stoppe=1; continue };
-   if(gcn_vz_nena_m2    [el]) { rett = gcn_vz_nena_m2    [el]; stoppe=1; continue };
-   if(gcn_vz_nena_m3    [el]) { rett = gcn_vz_nena_m3    [el]; stoppe=1; continue };
-   if(gcn_vz_nepa_mn    [el]) { rett = gcn_vz_nepa_mn    [el]; stoppe=1; continue };
-   if(gcn_vz_nepo_mn    [el]) { rett = gcn_vz_nepo_mn    [el]; stoppe=1; continue };
-   if(gcs_nebu_m1       [el]) { rett = gcs_nebu_m1       [el]; stoppe=1; continue };
-   if(gcs_nebu_m2       [el]) { rett = gcs_nebu_m2       [el]; stoppe=1; continue };
-   if(gcs_nebu_m3       [el]) { rett = gcs_nebu_m3       [el]; stoppe=1; continue };
-   if(gcs_nepa_mn       [el]) { rett = gcs_nepa_mn       [el]; stoppe=1; continue };
-   if(gcs_nepo_mn       [el]) { rett = gcs_nepo_mn       [el]; stoppe=1; continue };
-   if(gcs_pebu_m1       [el]) { rett = gcs_pebu_m1       [el]; stoppe=1; continue };
-   if(gcs_pebu_m2       [el]) { rett = gcs_pebu_m2       [el]; stoppe=1; continue };
-   if(gcs_pebu_m3       [el]) { rett = gcs_pebu_m3       [el]; stoppe=1; continue };
-   if(gcs_pepa_mn       [el]) { rett = gcs_pepa_mn       [el]; stoppe=1; continue };
-   if(gcs_pepo_mn       [el]) { rett = gcs_pepo_mn       [el]; stoppe=1; continue };
-   if(gcs_pnbu_m1       [el]) { rett = gcs_pnbu_m1       [el]; stoppe=1; continue };
-   if(gcs_pnbu_m2       [el]) { rett = gcs_pnbu_m2       [el]; stoppe=1; continue };
-   if(gcs_pnbu_m3       [el]) { rett = gcs_pnbu_m3       [el]; stoppe=1; continue };
-   if(gcs_pnpa_mn       [el]) { rett = gcs_pnpa_mn       [el]; stoppe=1; continue };
-   if(gcs_pnpo_mn       [el]) { rett = gcs_pnpo_mn       [el]; stoppe=1; continue };
-   if(gcs_vz_nebu_m1    [el]) { rett = gcs_vz_nebu_m1    [el]; stoppe=1; continue };
-   if(gcs_vz_nebu_m2    [el]) { rett = gcs_vz_nebu_m2    [el]; stoppe=1; continue };
-   if(gcs_vz_nebu_m3    [el]) { rett = gcs_vz_nebu_m3    [el]; stoppe=1; continue };
-   if(gcs_vz_nepa_mn    [el]) { rett = gcs_vz_nepa_mn    [el]; stoppe=1; continue };
-   if(gcs_vz_nepo_mn    [el]) { rett = gcs_vz_nepo_mn    [el]; stoppe=1; continue };
+   if(gc_ed             [el]) { rett = gc_ed             [el]; stoppe=1; continue };
+   if(gc_in             [el]) { rett = gc_in             [el]; stoppe=1; continue };
+   if(gc_mn             [el]) { rett = gc_mn             [el]; stoppe=1; continue };
+   if(gc_po             [el]) { rett = gc_po             [el]; stoppe=1; continue };
    if(geo_edsrim        [el]) { rett = geo_edsrim        [el]; stoppe=1; continue };
    if(geo_mnim          [el]) { rett = geo_mnim          [el]; stoppe=1; continue };
    if(gn_nein           [el]) { rett = gn_nein           [el]; stoppe=1; continue };

@@ -28,8 +28,8 @@ BEGIN {
       if ($1~ "-") { dichyph [$1] };
 
       if($2~ /_ед_жен_/ ){
-        if ($2~ /_ед_жен_тв$/ && $2~ /ою$/          ){  pl_edze_tv        [$1]=$3; continue };
-        if ($2~ /_ед_жен_тв$/ && $2~ /ой$/          ){  pl_edze_dr        [$1]=$3; continue };
+        if ($2~ /_ед_жен_тв$/ && $1~ /[ео]ю(ся)?$/  ){  pq_edze_tv        [$1]=$3; continue };
+        if ($2~ /_ед_жен_тв$/ && $1~ /[ео]й(ся)?$/  ){  pq_edze_dr        [$1]=$3; continue };
         if ($2~ /_ед_жен_вин$/                      ){  pq_edze_vi        [$1]=$3; continue };
         if ($2~ /_ед_жен_дат$/                      ){  pq_edze_dr        [$1]=$3; continue };
         if ($2~ /_ед_жен_им$/                       ){  pq_edze_im        [$1]=$3; continue };
@@ -76,8 +76,8 @@ BEGIN {
       if ($1~ "-") { dichyph [$1] };
 
       if($2~  /^прл_ед_жен_/ ){
-        if ($2~ /^прл_ед_жен_тв$/ && $2~ /ою$/      ){  pl_edze_tv        [$1]=$3; continue };
-        if ($2~ /^прл_ед_жен_тв$/ && $2~ /ой$/      ){  pl_edze_dr        [$1]=$3; continue };
+        if ($2~ /^прл_ед_жен_тв$/ && $1~ /[ео]ю$/   ){  pl_edze_tv        [$1]=$3; continue };
+        if ($2~ /^прл_ед_жен_тв$/ && $1~ /[ео]й$/   ){  pl_edze_dr        [$1]=$3; continue };
         if ($2~ /^прл_ед_жен_вин$/                  ){  pl_edze_vi        [$1]=$3; continue };
         if ($2~ /^прл_ед_жен_дат$/                  ){  pl_edze_dr        [$1]=$3; continue };
         if ($2~ /^прл_ед_жен_им$/                   ){  pl_edze_im        [$1]=$3; continue };
@@ -826,7 +826,7 @@ BEGIN {
 
         if ($2~ /^gl_/ && $2~ /_мн/ && $2!~ /_пов/ && $2!~ /_воз/ ){ gc_mn[$1]=$3; continue };
         if ($2~ /^gl_/ && $2~ /_инф/                              ){ gc_in[$1]=$3; continue };
-        if ($2~ /^gl_/ && $2~ /_пов/                              ){ gc_po[$1]=$3; continue };
+        if ($2~ /^gl_/ && $2~ /_пов/                              ){ gc_po[$1]=$3;          };
         if ($2~ /^gl_/ && $2~ /_ед/                               ){ gc_ed[$1]=$3; continue };
 
 
@@ -1366,7 +1366,7 @@ BEGIN {
 
  # Записать состояние словарных массивов
   if (gawk52 == 1) { writeall(classcache) };
-  cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " indb "dic_rest.gz " indb "dic_suw.gz " \
+  cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_gl_diff.gz " indb "dic_prl.gz " indb "dic_prq.gz " indb "dic_rest.gz " indb "dic_rest_diff.gz " indb "dic_suw.gz " \
          indb "automo.gz " indb "class.list.gz" " > " inax "classes.md5"
   system(cmd); close(cmd)
    } #gnuawk
