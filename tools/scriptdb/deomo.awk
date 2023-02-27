@@ -2826,9 +2826,9 @@ for(wrd in omap["x1023"]){omakevars(x1023,"x1023");for(y=1;y<=wln;y++)          
 ### x1024 !_#_!
  #  x1024 sw_em_v_  (zalt_)
 for(wrd in omap["x1024"]){omakevars(x1024,"x1024");for(y=1;y<=wln;y++)                    # header1
-{makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
+{makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( pre_vi(-1) )
+ if ( (pre_vi(-1)||preph_vi(-1)) && s(-1,-1) )
  { l[i]=omo1; r[680]++; if(dbg){print "R680"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
@@ -2839,6 +2839,57 @@ for(wrd in omap["x1025"]){omakevars(x1025,"x1025");for(y=1;y<=wln;y++)          
 {makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
  l[i]=omo1; r[681]++; if(dbg){print "R681"}; continue;
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
+
+### x1026 !_#_!
+ #  x1026 orgbody_      orgplay_ орган  о́рган ... орга́н ...
+for(wrd in omap["x1026"]){omakevars(x1026,"x1026");for(y=1;y<=wln;y++)                    # header1
+{makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( w(1,"власти дыхания здравоохранения зрения обоняния осязания порядка правопорядка самоуправления слуха управления чувств") && s(0,0) )
+ { l[i]=omo1; r[680]++; if(dbg){print "R680"}; continue};
+ #
+ if(iwrd=="орган") {
+   if ( w(-1,"внутренний государственный местный официальный полицейский половой руководящий советский союзный судебный федеральный хватательный чувствительный электровосприимчивый") && s(-1,-1) )
+   { l[i]=omo2; r[790]++; if(dbg){print "R790"}; continue};
+ };
+ if(iwrd=="органа") {
+   if ( w(-1,"внутреннего государственного местного официального полицейского полового руководящего советского союзного судебного федерального хватательного чувствительного электровосприимчивого") && s(-1,-1) )
+   { l[i]=omo2; r[790]++; if(dbg){print "R790"}; continue};
+ };
+ if(iwrd=="органам") {
+   if ( w(-1,"внутренним государственным местным официальным полицейским половым руководящим советским союзным судебным федеральным хватательным чувствительным электровосприимчивым") && s(-1,-1) )
+   { l[i]=omo2; r[790]++; if(dbg){print "R790"}; continue};
+ };
+ if(iwrd=="органами") {
+   if ( w(-1,"внутренними государственными местными официальными полицейскими половыми руководящими советскими союзными судебными федеральными хватательными чувствительными электровосприимчивыми") && s(-1,-1) )
+   { l[i]=omo2; r[790]++; if(dbg){print "R790"}; continue};
+ };
+ if(iwrd=="органах") {
+   if ( w(-1,"внутренних государственных местных официальных полицейских половых руководящих советских союзных судебных федеральных хватательных чувствительных электровосприимчивых") && s(-1,-1) )
+   { l[i]=omo2; r[790]++; if(dbg){print "R790"}; continue};
+ };
+ if(iwrd=="органе") {
+   if ( w(-1,"внутреннем государственном местном официальном полицейском половом руководящем слоюзном советском судебном федеральном хватательном чувствительном электровосприимчивом") && s(-1,-1) )
+   { l[i]=omo2; r[790]++; if(dbg){print "R790"}; continue};
+ };
+ if(iwrd=="органов") {
+   if ( w(-1,"внутренних государственных местных официальных полицейских половых руководящих советских союзных судебных федеральных хватательных чувствительных электровосприимчивых") && s(-1,-1) )
+   { l[i]=omo2; r[790]++; if(dbg){print "R790"}; continue};
+ };
+ if(iwrd=="органом") {
+   if ( w(-1,"внутренним государственным местным официальным полицейским половым руководящим слоюзным советским судебным федеральным хватательным чувствительным электровосприимчивым") && s(-1,-1) )
+   { l[i]=omo2; r[790]++; if(dbg){print "R790"}; continue};
+ };
+ if(iwrd=="органу") {
+   if ( w(-1,"внутреннему государственному местному официальному полицейскому половому руководящему слоюзному советскому судебному федеральному хватательному чувствительному электровосприимчивому") && s(-1,-1) )
+   { l[i]=omo2; r[790]++; if(dbg){print "R790"}; continue};
+ };
+ if(iwrd=="органы") {
+   if ( w(-1,"внутренние государственные местные официальные полицейские половые руководящие слоюзные советские судебные федеральные хватательные чувствительные электровосприимчивые") && s(-1,-1) )
+   { l[i]=omo2; r[790]++; if(dbg){print "R790"}; continue};
+ };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
 
@@ -4736,6 +4787,9 @@ for(wrd in omap["x2142"]){omakevars(x2142,"x2142");for(y=1;y<=wln;y++)         #
  #  x2143 pl_ez_v_		sw_es_d_
 for(wrd in omap["x2143"]){omakevars(x2143,"x2143");for(y=1;y<=wln;y++)         # header1
  #
+ if ( pl_ez_v_f() )
+ { l[i]=omo1; r[1239]++; if(dbg){print "R1239"}; continue};
+ #
  if ( sw_es_d_f() )
  { l[i]=omo2; r[998]++; if(dbg){print "R998"}; continue};
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
@@ -5259,11 +5313,11 @@ for(wrd in omap["x2182"]){omakevars(x2182,"x2182");for(y=1;y<=wln;y++)         #
  if ( sw_es_v_f() )
  { l[i]=omo1; r[1082]++; if(dbg){print "R1082"}; continue};
  #
- if ( sw_es_p_f() )
- { l[i]=omo1; r[1083]++; if(dbg){print "R1083"}; continue};
- #
  if ( sw_em_p_f() )
  { l[i]=omo1; r[1084]++; if(dbg){print "R1084"}; continue};
+ #
+ if ( sw_es_p_f() )
+ { l[i]=omo1; r[1083]++; if(dbg){print "R1083"}; continue};
  #
  if ( sw_ez_d_f() )
  { l[i]=omo2; r[1085]++; if(dbg){print "R1085"}; continue};
@@ -6075,8 +6129,6 @@ for(wrd in omap["x2235"]){omakevars(x2235,"x2235");for(y=1;y<=wln;y++)         #
  #
  if ( sw_em_r_f() )
  { l[i]=omo1; r[1239]++; if(dbg){print "R1239"}; continue};
-#print rett, stopp,"ed", edro2mni,i,n,stoppe,"end"
-#marker
  #
  if ( sw_mn_i_f() )
  { l[i]=omo2; r[1240]++; if(dbg){print "R1240"}; continue};
@@ -6757,6 +6809,25 @@ for(wrd in omap["x2283"]){omakevars(x2283,"x2283");for(y=1;y<=wln;y++)         #
  #
  if ( sw_mn_v_f() )
  { l[i]=omo2; r[1241]++; if(dbg){print "R1241"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
+
+### x2284 !_#_!
+ #  x2284   gl_ed1e     pl_ez_v_  целую  целу́ю  це́лую
+for(wrd in omap["x2284"]){omakevars(x2284,"x2284");for(y=1;y<=wln;y++)         # header1
+{makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( w(1,"армию борозду бутылку вечность галактику горку гору группу деревню квартиру корзину кружку историю колонку колонну кучу неделю ночь пачку планету пригоршню расу свинью секунду стену страницу страну сумку тонну чашку цивилизацию эскадрилью") && s(0,0))
+ { l[i]=omo2; r[1350]++; if(dbg){print "R1350"}; continue};
+ #
+ if ( pl_ez_v_f() )
+ { l[i]=omo2; r[1239]++; if(dbg){print "R1239"}; continue};
+ #
+ if ( suw_mnvi(1) && s(0,0) )
+ { l[i]=omo1; r[1239]++; if(dbg){print "R1239"}; continue};
+ #
+ if ( gl_ed1e_f() )
+ { l[i]=omo1; r[1239]++; if(dbg){print "R1239"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 
