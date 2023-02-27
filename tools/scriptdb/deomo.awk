@@ -3219,6 +3219,9 @@ for(wrd in omap["x2027"]){omakevars(x2027,"x2027");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2028"]){omakevars(x2028,"x2028");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( gl_inf_f() )
+ { l[i]=omo1; r[733]++; if(dbg){print "R733"}; continue};
+ #
  if ( sw_ez_d_f() )
  { l[i]=omo2; r[733]++; if(dbg){print "R733"}; continue};
  #
@@ -6678,8 +6681,13 @@ for(wrd in omap["x2272"]){omakevars(x2272,"x2272");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2273"]){omakevars(x2273,"x2273");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( mest_vi(1) && s(0,0) )
+ { l[i]=omo2; r[1338]++; if(dbg){print "R1338"}; continue};
+ if ( pre_ro(-2) && W(-2,"с") &&
+      (mest_ro(-1)) && s(-2,-1) && !((suw_edro(1)||suw_mnro(1)) && s(0,0)) )
+ { l[i]=omo2; r[1337]++; if(dbg){print "R1337"}; continue};
  if ( pre_ro(-1) &&
-      (q_(1,swn_edmu_ro)||q_(1,swn_edsr_ro)) && s(-1,0) )
+      (q_(1,swn_edmu_ro)||q_(1,swn_edsr_ro)||mest_ro(1)) && s(-1,0) )
  { l[i]=omo1; r[1337]++; if(dbg){print "R1337"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -6696,6 +6704,8 @@ for(wrd in omap["x2274"]){omakevars(x2274,"x2274");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2275"]){omakevars(x2275,"x2275");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( mest_da(1) && s(0,0) )
+ { l[i]=omo2; r[1338]++; if(dbg){print "R1338"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 ### x2276 !_#_!
@@ -6707,6 +6717,10 @@ for(wrd in omap["x2276"]){omakevars(x2276,"x2276");for(y=1;y<=wln;y++)         #
 #{ l[i]=omo1; r[1338]++; if(dbg){print "R1338"}; continue};
 #if ( w(-1,"в") && w(1,"деле") && s(-1,0) && p(1) )
 #{ l[i]=omo1; r[1339]++; if(dbg){print "R1339"}; continue};
+ #
+ if ( mest_da(1) && s(0,0) )
+ { l[i]=omo2; r[1338]++; if(dbg){print "R1338"}; continue};
+ #
  if ( pre_pr(-1) &&
       (q_(1,swn_edmu_pr)||q_(1,swn_edsr_pr)) && s(-1,0) )
  { l[i]=omo1; r[1340]++; if(dbg){print "R1340"}; continue};

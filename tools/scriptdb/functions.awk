@@ -443,6 +443,14 @@ function gl_ed(n,         wd,rett) { wd = lc(n);
                           wd in g2_vz_nepa_edsr||wd in g2_nena_e1||wd in g2_nena_e2||wd in g2_nena_e3||wd in g2_nepa_edze||wd in g2_nepa_edmu||
                           wd in g2_nepa_edsr||wd in g2_pnbu_e1||wd in g2_pnbu_e2||wd in g2_pnbu_e3||wd in g2_pnna_e1||wd in g2_pnna_e2||
                           wd in g2_pnna_e3||wd in g2_pnpa_edze||wd in g2_pnpa_edmu||wd in g2_pnpa_edsr)                                         {rett=1} else {rett=0}; return rett}
+function gl_paedmu(n,     wd,rett) { wd = lc(n);
+                      if (wd in gn_vz_nepa_edmu||wd in gn_nepa_edmu||wd in gn_pepa_edmu||wd in gn_pnpa_edmu||wd in gs_vz_nepa_edmu||
+			  wd in gs_nepa_edmu||wd in gs_pepa_edmu||wd in gs_pnpa_edmu||wd in g2_pepa_edmu||wd in g2_vz_nepa_edmu||
+                          wd in g2_nepa_edmu||wd in g2_pnpa_edmu)                                                                               {rett=1} else {rett=0}; return rett}
+function gl_paedsr(n,     wd,rett) { wd = lc(n);
+                      if (wd in gn_vz_nepa_edsr||wd in gn_nepa_edsr||wd in gn_pepa_edsr||wd in gn_pnpa_edsr||wd in gs_vz_nepa_edsr||
+                          wd in gs_nepa_edsr||wd in gs_pepa_edsr||wd in gs_pnpa_edsr||wd in g2_pepa_edsr||wd in g2_vz_nepa_edsr||
+                          wd in g2_nepa_edsr||wd in g2_pnpa_edsr)                                                                               {rett=1} else {rett=0}; return rett}
 function gl_paedze(n,     wd,rett) { wd = lc(n);
                       if (wd in gn_vz_nepa_edze||wd in gn_nepa_edze||wd in gn_pepa_edze||wd in gn_pnpa_edze||wd in gs_vz_nepa_edze||
                           wd in gs_nepa_edze||wd in gs_pepa_edze||wd in gs_pnpa_edze||wd in g2_pepa_edze||wd in g2_vz_nepa_edze||
