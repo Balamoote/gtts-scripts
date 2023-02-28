@@ -116,22 +116,21 @@ function notmark(n,mrk,    k, el, vmrk, rett)    # НЕ нахождение с�
 function notsym(n,sym,    rett)                   # НЕ нахождение подстроки sym в слове
                 { if (l[i+n] !~ sym) {rett=1} else {rett=0}; return rett }
 function qxs(n,a0,b0,c0,d0,e0,      a_,b_,c_,d_,e_,asu,rett) # фраза от адреса влево, составленная из 1-5 переменных элементов, проверка пробелов, xsn=адрес первого слова
-                { if(length(a0)) a_=1;if(length(b0)) b_=1;if(length(c0)) c_=1;if(length(d0)) d_=1;if(length(e0)) e_=1; asu=a_+b_+c_+d_+e_;
-                  switch (asu) {
-                      case "1": if( s(n  ,n) && w(n  ,a0)                                                     ) {xsn=n        ;rett=1} else {rett=0}; break
-                      case "2": if( s(n-1,n) && w(n-1,a0) && w(n  ,b0)                                        ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
-                      case "3": if( s(n-2,n) && w(n-2,a0) && w(n-1,b0) && w(n  ,c0)                           ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
-                      case "4": if( s(n-3,n) && w(n-3,a0) && w(n-2,b0) && w(n-1,c0) && w(n  ,d0)              ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
-                      case "5": if( s(n-4,n) && w(n-4,a0) && w(n-3,b0) && w(n-2,c0) && w(n-1,d0) && w(n  ,e0) ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
-                      default: rett=xsn=0; break }; return rett}
-function qxf(n,a0,b0,c0,d0,e0,      a_,b_,c_,d_,e_,asu,rett) # фраза от адреса вправо, составленная из 2-5 переменных элементов, проверка пробелов, xfn=адрес первого слова
-                { if(length(a0)) a_=1;if(length(b0)) b_=1;if(length(c0)) c_=1;if(length(d0)) d_=1;if(length(e0)) e_=1; asu=a_+b_+c_+d_+e_;
-                  switch (asu) {
-                      case "2": if( s(n,n+1) && w(n  ,a0) && w(n+1,b0)                                        ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
-                      case "3": if( s(n,n+2) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)                           ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
-                      case "4": if( s(n,n+3) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+3,d0)              ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
-                      case "5": if( s(n,n+4) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+4,d0) && w(n+5,e0) ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
-                      default: rett=xfn=0; break }; return rett}
+                { if(length(a0)) a_=1; if(length(b0)) b_=1; if(length(c0)) c_=1; if(length(d0)) d_=1; if(length(e0)) e_=1; asu=a_+b_+c_+d_+e_;
+                  if (n < 0) { switch (asu) {
+                      case "1": if( s(n  ,n) && w(n  ,a0)                                                       ) {xsn=n        ;rett=1} else {rett=0}; break
+                      case "2": if( s(n-1,n) && w(n-1,a0) && w(n  ,b0)                                          ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
+                      case "3": if( s(n-2,n) && w(n-2,a0) && w(n-1,b0) && w(n  ,c0)                             ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
+                      case "4": if( s(n-3,n) && w(n-3,a0) && w(n-2,b0) && w(n-1,c0) && w(n  ,d0)                ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
+                      case "5": if( s(n-4,n) && w(n-4,a0) && w(n-3,b0) && w(n-2,c0) && w(n-1,d0) && w(n  ,e0)   ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
+                      default: rett=xsn=0; break }
+	            } else { switch (asu) {
+                      case "1": if( s(n-1,n  ) && w(n,a0)                                                       ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
+                      case "2": if( s(n-1,n+1) && w(n  ,a0) && w(n+1,b0)                                        ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
+                      case "3": if( s(n-1,n+2) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)                           ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
+                      case "4": if( s(n-1,n+3) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+3,d0)              ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
+                      case "5": if( s(n-1,n+4) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+4,d0) && w(n+5,e0) ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
+                      default: rett=xfn=0; break };}; return rett}
 
 
 # функции проверки принадлежности к классам. "Классы" собираются из "базовых массивов", которые формируются при чтении словаря посредством classes.awk
@@ -187,6 +186,24 @@ function narc_nar(n,      wd,rett) { wd = lc(n); if (wd in nrc_nar)             
 #                                                     wd in osw_edmu_ne||wd in osw_edze_ne||wd in osw_edsr_ne)                                  {rett=1} else {rett=0}; return rett}
 
 # указательные местоимения
+function muk_edmuim(n,    wd,rett) { wd = lc(n); if (wd in muc_edmuim)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edzeim(n,    wd,rett) { wd = lc(n); if (wd in muc_edzeim)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edsrim(n,    wd,rett) { wd = lc(n); if (wd in muc_edsrim)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edmuvi(n,    wd,rett) { wd = lc(n); if (wd in muc_edmuvi)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edzevi(n,    wd,rett) { wd = lc(n); if (wd in muc_edzevi)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edsrvi(n,    wd,rett) { wd = lc(n); if (wd in muc_edsrvi)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edmuda(n,    wd,rett) { wd = lc(n); if (wd in muc_edmuda)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edzeda(n,    wd,rett) { wd = lc(n); if (wd in muc_edzeda)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edsrda(n,    wd,rett) { wd = lc(n); if (wd in muc_edsrda)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edmuro(n,    wd,rett) { wd = lc(n); if (wd in muc_edmuro)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edzero(n,    wd,rett) { wd = lc(n); if (wd in muc_edzero)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edsrro(n,    wd,rett) { wd = lc(n); if (wd in muc_edsrro)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edmutv(n,    wd,rett) { wd = lc(n); if (wd in muc_edmutv)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edzetv(n,    wd,rett) { wd = lc(n); if (wd in muc_edzetv)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edsrtv(n,    wd,rett) { wd = lc(n); if (wd in muc_edsrtv)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edmupr(n,    wd,rett) { wd = lc(n); if (wd in muc_edmupr)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edzepr(n,    wd,rett) { wd = lc(n); if (wd in muc_edzepr)                                                                         {rett=1} else {rett=0}; return rett}
+function muk_edsrpr(n,    wd,rett) { wd = lc(n); if (wd in muc_edsrpr)                                                                         {rett=1} else {rett=0}; return rett}
 function muk_edim(n,      wd,rett) { wd = lc(n); if (wd in muc_edmuim||wd in muc_edzeim||wd in muc_edsrim)                                     {rett=1} else {rett=0}; return rett}
 function muk_edvi(n,      wd,rett) { wd = lc(n); if (wd in muc_edmuvi||wd in muc_edzevi||wd in muc_edsrvi)                                     {rett=1} else {rett=0}; return rett}
 function muk_edda(n,      wd,rett) { wd = lc(n); if (wd in muc_edmuda||wd in muc_edzeda||wd in muc_edsrda)                                     {rett=1} else {rett=0}; return rett}

@@ -109,6 +109,10 @@ function sw_edro_f(rett,   stopp) { while (stopp == 0) {
        (suw_edtv(-1)||suw_mntv(-1)) && s(-2,-1) &&
    !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph_any(-1)) )
  { rett=stopp=1; d[25]++; if(dbg){print "D25"}; continue };
+ if ( pre_ro(-2) &&
+       (suw_edro(-1)||suw_mnro(-1)||mest_ro(-1)) &&
+         w(1,"не") && mod_bz(2) && s(-2,1) )
+ { rett=stopp=1; d[25]++; if(dbg){print "D25"}; continue };
  if ( w(-1,"пол") && sc(-1,"-") )
  { rett=stopp=1; d[26]++; if(dbg){print "D26"}; continue };
  if ( w(-1,"ни") && sc(0,",") && w(1,"ни") && (suw_edro(2)||suw_mnro(2)) && !(suw_mnim(2)) )
@@ -614,7 +618,7 @@ function sw_mn_i_f(rett, stopp) { while (stopp == 0) {
  if ( pre_im(-1) && s(-1,-1) )
  { rett=stopp=1; d[152]++; if(dbg){print "D152"}; continue };
  };#_#_#
- if ( (prl_mnim(-1)||prq_mnim(-1)||(mest_mnim(-1) && Q(0,"prl_krmn"))||muk_mnim(-1)) && s(-1,-1) )
+ if ( (prl_mnim(-1)||prq_mnim(-1)||(mest_mnim(-1) && Q(0,"prl_krmn"))||muk_mnim(-1)||wc(-1,"[ео]вы$")) && s(-1,-1) )
  { rett=stopp=1; d[153]++; if(dbg){print "D153"}; continue };
 break}; edro2mnim=""; return rett }
 
