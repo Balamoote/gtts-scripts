@@ -6812,6 +6812,10 @@ for(wrd in omap["x2282"]){omakevars(x2282,"x2282");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2283"]){omakevars(x2283,"x2283");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
+ if ( pre_ro(-2) &&
+      (suw_edro(-1)||suw_mnro(-1)||mest_ro(-1)) && W(-1,"неё") && s(-2,-1))
+ { l[i]=omo1; r[1350]++; if(dbg){print "R1350"}; continue};
+ #
  if ( ( w(-1,"я мы ты вы он она оно кто")||mest_edim(-1)||q_(-1,mst_ed_mu_im)) && s(-1,-1))
  { l[i]=omo1; r[1350]++; if(dbg){print "R1350"}; continue};
  #

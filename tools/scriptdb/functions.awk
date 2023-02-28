@@ -706,9 +706,6 @@ function nar_vopr(n,    wd,rett) { wd = lc(n); if (wd in nr_vopr)               
 function nar_prev(n,    wd,rett) { wd = lc(n); if (wd in nr_pv)                                                                                 {rett=1} else {rett=0}; return rett}
 function nar_nar(n,     wd,rett) { wd = lc(n); if (wd in nr_nar)                                                                                {rett=1} else {rett=0}; return rett}
 
-# составные наречия
-function narph(n,                                                                                                                               rett) {
-                     if ( qxs(n,"до","сих","пор") )                                                                                             {rett=1} else {rett=0}; return rett}
 
 # предлоги
 function pre_im(n,      wd,rett) { wd = lc(n); if (wd in pred_im)                                                                               {rett=1} else {rett=0}; return rett}
@@ -787,11 +784,15 @@ function qi_mn(n,                                                               
 
 # наречные обороты
  function narph_vrem(n,                                                                                                                         rett) {
-                     if ( qxs(n,"на","мгновение") )                                                                                             {rett=1} else {rett=0}; return rett }
+                     if ( qxs(n,"на","мгновение")||
+                          qxs(n,"до","сих","пор") )                                                                                             {rett=1} else {rett=0}; return rett }
+ function narph_napr(n,                                                                                                                         rett) {
+                     if ( qxs(n,"во","все","стороны") )                                                                                         {rett=1} else {rett=0}; return rett }
  function narph_spos(n,                                                                                                                         rett) {
                      if ( qxs(n,"с","ходу") )                                                                                                   {rett=1} else {rett=0}; return rett }
- function narph_any(n,                                                                                                                          rett) {
-                     if ( narph_vrem(n)||narph_spos(n) )                                                                                        {rett=1} else {rett=0}; return rett }
+
+ function narph_any(n,   rett) { if ( narph_vrem(n)||narph_spos(n)||narph_napr(n) )                                                             {rett=1} else {rett=0}; return rett }
+
 # составные "существительные" - обороты
 function swc_edtv(n,                                                                                                                            rett) {
                      if ( qxs(n,"друг","другу дружке") )                                                                                        {rett=1} else {rett=0}; return rett }
