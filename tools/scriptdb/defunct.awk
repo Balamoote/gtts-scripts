@@ -133,6 +133,10 @@ function sw_edro_f(rett,   stopp) { while (stopp == 0) {
        (suw_edda(-1)||suw_mnda(-1)||mest_da(-1)) && suw_mnim(0) && Q(0,"gl_in") && s(-2,-1) && (p(0)||w(1,"и или")||pre_any(1)) )
  { rett=stopp=1; d[31]++; if(dbg){print "D31"}; continue };
 
+ if ( pre_ro(-2) && p(-3) &&
+       (suw_edro(-1)||suw_mnro(-1)||mest_ro(-1)) && W(-1,"них") && s(-2,0) )
+ { rett=stopp=1; d[25]++; if(dbg){print "D25"}; continue };
+
 
 break}; return rett }
 
@@ -600,6 +604,8 @@ function sw_mn_i_f(rett, stopp) { while (stopp == 0) {
  { rett=stopp=1; d[147]++; if(dbg){print "D147"}; continue };
  if ( (w(-1,"мы вы они")||suw_mnim(-1)) &&
        (suw_edro(1)||suw_mnro(1)) && s(-1,0) )
+ { rett=stopp=1; d[148]++; if(dbg){print "D148"}; continue };
+ if ( w(1,"есть") && s(0,0) && p(1) )
  { rett=stopp=1; d[148]++; if(dbg){print "D148"}; continue };
  #
 
