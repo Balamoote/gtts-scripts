@@ -31,6 +31,7 @@ BEGIN {
 
     omolexxtxt = bkwrkdir "omo-lexx.txt"
     omoluclst  = bkwrkdir "omo-luc.lst"
+    omototnum  = bkwrkdir "totnum"
 
     olexqty = split(readfile(omolexxtxt), olex, "\n"); delete olex[olexqty];
     for ( l in olex ) { split(olex[l], olx, "#"); omolexx[olx[1]] = olx[2] };
@@ -169,7 +170,7 @@ for ( wrd in omos ) { #e2
             for (j in prevar) { prevblock = prevblock sprintf ("%s\n", prevar[j]) };
 
             # Обнуление цикла
-            ennum=0; delete prevar;
+            totnum = totnum + ennum; ennum=0; delete prevar;
 
         }; #preview
         ofile = bkwrkdir wrd ".sh"
@@ -179,6 +180,8 @@ for ( wrd in omos ) { #e2
 
     } #e2
     printf ( "\033[0m%s\n", "" );
+    print totnum > omototnum; fflush(); close(omototnum);
+
 #  for (i in omos){ print i omos[i]}
 } #e1
 

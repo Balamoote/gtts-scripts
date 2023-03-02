@@ -115,8 +115,8 @@ function sw_edro_f(rett,   stopp) { while (stopp == 0) {
    !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph_any(-1)) )
  { rett=stopp=1; d[25]++; if(dbg){print "D25"}; continue };
  if ( pre_ro(-2) &&
-       (suw_edro(-1)||suw_mnro(-1)||mest_ro(-1)) &&
-         w(1,"не") && mod_bz(2) && s(-2,1) )
+      (suw_edro(-1)||suw_mnro(-1)||mest_ro(-1)) &&
+        w(1,"не") && mod_bz(2) && s(-2,1) )
  { rett=stopp=1; d[25]++; if(dbg){print "D25"}; continue };
  if ( w(-1,"пол") && sc(-1,"-") )
  { rett=stopp=1; d[26]++; if(dbg){print "D26"}; continue };
@@ -147,7 +147,7 @@ function sw_edro_f(rett,   stopp) { while (stopp == 0) {
        (suw_edpr(-1)||suw_mnpr(-1)) && s(-3,-1) )
  { rett=stopp=1; d[25]++; if(dbg){print "D25"}; continue };
  if ( pre_ro(-2) && p(-3) &&
-       (suw_edro(-1)||suw_mnro(-1)||mest_ro(-1)) && W(-1,"них") && s(-2,0) )
+      (suw_edro(-1)||suw_mnro(-1)||mest_ro(-1)) && W(-1,"них") && s(-2,0) )
  { rett=stopp=1; d[25]++; if(dbg){print "D25"}; continue };
 
 
@@ -175,12 +175,20 @@ break}; return rett }
 function sw_em_v_f(rett, stopp) { while (stopp == 0) {
  #_#_#
  if (prex == 1) {
+ if ( (prex_vi(-3)||preph_vi(-3)) &&
+       (prl_edmuvi(-2)||prq_edmuvi(-2)||mest_edmuvi(-2)||wc(-2,"^[0-9]+$")) &&
+        (prl_edmuvi(-1)||prq_edmuvi(-1)||mest_edmuvi(-1)||wc(-1,"^[0-9]+$")) && s(-3,-1) )
+ { rett=stopp=1; d[49]++; if(dbg){print "D49"}; continue };
  if ( (prex_vi(-2)||preph_vi(-2)) &&
       (prl_edmuvi(-1)||prq_edmuvi(-1)||muk_edvi(-1)) && s(-2,-1) )
  { rett=stopp=1; d[37]++; if(dbg){print "D37"}; continue };
  if ( prex_vi(-1) && s(-1,-1) )
  { rett=stopp=1; d[38]++; if(dbg){print "D38"}; continue };
  } else {#
+ if ( (pre_vi(-3)||preph_vi(-3)) &&
+       (prl_edmuvi(-2)||prq_edmuvi(-2)||mest_edmuvi(-2)||wc(-2,"^[0-9]+$")) &&
+        (prl_edmuvi(-1)||prq_edmuvi(-1)||mest_edmuvi(-1)||wc(-1,"^[0-9]+$")) && s(-3,-1) )
+ { rett=stopp=1; d[49]++; if(dbg){print "D49"}; continue };
  if ( (pre_vi(-2)||preph_vi(-2)) &&
       (prl_edmuvi(-1)||prq_edmuvi(-1)||muk_edvi(-1)) && s(-2,-1) )
  { rett=stopp=1; d[39]++; if(dbg){print "D39"}; continue };
@@ -195,12 +203,20 @@ function sw_em_d_f(rett, stopp) { while (stopp == 0) {
  #
  #_#_#
  if (prex == 1) {
+ if ( (prex_da(-3)||preph_da(-3)) &&
+       (prl_edmuda(-2)||prq_edmuda(-2)||mest_edmuda(-2)||wc(-2,"^[0-9]+$")) &&
+        (prl_edmuda(-1)||prq_edmuda(-1)||mest_edmuda(-1)||wc(-1,"^[0-9]+$")) && s(-3,-1) )
+ { rett=stopp=1; d[49]++; if(dbg){print "D49"}; continue };
  if ( (prex_da(-2)||preph_da(-2)) &&
       (prl_edmuda(-1)||prq_edmuda(-1)||mest_edmuda(-1)||wc(-1,"^[0-9]+$")) && s(-2,-1) )
  { rett=stopp=1; d[42]++; if(dbg){print "D42"}; continue };
  if ( prex_da(-1) && s(-1,-1) )
  { rett=stopp=1; d[43]++; if(dbg){print "D43"}; continue };
  } else {#
+ if ( (pre_da(-3)||preph_da(-3)) &&
+       (prl_edmuda(-2)||prq_edmuda(-2)||mest_edmuda(-2)||wc(-2,"^[0-9]+$")) &&
+        (prl_edmuda(-1)||prq_edmuda(-1)||mest_edmuda(-1)||wc(-1,"^[0-9]+$")) && s(-3,-1) )
+ { rett=stopp=1; d[49]++; if(dbg){print "D49"}; continue };
  if ( (pre_da(-2)||preph_da(-2)) &&
       (prl_edmuda(-1)||prq_edmuda(-1)||mest_edmuda(-1)||wc(-1,"^[0-9]+$")) && s(-2,-1) )
  { rett=stopp=1; d[44]++; if(dbg){print "D44"}; continue };
@@ -253,12 +269,20 @@ function sw_em_t_f(rett, stopp) { while (stopp == 0) {
  #
  #_#_#
  if (prex == 1) {
+ if ( (prex_tv(-3)||preph_tv(-3)) &&
+       (prl_edmutv(-2)||prq_edmutv(-2)||mest_edmutv(-2)||wc(-2,"^[0-9]+$")) &&
+        (prl_edmutv(-1)||prq_edmutv(-1)||mest_edmutv(-1)||wc(-1,"^[0-9]+$")) && s(-3,-1) )
+ { rett=stopp=1; d[49]++; if(dbg){print "D49"}; continue };
  if ( (prex_tv(-2)||preph_tv(-2)) &&
       (prl_edmutv(-1)||prq_edmutv(-1)) && s(-2,-1) )
  { rett=stopp=1; d[56]++; if(dbg){print "D56"}; continue };
  if ( prex_tv(-1) && s(-1,-1) )
  { rett=stopp=1; d[57]++; if(dbg){print "D57"}; continue };
  } else {#
+ if ( (pre_tv(-3)||preph_tv(-3)) &&
+       (prl_edmutv(-2)||prq_edmutv(-2)||mest_edmutv(-2)||wc(-2,"^[0-9]+$")) &&
+        (prl_edmutv(-1)||prq_edmutv(-1)||mest_edmutv(-1)||wc(-1,"^[0-9]+$")) && s(-3,-1) )
+ { rett=stopp=1; d[49]++; if(dbg){print "D49"}; continue };
  if ( (pre_tv(-2)||preph_tv(-2)) &&
       (prl_edmutv(-1)||prq_edmutv(-1)) && s(-2,-1) )
  { rett=stopp=1; d[58]++; if(dbg){print "D58"}; continue };
@@ -275,12 +299,20 @@ function sw_em_p_f(rett, stopp) { while (stopp == 0) {
  { rett=0; stopp=1; d[61]++; if(dbg){print "D61"}; continue };
  #_#_#
  if (prex == 1) {
+ if ( prex_pr(-3) &&
+      (prl_edmupr(-2)||prq_edmupr(-2)||mest_edmupr(-2)||wc(-2,"^[0-9]+$")) &&
+       (prl_edmupr(-1)||prq_edmupr(-1)||mest_edmupr(-1)||wc(-1,"^[0-9]+$")) && s(-3,-1) )
+ { rett=stopp=1; d[49]++; if(dbg){print "D49"}; continue };
  if ( prex_pr(-2) &&
       (prl_edmupr(-1)||prq_edmupr(-1)) && s(-2,-1) )
  { rett=stopp=1; d[62]++; if(dbg){print "D62"}; continue };
  if ( prex_pr(-1) && s(-1,-1) )
  { rett=stopp=1; d[63]++; if(dbg){print "D63"}; continue };
  } else {#
+ if ( pre_pr(-3) &&
+      (prl_edmupr(-2)||prq_edmupr(-2)||mest_edmupr(-2)||wc(-2,"^[0-9]+$")) &&
+       (prl_edmupr(-1)||prq_edmupr(-1)||mest_edmupr(-1)||wc(-1,"^[0-9]+$")) && s(-3,-1) )
+ { rett=stopp=1; d[49]++; if(dbg){print "D49"}; continue };
  if ( pre_pr(-2) &&
       (prl_edmupr(-1)||prq_edmupr(-1)) && s(-2,-1) )
  { rett=stopp=1; d[64]++; if(dbg){print "D64"}; continue };
@@ -333,12 +365,20 @@ break}; return rett }
 function sw_es_v_f(rett, stopp) { while (stopp == 0) {
  #_#_#
  if (prex == 1) {
+ if ( (prex_vi(-3)||preph_vi(-3)) &&
+       (prl_edsrvi(-2)||prq_edsrvi(-2)||mest_edmuvi(-2)) &&
+        (prl_edsrvi(-1)||prq_edsrvi(-1)||mest_edmuvi(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (prex_vi(-2)||preph_vi(-2)) &&
       (prl_edsrvi(-1)||prq_edsrvi(-1)) && s(-2,-1) )
  { rett=stopp=1; d[76]++; if(dbg){print "D76"}; continue };
  if ( prex_vi(-1) && s(-1,-1) )
  { rett=stopp=1; d[77]++; if(dbg){print "D77"}; continue };
  } else {#
+ if ( (pre_vi(-3)||preph_vi(-3)) &&
+       (prl_edsrvi(-2)||prq_edsrvi(-2)||mest_edmuvi(-2)) &&
+        (prl_edsrvi(-1)||prq_edsrvi(-1)||mest_edmuvi(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (pre_vi(-2)||preph_vi(-2)) &&
       (prl_edsrvi(-1)||prq_edsrvi(-1)) && s(-2,-1) )
  { rett=stopp=1; d[78]++; if(dbg){print "D78"}; continue };
@@ -398,14 +438,22 @@ function sw_es_d_f(rett, stopp) { while (stopp == 0) {
  #
  #_#_#
  if (prex == 1) {
+ if ( (prex_da(-3)||preph_da(-3)) &&
+       (prl_edsrda(-2)||prq_edsrda(-2)||mest_edmuda(-2)) &&
+        (prl_edsrda(-1)||prq_edsrda(-1)||mest_edmuda(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (prex_da(-2)||preph_da(-2)) &&
       (prl_edsrda(-1)||prq_edsrda(-1)) && s(-2,-1) )
  { rett=stopp=1; d[91]++; if(dbg){print "D91"}; continue };
  if ( prex_da(-1) && s(-1,-1) )
  { rett=stopp=1; d[92]++; if(dbg){print "D92"}; continue };
  } else {#
+ if ( (pre_da(-3)||preph_da(-3)) &&
+       (prl_edsrda(-2)||prq_edsrda(-2)||mest_edmuda(-2)) &&
+        (prl_edsrda(-1)||prq_edsrda(-1)||mest_edmuda(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (pre_da(-2)||preph_da(-2)) &&
-      (prl_edsrda(-1)||prq_edsrda(-1)) && s(-2,-1) )
+       (prl_edsrda(-1)||prq_edsrda(-1)) && s(-2,-1) )
  { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
  if ( pre_da(-1) && s(-1,-1) )
  { rett=stopp=1; d[94]++; if(dbg){print "D94"}; continue };
@@ -418,14 +466,22 @@ function sw_es_t_f(rett, stopp) { while (stopp == 0) {
  #
  #_#_#
  if (prex == 1) {
+ if ( (prex_tv(-3)||preph_tv(-3)) &&
+       (prl_edsrtv(-2)||prq_edsrtv(-2)||mest_edmutv(-2)) &&
+        (prl_edsrtv(-1)||prq_edsrtv(-1)||mest_edmutv(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (prex_tv(-2)||preph_tv(-2)) &&
       (prl_edsrtv(-1)||prq_edsrtv(-1)) && s(-2,-1) )
  { rett=stopp=1; d[96]++; if(dbg){print "D96"}; continue };
  if ( prex_tv(-1) && s(-1,-1) )
  { rett=stopp=1; d[97]++; if(dbg){print "D97"}; continue };
  } else {#
+ if ( (pre_tv(-3)||preph_tv(-3)) &&
+       (prl_edsrtv(-2)||prq_edsrtv(-2)||mest_edmutv(-2)) &&
+        (prl_edsrtv(-1)||prq_edsrtv(-1)||mest_edmutv(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (pre_tv(-2)||preph_tv(-2)) &&
-      (prl_edsrtv(-1)||prq_edsrtv(-1)) && s(-2,-1) )
+       (prl_edsrtv(-1)||prq_edsrtv(-1)) && s(-2,-1) )
  { rett=stopp=1; d[98]++; if(dbg){print "D98"}; continue };
  if ( pre_tv(-1) && s(-1,-1) )
  { rett=stopp=1; d[99]++; if(dbg){print "D99"}; continue };
@@ -438,12 +494,20 @@ function sw_es_p_f(rett, stopp) { while (stopp == 0) {
  #
  #_#_#
  if (prex == 1) {
+ if ( prex_pr(-3) &&
+      (prl_edsrpr(-2)||prq_edsrpr(-2)||mest_edmupr(-2)) &&
+       (prl_edsrpr(-1)||prq_edsrpr(-1)||mest_edmupr(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( prex_pr(-2) &&
       (prl_edsrpr(-1)||prq_edsrpr(-1)) && s(-2,-1) )
  { rett=stopp=1; d[101]++; if(dbg){print "D101"}; continue };
  if ( prex_pr(-1) && s(-2,-1) )
  { rett=stopp=1; d[102]++; if(dbg){print "D102"}; continue };
  } else {#
+ if ( pre_pr(-3) &&
+      (prl_edsrpr(-2)||prq_edsrpr(-2)||mest_edmupr(-2)) &&
+       (prl_edsrpr(-1)||prq_edsrpr(-1)||mest_edmupr(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( pre_pr(-2) &&
       (prl_edsrpr(-1)||prq_edsrpr(-1)) && s(-2,-1) )
  { rett=stopp=1; d[103]++; if(dbg){print "D103"}; continue };
@@ -479,12 +543,20 @@ break}; return rett }
 function sw_ez_v_f(rett, stopp) { while (stopp == 0) {
  #_#_#
  if (prex == 1) {
+ if ( (prex_vi(-3)||preph_vi(-3)) &&
+       (prl_edzevi(-2)||prq_edzevi(-2)||mest_edzevi(-2)) &&
+        (prl_edzevi(-1)||prq_edzevi(-1)||mest_edzevi(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (prex_vi(-2)||preph_vi(-2)) &&
       (prl_edzevi(-1)||prq_edzevi(-1)||mest_edzevi(-1)) && s(-2,-1) )
  { rett=stopp=1; d[112]++; if(dbg){print "D112"}; continue };
  if ( prex_vi(-1) && s(-1,-1) )
  { rett=stopp=1; d[113]++; if(dbg){print "D113"}; continue };
  } else {#
+ if ( (pre_vi(-3)||preph_vi(-3)) &&
+       (prl_edzevi(-2)||prq_edzevi(-2)||mest_edzevi(-2)) &&
+        (prl_edzevi(-1)||prq_edzevi(-1)||mest_edzevi(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (pre_vi(-2)||preph_vi(-2)) &&
       (prl_edzevi(-1)||prq_edzevi(-1)||mest_edzevi(-1)) && s(-2,-1) )
  { rett=stopp=1; d[114]++; if(dbg){print "D114"}; continue };
@@ -498,12 +570,20 @@ break}; return rett }
 function sw_ez_d_f(rett, stopp) { while (stopp == 0) {
  #_#_#
  if (prex == 1) {
+ if ( (prex_da(-3)||preph_da(-3)) &&
+       (prl_edzeda(-2)||prq_edzeda(-2)||mest_edzeda(-2)) &&
+        (prl_edzeda(-1)||prq_edzeda(-1)||mest_edzeda(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (prex_da(-2)||preph_da(-2)) &&
       (prl_edzeda(-1)||prq_edzeda(-1)||mest_da(-1)) && s(-2,-1) )
  { rett=stopp=1; d[117]++; if(dbg){print "D117"}; continue };
  if ( prex_da(-1) && s(-1,-1) )
  { rett=stopp=1; d[118]++; if(dbg){print "D118"}; continue };
  } else {#
+ if ( (pre_da(-3)||preph_da(-3)) &&
+       (prl_edzeda(-2)||prq_edzeda(-2)||mest_edzeda(-2)) &&
+        (prl_edzeda(-1)||prq_edzeda(-1)||mest_edzeda(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (pre_da(-2)||preph_da(-2)) &&
       (prl_edzeda(-1)||prq_edzeda(-1)||mest_da(-1)) && s(-2,-1) )
  { rett=stopp=1; d[119]++; if(dbg){print "D119"}; continue };
@@ -516,6 +596,10 @@ break}; return rett }
 
 function sw_em_l_f(rett, stopp) { while (stopp == 0) {
  #
+ if ( w(-3,"в на") &&
+      (prl_edmupr(-2)||prq_edmupr(-2)||mest_pr(-2)||mest_vi(-2)||wc(-2,"^[0-9]+$")) &&
+       (prl_edmupr(-1)||prq_edmupr(-1)||mest_pr(-1)||mest_vi(-1)||wc(-1,"^[0-9]+$")) && s(-3,-1) )
+ { rett=stopp=1; d[49]++; if(dbg){print "D49"}; continue };
  if ( w(-2,"в на") &&
       (prl_edmupr(-1)||prq_edmupr(-1)||mest_pr(-1)||mest_vi(-1)||wc(-1,"^[0-9]+$")) && s(-2,-1) )
  { rett=stopp=1; d[122]++; if(dbg){print "D122"}; continue };
@@ -526,6 +610,10 @@ break}; return rett }
 
 function sw_ez_l_f(rett, stopp) { while (stopp == 0) {
  #
+ if ( w(-3,"в на") &&
+      (prl_edzepr(-2)||prq_edzepr(-2)||mest_pr(-2)||mest_vi(-2)) &&
+       (prl_edzepr(-1)||prq_edzepr(-1)||mest_pr(-1)||mest_vi(-1)) && s(-2,-1) )
+ { rett=stopp=1; d[124]++; if(dbg){print "D124"}; continue };
  if ( w(-2,"в на") &&
       (prl_edzepr(-1)||prq_edzepr(-1)||mest_pr(-1)) && s(-2,-1) )
  { rett=stopp=1; d[124]++; if(dbg){print "D124"}; continue };
@@ -548,12 +636,20 @@ function sw_ez_r_f(rett, stopp) { while (stopp == 0) {
 
  #_#_#
  if (prex == 1) {
+ if ( (prex_ro(-3)||preph_ro(-3)) &&
+       (prl_edzero(-2)||prq_edzero(-2)||mest_edzero(-2)) &&
+        (prl_edzero(-1)||prq_edzero(-1)||mest_edzero(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (prex_ro(-2)||preph_ro(-2)) &&
       (prl_edzero(-1)||prq_edzero(-1)||mest_edzero(-1)||w(-1,"его их")) && s(-2,-1) )
  { rett=stopp=1; d[129]++; if(dbg){print "D129"}; continue };
  if ( prex_ro(-1) && s(-1,-1) )
  { rett=stopp=1; d[130]++; if(dbg){print "D130"}; continue };
  } else {#
+ if ( (pre_ro(-3)||preph_ro(-3)) &&
+       (prl_edzero(-2)||prq_edzero(-2)||mest_edzero(-2)) &&
+        (prl_edzero(-1)||prq_edzero(-1)||mest_edzero(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (pre_ro(-2)||preph_ro(-2)) &&
       (prl_edzero(-1)||prq_edzero(-1)||mest_edzero(-1)||w(-1,"его их")) && s(-2,-1) )
  { rett=stopp=1; d[131]++; if(dbg){print "D131"}; continue };
@@ -571,12 +667,20 @@ break}; return rett }
 function sw_ez_t_f(rett, stopp) { while (stopp == 0) {
  #_#_#
  if (prex == 1) {
+ if ( (prex_tv(-3)||preph_tv(-3)) &&
+       (prl_edzetv(-2)||prq_edzetv(-2)||mest_edzetv(-2)) &&
+        (prl_edzetv(-1)||prq_edzetv(-1)||mest_edzetv(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (prex_tv(-2)||preph_tv(-2)) &&
       (prl_edzetv(-1)||prq_edzetv(-1)||mest_tv(-1)) && s(-2,-1) )
  { rett=stopp=1; d[135]++; if(dbg){print "D135"}; continue };
  if ( prex_tv(-1) && s(-1,-1) )
  { rett=stopp=1; d[136]++; if(dbg){print "D136"}; continue };
  } else {#
+ if ( (pre_tv(-3)||preph_tv(-3)) &&
+       (prl_edzetv(-2)||prq_edzetv(-2)||mest_edzetv(-2)) &&
+        (prl_edzetv(-1)||prq_edzetv(-1)||mest_edzetv(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ( (pre_tv(-2)||preph_tv(-2)) &&
       (prl_edzetv(-1)||prq_edzetv(-1)||mest_tv(-1)) && s(-2,-1) )
  { rett=stopp=1; d[137]++; if(dbg){print "D137"}; continue };
@@ -590,12 +694,20 @@ break}; return rett }
 function sw_ez_p_f(rett, stopp) { while (stopp == 0) {
  #_#_#
  if (prex == 1) {
+ if ( prex_pr(-3) &&
+      (prl_edzepr(-2)||prq_edzepr(-2)||mest_edzepr(-2)) &&
+       (prl_edzepr(-1)||prq_edzepr(-1)||mest_edzepr(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if ((prex_pr(-2)||w(-2,"по")) &&
      (prl_edzepr(-1)||prq_edzepr(-1)||mest_pr(-1)) && s(-2,-1) )
  { rett=stopp=1; d[140]++; if(dbg){print "D140"}; continue };
  if ( (prex_pr(-1)||w(-1,"по")) && s(-1,-1) )
  { rett=stopp=1; d[141]++; if(dbg){print "D141"}; continue };
  } else {#
+ if ( pre_pr(-3) &&
+      (prl_edzepr(-2)||prq_edzepr(-2)||mest_edzepr(-2)) &&
+       (prl_edzepr(-1)||prq_edzepr(-1)||mest_edzepr(-1)) && s(-3,-1) )
+ { rett=stopp=1; d[85]++; if(dbg){print "D85"}; continue };
  if (pre_pr(-2) &&
      (prl_edzepr(-1)||prq_edzepr(-1)||mest_pr(-1)) && s(-2,-1) )
  { rett=stopp=1; d[142]++; if(dbg){print "D142"}; continue };
@@ -655,7 +767,7 @@ function sw_mn_v_f(rett, stopp) { while (stopp == 0) {
         (prl_mnvi(-1)||prq_mnvi(-1)||mest_vi(-1)) && s(-2,-1) )
  { rett=stopp=1; d[155]++; if(dbg){print "D155"}; continue };
  if ( W(-2,"не") &&
-      (deep_pe(-1)||gl_peed(-1)||gl_pein(-1)||gl_pemn(-1)) && s(-1,-1) )
+      (deep_pe(-1)||gl_peed(-1)||gl_pein(-1)||gl_pemn(-1)) && !(suw_edvi(-1)) && s(-1,-1) )
  { rett=stopp=1; d[156]++; if(dbg){print "D156"}; continue };
 #if ( !(suw_any(-1) && s(-1,-1) && suw_edro(0)) &&
 #       (deep_pn(1)||gl_pned(1)||gl_pnin(1)||gl_pnmn(1)) && s(0,0) )
@@ -861,7 +973,7 @@ function gl_ed1e_f(rett, stopp) { while (stopp == 0) {
  if ( w(-1,"я") &&
       (suw_edvi(1)||suw_mnvi(1)||nar_napr(1)||nar_spos(1)||gl_in(1)||pre_any(1)) && s(-1,0) )
  { rett=stopp=1; d[204]++; if(dbg){print "D204"}; continue };
- if ( w(-1,"я") && s(-1,-1) && p(0) )
+ if ( w(-1,"я") && s(-1,-1) )
  { rett=stopp=1; d[205]++; if(dbg){print "D205"}; continue };
 break}; return rett }
 

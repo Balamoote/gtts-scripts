@@ -176,12 +176,14 @@ zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_
        	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
 sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $bookwrkdir/text-book.txt | \
-    awk -v obook=$obook -v twd=$twd -v preview=$preview -v termcor=$termcor -v editor=$edi -vbkwrkdir="$bookwrkdir/" -f scriptdb/preview.awk
+    awk -v obook=$obook -v twd=$twd -v preview=$preview -v termcor=$termcor -v editor=$edi -vbkwrkdir="$bookwrkdir/" -f scriptdb/preview.awk 
 
-printf '\e[36m%s \e[093m%s\e[36m%s\e[0m ' "Создано дискретных скриптов:" $(ls -l $bookwrkdir/*.sh | wc -l)
+totnum=$(cat $bookwrkdir/totnum)
+
+printf '\e[36m%s \e[093m%s \e[36m%s \e[093m%s \e[0m' "Создано дискретных скриптов:" $(ls -l $bookwrkdir/*.sh | wc -l) "Всего остаток слов:" $totnum
 
 mo_disc=$(date +%s.%N); duration=$( echo $mo_disc - $mo_pre | bc )
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Создание дискретных скриптов:" $duration "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Время:" $duration "сек"
 
 chmod +x $bookwrkdir/*.sh
 # Собираем книгу и удаляем временные файлы
