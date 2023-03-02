@@ -3615,6 +3615,8 @@ for(wrd in omap["x2055"]){omakevars(x2055,"x2055");for(y=1;y<=wln;y++)         #
  if(iwrd=="начала") {
    if ( gl_in(1) && s(0,0) )
    { l[i]=omo1; r[797]++; if(dbg){print "R797"}; continue};
+   if ( (suw_edzeim(1)||w(1,"она")) && s(0,0) )
+   { l[i]=omo1; r[797]++; if(dbg){print "R797"}; continue};
  };
  #
  if ( sw_es_r_f() )
@@ -3737,6 +3739,8 @@ for(wrd in omap["x2063"]){omakevars(x2063,"x2063");for(y=1;y<=wln;y++)         #
  #
  if ( (pre_da(-1)||pre_pr(-1)||pre_ro(-1)||pre_tv(-1)) &&
        (suw_edzeda(1)||suw_edzepr(1)||suw_edzero(1)||suw_edzetv(1)||prl_edzeda(1)||prl_edzepr(1)||prl_edzero(1)||prl_edzetv(1)) && s(-1,0) )
+ { l[i]=omo2; r[817]++; if(dbg){print "R817"}; continue};
+ if ( (pre_da(-1)||pre_pr(-1)||pre_ro(-1)||pre_tv(-1)) && s(-1,-1) && p(0) )
  { l[i]=omo2; r[817]++; if(dbg){print "R817"}; continue};
  if ( (suw_edzeda(1)||suw_edzepr(1)||suw_edzero(1)||suw_edzetv(1)||prl_edzeda(1)||prl_edzepr(1)||prl_edzero(1)||prl_edzetv(1)) && s(0,0) )
  { l[i]=omo2; r[817]++; if(dbg){print "R817"}; continue};
