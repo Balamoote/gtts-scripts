@@ -67,9 +67,9 @@ function isname(n,    el, rett)                   # Слово с заглавн
                 { el = "^" RUUC rulc "+$"; if ( l[i+n] ~ el ) {rett=1} else {rett=0}; return rett }
 function cap(n,    rett)                          # Слово с заглавной буквы?
                 { if ( substr(l[i+n],1,1) ~ RUUC ) {rett=1} else {rett=0}; return rett }
-function mark(mrk,wl,    k, el, vmrk, rett)      # нахождение в подстроке #xxx (mrk) метки wl
+function mark(mrk,wl,    k, el, vmrk, rett)       # нахождение в подстроке #xxx (mrk) метки wl
                 { vmrk= "^" mrk;el="_" wl "_";split(winfo,wrds,"#");for(k in wrds){if(wrds[k]~vmrk&&wrds[k]~el){rett=1;break}else{rett=0};}; return rett }
-function nmark(n,mrk,wl,    k, el, vmrk, rett) # нахождение в подстроке #xxx (mrk) метки wl
+function nmark(n,mrk,wl,    k, el, vmrk, rett)    # нахождение в подстроке #xxx (mrk) метки wl
                 { vmrk= "^" mrk;el="_" wl "_";split(wordmark(n),wrds,"#");for(k in wrds){if(wrds[k]~vmrk&&wrds[k]~el){rett=1;break}else{rett=0};}; return rett }
 function w(n, wl,    wrds, rett)                  # нахождение в списке? = "одно из слов"
                 { stoar(wl, wrds, "[ |]"); if (lc(n) in wrds) {rett=1} else {rett=0}; return rett }
@@ -655,7 +655,8 @@ function mest_ed(n,                                                             
                           wd in mst_ed_mu_ro||wd in mst_ed_mu_tv||wd in mst_ed_mu_vi||wd in mst_ed_pr||wd in mst_ed_ro||wd in mst_ed_sr||
                           wd in mst_ed_sr_da||wd in mst_ed_sr_im||wd in mst_ed_sr_pr||wd in mst_ed_sr_ro||wd in mst_ed_sr_tv||
                           wd in mst_ed_sr_vi||wd in mst_ed_tv||wd in mst_ed_vi||wd in mst_ed_ze||wd in mst_ed_ze_da||wd in mst_ed_ze_im||
-                          wd in mst_ed_ze_pr||wd in mst_ed_ze_ro||wd in mst_ed_ze_tv||wd in mst_ed_ze_vi)                                       {rett=1} else {rett=0}; return rett}
+                          wd in mst_ed_ze_pr||wd in mst_ed_ze_ro||wd in mst_ed_ze_tv||wd in mst_ed_ze_vi||wd in mst_im||wd in mst_ro||
+                          wd in mst_da||wd in mst_tv||wd in mst_pr)                                                                             {rett=1} else {rett=0}; return rett}
 function mest_mn(n,       wd,rett) { wd = lc(n); if (wd in mst_mn_im||wd in mst_mn_ro||wd in mst_mn_vi||wd in mst_mn_da||wd in mst_mn_pr||
                           wd in mst_mn_tv||wd in mst_mn)                                                                                        {rett=1} else {rett=0}; return rett}
 function mest_edmu(n,                                                                                                                           wd,rett) { wd = lc(n);
