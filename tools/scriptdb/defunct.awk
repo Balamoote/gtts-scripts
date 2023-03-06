@@ -1,9 +1,50 @@
 # Набор правил обработки для deomo.awk в виде специфицеских для класса слова. Вынесены в отдельный файл, чтобы не загромождать основной файл.
 # let @a=1|%s/"D\zs\d\+\ze"/\=''.(@a+setreg('a',@a+1))/g|%s/ d\[\zs\d\+\ze\]++; if(dbg){print "D\(\d\+\)"/\1/g 
 # При срабатывании функции выдают значение TRUE, при вызове аргументы НЕ указываются.
+function sw_tv_f(rett, stopp) { while (stopp == 0) {
+ #
+ if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ut") && s(-1,-1) )
+ { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+ if ( (gl_pnin(1)||gl_pned(1)||gl_pnmn(1)||deep_pn(1)) && nmark(1,"GG","Ut") && s(0,0) )
+ { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+
+break}; edro2mnim=""; return rett }
+
+function sw_ro_f(rett, stopp) { while (stopp == 0) {
+ if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Nnero") && s(-1,-1) )
+ { rett=0; stopp=1; d[3]++; if(dbg){print "D3"}; continue };
+ if ( (gl_pein(-1)||gl_peed(-1)||gl_pemn(-1)||deep_pe(-1)) && nmark(-1,"GG","Nnero") && s(-1,-1) )
+ { rett=0; stopp=1; d[4]++; if(dbg){print "D4"}; continue };
+ if ( (gl_nein(-1)||gl_need(-1)||gl_nemn(-1)||gl_vzed(-1)||deep_ne(-1)) && nmark(-1,"GG","Nnero") && s(-1,-1) )
+ { rett=0; stopp=1; d[5]++; if(dbg){print "D5"}; continue };
+
+
+ if ( (mest_ro(-2)||suw_edro(-2)||suw_mnro(-2)) &&
+       (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ur") && s(-2,-1) )
+ { rett=0; stopp=1; d[80]++; if(dbg){print "D80"}; continue };
+ if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ur") && s(-1,-1) )
+ { rett=stopp=1; d[81]++; if(dbg){print "D81"}; continue };
+ if ( (gl_nein(-1)||gl_need(-1)||gl_nemn(-1)||deep_ne(-1)) && nmark(-1,"GG","Ur") && s(-1,-1) )
+ { rett=stopp=1; d[82]++; if(dbg){print "D82"}; continue };
+ if ( (suw_edtv(-1)||suw_mntv(-1)) &&
+	 (gl_pein(1)||gl_peed(1)||gl_pemn(1)||deep_pe(1)) && nmark(1,"GG","v-t") && s(-1,0) )
+ { rett=stopp=1; d[82]++; if(dbg){print "D82"}; continue };
+
+ if ( w(-2,"не") &&
+       (gl_peed(-1)||gl_pein(-1)||gl_pemn(-1)||gl_poed(-1)||deep_pe(-1)) && s(-2,-1) )
+ { rett=stopp=1; d[30]++; if(dbg){print "D30"}; continue };
+ if ( w(-2,"не") &&
+       (gl_need(-1)||gl_nein(-1)||gl_nemn(-1)||gl_poed(-1)||gl_vzed(-1)||deep_ne(-1)) && s(-2,-1) )
+ { rett=stopp=1; d[31]++; if(dbg){print "D31"}; continue };
+ if ( w(-2,"не") &&
+       (gl_pned(-1)||gl_pnin(-1)||gl_pnmn(-1)||gl_poed(-1)||deep_pn(-1)) && s(-2,-1) )
+ { rett=stopp=1; d[32]++; if(dbg){print "D32"}; continue };
+
+
+break}; edro2mnim=""; return rett }
+
 function sw_edro_f(rett,   stopp) { while (stopp == 0) {
  # родительный падеж: массовая обработка
-
  if ( (gl_pnin(-3)||gl_pned(-3)||gl_pnmn(-3)||deep_pn(-3)) && nmark(-3,"GG","Pt-v") &&
        pre_tv(-2) &&
        (suw_edtv(-1)||suw_mntv(-1)||mest_tv(-1)) && s(-2,-1) )
@@ -13,25 +54,16 @@ function sw_edro_f(rett,   stopp) { while (stopp == 0) {
           pre_da(-2) &&
           (suw_edda(-1)||suw_mnda(-1)||mest_da(-1)) && s(-3,-1) )
  { rett=0; edro2mnvi=1; stopp=1; d[2]++; if(dbg){print "D2"}; continue };
- if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Nnero") && s(-1,-1) )
- { rett=0; stopp=1; d[3]++; if(dbg){print "D3"}; continue };
- if ( (gl_pein(-1)||gl_peed(-1)||gl_pemn(-1)||deep_pe(-1)) && nmark(-1,"GG","Nnero") && s(-1,-1) )
- { rett=0; stopp=1; d[4]++; if(dbg){print "D4"}; continue };
- if ( (gl_nein(-1)||gl_need(-1)||gl_nemn(-1)||gl_vzed(-1)||deep_ne(-1)) && nmark(-1,"GG","Nnero") && s(-1,-1) )
- { rett=0; stopp=1; d[5]++; if(dbg){print "D5"}; continue };
-
 
 
  if ( narph_any(-1) &&
       gl_nemn(xsn-1) && s(xsn-1,-1) )
  { rett=0; edro2mnvi=1; stopp=1; d[6]++; if(dbg){print "D6"}; continue };
 
-
  if ( se(-1,"-") && suw_mnim(0) && suw_mnim(-1) && prl_mnim(-2) )
  { rett=0; edro2mnim=1; stopp=1; d[7]++; if(dbg){print "D7"}; continue };
  if ( se(-1,"-") && suw_mnim(0) && suw_mnim(-1) && Q(-1,"suw_edro") )
  { rett=0; edro2mnim=1; stopp=1; d[8]++; if(dbg){print "D8"}; continue };
-
  
 
  if ( !(w(-2,"не") && s(-2,-2)) &&
@@ -121,15 +153,6 @@ function sw_edro_f(rett,   stopp) { while (stopp == 0) {
         (gl_nemn(3)||gl_vzmn(3)) && s(0,2) )
  { rett=0; edro2mnvi=1; stopp=1; d[29]++; if(dbg){print "D29"}; continue };
 
- if ( w(-2,"не") &&
-       (gl_peed(-1)||gl_pein(-1)||gl_pemn(-1)||gl_poed(-1)||deep_pe(-1)) && s(-2,-1) )
- { rett=stopp=1; d[30]++; if(dbg){print "D30"}; continue };
- if ( w(-2,"не") &&
-       (gl_need(-1)||gl_nein(-1)||gl_nemn(-1)||gl_poed(-1)||gl_vzed(-1)||deep_ne(-1)) && s(-2,-1) )
- { rett=stopp=1; d[31]++; if(dbg){print "D31"}; continue };
- if ( w(-2,"не") &&
-       (gl_pned(-1)||gl_pnin(-1)||gl_pnmn(-1)||gl_poed(-1)||deep_pn(-1)) && s(-2,-1) )
- { rett=stopp=1; d[32]++; if(dbg){print "D32"}; continue };
 
  if ( mark("Yro","part") &&
       (gl_pein(-2)||gl_peed(-2)||gl_pemn(-2)||deep_pe(-2)) &&
@@ -301,13 +324,9 @@ function sw_em_d_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_em_r_f(rett, stopp) { while (stopp == 0) {
- if ( (mest_ro(-2)||suw_edro(-2)||suw_mnro(-2)) &&
-       (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ur") && s(-2,-1) )
- { rett=0; stopp=1; d[80]++; if(dbg){print "D80"}; continue };
- if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ur") && s(-1,-1) )
- { rett=stopp=1; d[81]++; if(dbg){print "D81"}; continue };
- if ( (gl_nein(-1)||gl_need(-1)||gl_nemn(-1)||deep_ne(-1)) && nmark(-1,"GG","Ur") && s(-1,-1) )
- { rett=stopp=1; d[82]++; if(dbg){print "D82"}; continue };
+ if ( sw_ro_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
+
  #
  if ( (w(-2,"нет")||pre_ro(-2)||qi_duom(-2)) &&
        (prl_mnro(-1)||prq_mnro(-1)||mest_mnro(-1)) && s(-2,-1) )
@@ -346,9 +365,8 @@ function sw_em_r_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_em_t_f(rett, stopp) { while (stopp == 0) {
- #
- if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ut") && s(-1,-1) )
- { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+ if ( sw_tv_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
  #_#_#
  if (prex == 1) {
  if ( (prex_tv(-3)||preph_tv(-3)) &&
@@ -476,9 +494,9 @@ function sw_es_v_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_es_r_f(rett, stopp) { while (stopp == 0) {
- if ( (mest_ro(-2)||suw_edro(-2)||suw_mnro(-2)) &&
-       (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ur") && s(-2,-1) )
- { rett=0; stopp=1; d[127]++; if(dbg){print "D127"}; continue };
+ if ( sw_ro_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
+
  #
  if ( (w(-2,"нет")||pre_ro(-2)||qi_duom(-2)) &&
        (prl_mnro(-1)||prq_mnro(-1)||mest_mnro(-1)) && s(-2,-1) )
@@ -489,8 +507,6 @@ function sw_es_r_f(rett, stopp) { while (stopp == 0) {
       (gl_ed(-2)||gl_in(-2)||gl_poed(-2)) &&
         (prl_edsrro(-1)||prl_edsrro(-1)||mest_ro(-1)) && s(-3,-1) )
  { rett=stopp=1; d[130]++; if(dbg){print "D130"}; continue };
- if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ur") && s(-1,-1) )
- { rett=stopp=1; d[131]++; if(dbg){print "D131"}; continue };
 
  #_#_#
  if (prex == 1) {
@@ -555,9 +571,8 @@ function sw_es_d_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_es_t_f(rett, stopp) { while (stopp == 0) {
- #
- if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ut") && s(-1,-1) )
- { rett=stopp=1; d[149]++; if(dbg){print "D149"}; continue };
+ if ( sw_tv_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
  #_#_#
  if (prex == 1) {
  if ( (prex_tv(-3)||preph_tv(-3)) &&
@@ -743,9 +758,9 @@ function sw_ez_l_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_ez_r_f(rett, stopp) { while (stopp == 0) {
- if ( (mest_ro(-2)||suw_edro(-2)||suw_mnro(-2)) &&
-       (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ur") && s(-2,-1) )
- { rett=0; stopp=1; d[198]++; if(dbg){print "D198"}; continue };
+ if ( sw_ro_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
+
  #
  if ( (w(-2,"нет")||qi_duoz(-2)) &&
        (prl_edzero(-1)||prl_edzero(-1)||prq_edzero(-1)||prq_edzero(-1)||mest_ro(-1)) && s(-2,-1) )
@@ -756,8 +771,6 @@ function sw_ez_r_f(rett, stopp) { while (stopp == 0) {
  #
  if ( (w(-1,"нет")||qi_duoz(-1)) && s(-1,-1) )
  { rett=stopp=1; d[201]++; if(dbg){print "D201"}; continue };
- if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ur") && s(-1,-1) )
- { rett=stopp=1; d[202]++; if(dbg){print "D202"}; continue };
 
  #_#_#
  if (prex == 1) {
@@ -790,9 +803,9 @@ function sw_ez_r_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_ez_t_f(rett, stopp) { while (stopp == 0) {
+ if ( sw_tv_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
  #
- if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ut") && s(-1,-1) )
- { rett=stopp=1; d[211]++; if(dbg){print "D211"}; continue };
  #_#_#
  if (prex == 1) {
  if ( (prex_tv(-3)||preph_tv(-3)) &&
@@ -940,12 +953,12 @@ function sw_mn_v_f(rett, stopp) { while (stopp == 0) {
 break}; edro2mnvi=""; return rett }
 
 function sw_mn_r_f(rett, stopp) { while (stopp == 0) {
+ if ( sw_ro_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
+
  #
 #if ( suw_any(-1) && s(-1,-1) )
 #{ rett=stopp=1; d[252]++; if(dbg){print "D252"}; continue };
- if ( (mest_ro(-2)||suw_edro(-2)||suw_mnro(-2)) &&
-       (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ur") && s(-2,-1) )
- { rett=0; stopp=1; d[253]++; if(dbg){print "D253"}; continue };
 
  if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Nnero") && s(-1,-1) )
  { rett=0; stopp=1; d[3]++; if(dbg){print "D3"}; continue };
@@ -1057,15 +1070,16 @@ function pl_ez_v_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function pl_kr_em_f(rett, stopp) { while (stopp == 0) {
- if ( (w(-2,"я ты он был будь стал")||suw_edmuim(-2)) &&
+ cst="я ты он был буду будь стал стану"
+ if ( (w(-2,cst)||suw_edmuim(-2)) &&
       prl_kred_sr(-1) && s(-2,-1) && (p(0)||gl_in(1)||pre_any(1)) )
  { rett=stopp=1; d[278]++; if(dbg){print "D278"}; continue };
- if ( (w(-1,"я ты он был будь стал")||suw_edmuim(-1)) && s(-1,-1) && (p(0)||gl_in(1)||pre_any(1)) )
+ if ( (w(-1,cst)||suw_edmuim(-1)) && s(-1,-1) && (p(0)||gl_in(1)||pre_any(1)) )
  { rett=stopp=1; d[279]++; if(dbg){print "D279"}; continue };
- if ( w(1,"был было будь стал") && s(0,0) )
- { rett=stopp=1; d[280]++; if(dbg){print "D280"}; continue };
- if ( w(-1,"был будь стал") && s(0,0) )
+ if ( w(-1,cst) && s(0,0) )
  { rett=stopp=1; d[281]++; if(dbg){print "D281"}; continue };
+ if ( w(1,"был будь") && s(0,0) )
+ { rett=stopp=1; d[280]++; if(dbg){print "D280"}; continue };
 break}; return rett }
 
 function pl_kr_ez_f(rett, stopp) { while (stopp == 0) {
