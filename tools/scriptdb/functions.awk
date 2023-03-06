@@ -807,7 +807,8 @@ function qi_mn(n,                                                               
  function narph_napr(n,                                                                                                                         rett) {
                      if ( qxs(n,"во","все","стороны") )                                                                                         {rett=1} else {rett=0}; return rett }
  function narph_spos(n,                                                                                                                         rett) {
-                     if ( qxs(n,"с","ходу") )                                                                                                   {rett=1} else {rett=0}; return rett }
+                     if ( qxs(n,"с","ходу")||
+                          qxs(n,"близко","к","сердцу") )                                                                                        {rett=1} else {rett=0}; return rett }
 
  function narph_any(n,   rett) { if ( narph_vrem(n)||narph_spos(n)||narph_napr(n) )                                                             {rett=1} else {rett=0}; return rett }
 
