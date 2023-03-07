@@ -1,6 +1,78 @@
 # Набор правил обработки для deomo.awk в виде специфицеских для класса слова. Вынесены в отдельный файл, чтобы не загромождать основной файл.
 # let @a=1|%s/"D\zs\d\+\ze"/\=''.(@a+setreg('a',@a+1))/g|%s/ d\[\zs\d\+\ze\]++; if(dbg){print "D\(\d\+\)"/\1/g 
 # При срабатывании функции выдают значение TRUE, при вызове аргументы НЕ указываются.
+function sw_im_f(rett, stopp) { while (stopp == 0) {
+ #
+ cst_gl = "цвету суть кучу тону"
+ cst0   = "дома повести велики"
+ if ( W(0,cst0) ) {
+ if ( mod_ed(-2) && gl_needge(-2) && gl_in(-1) && s(-2,-1) && p(0) &&
+      W(-1,"быть") )
+ { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+ if ( (gl_needge(-1)||deep_ne(-1)) && s(-1,-1) && p(0) &&
+      W(-1,cst_gl) )
+ { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+ if ( (gl_nein(1)||gl_needge(1)||deep_ne(1)) && s(0,0) && p(-1) &&
+      W(1,cst_gl) )
+ { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+
+ if ( suw_edmuim(0) ) {
+    if ( mod_ed(-2) && gl_needmu(-2) && gl_in(-1) && s(-2,-1) && p(0) &&
+      W(-1,"быть") )
+    { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+    if ( gl_needmu(-1) && s(-1,-1) && p(0) &&
+          W(-1,cst_gl) )
+    { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+    if ( gl_needmu(1) && s(0,0) && p(-1) &&
+          W(1,cst_gl) )
+    { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+ };
+ if ( suw_edsrim(0) ) {
+    if ( mod_ed(-2) && gl_needsr(-2) && gl_in(-1) && s(-2,-1) && p(0) &&
+      W(-1,"быть") )
+    { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+   if ( gl_needsr(-1) && s(-1,-1) && p(0) &&
+         W(-1,cst_gl) )
+   { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+   if ( gl_needsr(1) && s(0,0) && p(-1) &&
+         W(1,cst_gl) )
+   { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+ };
+ if ( suw_edzeim(0) ) {
+    if ( mod_ed(-2) && gl_needze(-2) && gl_in(-1) && s(-2,-1) && p(0) &&
+      W(-1,"быть") )
+    { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+    if ( gl_needze(-1) && s(-1,-1) && p(0) &&
+          W(-1,cst_gl) )
+    { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+    if ( gl_needze(1) && s(0,0) && p(-1) &&
+          W(1,cst_gl) )
+    { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+ };
+ if ( suw_mnim(0) ) {
+    if ( mod_ed(-2) && gl_nemn(-2) && gl_in(-1) && s(-2,-1) && p(0) &&
+      W(-1,"быть") )
+    { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+    if ( gl_nemn(-1) && s(-1,-1) && p(0) &&
+          W(-1,cst_gl) )
+    { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+    if ( gl_nemn(1) && s(0,0) && p(-1) &&
+          W(1,cst_gl) )
+    { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+ };};
+
+break}; return rett }
+
+function sw_da_f(rett, stopp) { while (stopp == 0) {
+ #
+ if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ud") && s(-1,-1) )
+ { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+ if ( (gl_pnin(1)||gl_pned(1)||gl_pnmn(1)||deep_pn(1)) && nmark(1,"GG","Ud") && s(0,0) &&
+       W(0,"смогу") )
+ { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
+
+break}; return rett }
+
 function sw_tv_f(rett, stopp) { while (stopp == 0) {
  #
  if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ut") && s(-1,-1) )
@@ -8,7 +80,7 @@ function sw_tv_f(rett, stopp) { while (stopp == 0) {
  if ( (gl_pnin(1)||gl_pned(1)||gl_pnmn(1)||deep_pn(1)) && nmark(1,"GG","Ut") && s(0,0) )
  { rett=stopp=1; d[93]++; if(dbg){print "D93"}; continue };
 
-break}; edro2mnim=""; return rett }
+break}; return rett }
 
 function sw_ro_f(rett, stopp) { while (stopp == 0) {
  if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Nnero") && s(-1,-1) )
@@ -26,8 +98,11 @@ function sw_ro_f(rett, stopp) { while (stopp == 0) {
  { rett=stopp=1; d[81]++; if(dbg){print "D81"}; continue };
  if ( (gl_nein(-1)||gl_need(-1)||gl_nemn(-1)||deep_ne(-1)) && nmark(-1,"GG","Ur") && s(-1,-1) )
  { rett=stopp=1; d[82]++; if(dbg){print "D82"}; continue };
+#if ( (suw_edtv(-1)||suw_mntv(-1)) &&
+#    (gl_pein(1)||gl_peed(1)||gl_pemn(1)||deep_pe(1)) && nmark(1,"GG","v-t") && s(-1,0) )
+#{ rett=stopp=1; d[82]++; if(dbg){print "D82"}; continue };
  if ( (suw_edtv(-1)||suw_mntv(-1)) &&
-	 (gl_pein(1)||gl_peed(1)||gl_pemn(1)||deep_pe(1)) && nmark(1,"GG","v-t") && s(-1,0) )
+	 (gl_pein(1)||gl_peed(1)||gl_pemn(1)||deep_pe(1)) && s(-1,0) )
  { rett=stopp=1; d[82]++; if(dbg){print "D82"}; continue };
 
  if ( w(-2,"не") &&
@@ -239,6 +314,9 @@ function sw_edro_f(rett,   stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_em_i_f(rett, stopp) { while (stopp == 0) {
+ if ( sw_im_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
+
  #_#_#
  if (prex == 1) {
  if ( prex_im(-2) &&
@@ -290,6 +368,8 @@ function sw_em_v_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_em_d_f(rett, stopp) { while (stopp == 0) {
+ if ( sw_da_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
 #if ( (gl_nein(-2)||gl_need(-2)||gl_nemn(-2)||deep_ne(-2)) && nmark(-2,"GG","Pd-t") &&
 #        pre_da(-1) && s(-2,-1) )
 #{ rett=stopp=1; d[70]++; if(dbg){print "D70"}; continue };
@@ -444,6 +524,9 @@ function sw_em_z_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_es_i_f(rett, stopp) { while (stopp == 0) {
+ if ( sw_im_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
+
  #_#_#
  if (prex == 1) {
  if ( prex_im(-2) &&
@@ -539,6 +622,8 @@ function sw_es_r_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_es_d_f(rett, stopp) { while (stopp == 0) {
+ if ( sw_da_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
  #
  if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ud") && s(-1,-1) )
  { rett=stopp=1; d[140]++; if(dbg){print "D140"}; continue };
@@ -626,6 +711,10 @@ function sw_es_p_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_ez_i_f(rett, stopp) { while (stopp == 0) {
+ if ( sw_im_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
+
+
  if ( qf(5,"gl_paedze") && s(0,qfn-1) )
  { rett=stopp=1; d[163]++; if(dbg){print "D163"}; continue };
  if ( w(-1,"она") && gl_paedze(0) && s(0,0) )
@@ -687,10 +776,8 @@ function sw_ez_v_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_ez_d_f(rett, stopp) { while (stopp == 0) {
- if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ud") && s(-1,-1) )
- { rett=stopp=1; d[181]++; if(dbg){print "D181"}; continue };
- if ( (gl_pein(-1)||gl_peed(-1)||gl_pemn(-1)||deep_pe(-1)) && nmark(-1,"GG","Ud") && s(-1,-1) )
- { rett=stopp=1; d[182]++; if(dbg){print "D182"}; continue };
+ if ( sw_da_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
  #_#_#
  if (prex == 1) {
  if ( (prex_da(-3)||preph_da(-3)) &&
@@ -860,6 +947,9 @@ break}; return rett }
 function sw_mn_i_f(rett, stopp) { while (stopp == 0) {
  if ( edro2mnim==1 )
  { edro2mnim==""; rett=stopp=1; d[225]++; if(dbg){print "D225"}; continue };
+ if ( sw_im_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
+
 
  if ( pre_pr(-3) &&
       (prl_edpr(-2)||prq_edpr(-2)||mest_pr(-2)) &&
@@ -1008,10 +1098,8 @@ function sw_mn_r_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_mn_d_f(rett, stopp) { while (stopp == 0) {
- if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Ud") && s(-1,-1) )
- { rett=stopp=1; d[262]++; if(dbg){print "D262"}; continue };
- if ( (gl_pein(-1)||gl_peed(-1)||gl_pemn(-1)||deep_pe(-1)) && nmark(-1,"GG","Ud") && s(-1,-1) )
- { rett=stopp=1; d[263]++; if(dbg){print "D263"}; continue };
+ if ( sw_da_f() )
+ { rett=stopp=1; d[210]++; if(dbg){print "D210"}; continue };
  #_#_#
  if (prex == 1) {
  if ( (prex_da(-2)||preph_da(-2)) &&
