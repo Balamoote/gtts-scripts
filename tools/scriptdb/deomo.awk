@@ -2946,6 +2946,64 @@ for(wrd in omap["x1031"]){omakevars(x1031,"x1031");for(y=1;y<=wln;y++)          
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
 
+### x1032 !_#_!
+ #  x1032 ghost_        parfume_   духами  ду́хами  духа́ми
+for(wrd in omap["x1031"]){omakevars(x1031,"x1031");for(y=1;y<=wln;y++)                    # header1
+{makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( w(-1,"светлыми добрыми злыми лесными подземными тёмными") && s(-1,-1) )
+ { l[i]=omo1; r[693]++; if(dbg){print "R693"}; continue};
+ #
+ if ( wc(-1,"^запах ^благоух ^воня ^пользова") && s(-1,-1) )
+ { l[i]=omo2; r[693]++; if(dbg){print "R693"}; continue};
+ if ( w(-1,"дешёвыми дорогими женскими модными мужскими тошнотворными") && s(-1,-1) )
+ { l[i]=omo2; r[693]++; if(dbg){print "R693"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
+
+### x1033 !_#_!
+ #  x1033 ghost_        parfume_  духах  ду́хах  духа́х
+for(wrd in omap["x1033"]){omakevars(x1033,"x1033");for(y=1;y<=wln;y++)                    # header1
+{makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( w(-1,"светлых добрых злых лесных подземных тысячи тёмных") && s(-1,-1) )
+ { l[i]=omo1; r[693]++; if(dbg){print "R693"}; continue};
+ #
+ if ( w(-1,"дешёвых дорогих женских модных мужских тошнотворных") && s(-1,-1) )
+ { l[i]=omo2; r[693]++; if(dbg){print "R693"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
+
+### x1034 !_#_!
+ #  x1034 ghost_        parfume_  духи  ду́хи  духи́
+for(wrd in omap["x1034"]){omakevars(x1034,"x1034");for(y=1;y<=wln;y++)                    # header1
+{makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( w(-1,"светлые добрые злые лесные подземные тёмные") && s(-1,-1) )
+ { l[i]=omo1; r[693]++; if(dbg){print "R693"}; continue};
+ #
+ if ( w(-1,"дешёвые дорогие женские модные мужские тошнотворные") && s(-1,-1) )
+ { l[i]=omo2; r[693]++; if(dbg){print "R693"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
+
+### x1035 !_#_!
+ #  x1035 ghost_        parfume_  духов  ду́хов  духо́в
+for(wrd in omap["x1035"]){omakevars(x1035,"x1035");for(y=1;y<=wln;y++)                    # header1
+{makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( w(-1,"светлых добрых злых лесных подземных тысяч тёмных вонь") && s(-1,-1) )
+ { l[i]=omo1; r[693]++; if(dbg){print "R693"}; continue};
+ if ( wc(-1,"^впусти ^вызава ^выпусти ^заклина ^призыв ^укроти ^укрощ") && s(-1,-1) )
+ { l[i]=omo1; r[693]++; if(dbg){print "R693"}; continue};
+ #
+ if ( w(-1,"дешёвых дорогих женских модных мужских тошнотворных") && s(-1,-1) )
+ { l[i]=omo2; r[693]++; if(dbg){print "R693"}; continue};
+ if ( wc(-1,"^аромат ^запах ^благоух ^изготов ^флакон ^шлейф ^воня ^пользова") && s(-1,-1) )
+ { l[i]=omo2; r[693]++; if(dbg){print "R693"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
+
 ### x2001 !_#_!
  #  x2001 deep_na_      mest_ez_i_
 for(wrd in omap["x2001"]){omakevars(x2001,"x2001");for(y=1;y<=wln;y++)         # header1
@@ -6228,6 +6286,10 @@ for(wrd in omap["x2229"]){omakevars(x2229,"x2229");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2230"]){omakevars(x2230,"x2230");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  prex=1
+ if(iwrd=="кружке") {
+   if ( w(1,"воды пива вина сока молока жидкости эля") && s(0,0) )
+   { l[i]=omo2; r[1273]++; if(dbg){print "R1273"}; continue};
+ };
  #
  if ( sw_em_p_f() )
  { l[i]=omo1; r[1261]++; if(dbg){print "R1261"}; continue};
@@ -6295,7 +6357,7 @@ for(wrd in omap["x2234"]){omakevars(x2234,"x2234");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2235"]){omakevars(x2235,"x2235");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  if(iwrd=="города") {
-   if ( w(-1,"смелость") && w(1,"берёт") && s(0,0) )
+   if ( w(-1,"смелость") && w(1,"берёт") && s(-1,0) )
    { l[i]=omo2; r[1273]++; if(dbg){print "R1273"}; continue};
  };
  if(iwrd=="шенкеля") {
