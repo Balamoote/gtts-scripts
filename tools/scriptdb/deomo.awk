@@ -4673,8 +4673,14 @@ for(wrd in omap["x2113"]){omakevars(x2113,"x2113");for(y=1;y<=wln;y++)         #
  { l[i]=omo1; r[977]++; if(dbg){print "R977"}; continue};
 
  #
- if ( sw_ez_v_f() )
+ if ( w(-1,"в") && s(-1,-1) )
  { l[i]=omo2; r[978]++; if(dbg){print "R978"}; continue};
+ if ( (prl_edvize||prq_edzevi(-1)||mest_edzevi(-1)) && s(-1,-1) )
+ { l[i]=omo2; r[978]++; if(dbg){print "R978"}; continue};
+
+ # всё остальное 
+ l[i]=omo1; r[977]++; if(dbg){print "R977"}; continue
+
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 
 ### x2114 !_#_!
@@ -7287,6 +7293,23 @@ for(wrd in omap["x2290"]){omakevars(x2290,"x2290");for(y=1;y<=wln;y++)         #
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 
+### x2291 !_#_!
+ #  x2291 sw_ez_vr_      sw_mn_iv_  методы  мето́ды  ме́тоды
+for(wrd in omap["x2291"]){omakevars(x2291,"x2291");for(y=1;y<=wln;y++)         # header1
+{makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( sw_mn_i_f() )
+ { l[i]=omo2; r[1331]++; if(dbg){print "R1331"}; continue};
+ #
+ if ( sw_mn_v_f() )
+ { l[i]=omo2; r[1332]++; if(dbg){print "R1332"}; continue};
+ prex=1
+ #
+ if ( sw_ez_r_f() )
+ { l[i]=omo1; r[1330]++; if(dbg){print "R1330"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
+
 ### x3001 !_#_!
  #  x3001 gl_paedze_    sw_em_r_   sw_mn_iv_
 for(wrd in omap["x3001"]){omakevars(x3001,"x3001");for(y=1;y<=wln;y++)         # header1
@@ -7554,6 +7577,21 @@ for(wrd in omap["x4702"]){omakevars(x4702,"x4702");for(y=1;y<=wln;y++)         #
  { l[i]=omo2; r[1474]++; if(dbg){print "R1474"}; continue};
  if ( (suw_edro(1)||suw_mnro(1)) && s(0,0) )
  { l[i]=omo2; r[1475]++; if(dbg){print "R1475"}; continue};
+
+ }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
+
+### x4703 !_#_!
+ #  x4703 temp_    time_    временной  вре́менной  временно́й
+for(wrd in omap["x4703"]){omakevars(x4703,"x4703");for(y=1;y<=wln;y++)         # header1
+{makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if ( w(-1,"пространственно") && se(-1,"-") )
+ { l[i]=omo2; r[1472]++; if(dbg){print "R1472"}; continue};
+ #
+ if(iwrd=="временной") {
+   if ( (suw_edmuim(1)||suw_edmuvi(1)) && s(0,0) )
+   { l[i]=omo2; r[1472]++; if(dbg){print "R1472"}; continue};
+ };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 
