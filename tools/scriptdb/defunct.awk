@@ -190,14 +190,12 @@ function sw_ro_f(rett, stopp) { while (stopp == 0) {
  { rett=stopp=1; d[82]++; if(dbg){print "D82"}; continue };
 
  if ( w(-2,"не") &&
-       (gl_peed(-1)||gl_pein(-1)||gl_pemn(-1)||gl_poed(-1)||deep_pe(-1)) && s(-2,-1) )
+       (gl_ed(-1)||gl_in(-1)||gl_mn(-1)||gl_poed(-1)||gl_pomn(-1)||deep(-1)) && s(-2,-1) )
  { rett=stopp=1; d[30]++; if(dbg){print "D30"}; continue };
- if ( w(-2,"не") &&
-       (gl_need(-1)||gl_nein(-1)||gl_nemn(-1)||gl_poed(-1)||gl_vzed(-1)||deep_ne(-1)) && s(-2,-1) )
- { rett=stopp=1; d[31]++; if(dbg){print "D31"}; continue };
- if ( w(-2,"не") &&
-       (gl_pned(-1)||gl_pnin(-1)||gl_pnmn(-1)||gl_poed(-1)||deep_pn(-1)) && s(-2,-1) )
- { rett=stopp=1; d[32]++; if(dbg){print "D32"}; continue };
+ if ( w(-3,"не") &&
+       (gl_ed(-2)||gl_in(-2)||gl_mn(-2)||gl_poed(-2)||gl_pomn(-2)||deep(-2)||w(-2,"нет")) &&
+         w(-1,"и ни никакого никакой никаких") && s(-3,-1) )
+ { rett=stopp=1; d[30]++; if(dbg){print "D30"}; continue };
 
 
 break}; edro2mnim=""; return rett }
@@ -319,14 +317,23 @@ function sw_edro_f(rett,   stopp) { while (stopp == 0) {
  { rett=stopp=1; d[33]++; if(dbg){print "D33"}; continue };
  if ( p(-2) &&
        suw_any(-1) && s(-1,-1) && sv(-1,-1,"-") &&
-   !(souz(-1)||qast(-1)||pre_any(-1)||prl_any(-1)||prq_any(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph_any(-1)) )
+   !(souz(-1)||qast(-1)||pre_any(-1)||prl_any(-1)||prq_any(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph_any(-1)||gl_poed(-1)) )
  { rett=stopp=1; d[34]++; if(dbg){print "D34"}; continue };
  if ( !(pre_any(-2) && s(-2,-2)) &&
       suw_any(-1) && s(-1,-1) && (p(0)||w(1,"и или")||pre_any(1)) &&
-   !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph_any(-1)) )
+   !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph_any(-1)||gl_poed(-1)) )
  { rett=stopp=1; d[35]++; if(dbg){print "D35"}; continue };
  if ( pre_any(-2) && p(-3) &&
        suw_any(-1) && s(-2,-1) && Q(-1,"narph_any") &&
+   !(souz(-1)||qast(-1)||pre_any(-1)||prl_any(-1)||prq_any(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph_any(-1)) )
+ { rett=stopp=1; d[36]++; if(dbg){print "D36"}; continue };
+ if ( (prl_any(-2)||prq_any(-2)||mest_any(-2)||souz(-2)) && p(-4) &&
+       (prl_any(-2)||prq_any(-2)) &&
+        suw_any(-1) && s(-3,-1) &&
+   !(souz(-1)||qast(-1)||pre_any(-1)||prl_any(-1)||prq_any(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph_any(-1)) )
+ { rett=stopp=1; d[36]++; if(dbg){print "D36"}; continue };
+ if ( (prl_any(-2)||prq_any(-2)||mest_any(-2)||souz(-2)) && p(-3) &&
+       suw_any(-1) && s(-2,-1) &&
    !(souz(-1)||qast(-1)||pre_any(-1)||prl_any(-1)||prq_any(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph_any(-1)) )
  { rett=stopp=1; d[36]++; if(dbg){print "D36"}; continue };
  if ( !(pre_any(-2) && s(-2,-2)) &&
@@ -334,7 +341,7 @@ function sw_edro_f(rett,   stopp) { while (stopp == 0) {
    !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph_any(-1)) )
  { rett=stopp=1; d[37]++; if(dbg){print "D37"}; continue };
  if ( suw_edzeim(-1) && qf(5,"gl_paedze") && s(-1,qfn-1) &&
-   !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph_any(-1)) )
+   !(souz(-1)||qast(-1)||pre_any(-1)||prl_ed(-1)||prl_mn(-1)||mest_ed(-1)||mest_mn(-1)||gl_ed(-1)||gl_pemn(-1)||gl_pnmn(-1)||gl_nemn(-1)||nar_vrem(-1)||narph_any(-1)||gl_poed(-1)) )
  { rett=stopp=1; d[38]++; if(dbg){print "D38"}; continue };
  if ( prq_any(-2) &&
        (suw_edtv(-1)||suw_mntv(-1)) && s(-2,-1) &&
@@ -1093,12 +1100,17 @@ break}; edro2mnim=""; return rett }
 function sw_mn_v_f(rett, stopp) { while (stopp == 0) {
  if ( edro2mnvi==1 )
  { rett=stopp=1; d[240]++; if(dbg){print "D240"}; continue };
- if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Uv") && s(-1,-1) )
- { rett=stopp=1; d[241]++; if(dbg){print "D241"}; continue };
- if ( (gl_pein(-1)||gl_peed(-1)||gl_pemn(-1)||deep_pe(-1)) && nmark(-1,"GG","Uv") && s(-1,-1) )
+
+ if ( (gl_pein(-1)||gl_peed(-1)||gl_pemn(-1)||deep_pe(-1)) && s(-1,-1) )
  { rett=stopp=1; d[242]++; if(dbg){print "D242"}; continue };
- if ( (gl_nein(-1)||gl_need(-1)||gl_nemn(-1)||deep_ne(-1)) && nmark(-1,"GG","Uv") && s(-1,-1) )
- { rett=stopp=1; d[243]++; if(dbg){print "D243"}; continue };
+ if ( (gl_in(-1)||gl_ed(-1)||gl_mn(-1)||deep(-1)||gl_poed(-1)) && nmark(-1,"GG","Uv") && s(-1,-1) )
+ { rett=stopp=1; d[241]++; if(dbg){print "D241"}; continue };
+#if ( (gl_pnin(-1)||gl_pned(-1)||gl_pnmn(-1)||deep_pn(-1)) && nmark(-1,"GG","Uv") && s(-1,-1) )
+#{ rett=stopp=1; d[241]++; if(dbg){print "D241"}; continue };
+#if ( (gl_pein(-1)||gl_peed(-1)||gl_pemn(-1)||deep_pe(-1)) && nmark(-1,"GG","Uv") && s(-1,-1) )
+#{ rett=stopp=1; d[242]++; if(dbg){print "D242"}; continue };
+#if ( (gl_nein(-1)||gl_need(-1)||gl_nemn(-1)||deep_ne(-1)) && nmark(-1,"GG","Uv") && s(-1,-1) )
+#{ rett=stopp=1; d[243]++; if(dbg){print "D243"}; continue };
 
  #
  if ( W(-3,"не") &&

@@ -4763,16 +4763,18 @@ for(wrd in omap["x2121"]){omakevars(x2121,"x2121");for(y=1;y<=wln;y++)         #
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 
 ### x2122 !_#_!
- #  x2122 phrase_       sw_em_r_  < следа >
+ #  x2122 phrase_       sw_em_r_   следа  следа́  сле́да
 for(wrd in omap["x2122"]){omakevars(x2122,"x2122");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( w(-1,"без ни") && s(-1,-1) &&
-       w(0,"следа") )
+ if ( w(-1,"без ни") && s(-1,-1) )
  { l[i]=omo1; r[988]++; if(dbg){print "R988"}; continue};
+ if ( w(-3,"не") &&
+       (gl_ed(-2)||gl_in(-2)||gl_mn(-2)||gl_poed(-2)||gl_pomn(-2)||deep(-2)||w(-2,"нет")) &&
+         w(-1,"и никакого") && s(-3,-1) )
+ { l[i]=omo1; d[30]++; if(dbg){print "D30"}; continue };
  #
- if ( sw_em_r_f() )
- { l[i]=omo2; r[989]++; if(dbg){print "R989"}; continue};
+  l[i]=omo2; r[989]++; if(dbg){print "R989"}; continue;
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 
