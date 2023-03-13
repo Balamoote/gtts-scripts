@@ -22,7 +22,9 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
    unxy    = "[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
    unxn    = "[^\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
    RUUC    = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]+"
+   RUUC_   = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]"
    rulc    = "[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]+"
+   rulc_   = "[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]"
    patword = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb00-9]+"
    regword = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
    fsword  = "[^АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
@@ -54,7 +56,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  #v всё же
  if ( w(-1,"не") &&
        w(1,"же ж") &&
-       q(2,"suw_mnim gl_vzmn") && s(-1,1) )
+        q(2,"suw_mnim gl_vzmn") && s(-1,1) )
  { l[i]=is_vsje; r[1]++; if(dbg){print "R1"}; continue};
  if ( w(1,"же ж") &&
        mest_it(2) &&
@@ -71,62 +73,60 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
 
 
  #v всё в (порядке)
- if ( w(1,"ли") &&
+ if ( w(1,"ли") && s(0,2) &&
        pre_tv(2) &&
-       q(3,"mest_tv prl_edtv prl_mntv") &&
-        q(4,"suw_edtv suw_mntv") &&
-          w(5,"в") &&
-           w(6,"порядке норме ажуре шоколаде исправности") && s(0,5) && (p(6)||w(7,"и")||q(7,"pre_any gl_edsr")) )
+        q(3,"mest_tv prl_edtv prl_mntv") &&
+         q(4,"suw_edtv suw_mntv") &&
+          qxs(5,"в","порядке норме ажуре шоколаде исправности") &&
+          (p(xsn)||( (w(xsn+1,"и")||q(xsn+1,"pre_any gl_edsr")) && s(xsn,xsn) )) )
  { l[i]=is_vsyo; r[6]++; if(dbg){print "R6"}; continue};
- if ( w(1,"ли") &&
+ if ( w(1,"ли") && s(0,2) &&
        pre_tv(2) &&
-       q(3,"mest_tv suw_edtv suw_mntv") &&
-         w(4,"в") &&
-          w(5,"порядке норме ажуре шоколаде исправности") && s(0,4) && (p(5)||w(6,"и")||q(6,"pre_any gl_edsr")) )
+        q(3,"mest_tv suw_edtv suw_mntv") &&
+         qxs(4,"в","порядке норме ажуре шоколаде исправности") &&
+         (p(xsn)||( (w(xsn+1,"и")||q(xsn+1,"pre_any gl_edsr")) && s(xsn,xsn) )) )
  { l[i]=is_vsyo; r[7]++; if(dbg){print "R7"}; continue};
- if ( w(1,"ли уже ведь") &&
+ if ( w(1,"ли уже ведь") && s(0,2) &&
        nar_mest(2) &&
-        w(3,"в") &&
-         w(4,"порядке норме ажуре шоколаде исправности") && s(0,3) && (p(4)||w(5,"и")||q(5,"pre_any gl_edsr")) )
+        qxs(3,"в","порядке норме ажуре шоколаде исправности") &&
+        (p(xsn)||( (w(xsn+1,"и")||q(xsn+1,"pre_any gl_edsr")) && s(xsn,xsn) )) )
  { l[i]=is_vsyo; r[8]++; if(dbg){print "R8"}; continue};
- if ( w(1,"ли уже ведь") &&
-       w(2,"в") &&
-        w(3,"порядке норме ажуре шоколаде исправности") && s(0,2) && (p(3)||w(4,"и")||q(4,"pre_any gl_edsr")) )
+ if ( qxs(1,"ли уже ведь","в","порядке норме ажуре шоколаде исправности") &&
+      (p(xsn)||( (w(xsn+1,"и")||q(xsn+1,"pre_any gl_edsr")) && s(xsn,xsn) )) )
  { l[i]=is_vsyo; r[9]++; if(dbg){print "R9"}; continue};
- if ( (phf(1,"как будто")||phf(1,"вроде бы")) &&
-        w(hfn,"в") &&
-         prl_edpr(hfn+1) &&
-          w(hfn+2,"порядке норме ажуре шоколаде исправности") && s(0,hfn+1) && (p(hfn+2)||w(hfn+3,"и")||q(hfn+3,"pre_any gl_edsr")) )
+ if ( qxs(1,"вроде как","будто бы как","в") &&
+       prl_edpr(xsn+1) &&
+        w(xsn+2,"порядке норме ажуре шоколаде исправности") &&
+         s(xsn,xsn+1) && (p(xsn+2)||( (w(xsn+3,"и")||q(xsn+3,"pre_any gl_edsr")) && s(xsn+2,xsn+2) )) )
  { l[i]=is_vsyo; r[10]++; if(dbg){print "R10"}; continue};
- if ( (phf(1,"как будто")||phf(1,"вроде бы")) &&
-        w(hfn,"в") &&
-         w(hfn+1,"порядке норме ажуре шоколаде исправности") && s(0,hfn) && (p(hfn+1)||w(hfn+2,"и")||q(hfn+2,"pre_any gl_edsr")) )
+ if ( qxs(1,"вроде как","будто бы как","в","порядке норме ажуре шоколаде исправности") &&
+      (p(xsn)||( (w(xsn+1,"и")||q(xsn+1,"pre_any gl_edsr")) && s(xsn,xsn) )) )
  { l[i]=is_vsyo; r[11]++; if(dbg){print "R11"}; continue};
- if ( q(1,"qast nar_mest") &&
-        w(2,"в") &&
-         w(3,"порядке норме ажуре шоколаде исправности") && s(0,2) && (p(3)||w(4,"и")||q(4,"pre_any gl_edsr")) )
+ if ( q(1,"qast nar_mest") && s(0,1) &&
+       qxs(2,"в","порядке норме ажуре шоколаде исправности") &&
+       (p(xsn)||( (w(xsn+1,"и")||q(xsn+1,"pre_any gl_edsr")) && s(xsn,xsn) )) )
  { l[i]=is_vsyo; r[12]++; if(dbg){print "R12"}; continue};
  if ( w(1,"в") &&
-      q(2,"prl_edpr prq_edpr") &&
-        w(3,"порядке порядок норме норму ажуре шоколаде исправности") && s(0,2) && (p(3)||w(4,"и")||q(4,"pre_any gl_edsr")) )
+       q(2,"prl_edpr prq_edpr") &&
+        w(3,"порядке порядок норме норму ажуре шоколаде исправности") &&
+         s(0,2) && ( p(3)||( (w(4,"и")||q(4,"pre_any gl_edsr")) && s(3,3) )) )
  { l[i]=is_vsyo; r[13]++; if(dbg){print "R13"}; continue};
- if ( w(1,"в") &&
-       w(2,"порядке порядок норме норму ажуре шоколаде целом исправности меру") && s(0,1) && (p(2)||w(3,"и")||q(3,"pre_any gl_edsr")) )
+ if ( qxs(1,"в","порядке порядок норме норму ажуре шоколаде целом исправности меру") &&
+      (p(xsn)||( (w(xsn+1,"и")||q(xsn+1,"pre_any gl_edsr")) && s(xsn,xsn) )) )
  { l[i]=is_vsyo; r[14]++; if(dbg){print "R14"}; continue};
- if ( qast(1) &&
-       w(2,"на") &&
-        w(3,"мази") && s(0,2) && (p(3)||w(4,"и")) )
+ if ( qast(1) && s(0,1) &&
+       qxs(2,"на","мази") && (p(xsn)||w(xsn+1,"и")) )
  { l[i]=is_vsyo; r[15]++; if(dbg){print "R15"}; continue};
- if ( w(1,"на") &&
-       w(2,"мази") && s(0,1) && (p(2)||w(3,"и")) )
+ if ( qxs(1,"на","мази") &&
+      (p(xsn)||w(xsn+1,"и")) )
  { l[i]=is_vsyo; r[16]++; if(dbg){print "R16"}; continue};
 
  # все все
  if ( w(1,"все") &&
-      q(2,"gl_pemn gl_pnmn gl_nemn") && s(0,1) )
+       q(2,"gl_pemn gl_pnmn gl_nemn") && s(0,1) )
  { l[i]=is_vsje; r[17]++; if(dbg){print "R17"}; continue};
  if ( wist(-1,"все́") &&
-      q(1,"gl_pemn gl_pnmn gl_nemn") && s(-1,0) )
+       q(1,"gl_pemn gl_pnmn gl_nemn") && s(-1,0) )
  { l[i]=is_vsyo; r[18]++; if(dbg){print "R18"}; continue};
 
 
@@ -147,10 +147,10 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
       (gl_edsr(3)||w(3,"есть")) && s(0,2) )
  { l[i]=is_vsyo; r[22]++; if(dbg){print "R22"}; continue};
  if ( phf(1,"так и") &&
-      q(3,"gl_nemn gl_pemn gl_pnmn") && s(0,2) )
+       q(3,"gl_nemn gl_pemn gl_pnmn") && s(0,2) )
  { l[i]=is_vsje; r[23]++; if(dbg){print "R23"}; continue};
  if ( phs(-1,"и так") && qv(hsn,"mest_mn") &&
-      q(1,"gl_nemn gl_pemn gl_pnmn") && !(glc_mn(1,"syg")) && s(hsn+1,0) )
+       q(1,"gl_nemn gl_pemn gl_pnmn") && !(glc_mn(1,"syg")) && s(hsn+1,0) )
  { l[i]=is_vsje; r[24]++; if(dbg){print "R24"}; continue};
  if ( phf(1,"и так") &&
       (gl_ed(3)||w(3,"есть")) && s(0,2) )
@@ -169,8 +169,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsyo; r[28]++; if(dbg){print "R28"}; continue};
 
  if ((phs(-1,"вот и")||
-      phs(-1,"ну вот и") ) &&
-       s(hsn+1,-1) && p(0) )
+      phs(-1,"ну вот и") ) && s(hsn+1,-1) && p(0) )
  { l[i]=is_vsyo; r[29]++; if(dbg){print "R29"}; continue};
 
 
@@ -182,28 +181,24 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
       phf(1,"или ничего")||
       phf(1,"и дело")||
       phf(1,"это само по себе")||
-      phf(1,"совсем не так") ) &&
-       s(0,hfn-2) )
+      phf(1,"совсем не так") ) && s(0,hfn-2) )
  { l[i]=is_vsyo; r[30]++; if(dbg){print "R30"}; continue};
 
  if ((phf(1,"на одно лицо")||
       phf(1,"в одном лице")||
       phf(1,"под богом ходим")||
-      phf(1,"за и против") ) &&
-       s(0,hfn-2) )
+      phf(1,"за и против") ) && s(0,hfn-2) )
  { l[i]=is_vsje; r[31]++; if(dbg){print "R31"}; continue};
 
  if ( mest_mnim(1) &&
-      q(2,"nar_mest nar_vrem") &&
-      (phf(3,"на одно лицо")||
-       phf(3,"под богом ходим") ) &&
-        s(0,hfn-2) )
+       q(2,"nar_mest nar_vrem") &&
+       (phf(3,"на одно лицо")||
+        phf(3,"под богом ходим") ) && s(0,hfn-2) )
  { l[i]=is_vsje; r[32]++; if(dbg){print "R32"}; continue};
 
  if ( mest_mnim(1) &&
       (phf(2,"на одно лицо")||
-       phf(2,"под богом ходим") ) &&
-        s(0,hfn-2) )
+       phf(2,"под богом ходим") ) && s(0,hfn-2) )
  { l[i]=is_vsje; r[33]++; if(dbg){print "R33"}; continue};
 
  if ((phf(1,"не так уж")||
@@ -228,7 +223,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        phf(2,"под богом ходим") && s(0,2) )
  { l[i]=is_vsje; r[39]++; if(dbg){print "R39"}; continue};
  if ( phf(1,"только и") &&
-      q(3,"gl_pnmn gl_pemn gl_nemn") &&
+       q(3,"gl_pnmn gl_pemn gl_nemn") &&
         w(4,"что") && s(0,2) && sc(3,",") )
  { l[i]=is_vsje; r[40]++; if(dbg){print "R40"}; continue};
  if ( w(1,"как") &&
@@ -244,7 +239,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
 
  if ( phs(-1,"всё равно") &&
        gl_pnmn(1) &&
-       q(2,"mest_ed mest_mn") && s(-1,0) && sc(1,",") )
+        q(2,"mest_ed mest_mn") && s(-1,0) && sc(1,",") )
  { l[i]=is_vsje; r[44]++; if(dbg){print "R44"}; continue};
  if ( phf(1,"больше по") &&
       q(3,"suw_edda suw_mnda") && s(0,2) )
@@ -257,7 +252,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  if ( w(1,"позади понапрасну") && s(0,0) && p(1) )
  { l[i]=is_vsyo; r[47]++; if(dbg){print "R47"}; continue};
   if ( wf(5,"до") &&
-       w(wfn+1,"одного единого единой") && s(0,wfn) )
+        w(wfn+1,"одного единого единой") && s(0,wfn) )
  { l[i]=is_vsje; r[48]++; if(dbg){print "R48"}; continue};
 
  if ( w(-1,"и") &&
@@ -274,7 +269,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
 
  # все + сущ.мн.
  if ( mest_it(1) &&
-      q(2,"gl_vzmn gl_nemn mod_bz") && s(0,1) )
+       q(2,"gl_vzmn gl_nemn mod_bz") && s(0,1) )
  { l[i]=is_vsyo; r[52]++; if(dbg){print "R52"}; continue};
  if ((phs(-1,"ещё далеко не")||
       phs(-1,"ещё не")||
@@ -311,12 +306,12 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsyo; r[60]++; if(dbg){print "R60"}; continue};
  if ( mest_it(1) &&
        mest_da(2) &&
-       q(3,"nar_vrem nar_step") &&
+        q(3,"nar_vrem nar_step") &&
          prl_kred_sr(4) && s(0,3) )
  { l[i]=is_vsyo; r[61]++; if(dbg){print "R61"}; continue};
  if ( mest_it(1) &&
        mest_da(2) &&
-       q(3,"nar_vrem nar_step") &&
+        q(3,"nar_vrem nar_step") &&
          w(4,"не") &&
           gl_ed(5) && s(0,4) )
  { l[i]=is_vsyo; r[62]++; if(dbg){print "R62"}; continue};
@@ -349,32 +344,32 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        suw_mnim(2) && s(0,1) )
  { l[i]=is_vsyo; r[71]++; if(dbg){print "R71"}; continue};
  if ( mest_it(1) &&
-      q(2,"nar_kaq nar_spos mest_ed") && s(0,1) && p(2) )
+       q(2,"nar_kaq nar_spos mest_ed") && s(0,1) && p(2) )
  { l[i]=is_vsyo; r[72]++; if(dbg){print "R72"}; continue};
  if ( mest_it(1) &&
        pre_ro(2) &&
-       q(3,"mest_ro suw_edro suw_mnro") && s(0,2) && p(3) )
+        q(3,"mest_ro suw_edro suw_mnro") && s(0,2) && p(3) )
  { l[i]=is_vsyo; r[73]++; if(dbg){print "R73"}; continue};
  if ( mest_it(-1) &&
        pre_da(1) &&
-       q(2,"mest_da suw_edda suw_mnda prl_edda prl_mnda") && s(0,1) && p(2) )
+        q(2,"mest_da suw_edda suw_mnda prl_edda prl_mnda") && s(0,1) && p(2) )
  { l[i]=is_vsyo; r[74]++; if(dbg){print "R74"}; continue};
  if ( mest_it(-1) &&
        pre_ro(1) &&
-       q(2,"mest_ro suw_edro suw_mnro") && s(0,1) && p(2) )
+        q(2,"mest_ro suw_edro suw_mnro") && s(0,1) && p(2) )
  { l[i]=is_vsyo; r[75]++; if(dbg){print "R75"}; continue};
  if ( mest_it(1) &&
        qast(2) &&
         pre_ro(3) &&
-        q(4,"mest_ro suw_edro suw_mnro") && s(0,3) && p(4) )
+         q(4,"mest_ro suw_edro suw_mnro") && s(0,3) && p(4) )
  { l[i]=is_vsyo; r[76]++; if(dbg){print "R76"}; continue};
  if ( mest_it(-1) &&
        mest_da(1) && s(-1,0) && p(1) )
  { l[i]=is_vsyo; r[77]++; if(dbg){print "R77"}; continue};
  if ( mest_it(1) &&
        nar_vrem(2) &&
-       q(3,"gl_pnmn gl_pemn") &&
-        q(4,"suw_mnvi prl_mnim") && s(0,3) )
+        q(3,"gl_pnmn gl_pemn") &&
+         q(4,"suw_mnvi prl_mnim") && s(0,3) )
  { l[i]=is_vsyo; r[78]++; if(dbg){print "R78"}; continue};
  if ( mest_mn(-1) &&
        mest_it(1) &&
@@ -382,16 +377,16 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsyo; r[79]++; if(dbg){print "R79"}; continue};
  if ( mest_mn(1) &&
        mest_it(2) &&
-       q(3,"gl_pnmn gl_nemn") && s(0,2) && p(3) )
+        q(3,"gl_pnmn gl_nemn") && s(0,2) && p(3) )
  { l[i]=is_vsje; r[80]++; if(dbg){print "R80"}; continue};
  if ( mest_it(1) &&
        mest_mnim(2) &&
-       q(3,"gl_pnmn gl_nemn") &&
+        q(3,"gl_pnmn gl_nemn") &&
          pre_any(4) && s(0,4) )
  { l[i]=is_vsyo; r[81]++; if(dbg){print "R81"}; continue};
  if ( mest_it(-1) &&
        mest_im(1) &&
-       q(2,"prl_kred prl_krmn") && s(-1,1) )
+        q(2,"prl_kred prl_krmn") && s(-1,1) )
  { l[i]=is_vsyo; r[82]++; if(dbg){print "R82"}; continue};
  if ( mest_it(-1) &&
        mest_ed(1) &&
@@ -399,7 +394,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsyo; r[83]++; if(dbg){print "R83"}; continue};
  if ( mest_it(-1) &&
        mest_mn(1) &&
-       q(2,"gl_pnmn gl_nemn") && s(-1,1) && p(2) )
+        q(2,"gl_pnmn gl_nemn") && s(-1,1) && p(2) )
  { l[i]=is_vsyo; r[84]++; if(dbg){print "R84"}; continue};
  if ( gl_nemn(-1) &&
        mest_it(1) &&
@@ -408,13 +403,13 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  if ( mest_it(1) && !(qf(5,"gl_pemn")||qf(5,"gl_pnmn")||qf(5,"gl_in")) && s(0,0) )
  { l[i]=is_vsyo; r[86]++; if(dbg){print "R86"}; continue};
  if ( mest_it(-2) && 
-      w(-1,"не") && s(-2,-1) && p(0) )
+       w(-1,"не") && s(-2,-1) && p(0) )
  { l[i]=is_vsyo; r[87]++; if(dbg){print "R87"}; continue};
  if ( mest_it(1) &&
-      q(2,"gl_ed gl_in") && s(0,1) )
+       q(2,"gl_ed gl_in") && s(0,1) )
  { l[i]=is_vsyo; r[88]++; if(dbg){print "R88"}; continue};
  if ( q(-2,"vvod gl_ed") &&
-        mest_it(-1) && sc(-2,",") && s(-1,-1) && p(0) )
+       mest_it(-1) && sc(-2,",") && s(-1,-1) && p(0) )
  { l[i]=is_vsyo; r[89]++; if(dbg){print "R89"}; continue};
 
 
@@ -435,75 +430,72 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
 
  # как все
  if ( q(-2,"gl_in prl_edim prl_mnim prl_edtv prl_mntv") &&
-        w(-1,"как") && s(-1,-1) && sc(-2,",") && p(0) )
+       w(-1,"как") && s(-1,-1) && sc(-2,",") && p(0) )
  { l[i]=is_vsje; r[94]++; if(dbg){print "R94"}; continue};
  if ( gl_in(-2) &&
-        w(-1,"как") && s(-2,-1) && p(0) )
+       w(-1,"как") && s(-2,-1) && p(0) )
  { l[i]=is_vsje; r[95]++; if(dbg){print "R95"}; continue};
  if ( mod_ed(-2) && sc(-2,",") &&
-        w(-1,"как") && s(-2,-1) && p(0) )
+       w(-1,"как") && s(-2,-1) && p(0) )
  { l[i]=is_vsje; r[96]++; if(dbg){print "R96"}; continue};
- if ( w(1,"как") &&
-       w(2,"будто") &&
-        gl_edsr(3) && s(0,2) )
+ if ( qxs(1,"как","будто") &&
+       gl_edsr(xsn+1) && s(0,0) && s(xsn,xsn) )
  { l[i]=is_vsyo; r[97]++; if(dbg){print "R97"}; continue};
  if ( w(1,"как") &&
        mod_bz(2) && s(0,1) )
  { l[i]=is_vsyo; r[98]++; if(dbg){print "R98"}; continue};
 
  # все как
- if ( w(1,"как") &&
-       w(2,"надо нужно есть было") && s(0,1) && p(2) )
+ if ( qxs(1,"как","надо нужно есть было") && s(0,0) && p(2) )
  { l[i]=is_vsyo; r[99]++; if(dbg){print "R99"}; continue};
  if ( w(1,"как") &&
-      q(2,"nar_mest nar_kaq nar_vrem") && s(0,1) && p(2) )
+       q(2,"nar_mest nar_kaq nar_vrem") && s(0,1) && p(2) )
  { l[i]=is_vsyo; r[100]++; if(dbg){print "R100"}; continue};
  if ( gl_pemn(1) &&
-       w(2,"как") &&
-        w(3,"надо нужно есть было дома") && s(0,2) && p(3) )
+       qxs(2,"как","надо нужно есть было дома") && s(0,1) && p(xsn) )
  { l[i]=is_vsyo; r[101]++; if(dbg){print "R101"}; continue};
  if ( w(1,"как") && sc(0,",") &&
-      q(2,"prl_edtv prl_mntv") &&
-       q(3,"suw_edtv suw_mntv") && s(1,2) )
+       q(2,"prl_edtv prl_mntv") &&
+        q(3,"suw_edtv suw_mntv") && s(1,2) )
  { l[i]=is_vsyo; r[102]++; if(dbg){print "R102"}; continue};
  if ( w(1,"как") && sc(0,",") &&
-      q(2,"mest_da suw_edda suw_mnda") &&
+       q(2,"mest_da suw_edda suw_mnda") &&
         w(3,"и") &&
-        q(4,"gl_in gl_ed gl_nemn gl_pemn gl_pnmn") && s(1,3) )
+         q(4,"gl_in gl_ed gl_nemn gl_pemn gl_pnmn") && s(1,3) )
  { l[i]=is_vsyo; r[103]++; if(dbg){print "R103"}; continue};
 
  # Все то же
  if ( phs(-2,"вот и") &&
        mest_mnim(-1) &&
-       q(1,"mest_it muk_ed muk_mn") &&
+        q(1,"mest_it muk_ed muk_mn") &&
          w(2,"же ж") && s(0,1) )
  { l[i]=is_vsje; r[104]++; if(dbg){print "R104"}; continue};
  if ( prl_kred_sr(1) &&
-      q(2,"mest_it muk_ed muk_mn") &&
+       q(2,"mest_it muk_ed muk_mn") &&
         w(3,"же ж") && s(0,2) )
  { l[i]=is_vsyo; r[105]++; if(dbg){print "R105"}; continue};
  if ( pre_vi(1) &&
-      q(2,"mest_it muk_ed muk_mn") &&
+       q(2,"mest_it muk_ed muk_mn") &&
         w(3,"же ж") && s(0,2) )
  { l[i]=is_vsyo; r[106]++; if(dbg){print "R106"}; continue};
  if ( q(1,"mest_it muk_ed muk_mn") &&
-        w(2,"же ж") && s(0,1) )
+       w(2,"же ж") && s(0,1) )
  { l[i]=is_vsyo; r[107]++; if(dbg){print "R107"}; continue};
 
  # Все то же
  if ( w(1,"вместе") && se(1," — ") &&
-      q(2,"mest_mn mest_ed cap") && sc(2,",") &&
-       q(3,"mest_mn mest_ed cap") && p(3) )
+       q(2,"mest_mn mest_ed cap") && sc(2,",") &&
+        q(3,"mest_mn mest_ed cap") && p(3) )
  { l[i]=is_vsje; r[108]++; if(dbg){print "R108"}; continue};
 
  #v Все + предлог
  if ( qv(-1,"mest_mn mest_ed gl_ed gl_in gl_vzmn gl_nemn gl_pemn gl_pnmn gl_poed gl_pomn") &&
-        pre_da(1) &&
+       pre_da(1) &&
         q(2,"suw_edda suw_mnda") && s(0,0) )
  { l[i]=is_vsyo; r[109]++; if(dbg){print "R109"}; continue};
  if ( pre_da(-1) && s(0,0) )
  { l[i]=is_vsyo; r[110]++; if(dbg){print "R110"}; continue};
- if ( ( (w(1,"ли") && s(0,0) )||( w(1,"то") && se(0,"-") ) ) &&
+ if ( ( (w(1,"ли") && s(0,0))||(w(1,"то") && se(0,"-") ) ) &&
        w(2,"у") &&
         mest_ro(3) &&
         (prl_kred_sr(4)||w(4,"есть")) && s(0,3) && p(4) )
@@ -521,19 +513,19 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        w(1,"чтобы") && s(-1,-1) && sc(0,",") )
  { l[i]=is_vsyo; r[114]++; if(dbg){print "R114"}; continue};
  if ( mest_mnim(1) && sc(0,",") &&
-      q(2,"pre_ro pre_vi") &&
+       q(2,"pre_ro pre_vi") &&
         w(3,"кого") && s(1,2) )
  { l[i]=is_vsje; r[115]++; if(dbg){print "R115"}; continue};
  if ( q(1,"pre_ro pre_vi") && sc(0,",") &&
        w(2,"кого" ) && s(1,1) )
  { l[i]=is_vsje; r[116]++; if(dbg){print "R116"}; continue};
  if ( pre_vi(1) &&
-      q(2,"suw_edvi suw_mnvi") &&
-       q(3,"suw_edro suw_mnro") && s(0,2) )
+       q(2,"suw_edvi suw_mnvi") &&
+        q(3,"suw_edro suw_mnro") && s(0,2) )
  { l[i]=is_vsyo; r[117]++; if(dbg){print "R117"}; continue};
  if ( pre_ro(-1) &&
-      q(1,"prl_edro prl_mnro") &&
-       q(2,"suw_edro suw_mnro") &&
+       q(1,"prl_edro prl_mnro") &&
+        q(2,"suw_edro suw_mnro") &&
          suw_mnro(3) && s(-1,2) )
  { l[i]=is_vsyo; r[118]++; if(dbg){print "R118"}; continue};
  if ( pre_ro(1) &&
@@ -542,25 +534,25 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsyo; r[119]++; if(dbg){print "R119"}; continue};
  if ( gl_in(-1) &&
        pre_ro(1) &&
-       q(2,"suw_mnro suw_edro cap") && s(0,1) )
+        q(2,"suw_mnro suw_edro cap") && s(0,1) )
  { l[i]=is_vsyo; r[120]++; if(dbg){print "R120"}; continue};
  if ( q(-1,"gl_poed gl_pomn gl_povzmn") &&
        pre_da(1) &&
-       q(2,"prl_edda prl_mnda mest_da") &&
-        q(3,"suw_edda suw_mnda") && s(0,2) )
+        q(2,"prl_edda prl_mnda mest_da") &&
+         q(3,"suw_edda suw_mnda") && s(0,2) )
  { l[i]=is_vsyo; r[121]++; if(dbg){print "R121"}; continue};
  if ( q(-1,"gl_poed gl_pomn gl_povzmn") &&
        pre_da(1) &&
-       q(2,"suw_edda suw_mnda") && s(0,1) )
+        q(2,"suw_edda suw_mnda") && s(0,1) )
  { l[i]=is_vsyo; r[122]++; if(dbg){print "R122"}; continue};
  if ( q(-1,"gl_poed gl_pomn gl_povzmn") &&
        pre_ro(1) &&
-       q(2,"prl_edro prl_mnro mest_ro") &&
-        q(3,"suw_edro suw_mnro") && s(0,2) )
+        q(2,"prl_edro prl_mnro mest_ro") &&
+         q(3,"suw_edro suw_mnro") && s(0,2) )
  { l[i]=is_vsyo; r[123]++; if(dbg){print "R123"}; continue};
  if ( q(-1,"gl_poed gl_pomn gl_povzmn") &&
        pre_ro(1) &&
-       q(2,"suw_edro suw_mnro") && s(0,1) )
+        q(2,"suw_edro suw_mnro") && s(0,1) )
  { l[i]=is_vsyo; r[124]++; if(dbg){print "R124"}; continue};
  if ( pre_ro(1) &&
        suw_mnro(2) && s(0,1) )
@@ -583,14 +575,14 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        w(2,"единого") && s(0,1) )
  { l[i]=is_vsje; r[131]++; if(dbg){print "R131"}; continue};
  if ( pre_pr(-3) &&
-      q(-2,"prl_edpr mest_pr") &&
-       q(-1,"suw_edpr suw_mnpr") && s(-3,-1) && p(0) )
+       q(-2,"prl_edpr mest_pr") &&
+        q(-1,"suw_edpr suw_mnpr") && s(-3,-1) && p(0) )
  { l[i]=is_vsyo; r[132]++; if(dbg){print "R132"}; continue};
  if ( q(-2,"prl_edtv prl_mntv prl_edim prl_mnim") &&
-        pre_pr(-1) && s(-2,-1) && p(0) )
+       pre_pr(-1) && s(-2,-1) && p(0) )
  { l[i]=is_vsyo; r[133]++; if(dbg){print "R133"}; continue};
  if ( pre_vi(-1) &&
-        pre_any(1) && s(-1,0) )
+       pre_any(1) && s(-1,0) )
  { l[i]=is_vsyo; r[134]++; if(dbg){print "R134"}; continue};
 
  # все что
@@ -609,7 +601,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsje; r[137]++; if(dbg){print "R137"}; continue};
  if ( pre_vi(-1) &&
        gl_vzmn(1) &&
-       q(2,"mest_im prl_edim prl_mnim") && s(-1,1) )
+        q(2,"mest_im prl_edim prl_mnim") && s(-1,1) )
  { l[i]=is_vsyo; r[138]++; if(dbg){print "R138"}; continue};
  if ( sc(0,",") &&
        pre_da(1) &&
@@ -628,19 +620,19 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
         w(2,"ком") && s(1,1) )
  { l[i]=is_vsje; r[142]++; if(dbg){print "R142"}; continue};
  if ( pre_pr(1) &&
-      q(2,"mest_pr suw_edpr suw_mnpr") &&
+       q(2,"mest_pr suw_edpr suw_mnpr") &&
         gl_edsr(3) && s(0,2) )
  { l[i]=is_vsyo; r[143]++; if(dbg){print "R143"}; continue};
  if ( pre_pr(-1) &&
        nar_mest(1) && s(-1,0) && p(1) )
  { l[i]=is_vsyo; r[144]++; if(dbg){print "R144"}; continue};
  if ( pre_pr(-2) &&
-      q(-1,"mest_pr suw_edtv suw_mntv") && s(-2,-1) && p(0) )
+       q(-1,"mest_pr suw_edtv suw_mntv") && s(-2,-1) && p(0) )
  { l[i]=is_vsyo; r[145]++; if(dbg){print "R145"}; continue};
 
  # всё так же
- if ( phf(1,"так же") &&
-      q(hfn,"prl_kred gl_ed gl_vzmn") && s(0,hfn-1) )
+ if ( qxs(1,"так","же") &&
+       q(xsn+1,"prl_kred gl_ed gl_vzmn") && s(xsn,xsn) )
  { l[i]=is_vsyo; r[146]++; if(dbg){print "R146"}; continue};
 
  # предикат
@@ -667,35 +659,35 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
 
  # кастомные глаголы glc_, с возможностью учёта glc_(1,"mark") и метки m() в словаре dic_cust.gz
  if ( phf(1,"в один голос") && 
-      glc_mn(hfn,"j") && s(0,hfn-1) )
+       glc_mn(hfn,"j") && s(0,hfn-1) )
  { l[i]=is_vsje; r[152]++; if(dbg){print "R152"}; continue};
  if ( glc_mn(1,"y") &&
        w(2,"и") &&
-       q(3,"gl_pemn gl_nemn gl_pnmn gl_vzmn") && s(0,2) )
+        q(3,"gl_pemn gl_nemn gl_pnmn gl_vzmn") && s(0,2) )
  { l[i]=is_vsyo; r[153]++; if(dbg){print "R153"}; continue};
  if ( prl_kred_sr(1) &&
        glc_mn(2,"y") && s(0,1) )
  { l[i]=is_vsyo; r[154]++; if(dbg){print "R154"}; continue};
  if ( pre_pr(-4) &&
       (q(-3,"prl_edpr prl_mnpr mest_pr")||wc(-3,"ой$ их$")) &&
-       q(-2,"suw_edpr suw_mnpr") &&
+        q(-2,"suw_edpr suw_mnpr") &&
          glc_mn(-1,"ogj") && s(-4,-1) && p(0) )
  { l[i]=is_vsje; r[155]++; if(dbg){print "R155"}; continue};
  if ( pre_pr(-3) &&
-      q(-2,"suw_edpr suw_mnpr mest_pr") &&
+       q(-2,"suw_edpr suw_mnpr mest_pr") &&
         glc_mn(-1,"ogj") && s(-3,-1) && p(0) )
  { l[i]=is_vsje; r[156]++; if(dbg){print "R156"}; continue};
  if ( pre_pr(-2) &&
-      q(-1,"suw_edpr suw_mnpr") &&
+       q(-1,"suw_edpr suw_mnpr") &&
         glc_mn(1,"ogj") && s(-2,0) && p(1) )
  { l[i]=is_vsje; r[157]++; if(dbg){print "R157"}; continue};
  if ( pre_pr(1) &&
       (q(2,"prl_edpr prl_mnpr mest_pr")||wc(2,"ой$ их$")) &&
-       q(3,"suw_edpr suw_mnpr") &&
+        q(3,"suw_edpr suw_mnpr") &&
          glc_mn(4,"ogj") && s(0,3) && p(4) )
  { l[i]=is_vsje; r[158]++; if(dbg){print "R158"}; continue};
  if ( pre_pr(1) &&
-      q(2,"suw_edpr suw_mnpr") &&
+       q(2,"suw_edpr suw_mnpr") &&
         glc_mn(3,"ogj") && s(0,2) && p(3) )
  { l[i]=is_vsje; r[159]++; if(dbg){print "R159"}; continue};
  if ( mod_mn(1) &&
@@ -752,9 +744,9 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        glc_mn(2,"nj") && s(0,1) && p(2) )
  { l[i]=is_vsje; r[173]++; if(dbg){print "R173"}; continue};
  if ( mest_mnim(-2) &&
-        glc_mn(-1,"sgy") &&
-          pre_pr(1) &&
-          q(2,"suw_edpr suw_mnpr") && s(-2,1) )
+       glc_mn(-1,"sgy") &&
+        pre_pr(1) &&
+         q(2,"suw_edpr suw_mnpr") && s(-2,1) )
  { l[i]=is_vsyo; r[174]++; if(dbg){print "R174"}; continue};
  if ( cap(-3) &&
        w(-2,"и") &&
@@ -762,17 +754,17 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
          glc_mn(1,"syg") && s(-3,0) && p(1) )
  { l[i]=is_vsyo; r[175]++; if(dbg){print "R175"}; continue};
  if ( mest_mnim(1) &&
-        glc_mn(2,"syg") && s(0,1) && p(2) )
+       glc_mn(2,"syg") && s(0,1) && p(2) )
  { l[i]=is_vsyo; r[176]++; if(dbg){print "R176"}; continue};
  if ( mest_mnim(-2) &&
        prl_kred_sr(-1) &&
         glc_mn(1,"syg") && s(-2,0) && p(1) )
  { l[i]=is_vsyo; r[177]++; if(dbg){print "R177"}; continue};
  if ( mest_mnim(-2) &&
-        glc_mn(-1,"sgy") && s(-2,-1) && p(0) )
+       glc_mn(-1,"sgy") && s(-2,-1) && p(0) )
  { l[i]=is_vsyo; r[178]++; if(dbg){print "R178"}; continue};
  if ( q(-2,"suw_noedim suw_nomnim") &&
-        glc_mn(-1,"ogj") && s(-2,-1) && p(0) )
+       glc_mn(-1,"ogj") && s(-2,-1) && p(0) )
  { l[i]=is_vsje; r[179]++; if(dbg){print "R179"}; continue};
  if ( glc_po(-2,"j") &&
        mest_mnim(-1) && s(-2,-1) )
@@ -780,25 +772,25 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  if ( mest_mnim(-2) &&
        glc_mn(-1,"syg") &&
         q(1,"suw_edro suw_mnro") &&
-          pre_vi(2) && s(-2,2) )
+         pre_vi(2) && s(-2,2) )
  { l[i]=is_vsyo; r[181]++; if(dbg){print "R181"}; continue};
  if ( mest_mn(-1) &&
-        glc_mn(1,"syg") && s(-1,0) && p(1) )
+       glc_mn(1,"syg") && s(-1,0) && p(1) )
  { l[i]=is_vsyo; r[182]++; if(dbg){print "R182"}; continue};
  if ( mest_it(-1) &&
-        glc_mn(1,"ogj") && s(-1,0) && p(1) )
+       glc_mn(1,"ogj") && s(-1,0) && p(1) )
  { l[i]=is_vsje; r[183]++; if(dbg){print "R183"}; continue};
  if ( q(-1,"suw_edvi suw_mnvi suw_mntv mest_vi") &&
-        glc_mn(1,"ogj Vjg") && s(-1,0) && (p(1)||((w(2,"и")||pre_any(0)) && s(-1,1))) )
+       glc_mn(1,"ogj Vjg") && s(-1,0) && (p(1)||((w(2,"и")||pre_any(0)) && s(-1,1))) )
  { l[i]=is_vsje; r[184]++; if(dbg){print "R184"}; continue};
  if ( q(-2,"suw_edvi suw_mnvi suw_mntv mest_vi") &&
-        glc_mn(-1,"ogj") && s(-2,-1) && p(0) )
+       glc_mn(-1,"ogj") && s(-2,-1) && p(0) )
  { l[i]=is_vsje; r[185]++; if(dbg){print "R185"}; continue};
  if ( glc_mn(1,"myg") && s(0,0) &&
        zvat(2) && sc(1,",") )
  { l[i]=is_vsyo; r[186]++; if(dbg){print "R186"}; continue};
  if ( pre_pr(1) &&
-      q(2,"suw_edpr suw_mnpr suw_edme") &&
+       q(2,"suw_edpr suw_mnpr suw_edme") &&
         glc_mn(3,"pj") &&
          pre_any(4) && s(0,4) )
  { l[i]=is_vsje; r[187]++; if(dbg){print "R187"}; continue};
@@ -815,7 +807,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        glc_mn(-1,"ogj") && sc(-2,",") && s(-1,-1) && p(0) )
  { l[i]=is_vsje; r[191]++; if(dbg){print "R191"}; continue};
  if ( glc_mn(1,"j") && s(0,0) &&
-      !(w(2,"и") && qq(1,3)) )
+     !(w(2,"и") && qq(1,3)) )
  { l[i]=is_vsje; r[192]++; if(dbg){print "R192"}; continue};
  if ( glc_mn(-1,"j") && s(-1,-1) && p(0) )
  { l[i]=is_vsje; r[193]++; if(dbg){print "R193"}; continue};
@@ -836,16 +828,16 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsyo; r[199]++; if(dbg){print "R199"}; continue};
  if ( glc_mn(-1,"py") &&
        pre_vi(1) &&
-       q(2,"suw_edvi suw_mnvi") && s(-1,1) )
+        q(2,"suw_edvi suw_mnvi") && s(-1,1) )
  { l[i]=is_vsyo; r[200]++; if(dbg){print "R200"}; continue};
  if ( pre_pr(1) &&
-      q(2,"suw_edpr suw_mnpr") &&
+       q(2,"suw_edpr suw_mnpr") &&
         glc_mn(3,"py") && s(0,2) )
  { l[i]=is_vsyo; r[201]++; if(dbg){print "R201"}; continue};
  
  # модальное mod_, с возможностью учёта метки m() в словаре dic_cust.gz
  if ( sc(0,",") && (cap(0)||p(-1)) &&
-      q(1,"mod_ed mod_mn") &&
+       q(1,"mod_ed mod_mn") &&
         gl_in(2) && s(1,1) )
  { l[i]=is_vsyo; r[202]++; if(dbg){print "R202"}; continue};
  if ( mod_ed(1) &&
@@ -870,7 +862,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsyo; r[208]++; if(dbg){print "R208"}; continue};
  if ( mod_bz(-2) &&
        gl_in(-1) && 
-       q(1,"suw_edda suw_mnda") && qv(1,"suw_mnim") && s(-2,0))
+        q(1,"suw_edda suw_mnda") && qv(1,"suw_mnim") && s(-2,0))
  { l[i]=is_vsyo; r[209]++; if(dbg){print "R209"}; continue};
  if ( mod_bz(1) &&
        mod_ed(2) &&
@@ -890,8 +882,8 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        mod_mn(hfn) && s(0,hfn-1) )
  { l[i]=is_vsyo; r[215]++; if(dbg){print "R215"}; continue};
  if ( q(-3,"suw_edim suw_mnim") &&
-        mod_mn(-2) &&
-         gl_in(-1) && s(-2,-1) && p(0) )
+       mod_mn(-2) &&
+        gl_in(-1) && s(-2,-1) && p(0) )
  { l[i]=is_vsje; r[216]++; if(dbg){print "R216"}; continue};
  if ( w(1,"не") &&
        mod_mn(2) &&
@@ -899,7 +891,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsje; r[217]++; if(dbg){print "R217"}; continue};
  if ( mod_mn(1) &&
        mest_edim(2) &&
-       gl_in(3) && s(0,2) )
+        gl_in(3) && s(0,2) )
  { l[i]=is_vsje; r[218]++; if(dbg){print "R218"}; continue};
  if ( mod_mn(1) &&
        gl_in(2) && s(0,1) )
@@ -908,7 +900,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        glc_in(2,"j") && s(0,1) )
  { l[i]=is_vsje; r[220]++; if(dbg){print "R220"}; continue};
  if ( mod_mn(1) &&
-      q(2,"mest_ed mest_mn") && s(0,1) && p(2) )
+       q(2,"mest_ed mest_mn") && s(0,1) && p(2) )
  { l[i]=is_vsje; r[221]++; if(dbg){print "R221"}; continue};
  if ( mod_mn(1) && s(0,0) && p(1) )
  { l[i]=is_vsje; r[222]++; if(dbg){print "R222"}; continue};
@@ -921,55 +913,55 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        mest_it(-1) && s(-2,-1) )
  { l[i]=is_vsyo; r[223]++; if(dbg){print "R223"}; continue};
  if ( mest_it(-1) &&
-      q(1,"nar_vrem nar_mest nar_spos nar_step nar_srav nar_kaq") &&
-       q(2,"gl_ed gl_in") && s(-1,1) )
+       q(1,"nar_vrem nar_mest nar_spos nar_step nar_srav nar_kaq") &&
+        q(2,"gl_ed gl_in") && s(-1,1) )
  { l[i]=is_vsyo; r[224]++; if(dbg){print "R224"}; continue};
  if ( prl_kred_sr(1) &&
        prl_kred_sr(2) &&
-       q(3,"gl_ed gl_in") && s(0,2) )
+        q(3,"gl_ed gl_in") && s(0,2) )
  { l[i]=is_vsyo; r[225]++; if(dbg){print "R225"}; continue};
  if ( pre_tv(1) &&
-      q(2,"mest_tv suw_edtv suw_mntv") &&
-       q(3,"gl_ed gl_in") && s(0,2) )
+       q(2,"mest_tv suw_edtv suw_mntv") &&
+        q(3,"gl_ed gl_in") && s(0,2) )
  { l[i]=is_vsyo; r[226]++; if(dbg){print "R226"}; continue};
  if ( pre_vi(1) &&
-      q(2,"prl_edvi prl_edvi") &&
-       q(3,"mest_vi suw_edvi suw_mnvi") &&
-        q(4,"gl_ed gl_in") && s(0,3) )
+       q(2,"prl_edvi prl_edvi") &&
+        q(3,"mest_vi suw_edvi suw_mnvi") &&
+         q(4,"gl_ed gl_in") && s(0,3) )
  { l[i]=is_vsyo; r[227]++; if(dbg){print "R227"}; continue};
  if ( pre_ro(1) &&
-      q(2,"mest_ro suw_edro suw_mnro") &&
-       q(3,"gl_ed gl_in") && s(0,2) )
+       q(2,"mest_ro suw_edro suw_mnro") &&
+        q(3,"gl_ed gl_in") && s(0,2) )
  { l[i]=is_vsyo; r[228]++; if(dbg){print "R228"}; continue};
  if ( pre_vi(1) &&
-      q(2,"mest_vi suw_edvi suw_mnvi") &&
-       q(3,"gl_ed gl_in") && s(0,2) )
+       q(2,"mest_vi suw_edvi suw_mnvi") &&
+        q(3,"gl_ed gl_in") && s(0,2) )
  { l[i]=is_vsyo; r[229]++; if(dbg){print "R229"}; continue};
  if ( mest_it(1) &&
-      q(2,"nar_vrem nar_mest nar_spos nar_step nar_srav nar_kaq") &&
-       q(3,"gl_ed gl_in") && s(0,2) )
+       q(2,"nar_vrem nar_mest nar_spos nar_step nar_srav nar_kaq") &&
+        q(3,"gl_ed gl_in") && s(0,2) )
  { l[i]=is_vsyo; r[230]++; if(dbg){print "R230"}; continue};
  if ( mest_it(1) &&
-      q(2,"nar_vrem nar_mest nar_spos nar_step nar_srav nar_kaq") && s(0,2) && (p(2)||w(3,"и")) )
+       q(2,"nar_vrem nar_mest nar_spos nar_step nar_srav nar_kaq") && s(0,2) && (p(2)||w(3,"и")) )
  { l[i]=is_vsyo; r[231]++; if(dbg){print "R231"}; continue};
  if ( mest_it(1) && s(0,0) && sc(1,",") &&
        vvod(2) && sc(2,",") &&
-       q(3,"gl_ed gl_in") )
+        q(3,"gl_ed gl_in") )
  { l[i]=is_vsyo; r[232]++; if(dbg){print "R232"}; continue};
  if ( gl_ed(-1) &&
-      q(1,"muk_edtv muk_mntv") &&
-       q(2,"suw_edtv suw_mntv") s(-1,1) )
+       q(1,"muk_edtv muk_mntv") &&
+        q(2,"suw_edtv suw_mntv") s(-1,1) )
  { l[i]=is_vsyo; r[233]++; if(dbg){print "R233"}; continue};
  if ( mest_it(1) && s(0,0) && sc(1,",") &&
        vvod(2) && sc(2,",") &&
-       q(3,"gl_nemn gl_pnmn") )
+        q(3,"gl_nemn gl_pnmn") )
  { l[i]=is_vsje; r[234]++; if(dbg){print "R234"}; continue};
  if ( gl_ed(-1) &&
-      q(1,"nar_kaq nar_step") &&
+       q(1,"nar_kaq nar_step") &&
         prl_kred_sr(2) && s(-1,1) )
  { l[i]=is_vsyo; r[235]++; if(dbg){print "R235"}; continue};
  if ( gl_ed(-1) &&
-      q(1,"nar_kaq nar_step") &&
+       q(1,"nar_kaq nar_step") &&
         prl_kred_sr(2) && s(-1,1) )
  { l[i]=is_vsyo; r[236]++; if(dbg){print "R236"}; continue};
  if ( mest_edim(-3) &&
@@ -982,18 +974,18 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
         pre_any(1) && s(-2,1) )
  { l[i]=is_vsje; r[238]++; if(dbg){print "R238"}; continue};
  if ( (cap(0)||p(-1,",")||sc(-1,"<p>")) &&
-       q(1,"gl_ed gl_vzed") && sc(0,",") )
+        q(1,"gl_ed gl_vzed") && sc(0,",") )
  { l[i]=is_vsyo; r[239]++; if(dbg){print "R239"}; continue};
 
 
 
  if ( sc(0,",") &&
        vvod(1) && sc(1,",") &&
-       q(2,"gl_ed gl_in") )
+        q(2,"gl_ed gl_in") )
  { l[i]=is_vsyo; r[240]++; if(dbg){print "R240"}; continue};
  if ( sc(0,",") &&
        vvod(1) && sc(1,",") &&
-       q(2,"gl_nemn gl_pnmn") )
+        q(2,"gl_nemn gl_pnmn") )
  { l[i]=is_vsje; r[241]++; if(dbg){print "R241"}; continue};
  if ( mest_it(1) &&
        qast(2) &&
@@ -1003,7 +995,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        prl_kred(1) && s(-1,0) && p(1) )
  { l[i]=is_vsyo; r[243]++; if(dbg){print "R243"}; continue};
  if ( (mest_it(1)||w(1,"что")) &&
-       prl_kred_sr(2) && s(0,1) )
+        prl_kred_sr(2) && s(0,1) )
  { l[i]=is_vsyo; r[244]++; if(dbg){print "R244"}; continue};
  if ( mest_it(-1) &&
        predik(1) && s(-1,0) && p(1) )
@@ -1017,8 +1009,8 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsyo; r[247]++; if(dbg){print "R247"}; continue};
  if ( mest_it(-1) &&
        pre_ro(1) &&
-       q(2,"mest_ro prl_edro prl_mnro") &&
-        q(3,"suw_edro suw_mnro") && s(-1,2) )
+        q(2,"mest_ro prl_edro prl_mnro") &&
+         q(3,"suw_edro suw_mnro") && s(-1,2) )
  { l[i]=is_vsyo; r[248]++; if(dbg){print "R248"}; continue};
  if ( mest_it(-1) &&
        w(1,"что чтобы") && s(-1,-1) && sc(0,",") )
@@ -1042,16 +1034,16 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
          gl_edsr(4) && s(0,3) )
  { l[i]=is_vsyo; r[253]++; if(dbg){print "R253"}; continue};
  if ( mest_it(1) &&
-      q(2,"prl_edim prl_mnim prq_mnim") &&
-       q(3,"suw_edim suw_mnim") && s(0,2) )
+       q(2,"prl_edim prl_mnim prq_mnim") &&
+        q(3,"suw_edim suw_mnim") && s(0,2) )
  { l[i]=is_vsyo; r[254]++; if(dbg){print "R254"}; continue};
  if ( mest_it(1) &&
        pre_pr(2) &&
-       q(3,"suw_edpr suw_mnpr") && s(0,2) )
+        q(3,"suw_edpr suw_mnpr") && s(0,2) )
  { l[i]=is_vsyo; r[255]++; if(dbg){print "R255"}; continue};
  if ( mest_it(1) &&
        pre_ro(2) &&
-       q(3,"mest_ro suw_edro suw_mnro") && s(0,2) )
+        q(3,"mest_ro suw_edro suw_mnro") && s(0,2) )
  { l[i]=is_vsyo; r[256]++; if(dbg){print "R256"}; continue};
  if ( mest_it(1) && s(0,0) && p(1) )
  { l[i]=is_vsyo; r[257]++; if(dbg){print "R257"}; continue};
@@ -1080,29 +1072,29 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
         w(-1,"не") && s(-3,-1) )
  { l[i]=is_vsyo; r[262]++; if(dbg){print "R262"}; continue};
  if ( w(1,"уже") &&
-      q(2,"nar_mest nar_step") &&
+       q(2,"nar_mest nar_step") &&
         prq_kred_sr(3) && s(0,2) )
  { l[i]=is_vsyo; r[263]++; if(dbg){print "R263"}; continue};
  if ( mest_mnim(1) &&
        pre_ro(2) &&
-       q(3,"suw_edro suw_mnro") &&
+        q(3,"suw_edro suw_mnro") &&
          prq_krmn(4) && s(0,3) )
  { l[i]=is_vsje; r[264]++; if(dbg){print "R264"}; continue};
  if ( q(1,"mest_tv prl_edtv prl_mntv") &&
        q(2,"suw_edtv suw_mntv") &&
-         prq_krmn(3) && s(0,2) )
+        prq_krmn(3) && s(0,2) )
  { l[i]=is_vsje; r[265]++; if(dbg){print "R265"}; continue};
  if ( suw_edim(1) &&
        prq_kred_sr(2) && sc(0,",") && s(1,1) )
  { l[i]=is_vsyo; r[266]++; if(dbg){print "R266"}; continue};
  if ( q(1,"nar_mest nar_step") &&
-        prq_kred_sr(2) && s(0,1) )
+       prq_kred_sr(2) && s(0,1) )
  { l[i]=is_vsyo; r[267]++; if(dbg){print "R267"}; continue};
  if ( qast(1) &&
        prq_kred_sr(2) && s(0,1) && p(2) )
  { l[i]=is_vsyo; r[268]++; if(dbg){print "R268"}; continue};
  if ( pre_ro(1) &&
-      q(2,"suw_mnro suw_edro") &&
+       q(2,"suw_mnro suw_edro") &&
         prq_kred_sr(3) && s(0,2) && (p(3)||w(4,"и")) )
  { l[i]=is_vsyo; r[269]++; if(dbg){print "R269"}; continue};
  if ( gl_in(-2) &&
@@ -1116,7 +1108,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  if ( q(1,"prq_edim prq_kred") && s(0,0) )
  { l[i]=is_vsyo; r[273]++; if(dbg){print "R273"}; continue};
  if ( mest_ed(1) &&
-      q(2,"prq_edim prq_kred") && Q(2,"gl_pemn") && s(0,1) )
+       q(2,"prq_edim prq_kred") && Q(2,"gl_pemn") && s(0,1) )
  { l[i]=is_vsyo; r[274]++; if(dbg){print "R274"}; continue};
  if ( pre_tv(-1) &&
        q(1,"prq_edtv prq_mntv") &&
@@ -1127,13 +1119,13 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
         q(2,"suw_edtv suw_mntv") && s(0,1) )
  { l[i]=is_vsyo; r[276]++; if(dbg){print "R276"}; continue};
  if ( q(1,"nar_vrem qast") &&
-        nar_kaq(2) &&
+       nar_kaq(2) &&
         q(3,"prq_edim prq_kred") && s(0,2) )
  { l[i]=is_vsyo; r[277]++; if(dbg){print "R277"}; continue};
  if ( (prq_mnim(1) && w(1,"щие$")) && qv(1,"suw_mnim") && s(0,0) && p(1,",") )
  { l[i]=is_vsyo; r[278]++; if(dbg){print "R278"}; continue};
  if ( q(-1,"prq_edro prq_mnro") &&
-        pre_pr(1) && s(-1,0) )
+       pre_pr(1) && s(-1,0) )
  { l[i]=is_vsyo; r[279]++; if(dbg){print "R279"}; continue};
  if ( prq_mnim(1) &&
        pre_ro(2) && s(0,1) )
@@ -1152,10 +1144,10 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
         suw_edda(3) && s(1,2) )
  { l[i]=is_vsje; r[283]++; if(dbg){print "R283"}; continue};
  if ( mest_vi(1) &&
-      q(2,"prq_mnim prq_krmn") && s(0,1) )
+       q(2,"prq_mnim prq_krmn") && s(0,1) )
  { l[i]=is_vsje; r[284]++; if(dbg){print "R284"}; continue};
  if ( prl_srav(1) &&
-      q(2,"prq_edro prq_mnro") && s(0,1) )
+       q(2,"prq_edro prq_mnro") && s(0,1) )
  { l[i]=is_vsyo; r[285]++; if(dbg){print "R285"}; continue};
  if ( q(1,"prq_edro prq_mnro") && s(0,0) )
  { l[i]=is_vsyo; r[286]++; if(dbg){print "R286"}; continue};
@@ -1168,29 +1160,29 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
 
  # Все + ... + прилагательное =====================================
  if ( q(1,"prl_mnim prq_mnim prl_mnro prq_mnro prl_krmn") &&
-        w(2,"и или") &&
+       w(2,"и или") &&
         q(3,"prl_mnim prq_mnim prl_mnro prq_mnro prl_krmn") && s(0,2) && qq(1,3)  )
  { l[i]=is_vsyo; r[289]++; if(dbg){print "R289"}; continue};
  if ( q(1,"prl_edim prl_edda prl_edro prl_edtv prl_edpr prl_kred") &&
-        w(2,"и или") &&
+       w(2,"и или") &&
         q(3,"prl_edim prl_edda prl_edro prl_edtv prl_edpr prl_kred") && s(0,2) && qq(1,3)  )
  { l[i]=is_vsyo; r[290]++; if(dbg){print "R290"}; continue};
  if ( q(1,"prl_mnim prq_mnim prl_mnro prq_mnro prl_krmn") &&
         w(2,"и или") &&
-        q(3,"prl_mnim prq_mnim prl_mnro prq_mnro prl_krmn") &&
+         q(3,"prl_mnim prq_mnim prl_mnro prq_mnro prl_krmn") &&
           suw_mnim(4) &&
            gl_nemn(5) && s(0,4)  )
  { l[i]=is_vsje; r[291]++; if(dbg){print "R291"}; continue};
  if ( q(1,"prl_mnim prq_mnim prl_mnro prq_mnro prl_krmn") &&
-        w(2,"и или") &&
+       w(2,"и или") &&
         q(3,"prl_mnim prq_mnim prl_mnro prq_mnro prl_krmn") &&
-          suw_mnim(4) && s(0,3)  )
+         suw_mnim(4) && s(0,3)  )
  { l[i]=is_vsje; r[292]++; if(dbg){print "R292"}; continue};
  if ( q(1,"prl_mnim prq_mnim prl_mnro prq_mnro prl_krmn") && W(1,"новые новых") &&
        q(2,"prl_mnim prq_mnim prl_mnro prq_mnro prl_krmn") && s(0,1) )
  { l[i]=is_vsje; r[293]++; if(dbg){print "R293"}; continue};
  if ( w(1,"и") &&
-      q(2,"prl_mnim prq_mnim prl_krmn") && s(0,1) )
+       q(2,"prl_mnim prq_mnim prl_krmn") && s(0,1) )
  { l[i]=is_vsje; r[294]++; if(dbg){print "R294"}; continue};
  if ( prl_mnim(-2) &&
        w(-1,"и") &&
@@ -1204,21 +1196,21 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  if ( prl_krmn(1) && s(0,0) )
  { l[i]=is_vsje; r[298]++; if(dbg){print "R298"}; continue};
  if ( wc(1,".о$") && se(1,"-") &&
-      q(2,"prl_mnim prq_mnim prl_krmn") &&
+       q(2,"prl_mnim prq_mnim prl_krmn") &&
         suw_mnim(3) && s(0,0) && s(2,2))
  { l[i]=is_vsje; r[299]++; if(dbg){print "R299"}; continue};
  if ( q(1,"prl_mnim prq_mnim prl_krmn") && W(1,"новые") &&
-        suw_mnim(2) && s(0,1) )
+       suw_mnim(2) && s(0,1) )
  { l[i]=is_vsje; r[300]++; if(dbg){print "R300"}; continue};
  if ( q(1,"prl_edim prl_kred") &&
-        suw_edim(2) && s(0,1) )
+       suw_edim(2) && s(0,1) )
  { l[i]=is_vsyo; r[301]++; if(dbg){print "R301"}; continue};
  if ( q(1,"prl_pvedtv prl_pvmntv") &&
        q(2,"suw_edtv suw_mntv") && s(0,1) )
  { l[i]=is_vsyo; r[302]++; if(dbg){print "R302"}; continue};
  if ( q(1,"qast nar_kaq") &&
        q(2,"nar_kaq nar_step") &&
-         prl_kred_sr(3) && s(0,2) )
+        prl_kred_sr(3) && s(0,2) )
  { l[i]=is_vsyo; r[303]++; if(dbg){print "R303"}; continue};
  if ( w(1,"ли") &&
        suw_mnim(2) &&
@@ -1228,27 +1220,26 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        prl_krmn(2) && s(0,1) )
  { l[i]=is_vsje; r[305]++; if(dbg){print "R305"}; continue};
  if ( q(-1,"mest_da suw_edda suw_mnda") &&
-        prl_kred_sr(1) && s(-1,0) )
+       prl_kred_sr(1) && s(-1,0) )
  { l[i]=is_vsyo; r[306]++; if(dbg){print "R306"}; continue};
  if ( prl_kred_sr(1) &&
        pre_pr(2) && s(0,1) )
  { l[i]=is_vsyo; r[307]++; if(dbg){print "R307"}; continue};
  if ( w(1,"так") &&
-        prl_krmn(2) && s(0,1) )
+       prl_krmn(2) && s(0,1) )
  { l[i]=is_vsje; r[308]++; if(dbg){print "R308"}; continue};
- if ((phf(1,"как будто")||
-      phf(1,"вроде бы") ) &&
-      prl_krmn(hfn) && s(0,hfn-1) )
+ if ((qxs(1,"как вроде","будто бы") ) &&
+       prl_krmn(xsn+1) && s(xsn,xsn) )
  { l[i]=is_vsje; r[309]++; if(dbg){print "R309"}; continue};
  if ( q(1,"mest_ed mest_mn") &&
        q(2,"nar_kaq nar_step nar_spos") &&
-         prl_krmn(3) && s(0,1) )
+        prl_krmn(3) && s(0,1) )
  { l[i]=is_vsje; r[310]++; if(dbg){print "R310"}; continue};
  if ( q(1,"nar_kaq nar_step nar_spos") &&
-        prl_krmn(2) && s(0,1) )
+       prl_krmn(2) && s(0,1) )
  { l[i]=is_vsje; r[311]++; if(dbg){print "R311"}; continue};
  if ( pre_tv(-2) &&
-      q(-1,"suw_edtv suw_mntv") &&
+       q(-1,"suw_edtv suw_mntv") &&
         prl_kred_sr(1) && s(-2,0) && p(1) )
  { l[i]=is_vsyo; r[312]++; if(dbg){print "R312"}; continue};
  if ( w(1,"вроде как") &&
@@ -1271,25 +1262,25 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        prl_kred_sr(2) && s(0,1) && p(2) )
  { l[i]=is_vsyo; r[317]++; if(dbg){print "R317"}; continue};
  if ( pre_pr(1) &&
-      q(2,"mest_pr prl_edpr prl_mnpr") &&
-       q(3,"suw_edpr suw_mnpr") &&
+       q(2,"mest_pr prl_edpr prl_mnpr") &&
+        q(3,"suw_edpr suw_mnpr") &&
          prl_kred_sr(4) && s(0,3) )
  { l[i]=is_vsyo; r[318]++; if(dbg){print "R318"}; continue};
  if ( pre_tv(1) &&
        q(2,"mest_tv suw_edtv suw_mntv") &&
-         prl_edsrim(3) && s(0,2) )
+        prl_edsrim(3) && s(0,2) )
  { l[i]=is_vsyo; r[319]++; if(dbg){print "R319"}; continue};
  if ( nar_mest(1) &&
        pre_vi(2) &&
-       q(3,"suw_edvi suw_mnvi") &&
+        q(3,"suw_edvi suw_mnvi") &&
          prl_kred_sr(4) && s(0,3) )
  { l[i]=is_vsyo; r[320]++; if(dbg){print "R320"}; continue};
  if ( pre_vi(1) &&
        q(2,"mest_vi suw_edvi suw_mnvi") &&
-         prl_edsrim(3) && s(0,2) )
+        prl_edsrim(3) && s(0,2) )
  { l[i]=is_vsyo; r[321]++; if(dbg){print "R321"}; continue};
  if ( q(1,"mest_ed nar_step") &&
-        nar_step(2) &&
+       nar_step(2) &&
         q(3,"prl_kred_sr prl_edsrim") && s(0,2) )
  { l[i]=is_vsyo; r[322]++; if(dbg){print "R322"}; continue};
  if ( mest_ed(1) &&
@@ -1297,59 +1288,59 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
         q(3,"mest_da suw_edda suw_mnda") && s(0,2) )
  { l[i]=is_vsyo; r[323]++; if(dbg){print "R323"}; continue};
  if ( q(1,"nar_mest nar_vrem") &&
-        prl_edsrim(2) && s(0,1) )
+       prl_edsrim(2) && s(0,1) )
  { l[i]=is_vsyo; r[324]++; if(dbg){print "R324"}; continue};
  if ( prl_edsrim(1) && s(0,0) )
  { l[i]=is_vsyo; r[325]++; if(dbg){print "R325"}; continue};
  if ( pre_vi(-1) &&
-      q(1,"prl_kred_sr prl_edsrim") && s(-1,0) && p(1) )
+       q(1,"prl_kred_sr prl_edsrim") && s(-1,0) && p(1) )
  { l[i]=is_vsyo; r[326]++; if(dbg){print "R326"}; continue};
  if ( vvod(-1) &&
-      q(1,"prl_kred_sr prl_edsrim") && sc(-1,",") && s(0,0) && p(1) )
+       q(1,"prl_kred_sr prl_edsrim") && sc(-1,",") && s(0,0) && p(1) )
  { l[i]=is_vsyo; r[327]++; if(dbg){print "R327"}; continue};
  if ( q(-2,"gl_nemn gl_pnmn gl_pemn gl_in") &&
-        mest_mn(-1) &&
+       mest_mn(-1) &&
         q(1,"prl_kred_sr prl_edsrim") && s(-2,0) && p(1) )
  { l[i]=is_vsje; r[328]++; if(dbg){print "R328"}; continue};
  if ( q(-1,"gl_nemn gl_pnmn gl_pemn") &&
        q(1,"prl_kred_sr prl_edsrim") && s(-1,0) && p(1) )
  { l[i]=is_vsje; r[329]++; if(dbg){print "R329"}; continue};
  if ( q(1,"prl_kred_sr prl_edsrim") &&
-        pre_ro(2) && s(0,2) )
+       pre_ro(2) && s(0,2) )
  { l[i]=is_vsyo; r[330]++; if(dbg){print "R330"}; continue};
  if ( q(1,"prl_kred_sr prl_edsrim") && s(0,0) && p(1) )
  { l[i]=is_vsyo; r[331]++; if(dbg){print "R331"}; continue};
  if ( gl_vzmn(-2) &&
-      q(-1,"prl_kred_sr nar_kaq") && s(-2,-1) )
+       q(-1,"prl_kred_sr nar_kaq") && s(-2,-1) )
  { l[i]=is_vsje; r[332]++; if(dbg){print "R332"}; continue};
  if ( q(-1,"prl_kred_sr nar_kaq") &&
-        w(1,"кто кого кому кем") && sc(0,",") && s(-1,-1) )
+       w(1,"кто кого кому кем") && sc(0,",") && s(-1,-1) )
  { l[i]=is_vsje; r[333]++; if(dbg){print "R333"}; continue};
  if (  w(1,"кто кого кому кем") && sc(0,",") )
  { l[i]=is_vsje; r[334]++; if(dbg){print "R334"}; continue};
  if ( q(-1,"prl_kred_sr nar_kaq") &&
-        pre_ro(1) &&
+       pre_ro(1) &&
         q(2,"suw_edro suw_mnro") && s(-1,1) && p(2) )
  { l[i]=is_vsje; r[335]++; if(dbg){print "R335"}; continue};
  if ( q(-1,"prl_kred_sr nar_kaq") && s(-1,-1) && p(0) )
  { l[i]=is_vsyo; r[336]++; if(dbg){print "R336"}; continue};
  if ( q(1,"mest_ed nar_kaq nar_vrem") &&
-        q(2,"prl_kred_sr prl_edsrim") && s(0,1) && p(2) )
+       q(2,"prl_kred_sr prl_edsrim") && s(0,1) && p(2) )
  { l[i]=is_vsyo; r[337]++; if(dbg){print "R337"}; continue};
  if ( pre_pr(1) &&
-      q(2,"mest_pr suw_edpr suw_mnpr") &&
+       q(2,"mest_pr suw_edpr suw_mnpr") &&
         prl_kred_sr(3) && s(0,2) && p(3) )
  { l[i]=is_vsyo; r[338]++; if(dbg){print "R338"}; continue};
  if ( q(3,"prl_edtv prl_mntv") &&
-        w(2,"и") &&
+       w(2,"и") &&
         q(3,"prl_edtv prl_mntv") && s(0,2) && qq(1,3) )
  { l[i]=is_vsyo; r[339]++; if(dbg){print "R339"}; continue};
  if ( q(1,"prl_mnim prl_mnro") &&
-        w(2,"и или") &&
+       w(2,"и или") &&
         q(3,"prl_mnim prl_mnro") && s(0,2) )
  { l[i]=is_vsje; r[340]++; if(dbg){print "R340"}; continue};
  if ( q(1,"prl_srav nar_step nar_kaq nar_srav") &&
-        w(2,"и или") &&
+       w(2,"и или") &&
         q(3,"prl_srav nar_step nar_kaq nar_srav") && s(0,2) )
  { l[i]=is_vsyo; r[341]++; if(dbg){print "R341"}; continue};
  if ( prl_srav(1) && se(1,", ") &&
@@ -1360,10 +1351,10 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
         suw_edro(3) && s(0,2) )
  { l[i]=is_vsyo; r[343]++; if(dbg){print "R343"}; continue};
  if ( prl_srav(1) &&
-      q(2,"suw_mnro prl_edro prl_mnro") && s(0,1) )
+       q(2,"suw_mnro prl_edro prl_mnro") && s(0,1) )
  { l[i]=is_vsyo; r[344]++; if(dbg){print "R344"}; continue};
  if ( prl_srav(1) &&
-      q(2,"suw_edim suw_mnim") && s(0,1) )
+       q(2,"suw_edim suw_mnim") && s(0,1) )
  { l[i]=is_vsyo; r[345]++; if(dbg){print "R345"}; continue};
  if ( nar_spos(1) &&
        prl_mnim(2) && s(0,1) && p(2) )
@@ -1397,29 +1388,29 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
          suw_mnvi(4) && s(1,3) )
  { l[i]=is_vsje; r[352]++; if(dbg){print "R352"}; continue};
  if ( w(1,"нет") &&
-      q(2,"suw_edro suw_mnro") && s(0,1) )
+       q(2,"suw_edro suw_mnro") && s(0,1) )
  { l[i]=is_vsyo; r[353]++; if(dbg){print "R353"}; continue};
  if ( q(1,"suw_edim suw_edne") &&
        q(2,"suw_edro suw_mnro suw_mnvi") &&
-         gl_edsr(3) && s(0,2) )
+        gl_edsr(3) && s(0,2) )
  { l[i]=is_vsyo; r[354]++; if(dbg){print "R354"}; continue};
  if ( q(1,"mest_ed mest_mn") &&
-        suw_mnim(2) && s(0,1) )
+       suw_mnim(2) && s(0,1) )
  { l[i]=is_vsje; r[355]++; if(dbg){print "R355"}; continue};
  if ( suw_edim(1) && se(1,"-") &&
        suw_mnim(2) && s(0,0) )
  { l[i]=is_vsje; r[356]++; if(dbg){print "R356"}; continue};
  if ( q(1,"prl_mnim prq_mnim") &&
-        mest_da(2) &&
-         suw_mnim(3) && s(0,2) )
+       mest_da(2) &&
+        suw_mnim(3) && s(0,2) )
  { l[i]=is_vsje; r[357]++; if(dbg){print "R357"}; continue};
  if ( q(1,"mest_ed mest_mn prl_kred_sr") &&
        q(2,"prl_mnim prq_mnim") &&
-         suw_mnim(3) && s(0,2) )
+        suw_mnim(3) && s(0,2) )
  { l[i]=is_vsje; r[358]++; if(dbg){print "R358"}; continue};
  if ( mest_tv(1) &&
        w(2,"же") &&
-       q(3,"prl_mnim prq_mnim") &&
+        q(3,"prl_mnim prq_mnim") &&
          suw_mnim(4) && s(0,3) )
  { l[i]=is_vsje; r[359]++; if(dbg){print "R359"}; continue};
  if ( suw_mnim(1) &&
@@ -1432,20 +1423,20 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsje; r[362]++; if(dbg){print "R362"}; continue};
  if ( q(1,"mest_ed mest_mn nar_kaq") &&
        q(2,"prl_mnim prq_mnim") &&
-         suw_edim(3) && s(0,2) )
+        suw_edim(3) && s(0,2) )
  { l[i]=is_vsyo; r[363]++; if(dbg){print "R363"}; continue};
  if ( q(1,"mest_edsr mest_mn") &&
-        prl_edsrim(2) &&
-         suw_edsrim(3) && s(0,2) )
+       prl_edsrim(2) &&
+        suw_edsrim(3) && s(0,2) )
  { l[i]=is_vsyo; r[364]++; if(dbg){print "R364"}; continue};
  if ( q(1,"mest_ed mest_mn") &&
-        suw_edsrim(2) && s(0,1) )
+       suw_edsrim(2) && s(0,1) )
  { l[i]=is_vsyo; r[365]++; if(dbg){print "R365"}; continue};
  if ( suw_edim(1) && qv(1,"nar_spos") && s(0,0) )
  { l[i]=is_vsyo; r[366]++; if(dbg){print "R366"}; continue};
  if ( q(1,"mest_ed mest_mn") &&
-        suw_edim(2) &&
-         qik_edim(3) && s(0,2) )
+       suw_edim(2) &&
+        qik_edim(3) && s(0,2) )
  { l[i]=is_vsje; r[367]++; if(dbg){print "R367"}; continue};
  if ( mest_ed(1) &&
        qast(2) &&
@@ -1454,7 +1445,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  if ( q(1,"suw_edsrim suw_edsrvi") && s(0,0)  )
  { l[i]=is_vsyo; r[369]++; if(dbg){print "R369"}; continue};
  if ( (prl_mnim(1)||wc(1,"ские$")) && W(1,"новые") &&
-       q(2,"suw_edro suw_mnro") && s(0,1) )
+        q(2,"suw_edro suw_mnro") && s(0,1) )
  { l[i]=is_vsje; r[370]++; if(dbg){print "R370"}; continue};
  if ( w(1,"ли же") &&
       (prl_mnim(2)||wc(2,"ские$")) &&
@@ -1470,25 +1461,25 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
         suw_edim(2) && se(0," — ") && s(1,1) )
  { l[i]=is_vsje; r[374]++; if(dbg){print "R374"}; continue};
  if ( mest_mn(1) && s(0,0) &&
-      q(2,"suw_edim suw_mnim") && se(1," — ") )
+       q(2,"suw_edim suw_mnim") && se(1," — ") )
  { l[i]=is_vsje; r[375]++; if(dbg){print "R375"}; continue};
  if ( q(1,"mest_im mest_vi") && s(1,1) &&
-        suw_edim(2) && se(0," — ") )
+       suw_edim(2) && se(0," — ") )
  { l[i]=is_vsyo; r[376]++; if(dbg){print "R376"}; continue};
  if ( suw_edim(1) && se(0," — ") && p(1) )
  { l[i]=is_vsyo; r[377]++; if(dbg){print "R377"}; continue};
  if ( suw_edim(1) &&
-      q(2,"suw_edro suw_mnro") && s(0,1) )
+       q(2,"suw_edro suw_mnro") && s(0,1) )
  { l[i]=is_vsyo; r[378]++; if(dbg){print "R378"}; continue};
  if ( suw_mnim(-1) && sc(-1,",") &&
        pre_pr(1) &&
-       q(2,"prl_edpr prl_mnpr") &&
-        q(3,"suw_edpr suw_mnpr") && s(0,2) )
+        q(2,"prl_edpr prl_mnpr") &&
+         q(3,"suw_edpr suw_mnpr") && s(0,2) )
  { l[i]=is_vsje; r[379]++; if(dbg){print "R379"}; continue};
  if ( w(-3,"каждый каждую каждое") &&
        suw_edvi(-2) &&
-       q(-1,"gl_pemn gl_pnmn gl_nemn") && 
-        w(1,"новые") && s(-3,0) )
+        q(-1,"gl_pemn gl_pnmn gl_nemn") && 
+         w(1,"новые") && s(-3,0) )
  { l[i]=is_vsyo; r[380]++; if(dbg){print "R380"}; continue};
  if ( w(-2,"каждый каждую каждое") &&
        suw_edvi(-1) &&
@@ -1496,12 +1487,12 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsyo; r[381]++; if(dbg){print "R381"}; continue};
  if ( suw_edsrim(-1) && sc(-1,",") &&
        pre_pr(1) &&
-       q(2,"prl_edpr prl_mnpr") &&
-        q(3,"suw_edpr suw_mnpr") && s(0,2) )
+        q(2,"prl_edpr prl_mnpr") &&
+         q(3,"suw_edpr suw_mnpr") && s(0,2) )
  { l[i]=is_vsyo; r[382]++; if(dbg){print "R382"}; continue};
  if ( suw_edsrim(-1) && sc(-1,",") &&
        pre_pr(1) &&
-       q(2,"suw_edpr suw_mnpr") && s(0,1) )
+        q(2,"suw_edpr suw_mnpr") && s(0,1) )
  { l[i]=is_vsyo; r[383]++; if(dbg){print "R383"}; continue};
 
 
@@ -1535,15 +1526,15 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  if ( q(1,"nar_kaq nar_vrem mest_ed") && s(0,0) && p(1) && cap(0) )
  { l[i]=is_vsyo; r[391]++; if(dbg){print "R391"}; continue};
  if ( q(-1,"gl_vzmn gl_nemn") &&
-        prl_srav(1) &&
+       prl_srav(1) &&
         q(2,"prl_edim prl_mnim prl_edro prl_mnro prl_edtv prl_mntv") && s(-1,1) )
  { l[i]=is_vsyo; r[392]++; if(dbg){print "R392"}; continue};
  if ( nar_step(1) &&
-      q(2,"prl_mntv prl_edtv") && s(0,1) )
+       q(2,"prl_mntv prl_edtv") && s(0,1) )
  { l[i]=is_vsyo; r[393]++; if(dbg){print "R393"}; continue};
  if ( q(-1,"gl_vzmn gl_nemn") &&
        q(1,"nar_spos nar_napr nar_step") &&
-         prl_kred_sr(2) && s(-1,1) && p(2) )
+        prl_kred_sr(2) && s(-1,1) && p(2) )
  { l[i]=is_vsyo; r[394]++; if(dbg){print "R394"}; continue};
  if ( q(-1,"gl_vzmn gl_nemn") &&
        q(1,"nar_spos nar_napr nar_step") && s(-1,0) )
@@ -1553,14 +1544,14 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
         nar_spos(3) && s(0,2) && p(3) )
  { l[i]=is_vsyo; r[396]++; if(dbg){print "R396"}; continue};
  if ( q(1,"nar_kaq nar_spos nar_step prl_kred_sr") &&
-        prl_kred_sr(2) && s(0,1) && p(2) )
+       prl_kred_sr(2) && s(0,1) && p(2) )
  { l[i]=is_vsyo; r[397]++; if(dbg){print "R397"}; continue};
  if ( nar_step(1) &&
-      q(2,"prl_mnvi prl_edvi") &&
+       q(2,"prl_mnvi prl_edvi") &&
         suw_mnvi(3) && s(0,2) )
  { l[i]=is_vsyo; r[398]++; if(dbg){print "R398"}; continue};
  if ( q(1,"qast nar_step") &&
-        nar_kaq(2) && s(0,1) && p(2) )
+       nar_kaq(2) && s(0,1) && p(2) )
  { l[i]=is_vsyo; r[399]++; if(dbg){print "R399"}; continue};
  if ( nar_mest(1) &&
        w(2,"не") &&
@@ -1570,12 +1561,12 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        nar_mest(1) && s(-1,0) && p(1) )
  { l[i]=is_vsyo; r[401]++; if(dbg){print "R401"}; continue};
  if ( q(1,"nar_kaq nar_step") &&
-        prl_kred_sr(2) &&
-         qv(3,"gl_pemn gl_nemn gl_pnmn") && s(-1,1) )
+       prl_kred_sr(2) &&
+        qv(3,"gl_pemn gl_nemn gl_pnmn") && s(-1,1) )
  { l[i]=is_vsyo; r[402]++; if(dbg){print "R402"}; continue};
  if ( q(-1,"gl_ed gl_nemn gl_pemn gl_pnmn") &&
-        nar_mest(1) &&
-         suw_mnim(2) && s(-1,1) )
+       nar_mest(1) &&
+        suw_mnim(2) && s(-1,1) )
  { l[i]=is_vsyo; r[403]++; if(dbg){print "R403"}; continue};
  if ( nar_mest(1) &&
        suw_mnim(2) && s(0,1) )
@@ -1584,12 +1575,12 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  # всё не так плохо
  if ( w(1,"не") &&
        w(2,"так") &&
-       q(3,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") && s(0,2) && p(3) )
+        q(3,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") && s(0,2) && p(3) )
  { l[i]=is_vsyo; r[405]++; if(dbg){print "R405"}; continue};
  if ( w(1,"не") &&
        w(2,"так") && se(2,"-") &&
         w(3,"то") &&
-        q(4,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") && s(0,2) && s(3,3) && p(4) )
+         q(4,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") && s(0,2) && s(3,3) && p(4) )
  { l[i]=is_vsyo; r[406]++; if(dbg){print "R406"}; continue};
  if ( nar_mest(1) &&
        w(2,"же") && s(0,1) && p(2) )
@@ -1615,12 +1606,12 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsje; r[412]++; if(dbg){print "R412"}; continue};
  if ( w(-1,"не") && s(-1,-1) &&
        w(1,"а но") && sc(0,",") &&
-       q(2,"mest_mn prl_mnim") && s(1,1) )
+        q(2,"mest_mn prl_mnim") && s(1,1) )
  { l[i]=is_vsje; r[413]++; if(dbg){print "R413"}; continue};
  if ( mest_mnim(1) &&
        prl_kred_sr(2) &&
         w(3,"и") &&
-        q(4,"gl_pnmn gl_nemn gl_pemn") && s(0,3) )
+         q(4,"gl_pnmn gl_nemn gl_pemn") && s(0,3) )
  { l[i]=is_vsje; r[414]++; if(dbg){print "R414"}; continue};
  if ( mest_mnim(-3) && sc(-3,",") &&
        suw_mnim(-2) && sc(-2,",") &&
@@ -1647,25 +1638,25 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
         gl_pnmn(3) && s(0,2) && p(3) )
  { l[i]=is_vsje; r[420]++; if(dbg){print "R420"}; continue};
  if ( mest_da(1) &&
-        gl_ed(2) && s(0,1) && p(2) )
+       gl_ed(2) && s(0,1) && p(2) )
  { l[i]=is_vsyo; r[421]++; if(dbg){print "R421"}; continue};
  if ( mest_mnim(1) &&
-      q(2,"nar_kaq nar_step prl_kred_sr") &&
+       q(2,"nar_kaq nar_step prl_kred_sr") &&
         w(3,"и или") &&
-        q(4,"nar_kaq nar_step prl_kred_sr") &&
+         q(4,"nar_kaq nar_step prl_kred_sr") &&
           prl_krmn(5) && s(0,4) )
  { l[i]=is_vsje; r[422]++; if(dbg){print "R422"}; continue};
  if ( mest_mnim(1) &&
-      q(2,"nar_kaq nar_step prl_kred_sr") &&
+       q(2,"nar_kaq nar_step prl_kred_sr") &&
         q(3,"prl_krmn prl_mnim") && s(0,2) )
  { l[i]=is_vsje; r[423]++; if(dbg){print "R423"}; continue};
  if ( mest_mnim(-1) &&
-      q(1,"nar_kaq nar_step") &&
+       q(1,"nar_kaq nar_step") &&
         prl_kred_sr(2) && s(-1,1) )
  { l[i]=is_vsje; r[424]++; if(dbg){print "R424"}; continue};
  if ( mest_mn(1) &&
-      q(2,"prl_kred_sr nar_kaq") &&
-       q(3,"gl_pnmn gl_nemn gl_pemn") && s(0,2) )
+       q(2,"prl_kred_sr nar_kaq") &&
+        q(3,"gl_pnmn gl_nemn gl_pemn") && s(0,2) )
  { l[i]=is_vsje; r[425]++; if(dbg){print "R425"}; continue};
  if ( mest_mn(1) &&
        nar_spos(2) &&
@@ -1673,17 +1664,17 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsje; r[426]++; if(dbg){print "R426"}; continue};
  if ( mest_mn(1) &&
        qast(2) &&
-       q(3,"gl_vzmn gl_nemn") && s(0,2) )
+        q(3,"gl_vzmn gl_nemn") && s(0,2) )
  { l[i]=is_vsje; r[427]++; if(dbg){print "R427"}; continue};
  if ( mest_mn(-1) &&
-      q(1,"gl_pnmn gl_nemn") &&
+       q(1,"gl_pnmn gl_nemn") &&
         prl_kred_sr(2) &&
-        q(3,"prl_mnim prl_krmn") && s(-1,2) )
+         q(3,"prl_mnim prl_krmn") && s(-1,2) )
  { l[i]=is_vsje; r[428]++; if(dbg){print "R428"}; continue};
  if ( mest_mn(-1) &&
-      q(1,"gl_nemn gl_pemn gl_pnmn") &&
-       q(2,"prl_edtv prl_mntv") &&
-        q(3,"suw_edtv suw_mntv") && s(-1,2) )
+       q(1,"gl_nemn gl_pemn gl_pnmn") &&
+        q(2,"prl_edtv prl_mntv") &&
+         q(3,"suw_edtv suw_mntv") && s(-1,2) )
  { l[i]=is_vsje; r[429]++; if(dbg){print "R429"}; continue};
  if ( mest_mn(-1) &&
        gl_povzmn(1) && s(-1,0) )
@@ -1695,11 +1686,11 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsje; r[431]++; if(dbg){print "R431"}; continue};
  if ( mest_mn(1) &&
        nar_mest(2) &&
-         prl_krmn(3) && s(0,2) )
+        prl_krmn(3) && s(0,2) )
  { l[i]=is_vsje; r[432]++; if(dbg){print "R432"}; continue};
  if ( mest_mn(1) &&
        pre_tv(2) &&
-       q(3,"mest_tv suw_edtv suw_mntv") && s(-1,2) )
+        q(3,"mest_tv suw_edtv suw_mntv") && s(-1,2) )
  { l[i]=is_vsje; r[433]++; if(dbg){print "R433"}; continue};
  if ( mest_mn(-1) &&
        pre_ro(1) &&
@@ -1719,24 +1710,24 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  if ( mest_mnim(-1) &&
        gl_nemn(1) &&
         pre_tv(2) &&
-        q(3,"mest_tv suw_edtv suw_mntv") s(-1,2) )
+         q(3,"mest_tv suw_edtv suw_mntv") s(-1,2) )
  { l[i]=is_vsje; r[437]++; if(dbg){print "R437"}; continue};
  if ( mest_mn(-1) &&
        nar_step(1) &&
-       q(2,"mest_ro suw_edro suw_mnro") &&
+        q(2,"mest_ro suw_edro suw_mnro") &&
          gl_pnmn(3) && s(-1,2) )
  { l[i]=is_vsje; r[438]++; if(dbg){print "R438"}; continue};
  if ( w(-2,"а") &&
        mest_mnim(-1) &&
-       q(1,"gl_pnmn gl_nemn") &&
+        q(1,"gl_pnmn gl_nemn") &&
          prl_kred_sr(2) && s(-2,1) )
  { l[i]=is_vsyo; r[439]++; if(dbg){print "R439"}; continue};
  if ( mest_mn(1) &&
-      q(2,"nar_step prl_kred_sr") &&
+       q(2,"nar_step prl_kred_sr") &&
         prl_krmn(3) && s(0,2) )
  { l[i]=is_vsje; r[440]++; if(dbg){print "R440"}; continue};
  if ( mest_mn(1) &&
-      q(2,"prl_krmn mest_mn prl_mnim") && s(0,1) && p(2) )
+       q(2,"prl_krmn mest_mn prl_mnim") && s(0,1) && p(2) )
  { l[i]=is_vsje; r[441]++; if(dbg){print "R441"}; continue};
  if ( mest_mn(1) &&
        nar_vrem(2) &&
@@ -1754,49 +1745,48 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  if ( mest_mnim(-2) &&
        w(-1,"же ведь") &&
         pre_pr(1) &&
-        q(2,"suw_edpr suw_mnpr") && s(-2,1) )
+         q(2,"suw_edpr suw_mnpr") && s(-2,1) )
  { l[i]=is_vsje; r[445]++; if(dbg){print "R445"}; continue};
  if ( mest_mnim(-1) &&
        pre_pr(1) &&
-       q(2,"suw_edpr suw_mnpr") && s(-1,1) )
+        q(2,"suw_edpr suw_mnpr") && s(-1,1) )
  { l[i]=is_vsje; r[446]++; if(dbg){print "R446"}; continue};
  if ( mest_mn(1) &&
        pre_pr(2) &&
-       q(3,"suw_edpr suw_mnpr") && s(0,2) )
+        q(3,"suw_edpr suw_mnpr") && s(0,2) )
  { l[i]=is_vsje; r[447]++; if(dbg){print "R447"}; continue};
  if ( mest_mn(1) &&
-       w(2,"друг") &&
-        w(3,"друга дружку") && s(0,2) )
+       qxs(2,"друг","друга дружку") && s(0,1) )
  { l[i]=is_vsje; r[448]++; if(dbg){print "R448"}; continue};
  if ( q(1,"gl_nemn gl_pnmn") &&
-        phf(2,"друг с другом") && s(0,hfn-2) )
+       qxs(2,"друг","с","дружкой другом") && s(0,1) )
  { l[i]=is_vsje; r[449]++; if(dbg){print "R449"}; continue};
  if ( q(1,"mest_ed mest_mn") &&
-        qip_mnro(2) &&
-         suw_mnro(3) && s(0,2) )
+       qip_mnro(2) &&
+        suw_mnro(3) && s(0,2) )
  { l[i]=is_vsje; r[450]++; if(dbg){print "R450"}; continue};
  if ( mest_mnim(1) &&
        q(2,"gl_vzmn gl_nemn gl_pemn gl_pnmn prl_krmn") && s(0,1) )
  { l[i]=is_vsje; r[451]++; if(dbg){print "R451"}; continue};
  if ( mest_ed(1) &&
-      q(2,"nar_mest nar_priq") && s(0,1) && p(2) )
+       q(2,"nar_mest nar_priq") && s(0,1) && p(2) )
  { l[i]=is_vsyo; r[452]++; if(dbg){print "R452"}; continue};
  if ( mest_ed(1) &&
        pre_tv(2) &&
-       q(3,"mest_tv suw_edtv suw_mntv prl_edtv prl_mntv") && s(0,1) )
+        q(3,"mest_tv suw_edtv suw_mntv prl_edtv prl_mntv") && s(0,1) )
  { l[i]=is_vsyo; r[453]++; if(dbg){print "R453"}; continue};
  if ( mest_ed(1) &&
        nar_step(2) &&
         nar_kaq(3) && s(0,2) )
  { l[i]=is_vsyo; r[454]++; if(dbg){print "R454"}; continue};
  if ( mest_ed(1) &&
-      q(2,"nar_kaq nar_step nar_spos") &&
-       q(3,"gl_ed gl_in") && s(0,2) )
+       q(2,"nar_kaq nar_step nar_spos") &&
+        q(3,"gl_ed gl_in") && s(0,2) )
  { l[i]=is_vsyo; r[455]++; if(dbg){print "R455"}; continue};
  if ( mest_ed(1) &&
-      q(2,"nar_kaq nar_step") &&
+       q(2,"nar_kaq nar_step") &&
         qast(3) &&
-        q(4,"gl_ed gl_in") && s(0,3) )
+         q(4,"gl_ed gl_in") && s(0,3) )
  { l[i]=is_vsyo; r[456]++; if(dbg){print "R456"}; continue};
  if ( mest_mn(1) && cap(0) && s(0,0) && p(1) )
  { l[i]=is_vsje; r[457]++; if(dbg){print "R457"}; continue};
@@ -1813,7 +1803,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  # все + ... + гл.мн.
  if ( qb(-5,"mest_mn") &&
        suw_edim(-1) &&
-       q(1,"gl_vzmn gl_nemn") && s(-1,0) && p(1) )
+        q(1,"gl_vzmn gl_nemn") && s(-1,0) && p(1) )
  { l[i]=is_vsje; r[460]++; if(dbg){print "R460"}; continue};
  if ( mest_mn(-3) &&
        w(-2,"не") &&
@@ -1833,11 +1823,11 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsyo; r[464]++; if(dbg){print "R464"}; continue};
  if ( gl_in(-1) &&
        pre_pr(1) &&
-       q(2,"suw_edpr suw_mnpr") &&
+        q(2,"suw_edpr suw_mnpr") &&
          prl_edtv(3) && s(-1,2) )
  { l[i]=is_vsyo; r[465]++; if(dbg){print "R465"}; continue};
  if ( mest_mn(-1) &&
-      q(1,"nar_mest nar_kaq nar_vrem nar_spos") &&
+       q(1,"nar_mest nar_kaq nar_vrem nar_spos") &&
         gl_nemn(2) && s(-1,1) )
  { l[i]=is_vsje; r[466]++; if(dbg){print "R466"}; continue};
  if ( mest_mn(-1) &&
@@ -1845,18 +1835,18 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
         gl_nemn(2) && s(-1,1) && p(2))
  { l[i]=is_vsje; r[467]++; if(dbg){print "R467"}; continue};
  if ( q(1,"gl_pnmn gl_pemn gl_nemn") && sc(1,",") &&
-        w(2,"кто никто") && s(0,0) )
+       w(2,"кто никто") && s(0,0) )
  { l[i]=is_vsje; r[468]++; if(dbg){print "R468"}; continue};
  if ( q(-3,"suw_edvi suw_mnvi mest_vi") &&
        q(-2,"gl_pnmn gl_pemn gl_nemn") &&
-         mest_mnim(-1) && s(-3,-1) )
+        mest_mnim(-1) && s(-3,-1) )
  { l[i]=is_vsje; r[469]++; if(dbg){print "R469"}; continue};
  if ( mest_mn(-1) &&
-      q(1,"gl_pnmn gl_pemn") &&
+       q(1,"gl_pnmn gl_pemn") &&
         suw_mnvi(2) && s(-1,1) )
  { l[i]=is_vsje; r[470]++; if(dbg){print "R470"}; continue};
  if ( mest_mn(-1) &&
-      q(1,"gl_pomn gl_povzmn") &&
+       q(1,"gl_pomn gl_povzmn") &&
         nar_mest(2) && s(-1,1) )
  { l[i]=is_vsje; r[471]++; if(dbg){print "R471"}; continue};
  if ( mest_mn(1) &&
@@ -1864,7 +1854,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
         gl_vzmn(3) && s(0,2) )
  { l[i]=is_vsje; r[472]++; if(dbg){print "R472"}; continue};
  if ( mest_mn(1) &&
-      q(2,"gl_pnmn gl_pemn") &&
+       q(2,"gl_pnmn gl_pemn") &&
         suw_mnvi(3) && s(0,2) )
  { l[i]=is_vsje; r[473]++; if(dbg){print "R473"}; continue};
  if ( mest_ed(1) &&
@@ -1872,41 +1862,41 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsyo; r[474]++; if(dbg){print "R474"}; continue};
  if ( q(1,"gl_pnmn gl_pemn") &&
        q(2,"prl_mnim prq_mnim prq_edim prl_edim") &&
-         suw_mnvi(3) && s(0,2) )
+        suw_mnvi(3) && s(0,2) )
  { l[i]=is_vsje; r[475]++; if(dbg){print "R475"}; continue};
  # оглядывающий + все + вокруг + всех
  if ( nar_mest(-1) &&
        w(1,"как") &&
         pre_ro(2) &&
-        q(3,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") && s(-1,2) )
+         q(3,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") && s(-1,2) )
  { l[i]=is_vsyo; r[476]++; if(dbg){print "R476"}; continue};
  if ( q(-1,"prq_edim prq_mnim") &&
-        pre_ro(1) &&
+       pre_ro(1) &&
         q(2,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") && s(-1,1) )
  { l[i]=is_vsyo; r[477]++; if(dbg){print "R477"}; continue};
  # все + против + всех
  if ( gl_in(-1) &&
        pre_ro(1) &&
-       q(2,"mest_ro prl_edro prl_mnro") && s(-1,1) )
+        q(2,"mest_ro prl_edro prl_mnro") && s(-1,1) )
  { l[i]=is_vsyo; r[478]++; if(dbg){print "R478"}; continue};
  if ( w(1,"для ради") && Q(-1,"gl_vzed") &&
-      q(2,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") && s(-1,1) && p(2) )
+       q(2,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") && s(-1,1) && p(2) )
  { l[i]=is_vsyo; r[479]++; if(dbg){print "R479"}; continue};
  if ( vvb(-1) && suw_mnim(vvn) &&
        pre_ro(1) &&
-       q(2,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") && s(0,1) )
+        q(2,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") && s(0,1) )
  { l[i]=is_vsje; r[480]++; if(dbg){print "R480"}; continue};
  if ( gl_ed(-1) &&
        pre_ro(1) &&
-       q(2,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") && s(-1,1) && p(2) )
+        q(2,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") && s(-1,1) && p(2) )
  { l[i]=is_vsyo; r[481]++; if(dbg){print "R481"}; continue};
  if ( pre_ro(1) &&
-      q(2,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") &&
+       q(2,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") &&
         w(3,"так слишком") &&
          prl_kred_sr(4) && s(0,3) )
  { l[i]=is_vsyo; r[482]++; if(dbg){print "R482"}; continue};
  if ( pre_ro(1) && qv(-1,"gl_vzed gl_ed gl_ed") &&
-      q(2,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") && s(0,1) )
+       q(2,"mest_ro suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro") && s(0,1) )
  { l[i]=is_vsyo; r[483]++; if(dbg){print "R483"}; continue};
  if ( w(1,"кроме") && sc(0,",") &&
        cap(2) && s(1,1) )
@@ -1915,18 +1905,18 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
 
  # дееп =============================================================
  if ( q(1,"prl_srav nar_step") &&
-        deep(2) && s(0,1) )
+       deep(2) && s(0,1) )
  { l[i]=is_vsyo; r[485]++; if(dbg){print "R485"}; continue};
  if ( deep(1) &&
-      q(2,"gl_nemn gl_pnmn gl_pemn") && s(0,1) )
+       q(2,"gl_nemn gl_pnmn gl_pemn") && s(0,1) )
  { l[i]=is_vsje; r[486]++; if(dbg){print "R486"}; continue};
  if ( deep(-2) &&
-      q(-1,"suw_edtv suw_mntv") &&
+       q(-1,"suw_edtv suw_mntv") &&
         nar_mest(1) && s(-2,0) )
  { l[i]=is_vsyo; r[487]++; if(dbg){print "R487"}; continue};
  if ( deep(-2) &&
        pre_vi(-1) &&
-       q(1,"prl_edtv prl_mntv suw_edvi suw_mnvi") && Q(1,"mest_mnim") && s(-2,0) )
+        q(1,"prl_edtv prl_mntv suw_edvi suw_mnvi") && Q(1,"mest_mnim") && s(-2,0) )
  { l[i]=is_vsyo; r[488]++; if(dbg){print "R488"}; continue};
  if ( deep(-2) &&
        mest_vi(-1) &&
@@ -1934,15 +1924,15 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsyo; r[489]++; if(dbg){print "R489"}; continue};
  if ( deep(-1) &&
        pre_vi(1) &&
-       q(2,"prl_edvi prl_mnvi suw_edvi suw_mnvi") && s(-1,1) )
+        q(2,"prl_edvi prl_mnvi suw_edvi suw_mnvi") && s(-1,1) )
  { l[i]=is_vsyo; r[490]++; if(dbg){print "R490"}; continue};
  if ( deep(-1) &&
        pre_pr(1) &&
-       q(2,"prl_edpr suw_edpr suw_mnpr") && s(-1,1) )
+        q(2,"prl_edpr suw_edpr suw_mnpr") && s(-1,1) )
  { l[i]=is_vsyo; r[491]++; if(dbg){print "R491"}; continue};
  if ( deep(-1) &&
        pre_tv(1) &&
-       q(2,"prl_edtv prl_mntv suw_edtv suw_mntv mest_tv") && s(-1,1) )
+        q(2,"prl_edtv prl_mntv suw_edtv suw_mntv mest_tv") && s(-1,1) )
  { l[i]=is_vsyo; r[492]++; if(dbg){print "R492"}; continue};
  if ( deep(-1) &&
        prl_srav(1) && s(-1,0) )
@@ -1951,7 +1941,7 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
        gl_nemn(1) && s(-1,0) )
  { l[i]=is_vsje; r[494]++; if(dbg){print "R494"}; continue};
  if ( w(1,"включая") && sc(0,",") &&
-      q(2,"suw_edvi suw_mnvi") && s(1,1) )
+       q(2,"suw_edvi suw_mnvi") && s(1,1) )
  { l[i]=is_vsje; r[495]++; if(dbg){print "R495"}; continue};
  if ( deep(-1) &&
        nar_mest(1) && s(-1,0) )
@@ -1959,14 +1949,14 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  if ( deep(-1) && s(-1,-1) && p(0) )
  { l[i]=is_vsyo; r[497]++; if(dbg){print "R497"}; continue};
  if ( gl_nemn(-1) &&
-      q(1,"prl_mnim prq_mnim prl_krmn") &&
+       q(1,"prl_mnim prq_mnim prl_krmn") &&
         deep(2) && s(-1,0) && sc(1,",") )
  { l[i]=is_vsyo; r[498]++; if(dbg){print "R498"}; continue};
 
  # Все + ... + глагол ============================================
  # все + ... + гл.мн.
  if ( w(1,"так") &&
-      q(2,"gl_vzmn gl_nemn") && s(0,1) )
+       q(2,"gl_vzmn gl_nemn") && s(0,1) )
  { l[i]=is_vsje; r[499]++; if(dbg){print "R499"}; continue};
  if ( q(1,"nar_mest nar_kaq nar_vrem nar_spos") &&
        q(2,"gl_vzmn gl_nemn") && s(0,1) )
@@ -1976,29 +1966,29 @@ getwpos(wrd);for(i in wpos){i=strtonum(i);if(tolower(l[i])!=tolower(wrd))continu
  { l[i]=is_vsje; r[501]++; if(dbg){print "R501"}; continue};
  if ( nar_vrem(1) &&
        nar_vrem(2) &&
-       q(3,"gl_vzmn gl_nemn") && s(0,2) )
+        q(3,"gl_vzmn gl_nemn") && s(0,2) )
  { l[i]=is_vsje; r[502]++; if(dbg){print "R502"}; continue};
  if ( q(-1,"gl_vzed gl_vzmn gl_nemn") &&
-        prl_srav(1) && s(-1,0) )
+       prl_srav(1) && s(-1,0) )
  { l[i]=is_vsyo; r[503]++; if(dbg){print "R503"}; continue};
  if ( nar_srav(1) &&
-      q(2,"gl_vzmn gl_nemn gl_pemn") && s(0,1) )
+       q(2,"gl_vzmn gl_nemn gl_pemn") && s(0,1) )
  { l[i]=is_vsyo; r[504]++; if(dbg){print "R504"}; continue};
  if ( suw_mnim(-1) && cap(-1) &&
-      q(1,"gl_vzmn gl_nemn") && s(0,0) && p(1) )
+       q(1,"gl_vzmn gl_nemn") && s(0,0) && p(1) )
  { l[i]=is_vsyo; r[505]++; if(dbg){print "R505"}; continue};
  if ( Q(-2,"pre_vi") &&
        suw_edim(-1) &&
-       q(1,"gl_vzmn gl_nemn") && s(-1,0) && p(1) )
+        q(1,"gl_vzmn gl_nemn") && s(-1,0) && p(1) )
  { l[i]=is_vsyo; r[506]++; if(dbg){print "R506"}; continue};
  if ( q(-3,"suw_edim suw_mnim") &&
-        pre_pr(-2) &&
+       pre_pr(-2) &&
         q(-1,"suw_edpr suw_mnpr") &&
          q(1,"gl_vzmn gl_nemn") && s(0,0) && p(1) )
  { l[i]=is_vsyo; r[507]++; if(dbg){print "R507"}; continue};
  if ( gl_vzmn(-3) &&
        pre_tv(-2) &&
-       q(-1,"suw_edtv suw_mntv mest_tv") )
+        q(-1,"suw_edtv suw_mntv mest_tv") )
  { l[i]=is_vsje; r[508]++; if(dbg){print "R508"}; continue};
 
 
@@ -2023,26 +2013,26 @@ if ( gl_nemn(1) &&
 
  # все + гл.мн и/или гл.мн
  if ( q(1,"gl_pemn gl_nemn gl_pnmn gl_vzmn") &&
-        w(2,"и") &&
+       w(2,"и") &&
         q(3,"gl_pemn gl_nemn gl_pnmn gl_vzmn") && s(0,2) && qq(1,3) )
  { l[i]=is_vsyo; r[514]++; if(dbg){print "R514"}; continue};
  if ( mest_mnim(-2) && w(-1,"то") && se(-2,"-") &&
-      q(1,"gl_pemn gl_nemn gl_pnmn gl_vzmn") &&
+       q(1,"gl_pemn gl_nemn gl_pnmn gl_vzmn") &&
         w(2,"и") &&
-        q(3,"gl_pemn gl_nemn gl_pnmn gl_vzmn") && s(0,2) )
+         q(3,"gl_pemn gl_nemn gl_pnmn gl_vzmn") && s(0,2) )
  { l[i]=is_vsyo; r[515]++; if(dbg){print "R515"}; continue};
  if ( mest_mnim(-1) &&
-      q(1,"gl_pemn gl_nemn gl_pnmn gl_vzmn") &&
+       q(1,"gl_pemn gl_nemn gl_pnmn gl_vzmn") &&
         w(2,"и") &&
-        q(3,"gl_pemn gl_nemn gl_pnmn gl_vzmn") && s(0,2) )
+         q(3,"gl_pemn gl_nemn gl_pnmn gl_vzmn") && s(0,2) )
  { l[i]=is_vsyo; r[516]++; if(dbg){print "R516"}; continue};
  if ( w(1,"и") &&
-      q(2,"gl_pemn gl_nemn gl_pnmn gl_vzmn") &&
+       q(2,"gl_pemn gl_nemn gl_pnmn gl_vzmn") &&
         w(3,"и") &&
-        q(4,"gl_pemn gl_nemn gl_pnmn gl_vzmn") && s(0,3) )
+         q(4,"gl_pemn gl_nemn gl_pnmn gl_vzmn") && s(0,3) )
  { l[i]=is_vsje; r[517]++; if(dbg){print "R517"}; continue};
  if ( q(1,"gl_pemn gl_nemn gl_pnmn gl_vzmn") &&
-        w(2,"и") &&
+       w(2,"и") &&
         q(3,"gl_pemn gl_nemn gl_pnmn gl_vzmn") && s(0,2) )
  { l[i]=is_vsje; r[518]++; if(dbg){print "R518"}; continue};
 
@@ -2052,13 +2042,13 @@ if ( gl_nemn(1) &&
  { l[i]=is_vsyo; r[519]++; if(dbg){print "R519"}; continue};
  # гл.ед + всё
  if ( q(-2,"gl_ed gl_in") &&
-        mest_da(-1) &&
-         pre_pr(1) &&
+       mest_da(-1) &&
+        pre_pr(1) &&
          q(2,"prl_edpr prl_mnro suw_edpr suw_mnpr") && s(-2,1) )
  { l[i]=is_vsyo; r[520]++; if(dbg){print "R520"}; continue};
  # гл.ед + всё
  if ( q(-1,"gl_ed gl_in") &&
-        suw_mnvi(1) && s(-1,0) && W(1,"новые") )
+       suw_mnvi(1) && s(-1,0) && W(1,"новые") )
  { l[i]=is_vsje; r[521]++; if(dbg){print "R521"}; continue};
 
 
@@ -2072,7 +2062,7 @@ if ( gl_nemn(1) &&
  { l[i]=is_vsyo; r[523]++; if(dbg){print "R523"}; continue};
  # все те, кто
  if ( w(1,"те") && sc(1,",") &&
-      q(1,"mest_edmu mest_edze") )
+       q(1,"mest_edmu mest_edze") )
  { l[i]=is_vsje; r[524]++; if(dbg){print "R524"}; continue};
  # все, кто
  if ( sc(0,",") &&
@@ -2086,10 +2076,10 @@ if ( gl_nemn(1) &&
 
  # все, которые
  if ( sc(0,",") &&
-      q(1,"mest_da suw_edda suw_mnda") )
+       q(1,"mest_da suw_edda suw_mnda") )
  { l[i]=is_vsyo; r[527]++; if(dbg){print "R527"}; continue};
  if ( sc(0,",") &&
-      q(1,"mest_mn prq_mnim") && W(1,"мы вы") )
+       q(1,"mest_mn prq_mnim") && W(1,"мы вы") )
  { l[i]=is_vsje; r[528]++; if(dbg){print "R528"}; continue};
 
  # Ну всё,
@@ -2102,7 +2092,7 @@ if ( gl_nemn(1) &&
 
  # Всё + ... + глагол.ед ============================================
  if ( q(1,"nar_vrem nar_mest nar_spos nar_srav nar_kaq nar_step") &&
-        gl_edsr(2) && s(0,1) )
+       gl_edsr(2) && s(0,1) )
  { l[i]=is_vsyo; r[531]++; if(dbg){print "R531"}; continue};
  if ( gl_edsr(-3) &&
        w(-2,"ли же ведь") &&
@@ -2116,46 +2106,46 @@ if ( gl_nemn(1) &&
        gl_in(2) && s(0,1) )
  { l[i]=is_vsyo; r[535]++; if(dbg){print "R535"}; continue};
  if ( gl_vzed(-1) &&
-      q(1,"pre_vi pre_ro pre_tv") && s(-1,0) )
+       q(1,"pre_vi pre_ro pre_tv") && s(-1,0) )
  { l[i]=is_vsyo; r[536]++; if(dbg){print "R536"}; continue};
  if ( w(-2,"так") &&
-      q(-1,"mest_edim mest_mnim") &&
+       q(-1,"mest_edim mest_mnim") &&
         w(1,"себе") &&
          w(2,"и") && s(-2,1) )
  { l[i]=is_vsyo; r[537]++; if(dbg){print "R537"}; continue};
  if ( q(-1,"gl_ed") &&
-        w(1,"так") && sc(1,",") &&
-         w(2,"что чтобы") && s(-1,-1) && s(0,0) )
+       w(1,"так") && sc(1,",") &&
+        w(2,"что чтобы") && s(-1,-1) && s(0,0) )
  { l[i]=is_vsyo; r[538]++; if(dbg){print "R538"}; continue};
  if ( sc(0,",") &&
        gl_vzed(-1) && s(-1,-1) )
  { l[i]=is_vsyo; r[539]++; if(dbg){print "R539"}; continue};
  if ( qast(1) &&
        qast(2) &&
-       q(3,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") &&
-        q(4,"gl_ed gl_in") && s(0,3) )
+        q(3,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") &&
+         q(4,"gl_ed gl_in") && s(0,3) )
  { l[i]=is_vsyo; r[540]++; if(dbg){print "R540"}; continue};
  if ( qast(1) &&
        qast(2) &&
-       q(3,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") &&
+        q(3,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") &&
          qast(4) &&
-         q(5,"gl_ed gl_in") && s(0,4) )
+          q(5,"gl_ed gl_in") && s(0,4) )
  { l[i]=is_vsyo; r[541]++; if(dbg){print "R541"}; continue};
  if ( qast(1) &&
-      q(2,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") &&
-       q(3,"gl_ed gl_in") && s(0,2) )
+       q(2,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") &&
+        q(3,"gl_ed gl_in") && s(0,2) )
  { l[i]=is_vsyo; r[542]++; if(dbg){print "R542"}; continue};
  if ( qast(1) &&
-      q(2,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") &&
+       q(2,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") &&
         qast(3) &&
-        q(4,"gl_ed gl_in") && s(0,3) )
+         q(4,"gl_ed gl_in") && s(0,3) )
  { l[i]=is_vsyo; r[543]++; if(dbg){print "R543"}; continue};
  if ( mest_mnim(-2) &&
        gl_pnmn(-1) &&
-       q(1,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") && s(-2,0) )
+        q(1,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") && s(-2,0) )
  { l[i]=is_vsje; r[544]++; if(dbg){print "R544"}; continue};
  if ( q(1,"nar_vrem nar_mest nar_spos nar_srav nar_kaq suw_edvi mest_ed") &&
-        qast(2) &&
+       qast(2) &&
         q(3,"gl_ed gl_in") && s(0,2) )
  { l[i]=is_vsyo; r[545]++; if(dbg){print "R545"}; continue};
  if ( gl_nemn(-1) &&
@@ -2190,10 +2180,10 @@ if ( gl_nemn(1) &&
  { l[i]=is_vsyo; r[553]++; if(dbg){print "R553"}; continue};
  if ( pre_ro(-2) &&
        mest_ro(-1) &&
-       q(1,"gl_ed gl_in") && s(-2,0) )
+        q(1,"gl_ed gl_in") && s(-2,0) )
  { l[i]=is_vsyo; r[554]++; if(dbg){print "R554"}; continue};
  if ( w(1,"и не ли так как же") &&
-      q(2,"gl_ed gl_in") && s(0,1) )
+       q(2,"gl_ed gl_in") && s(0,1) )
  { l[i]=is_vsyo; r[555]++; if(dbg){print "R555"}; continue};
  if ( gl_ed(-3) &&
        w(-2,"бы") &&
@@ -2210,15 +2200,15 @@ if ( gl_nemn(1) &&
  { l[i]=is_vsyo; r[558]++; if(dbg){print "R558"}; continue};
  if ( gl_ed(-2) &&
        mest_mnvi(-1) &&
-       q(1,"gl_ed gl_in") && s(-2,0) )
+        q(1,"gl_ed gl_in") && s(-2,0) )
  { l[i]=is_vsje; r[559]++; if(dbg){print "R559"}; continue};
  if ( mest_mnvi(-1) &&
-      q(1,"gl_ed gl_in") && s(-1,0) )
+       q(1,"gl_ed gl_in") && s(-1,0) )
  { l[i]=is_vsyo; r[560]++; if(dbg){print "R560"}; continue};
  if ( q(1,"gl_ed gl_in") && s(0,0) )
  { l[i]=is_vsyo; r[561]++; if(dbg){print "R561"}; continue};
  if ( mest_da(1) &&
-      q(2,"gl_ed gl_in") && s(0,1) )
+       q(2,"gl_ed gl_in") && s(0,1) )
  { l[i]=is_vsyo; r[562]++; if(dbg){print "R562"}; continue};
  if (  q(1,"nar_vrem nar_mest nar_spos nar_step nar_srav nar_kaq") &&
         q(2,"gl_ed gl_in") && s(0,1) )
@@ -2227,71 +2217,71 @@ if ( gl_nemn(1) &&
 
  # все + ... + перех глагол ============================================
  if ( mest_mn(1) &&
-      q(2,"gl_pemn gl_pnmn") &&
+       q(2,"gl_pemn gl_pnmn") &&
         w(3,"о об") &&
-        q(4,"mest_pr suw_edtv suw_mntv") && s(0,3) )
+         q(4,"mest_pr suw_edtv suw_mntv") && s(0,3) )
  { l[i]=is_vsje; r[564]++; if(dbg){print "R564"}; continue};
  if ( q(1,"gl_pemn gl_pnmn") &&
-        w(2,"о об") &&
+       w(2,"о об") &&
         q(3,"mest_pr suw_edtv suw_mntv") && s(0,2) )
  { l[i]=is_vsje; r[565]++; if(dbg){print "R565"}; continue};
  if ( mest_vi(1) &&
-      q(2,"gl_pemn gl_pnmn") &&
-       q(3,"suw_mnvi prl_mnvi") && s(0,1) )
+       q(2,"gl_pemn gl_pnmn") &&
+        q(3,"suw_mnvi prl_mnvi") && s(0,1) )
  { l[i]=is_vsyo; r[566]++; if(dbg){print "R566"}; continue};
  if ( mest_vi(1) &&
-      q(2,"gl_pemn gl_pnmn") && s(0,1) )
+       q(2,"gl_pemn gl_pnmn") && s(0,1) )
  { l[i]=is_vsje; r[567]++; if(dbg){print "R567"}; continue};
  if ( wc(1,"..ы$") &&
-      q(2,"gl_pemn gl_pnmn gl_nemn gl_vzmn") && s(0,1) )
+       q(2,"gl_pemn gl_pnmn gl_nemn gl_vzmn") && s(0,1) )
  { l[i]=is_vsje; r[568]++; if(dbg){print "R568"}; continue};
  if ( prl_kred_sr(1) &&
-      q(2,"gl_pemn gl_pnmn") &&
-       q(3,"suw_edvi suw_mnvi") && s(0,2) )
+       q(2,"gl_pemn gl_pnmn") &&
+        q(3,"suw_edvi suw_mnvi") && s(0,2) )
  { l[i]=is_vsje; r[569]++; if(dbg){print "R569"}; continue};
  if ( mest_vi(1) &&
        qast(2) &&
-       q(3,"gl_pemn gl_pnmn") && s(0,2) )
+        q(3,"gl_pemn gl_pnmn") && s(0,2) )
  { l[i]=is_vsje; r[570]++; if(dbg){print "R570"}; continue};
  if (gl_pemn(1) &&
-     q(2,"prl_edvi prl_mnvi prq_mnvi") &&
+      q(2,"prl_edvi prl_mnvi prq_mnvi") &&
        q(3,"suw_edvi suw_mnvi") && s(0,2) )
  { l[i]=is_vsje; r[571]++; if(dbg){print "R571"}; continue};
  if (qast(1) &&
       gl_pemn(2) &&
-      q(3,"prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
-       q(4,"suw_edvi suw_mnvi") && s(0,3) )
+       q(3,"prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
+        q(4,"suw_edvi suw_mnvi") && s(0,3) )
  { l[i]=is_vsje; r[572]++; if(dbg){print "R572"}; continue};
  if (mest_mnim(1) &&
-     q(2,"gl_pemn gl_pnmn") &&
-      q(3,"prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
-       q(4,"suw_edvi suw_mnvi") && s(0,3) )
+      q(2,"gl_pemn gl_pnmn") &&
+       q(3,"prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
+        q(4,"suw_edvi suw_mnvi") && s(0,3) )
  { l[i]=is_vsje; r[573]++; if(dbg){print "R573"}; continue};
  if (mest_mnim(1) &&
-     q(2,"gl_pemn gl_pnmn") &&
-      q(3,"prl_edvi prl_mnvi prq_mnvi prl_edvi") &&
-       q(4,"prl_edvi prl_mnvi prq_mnvi prl_edvi") && s(0,3) )
+      q(2,"gl_pemn gl_pnmn") &&
+       q(3,"prl_edvi prl_mnvi prq_mnvi prl_edvi") &&
+        q(4,"prl_edvi prl_mnvi prq_mnvi prl_edvi") && s(0,3) )
  { l[i]=is_vsje; r[574]++; if(dbg){print "R574"}; continue};
  if (mest_mnim(1) &&
       qast(2) &&
-      q(3,"gl_pemn gl_pnmn") &&
-       q(4,"prl_edvi prl_mnvi prq_mnvi") &&
-        q(5,"suw_edvi suw_mnvi") && s(0,4) )
+       q(3,"gl_pemn gl_pnmn") &&
+        q(4,"prl_edvi prl_mnvi prq_mnvi") &&
+         q(5,"suw_edvi suw_mnvi") && s(0,4) )
  { l[i]=is_vsje; r[575]++; if(dbg){print "R575"}; continue};
  if (gl_pnmn(1) &&
       pre_vi(2) &&
        suw_edvi(3) && s(0,2) )
  { l[i]=is_vsje; r[576]++; if(dbg){print "R576"}; continue};
  if ( q(1,"gl_nemn gl_pnmn gl_pemn") &&
-        nar_srav(2) && s(0,1) && p(2) )
+       nar_srav(2) && s(0,1) && p(2) )
  { l[i]=is_vsje; r[577]++; if(dbg){print "R577"}; continue};
  if ( suw_mnvi(-1) &&
-      q(1,"gl_nemn gl_pnmn gl_pemn") &&
+       q(1,"gl_nemn gl_pnmn gl_pemn") &&
         pre_pr(2) &&
-        q(3,"suw_edpr suw_edme") && s(-1,2) )
+         q(3,"suw_edpr suw_edme") && s(-1,2) )
  { l[i]=is_vsyo; r[578]++; if(dbg){print "R578"}; continue};
  if ( q(1,"gl_nemn gl_pnmn gl_pemn") &&
-        pre_pr(2) &&
+       pre_pr(2) &&
         q(3,"suw_edpr suw_edme") && s(0,2) )
  { l[i]=is_vsje; r[579]++; if(dbg){print "R579"}; continue};
  if (qast(1) &&
@@ -2334,34 +2324,34 @@ if ( gl_nemn(1) &&
         gl_vzmn(4) && s(0,3) )
  { l[i]=is_vsje; r[587]++; if(dbg){print "R587"}; continue};
  if (pre_pr(1) &&
-     q(2,"prl_edpr prl_mnpr") &&
-      q(3,"suw_edpr suw_mnpr") &&
+      q(2,"prl_edpr prl_mnpr") &&
+       q(3,"suw_edpr suw_mnpr") &&
         gl_ed(4) && s(0,3) )
  { l[i]=is_vsyo; r[588]++; if(dbg){print "R588"}; continue};
  if (pre_pr(1) &&
-     q(2,"prl_edpr prl_mnpr") &&
-      q(3,"suw_edpr suw_mnpr") &&
-       q(4,"gl_vzmn gl_nemn") && s(0,3) )
+      q(2,"prl_edpr prl_mnpr") &&
+       q(3,"suw_edpr suw_mnpr") &&
+        q(4,"gl_vzmn gl_nemn") && s(0,3) )
  { l[i]=is_vsje; r[589]++; if(dbg){print "R589"}; continue};
  if ( q(1,"gl_pemn gl_pnmn") &&
-        mest_vi(2) &&
+       mest_vi(2) &&
         q(3,"prl_edvi prl_mnvi prq_mnvi suw_edvi suw_mnvi") && s(0,2) )
  { l[i]=is_vsje; r[590]++; if(dbg){print "R590"}; continue};
  if (qast(1) &&
-     q(2,"gl_pemn gl_pnmn") &&
+      q(2,"gl_pemn gl_pnmn") &&
        mest_vi(3) &&
-       q(4,"prl_edvi prl_mnvi prq_mnvi suw_edvi suw_mnvi") && s(0,3) )
+        q(4,"prl_edvi prl_mnvi prq_mnvi suw_edvi suw_mnvi") && s(0,3) )
  { l[i]=is_vsje; r[591]++; if(dbg){print "R591"}; continue};
  if ( q(1,"gl_pemn gl_pnmn") && cap(0) &&
        q(2,"suw_edvi suw_mnvi mest_vi") &&
-         gl_in(3) && s(0,2) )
+        gl_in(3) && s(0,2) )
  { l[i]=is_vsyo; r[592]++; if(dbg){print "R592"}; continue};
  if ( q(1,"gl_pemn gl_pnmn") &&
        q(2,"suw_edvi suw_mnvi mest_vi") && s(0,1) )
  { l[i]=is_vsje; r[593]++; if(dbg){print "R593"}; continue};
  if (mest_da(-1) &&
-     q(1,"suw_edvi suw_mnvi") &&
-      q(2,"gl_pemn gl_pnmn") && s(-1,1) )
+      q(1,"suw_edvi suw_mnvi") &&
+       q(2,"gl_pemn gl_pnmn") && s(-1,1) )
  { l[i]=is_vsje; r[594]++; if(dbg){print "R594"}; continue};
  if ( q(1,"qast mest_da") &&
        q(2,"gl_pemn gl_pnmn") &&
@@ -2373,50 +2363,50 @@ if ( gl_nemn(1) &&
  # гл.мн. + дополнение с прдл. в вин. п.
  if ( gl_nemn(-2) &&
        pre_vi(-1) &&
-       q(1,"suw_edtv suw_mntv") && s(-2,0) )
+        q(1,"suw_edtv suw_mntv") && s(-2,0) )
  { l[i]=is_vsyo; r[596]++; if(dbg){print "R596"}; continue};
 
  # гл.мн. + дополнение с прдл. в пр. п.
  if ( q(-2,"suw_mnim suw_mnne") &&
-         gl_nemn(-1) &&
-          pre_pr(1) && s(-2,1) )
+       gl_nemn(-1) &&
+        pre_pr(1) && s(-2,1) )
  { l[i]=is_vsje; r[597]++; if(dbg){print "R597"}; continue};
  if ( pre_pr(1) &&
-        suw_edpr(2) &&
+       suw_edpr(2) &&
         q(3,"gl_nemn gl_pnmn") &&
-          pre_pr(4) && s(0,3) )
+         pre_pr(4) && s(0,3) )
  { l[i]=is_vsje; r[598]++; if(dbg){print "R598"}; continue};
  if ( mest_mnim(1) &&
        pre_tv(2) &&
-       q(3,"suw_edtv suw_mntv") &&
-        q(4,"gl_nemn gl_pnmn") &&
+        q(3,"suw_edtv suw_mntv") &&
+         q(4,"gl_nemn gl_pnmn") &&
           pre_pr(5) && s(0,4) )
  { l[i]=is_vsje; r[599]++; if(dbg){print "R599"}; continue};
  if ( pre_tv(1) &&
-      q(2,"suw_edtv suw_mntv") &&
-       q(3,"gl_nemn gl_pnmn") &&
+       q(2,"suw_edtv suw_mntv") &&
+        q(3,"gl_nemn gl_pnmn") &&
          pre_pr(4) && s(0,3) )
  { l[i]=is_vsje; r[600]++; if(dbg){print "R600"}; continue};
 
  # гл.мн. + дополнение с прдл. в тв. п.
  if ( q(-2,"suw_mnim suw_mnne") &&
-         gl_nemn(-1) &&
-          pre_tv(1) && s(-2,1) )
+       gl_nemn(-1) &&
+        pre_tv(1) && s(-2,1) )
  { l[i]=is_vsje; r[601]++; if(dbg){print "R601"}; continue};
  if ( pre_pr(1) &&
-        suw_edpr(2) &&
+       suw_edpr(2) &&
         q(3,"gl_nemn gl_pnmn") &&
-          pre_tv(4) && s(0,3) )
+         pre_tv(4) && s(0,3) )
  { l[i]=is_vsje; r[602]++; if(dbg){print "R602"}; continue};
  if ( mest_mnim(1) &&
        pre_tv(2) &&
-       q(3,"suw_edtv suw_mntv") &&
-        q(4,"gl_nemn gl_pnmn") &&
+        q(3,"suw_edtv suw_mntv") &&
+         q(4,"gl_nemn gl_pnmn") &&
           pre_tv(5) && s(0,4) )
  { l[i]=is_vsje; r[603]++; if(dbg){print "R603"}; continue};
  if ( pre_tv(1) &&
-      q(2,"suw_edtv suw_mntv") &&
-       q(3,"gl_nemn gl_pnmn") &&
+       q(2,"suw_edtv suw_mntv") &&
+        q(3,"gl_nemn gl_pnmn") &&
          pre_tv(4) && s(0,3) )
  { l[i]=is_vsje; r[604]++; if(dbg){print "R604"}; continue};
 
@@ -2425,14 +2415,14 @@ if ( gl_nemn(1) &&
  # гл.мн + все + ...  ============================================
  # гл.мн + все + ... + доп.
  if ( q(-1,"gl_vzmn gl_nemn") &&
-        sc(0,",") &&
+       sc(0,",") &&
         q(1,"nar_mest nar_kaq nar_vrem nar_spos mest_mn suw_edda") && s(-1,-1) )
  { l[i]=is_vsje; r[605]++; if(dbg){print "R605"}; continue};
  if ( q(1,"gl_pemn") && sc(1,",") &&
-        w(2,"что") && s(0,0) )
+       w(2,"что") && s(0,0) )
  { l[i]=is_vsje; r[606]++; if(dbg){print "R606"}; continue};
  if ( q(-1,"gl_vzmn gl_nemn") && s(-1,-1) &&
-        sc(0,",") )
+       sc(0,",") )
  { l[i]=is_vsje; r[607]++; if(dbg){print "R607"}; continue};
 
 
@@ -2464,7 +2454,7 @@ if ( gl_nemn(1) &&
        suw_mnim(vvn+1) )
  { l[i]=is_vsje; r[614]++; if(dbg){print "R614"}; continue};
  if ( mest_mnim(1) && vv(1) &&
-      q(vvn+1,"nar_spos prl_kred_sr") &&
+       q(vvn+1,"nar_spos prl_kred_sr") &&
         prl_krmn(vvn+2) && s(0,0) && s(vvn+1,vvn+1) && p(vvn+2) )
  { l[i]=is_vsje; r[615]++; if(dbg){print "R615"}; continue};
  if ( mest_mnim(1) && vv(1) &&
@@ -2509,17 +2499,17 @@ if ( gl_nemn(1) &&
 
  # поиск назад ------------------------------------------------------------
  if ( pre_ro(1) && qb(-4,"mest_mn") &&
-      q(2,"suw_edro suw_mnro") && s(qbn,1) )
+       q(2,"suw_edro suw_mnro") && s(qbn,1) )
  { l[i]=is_vsyo; r[628]++; if(dbg){print "R628"}; continue};
  if ( qb(-7,"mest_im") &&
        phs(-1,"как и") && s(-2,-1) )
  { l[i]=is_vsje; r[629]++; if(dbg){print "R629"}; continue};
  if ( qb(-5,"suw_mnim") &&
-        pre_pr(1) &&
+       pre_pr(1) &&
         q(2,"mest_pr suw_edtv suw_mntv") && s(qbn,1) )
  { l[i]=is_vsje; r[630]++; if(dbg){print "R630"}; continue};
  if ( (qb(-5,"prl_krmn")||qb(-5,"mest_mnim")) && sv(qbn,0,".") &&
-       q(1,"prl_kred_sr prl_edsrim") && s(0,0) && p(1) )
+        q(1,"prl_kred_sr prl_edsrim") && s(0,0) && p(1) )
  { l[i]=is_vsje; r[631]++; if(dbg){print "R631"}; continue};
 
  if ( wb_raw(-7,"все́") && sv(wbn,-2,"[!.?]") && p(-1) )
@@ -4519,11 +4509,9 @@ for(wrd in omap["x2105"]){omakevars(x2105,"x2105");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2106"]){omakevars(x2106,"x2106");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( w(-2,"что") &&
-       w(-1,"было есть") && s(-2,-1) )
+ if ( qxs(-1,"что","было есть") )
  { l[i]=omo2; r[986]++; if(dbg){print "R986"}; continue};
- if ( w(-2,"изо со") &&
-       w(-1,"всей") && s(-2,-1) )
+ if ( qxs(-1,"изо со","всей") )
  { l[i]=omo2; r[987]++; if(dbg){print "R987"}; continue};
  if ( w(1,"нет") && s(0,0) && p(1) )
  { l[i]=omo2; r[988]++; if(dbg){print "R988"}; continue};
@@ -6177,7 +6165,7 @@ for(wrd in omap["x2221"]){omakevars(x2221,"x2221");for(y=1;y<=wln;y++)         #
          pre_vi(-1) && s(-2,-1) )
    { l[i]=omo2; r[1288]++; if(dbg){print "R1288"}; continue};
  };
-if ( qxs(-1,"что","за") )
+ if ( qxs(-1,"что","за") )
  { l[i]=omo1; r[1289]++; if(dbg){print "R1289"}; continue};
  #
  if ( sw_em_i_f() )
@@ -6460,6 +6448,12 @@ for(wrd in omap["x2240"]){omakevars(x2240,"x2240");for(y=1;y<=wln;y++)         #
  #  x2241 sw_em_vr_		sw_ez_i_
 for(wrd in omap["x2241"]){omakevars(x2241,"x2241");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
+ #
+ if(iwrd=="черта") {
+   if ( w(-1,"ни") &&
+         w(1,"не нет") && s(-1,0) )
+   { l[i]=omo2; r[1562]++; if(dbg){print "R1562"}; continue};
+ };
  #
  if ( sw_ez_i_f() )
  { l[i]=omo2; r[1341]++; if(dbg){print "R1341"}; continue};
@@ -6821,7 +6815,7 @@ for(wrd in omap["x2267"]){omakevars(x2267,"x2267");for(y=1;y<=wln;y++)         #
         w(-1,"или") && s(-2,-1) )
  { l[i]=omo1; r[1403]++; if(dbg){print "R1403"}; continue;};
  if ( w(1,"или") &&
-      q(2,"qi_ed qi_mn") && s(0,1) )
+       q(2,"qi_ed qi_mn") && s(0,1) )
  { l[i]=omo1; r[1404]++; if(dbg){print "R1404"}; continue;};
  if ( w(-1,"за по под") && s(-1,-1) )
  { l[i]=omo1; r[1405]++; if(dbg){print "R1405"}; continue;};
@@ -6937,15 +6931,15 @@ for(wrd in omap["x2273"]){omakevars(x2273,"x2273");for(y=1;y<=wln;y++)         #
         isname(2) && s(0,1) )
  { l[i]=omo2; r[1428]++; if(dbg){print "R1428"}; continue};
  if ( q(1,"prl_edmuro prl_edsrro") && sc(1,",") && s(0,0) &&
-        w(2,"самого") &&
+       w(2,"самого") &&
         q(3,"prl_edmuro prl_edsrro") && s(2,3) )
  { l[i]=omo1; r[1429]++; if(dbg){print "R1429"}; continue};
  if ( q(1,"prl_edmuro prl_edsrro") &&
-        w(2,"и или") &&
+       w(2,"и или") &&
         q(3,"prl_edmuro prl_edsrro") && s(0,2) )
  { l[i]=omo1; r[1430]++; if(dbg){print "R1430"}; continue};
  if ( q(-2,"prl_edmuro prl_edsrro") &&
-        w(-1,"и или") &&
+       w(-1,"и или") &&
         q(1,"prl_edmuro prl_edsrro") && s(-2,0) )
  { l[i]=omo1; r[1431]++; if(dbg){print "R1431"}; continue};
  if ( q(1,"prl_edmuro prl_edsrro mest_vi mest_ro") &&
@@ -6981,19 +6975,19 @@ for(wrd in omap["x2275"]){omakevars(x2275,"x2275");for(y=1;y<=wln;y++)         #
  { l[i]=omo2; r[1437]++; if(dbg){print "R1437"}; continue};
  if ( w(-1,"по и") &&
        w(1,"своей твоей его её их нашей вашей") &&
-       q(2,"suw_edzeda suw_edzero suw_edzetv suw_edzepr") && s(-1,1) )
+        q(2,"suw_edzeda suw_edzero suw_edzetv suw_edzepr") && s(-1,1) )
  { l[i]=omo2; r[1438]++; if(dbg){print "R1438"}; continue};
  #
  if ( q(1,"prl_edzeda prl_edzero prl_edzetv") && sc(1,",") && s(0,0) &&
        w(2,"самой") &&
-       q(3,"prl_edzeda prl_edzero prl_edzetv") && s(2,3) )
+        q(3,"prl_edzeda prl_edzero prl_edzetv") && s(2,3) )
  { l[i]=omo1; r[1439]++; if(dbg){print "R1439"}; continue};
  if ( q(1,"prl_edzeda prl_edzero prl_edzetv") &&
        q(2,"suw_edzeda suw_edzero suw_edzetv suw_edzepr pre_any") && s(0,1) )
  { l[i]=omo1; r[1440]++; if(dbg){print "R1440"}; continue};
  #
  if ( q(-2,"muk_edzeda muk_edzero muk_edzetv muk_edzepr") &&
-        w(-1,"же") && s(-2,-1) )
+       w(-1,"же") && s(-2,-1) )
  { l[i]=omo1; r[1441]++; if(dbg){print "R1441"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -7011,7 +7005,7 @@ for(wrd in omap["x2276"]){omakevars(x2276,"x2276");for(y=1;y<=wln;y++)         #
  #
  if ( q(1,"prl_edmupr prl_edsrpr") && sc(1,",") && s(0,0) &&
        w(2,"самом") &&
-       q(3,"prl_edmupr prl_edsrpr") && s(2,3) )
+        q(3,"prl_edmupr prl_edsrpr") && s(2,3) )
  { l[i]=omo1; r[1445]++; if(dbg){print "R1445"}; continue};
  if ( q(1,"prl_edmupr prl_edsrpr mest_vi mest_pr") &&
        q(2,"suw_edmupr suw_edsrpr pre_any") && s(0,1) )
@@ -7061,14 +7055,14 @@ for(wrd in omap["x2277"]){omakevars(x2277,"x2277");for(y=1;y<=wln;y++)         #
  #
  if ( q(1,"prl_edmuda prl_edsrda") && sc(1,",") && s(0,0) &&
        w(2,"самому") &&
-       q(3,"prl_edmuda prl_edsrda") && s(2,3) )
+        q(3,"prl_edmuda prl_edsrda") && s(2,3) )
  { l[i]=omo1; r[1455]++; if(dbg){print "R1455"}; continue};
  if ( q(1,"prl_edmuda prl_edsrda mest_da") &&
        q(2,"suw_edmuda suw_edsrda pre_any") && s(0,1) )
  { l[i]=omo1; r[1456]++; if(dbg){print "R1456"}; continue};
  #
  if ( q(-1,"pre_da preph_da") &&
-       (q_(1,swn_edmu_da)||q_(1,swn_edsr_da)) && s(-1,0) )
+      (q_(1,swn_edmu_da)||q_(1,swn_edsr_da)) && s(-1,0) )
  { l[i]=omo1; r[1457]++; if(dbg){print "R1457"}; continue};
  #
  if ( muk_edmuda(-2) &&
@@ -7521,15 +7515,15 @@ for(wrd in omap["x4700"]){omakevars(x4700,"x4700");for(y=1;y<=wln;y++)         #
  { l[i]=omo2; r[1548]++; if(dbg){print "R1548"}; continue};
  #
  if ( pre_ro(1) &&
-      q(2,"suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro mest_ro") && s(0,1) )
+       q(2,"suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro mest_ro") && s(0,1) )
  { l[i]=omo2; r[1549]++; if(dbg){print "R1549"}; continue};
  #
  if ( pre_pr(1) &&
-      q(2,"suw_edpr suw_mnpr prl_edpr prl_mnpr prq_edpr prq_mnpr mest_pr") && s(0,1) )
+       q(2,"suw_edpr suw_mnpr prl_edpr prl_mnpr prq_edpr prq_mnpr mest_pr") && s(0,1) )
  { l[i]=omo2; r[1550]++; if(dbg){print "R1550"}; continue};
  #
  if ( pre_tv(1) &&
-      q(2,"suw_edtv suw_mntv prl_edtv prl_mntv prq_edtv prq_mntv mest_tv") && s(0,1) )
+       q(2,"suw_edtv suw_mntv prl_edtv prl_mntv prq_edtv prq_mntv mest_tv") && s(0,1) )
  { l[i]=omo2; r[1551]++; if(dbg){print "R1551"}; continue};
  #
  if ( q(1,"nar_spos nar_kaq") && s(0,1) )
@@ -7621,5 +7615,8 @@ for (i in book) { print book[i] }
 #for (i in prevyo) {print i, prevyo[i] >> "_yo.txt"}
 #for (i in vsez) { print i, vsez[i] >> "_vsez.txt" }
 #                }
+#
+# for (var in SYMTAB) { if (var ~ /^[a-zA-Z_]/) print var };
+
   }
 ###_END_###

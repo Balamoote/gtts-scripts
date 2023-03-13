@@ -654,7 +654,7 @@ BEGIN {
         if ($2~ /^межд$/                            ){  mzd               [$1]=$3; continue };
         if ($2~ /^част$/                            ){  qst               [$1]=$3; continue };
         if ($2~ /^ввод$/                            ){  vvodn             [$1]=$3; continue };
-        if ($2~ /^союз$/                            ){  suyz              [$1]=$3; continue };
+        if ($2~ /^союз$/                            ){  soyz              [$1]=$3; continue };
 
     if($2~  /^мест_/ ){
         if ($2~ /^мест_(сущ|прл)_ед_муж_вин$/       ){  mst_ed_mu_vi      [$1]=$3; continue };
