@@ -36,6 +36,7 @@ BEGIN {
     olexqty = split(readfile(omolexxtxt), olex, "\n"); delete olex[olexqty];
     for ( l in olex ) { split(olex[l], olx, "#"); omolexx[olx[1]] = olx[2] };
     delete olex; delete olx;
+    cmd = "zcat " indb "automo.gz"; while ((cmd|getline) > 0) { automo[$2] = $1 };
 
     omoqty = split(readfile(omoluclst), omlst, "\n"); delete omlst[omoqty];
     for (i in omlst) { #b1
@@ -58,12 +59,16 @@ BEGIN {
 
     for ( x in omolexx ) { lx = length(x);
         if ( substr(x, lx, 1 ) == "=" ) {
-            if ( oml == lx-1 ) { if ( substr(lcm, 1, lx-1) == substr (x, 1, lx-1) ) { lexxpart = sprintf("%s %s\n", "Шаблон в lexx:", omolexx[x]) } } }
-            else { if ( oml >= lx ) { if (substr (lcm, 1, lx) == x)	{  lexxpart = sprintf("%s %s\n", "Шаблон в lexx:", omolexx[x]) } } }
+            if ( oml == lx-1 ) { if ( substr(lcm, 1, lx-1) == substr (x, 1, lx-1) ) { lexxpart = sprintf("%s %s", "Шаблон в lexx:", omolexx[x]) } } }
+            else { if ( oml >= lx ) { if (substr (lcm, 1, lx) == x)	{  lexxpart = sprintf("%s %s", "Шаблон в lexx:", omolexx[x]) } } };
                 };  
-            if ( lexxpart == "" ) { lexxpart = sprintf("%s\n", "Шаблон в lexx: нет" ) };
+            if ( lexxpart == "" ) { lexxpart = sprintf("%s", "Шаблон в lexx: нет" ) };
 
-            shblock[arr[1]] = headr sedpart riphead vimhead lexxpart;
+            autopad = totallen-length(lexxpart)-finduni(lexxpart)-4
+            if ( lcm in automo ) { autopart = sprintf("%" autopad "s %s\n", "Автошаблон:", automo[lcm]) }
+            else { autopart = sprintf("%" autopad "s %s\n", "Автошаблон:", "нет") };
+
+            shblock[arr[1]] = headr sedpart riphead vimhead lexxpart autopart;
         } #b1
         delete omos[""]
     savefs = FS;   FS = fsword;

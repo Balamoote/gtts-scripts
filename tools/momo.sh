@@ -13,13 +13,14 @@ mo_time0=$(date +%s.%N);
 key="$1"
 book="$2"
 bookwrkdir=mano-"$book"
+bookscydir=mano-"$book".scy
 suf=man
 backup="$book".$suf
 debug=0   # Если 1, то сделать отладку скриптов омографов: поиск искажений текста в "пастеризованных" версиях исходника и результата 
 nocaps=0  # Если 1, то капсов в "пастеризованых" не будет
 
 # Установка редактора: vim или neovim
-edi=$(sed -rn 's/^editor\s*=\s*(vim|nvim)$/\1/ p' scriptdb/settings.ini)
+edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' scriptdb/settings.ini)
 
 # Установка корректировки ширины вывода превью в дискретных скриптах
 termcor=$(sed -rn 's/^termcorrection\s*=\s*([-0-9]*)$/\1/ p' scriptdb/settings.ini)
@@ -56,17 +57,19 @@ case $key in
 		if [[ -d "mano-$book" ]]; then rm -rf "mano-$book"; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; exit 1
 		else printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директории" $bookwrkdir "не существует. Используйте другой ключ."; exit 1; fi ;;
 	-x) # Однозначние омографы+дискретные скрипты; существующую директорию mano- не удалять
-		fixomo=1; preview=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы и дискретные скрипты." ;;
+		fixomo=1; preview=0; spacy=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы и дискретные скрипты." ;;
 	-p) # Превью текста и дискретные скрипты; существующую директорию mano- не удалять
-		fixomo=0; preview=1; printf '\e[36m%s\e[0m\n' "Превью текста и дискретные скрипты." ;;
+		fixomo=0; preview=1; spacy=0; printf '\e[36m%s\e[0m\n' "Превью текста и дискретные скрипты." ;;
 	-px | -xp | -g) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- не удалять
-		fixomo=1; preview=1; printf '\e[36m%s\e[0m\n' "Однозначные омографы, превью и дискретные скрипты." ;;
-	-fpx | -fxp | -fg | -gg ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить
-		fixomo=1; preview=1; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=1; preview=1; spacy=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы, превью и дискретные скрипты." ;;
+	-fpx | -fxp | -fg | -gg ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; +Spacy (!!!)
+		fixomo=1; preview=1; spacy=1; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+	-fpc | -ggc ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
+		fixomo=1; preview=1; spacy=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-xf | -fx) # Превью текста и дискретные скрипты; существующую директорию mano- удалить
-		fixomo=1; preview=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=1; preview=0; spacy=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-fp | -pf) # Однозначные омографы Не делать, дискретные скрипты; существующую директорию mano- удалить
-		fixomo=0; preview=1; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=0; preview=1; spacy=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	*) # Нечто другое
 		printf '\e[32m%s \e[93m%s \e[32m%s \e[93m%s\e[0m\n' "Задайте ключ или книгу. Например:" "./momo.sh -xp book.fb2" "или" "./momo.fb2 book.fb2"; exit 0 ;;
 esac
@@ -77,7 +80,7 @@ else printf '\e[35m%s \e[93m%s \e[35m%s \e[93m%s\e[0m\n' "Директория �
 printf '\e[36m%s \e[93m%s\e[36m%s \e[93m%s\e[0m ' "В словаре Омографов:" $(zgrep -c ^ scriptdb/mano-uc0.txt.gz) ", омографов:" $(zgrep -c ^ scriptdb/mano-lc0.txt.gz)
 if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
 if [[ -s scriptaux/zaomo.md5 ]] && md5sum -c --status scriptaux/zaomo.md5 >/dev/null 2>&1; then
-	printf '\e[36m%s \e[33m%-8s \e[32m%s\e[0m\n' "Файлы" scriptaux/zndb.md5 "OK!";
+	printf '\e[36m%s \e[33m%-8s \e[32m%s\e[0m\n' "Файлы" scriptaux/zaomo.md5 "OK!";
 else printf '\n'; clxx=1; fi
 
 if [[ $clxx -eq "1" ]]; then
@@ -106,12 +109,33 @@ sed -n '/<binary/,$p' "$book" > $bookwrkdir/binary-book.txt
 mo_uni=$(date +%s.%N); duration=$( echo $mo_uni - $mo_time0 | bc )
 if [[ $fixomo == "1" ]]; then
 
+if [[ $spacy == "1" ]]; then
+# Создать копию текст книги и морфологией с помощью spacy << начало блока SpaCy
+ if [[ ! -d $bookscydir ]]; then mkdir $bookscydir
+ else printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Директория с морфологической разметкой книги" $bookscydir "существует."; fi
+
+ if [[ -s $bookscydir/text-book.scy ]] && md5sum -c --status $bookscydir/text.scy.md5 >/dev/null 2>&1; then
+        printf '\e[36m%s \e[33m%s \e[32m%s\e[0m\n' "Файлы" $bookscydir/text.scy.md5 "OK!";
+ else
+    sed -r "s/[$unxc]+//g;
+            s/[$unxs]/./g;
+            s/([$RUUC])([$RUUC]+)/\1\L\2/g;
+            s/<[-a-zA-Z_/.,;:#?! ]+>//g" $bookwrkdir/text-book.txt | \
+    python3 scriptdb/rulg_omo.py scriptdb/omo_list.scy.gz > $bookscydir/text-book.scy
+#   python3 scriptdb/rulg_all.py scriptdb/omo_list.scy > $bookscydir/text-book.scy
+
+    md5sum $bookscydir/text-book.scy $bookwrkdir/text-book.txt scriptdb/rulg_omo.py scriptdb/rulg_all.py > $bookscydir/text.scy.md5
+    mo_uni_cy=$(date +%s.%N); duration=$( echo $mo_uni_cy - $mo_uni | bc )
+    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк с омографами:" $duration "сек."; fi
+fi;
+# << Конец блока SpaCy
+
 # Проверить наличие необработанных "все": если есть, применить все правила, иначе выключить пару "все/всё"
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
 if [[ ! $yop -eq 0 ]]; then
 	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m … ' "Все (" $yop ") ==> Все́/Всё"
 	
-  awk -v indb="scriptdb/" -v inax="scriptaux/" -vbkwrkdir="$bookwrkdir/" -f scriptdb/deomo.awk $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+  awk -v indb="scriptdb/" -v inax="scriptaux/" -vbkscydir="$bookscydir/" -f scriptdb/deomo.awk $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
   mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
 
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
@@ -119,7 +143,7 @@ mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "обработано за" $duration "сек. Остаток:" $yop
 
 else
-  awk -v indb="scriptdb/" -v inax="scriptaux/" -vbkwrkdir="$bookwrkdir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+)(#_#_# vsez !_#_!)$/#\1\2/g' scriptdb/deomo.awk) \
+  awk -v indb="scriptdb/" -v inax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+)(#_#_# vsez !_#_!)$/#\1\2/g' scriptdb/deomo.awk) \
      $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
   mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
 fi # все
@@ -176,7 +200,7 @@ zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_
        	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
 sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $bookwrkdir/text-book.txt | \
-    awk -v obook=$obook -v twd=$twd -v preview=$preview -v termcor=$termcor -v editor=$edi -vbkwrkdir="$bookwrkdir/" -f scriptdb/preview.awk 
+    awk -v obook=$obook -v twd=$twd -v preview=$preview -v termcor=$termcor -v editor=$edi -vbkwrkdir="$bookwrkdir/" -v indb="scriptdb/" -f scriptdb/preview.awk 
 
 totnum=$(cat $bookwrkdir/totnum)
 
@@ -188,7 +212,7 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Время:" 
 chmod +x $bookwrkdir/*.sh
 # Собираем книгу и удаляем временные файлы
 cat $bookwrkdir/text-book.txt $bookwrkdir/binary-book.txt > "$book"
-rm $bookwrkdir/*.txt $bookwrkdir/*.pat $bookwrkdir/*.sed
+#rm $bookwrkdir/*.txt $bookwrkdir/*.pat $bookwrkdir/*.sed
 #rm $bookwrkdir/*.txt $bookwrkdir/*.pat
 
 else # Если не нашли омографов для ручной обработки discretchk 0

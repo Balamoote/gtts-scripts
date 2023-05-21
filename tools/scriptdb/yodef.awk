@@ -113,7 +113,7 @@ FS = savefs
 ### всем !_#_!
     if(tolower(wrd)== "всем" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
 
-      if ( w(-1,"во о обо на при") && s(-1,-1) )
+      if ( w(-1,"во о обо на при") && s(-1) )
       { l[i]=somo; r[2]++; if(dbg){print "R2"}; continue;};
   
     }; delete wpos; book[b]=joinpat(l,sep,nf);}; # footer
@@ -121,7 +121,7 @@ FS = savefs
 ### моем !_#_!
     if(tolower(wrd)== "моем" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
 
-      if ( w(-1,"в о об на при") && s(-1,-1) )
+      if ( w(-1,"в о об на при") && s(-1) )
       { l[i]=somo; r[3]++; if(dbg){print "R3"}; continue;};
    
     }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
@@ -129,7 +129,7 @@ FS = savefs
 ### нем !_#_!
     if(tolower(wrd)== "нем" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
 
-      if ( w(-1,"в о об на при по") && s(-1,-1) )
+      if ( w(-1,"в о об на при по") && s(-1) )
       { l[i]=somo; r[4]++; if(dbg){print "R4"}; continue;};
    
     }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
@@ -145,7 +145,7 @@ FS = savefs
 ### сем !_#_!
     if(tolower(wrd)== "сем" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
 
-      if ( w(-1,"в о об на при по") && s(-1,-1) )
+      if ( w(-1,"в о об на при по") && s(-1) )
       { l[i]=somo; r[5]++; if(dbg){print "R5"}; continue;};
 
     }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
@@ -154,7 +154,7 @@ FS = savefs
     if(tolower(wrd)== "чем" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
 
       if ( !(w(-2,"не") && s(-2,-2)) && 
-              w(-1,"в о об на при по") && s(-1,-1) )
+              w(-1,"в о об на при по") && s(-1) )
       { l[i]=somo; r[7]++; if(dbg){print "R7"}; continue;};
    
     }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer
