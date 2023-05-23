@@ -5561,7 +5561,7 @@ for(wrd in omap["x2272"]){omakevars(x2272,"x2272");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2273"]){omakevars(x2273,"x2273");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( w(1,"лучшего худшего левого правого верхнего нижнего") && p(1) && s(0) )
+ if ( q(1,"prl_edmuro") && s(0) && (p(1)||q_w(2,"pre_any souz_iili")) && Q(1,"suw_odedro") )
  { l[i]=omo1; r[1059]++; if(dbg){print "R1059"}; continue};
  if ( w(-3,"у") &&
        q(-2,"mest_ro") &&
