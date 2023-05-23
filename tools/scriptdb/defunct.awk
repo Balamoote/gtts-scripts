@@ -1810,6 +1810,9 @@ function sw_em_v_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_em_d_f(rett, stopp) { while (stopp == 0) {
+ if ( loc2emd==1 )
+ { rett=stopp=1; d[412]++; if(dbg){print "D412", "sw_da_f"}; continue };
+
  if ( sw_da_f() )
  { rett=stopp=1; d[412]++; if(dbg){print "D412", "sw_da_f"}; continue };
 
@@ -1831,7 +1834,7 @@ function sw_em_d_f(rett, stopp) { while (stopp == 0) {
  if ( q(-1,pre_string) && s(-1) )
  { rett=stopp=1; d[417]++; if(dbg){print "D417"}; continue };
  #_#_#
- if ( (q(-1,"preph_da prl_edmuda prq_edmuda mest_edmuda")||wc(-1,"^[0-9]+$")) && W(-1,"ему") && s(-1) )
+ if ( (q(-1,"preph_da prl_edmuda prq_edmuda mest_edmuda")||wc(-1,"^[0-9]+$")) && W(-1,"ему") && s(-1) && Wc(-1,"[ео]ву$") )
  { rett=stopp=1; d[418]++; if(dbg){print "D418"}; continue };
 break}; return rett }
 
@@ -2343,6 +2346,9 @@ function sw_ez_v_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_ez_d_f(rett, stopp) { while (stopp == 0) {
+ if ( loc2ezd==1 )
+ { rett=stopp=1; d[412]++; if(dbg){print "D412", "sw_da_f"}; continue };
+
  if ( sw_da_f() )
  { rett=stopp=1; d[549]++; if(dbg){print "D549", "sw_da_f"}; continue };
  if ( muk_edzeda(-2) &&
@@ -2369,8 +2375,12 @@ function sw_ez_d_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_em_l_f(rett, stopp) { while (stopp == 0) {
+ if ( W(0,"берегу бреду гною хмелю") && q(0,"suw_edmuda") &&
+      !( (wb(-5,-1,"в во на") && !(sq(wbn,-1,"[….:;!?]"))) || (wf(1,3,"в во на") && !(sq(0,wfn-1,"[….:;!?]")))) )
+ { rett=0; stopp=1; loc2emd=1; d[556]++; if(dbg){print "D556"}; continue};
  if ( id(-1,"hw4loc") && s(-1) )
  { rett=stopp=1; d[556]++; if(dbg){print "D556"}; continue};
+
  #
  if ( pre_pr(-3) &&
        prq_edpr(-2) &&
@@ -2409,6 +2419,9 @@ function sw_em_l_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_ez_l_f(rett, stopp) { while (stopp == 0) {
+ if ( W(0,"кости крови мели пыли шерсти") && q(0,"suw_edzeda") &&
+      !( (wb(-5,-1,"в во на") && !(sq(wbn,-1,"[….:;!?]"))) || (wf(1,3,"в во на") && !(sq(0,wfn-1,"[….:;!?]")))) )
+ { rett=0; stopp=1; loc2emd=1; d[556]++; if(dbg){print "D556"}; continue};
  #
  if ( !(regn(-4,"Nme") && s(-4) ) &&
       pre_pr(-3) &&
@@ -3830,6 +3843,8 @@ function gl_paedsr_f(rett, stopp) { while (stopp == 0) {
  #
  if ( q(1,"mest_it suw_edsrim") &&
         q(2,"prl_kred_sr gl_in") && s(0,1) )
+ { rett=stopp=1; d[930]++; if(dbg){print "D930"}; continue };
+ if ( q(1,"prl_kred_sr") && p(-1) && p(1) )
  { rett=stopp=1; d[930]++; if(dbg){print "D930"}; continue };
  #
  if ( q(1,"mest_it suw_edsrim") && s(0) )

@@ -41,7 +41,7 @@ function makebookvars()                           # разбить строку,
 function makebookvars_nohyphback()                # разбить строку, но словарные слова с дефисом не склеивать
                 { b=strtonum(omlin[y]);nf=splitline(book[b]);splitlinescy(bscy[b]);regwpos(wrd); }
 function makewposvars()                           # определить переменные внутри цикла для слова в позиции i
-                { i=strtonum(i); prex=edro2mnim=edro2mnvi=nizm=mn2e2pomn=NORULE="" }
+                { i=strtonum(i); prex=edro2mnim=edro2mnvi=nizm=mn2e2pomn=loc2emd=loc2ezd=NORULE="" }
 
 # функции обработки слов
 function s1(n,wl,    rett)                        # выдать 1-й символ строки-сеператора
@@ -149,7 +149,7 @@ function we(n, wl,    rett)                       # слово = "слово" с
                 { if (lc(n) == wl) {rett=1} else {rett=0}; return rett }
 function wc(n, wl,    itmz, k, lk, rett)          # нахождение части слова в списке? = "один из набора"
                 { lk=split(wl, itmz, "[ |]"); for (k=1; k<=lk; k++) { if (lc(n)~itmz[k]) {rett=1; break} else {rett=0};}; return rett }
-function wv(n, wl,    itmz, k, lk, rett)          # НЕнахождение части слова в списке? = "один из набора"
+function Wc(n, wl,    itmz, k, lk, rett)          # НЕнахождение части слова в списке? = "один из набора"
                 { lk=split(wl, itmz, "[ |]"); for (k=1; k<=lk; k++) { if (lc(n)~itmz[k]) {rett=0; break} else {rett=1};}; return rett }
 function W(n, wl,    itmz, rett)                  # НЕнахождение в списке? != "одно из слов"
                 { stoar(wl, itmz, "[ |]"); if (lc(n) in itmz) {rett=0} else {rett=1}; return rett }
@@ -1478,6 +1478,7 @@ function suw_noed(n,                                                            
                           wd in swn_edze_im||wd in swn_edze_me||wd in swn_edze_ne||wd in swn_edze_pr||wd in swn_edze_ro||wd in swn_edze_tv||
                           wd in swn_edze_vi)                                                                                                    {rett=1} else {rett=0}; return rett}
 function suw_noedim(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_edmu_im||wd in swn_edob_im||wd in swn_edsr_im||wd in swn_edze_im)         {rett=1} else {rett=0}; return rett}
+function suw_noedmuim(n,  wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_edmu_im||wd in swn_edob_im)                                               {rett=1} else {rett=0}; return rett}
 function suw_noedvi(n,                                                                                                                          wd,rett) { if(!(wd))wd=lc(n);
                       if (wd in swn_edmu_im||wd in swn_edob_im||wd in swn_edob_vi||wd in swn_edsr_im||wd in swn_edsr_vi||wd in swn_edze_im||
                           wd in swn_edze_vi)                                                                                                    {rett=1} else {rett=0}; return rett}
@@ -1792,6 +1793,8 @@ function narph_priq(n,                                                          
                      if ( qxs(n,"от","боли изумления радости страха удивления") )                                                               {rett=1} else {rett=0}; return rett }
 function narph_kaq(n,                                                                                                                           rett) {
                      if ( qxs(n,"вовсе","не","нужно обязательно больно")||
+                          qxs(n,"по","крайней меньшей","мере")||
+                          qxs(n,"по","большому","счёту счету")||
                           qxs(n,"первым","делом")||
                           qxs(n,"не","нужно обязательно")  )                                                                                    {rett=1} else {rett=0}; return rett }
 function narph_spos(n,                                                                                                                          rett) {
