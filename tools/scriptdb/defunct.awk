@@ -265,6 +265,8 @@ function sw_im_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_da_f(rett, stopp) { while (stopp == 0) {
+ if ( id(1,"uw4edda") && s(0) )
+ { rett=stopp=1; d[1]++; if(dbg){print "D1"}; continue };
  #
  if ( !(qb(-5,-1,"pre_any") && s(qbn,-1) ) &&
        q(-1,"gl_pnin gl_pned gl_pnmn gl_popned gl_popnmn deep_pn") && (regn(-1,"Ud")||type(-1,"giv gov")) && s(-1) )
@@ -278,6 +280,8 @@ function sw_da_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_vi_f(rett, stopp) { while (stopp == 0) {
+ if ( id(1,"uw4edvi") && s(0) )
+ { rett=stopp=1; d[1]++; if(dbg){print "D1"}; continue };
  #
  if ( q(-1,"gl_in gl_ed gl_mn gl_poed deep") && regn(-1,"Uv") && s(-1) )
  { rett=stopp=1; d[72]++; if(dbg){print "D72"}; continue };
@@ -364,6 +368,8 @@ function sw_vi_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_tv_f(rett, stopp) { while (stopp == 0) {
+ if ( id(1,"uw4edtv") && s(0) )
+ { rett=stopp=1; d[207]++; if(dbg){print "D207"}; continue};
  #
  if ( q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && regn(-1,"Ut") && s(-1) )
  { rett=stopp=1; d[95]++; if(dbg){print "D95"}; continue };
@@ -1955,6 +1961,9 @@ function sw_em_q_f(rett, stopp) { while (stopp == 0) {
  if ((qi_duom(-3)||wc(-3,"[234][^0-9]*$")) &&
        qxs(-1,"с","половиной четвертью небольшим") && s(-3,-1) )
  { rett=stopp=1; d[448]++; if(dbg){print "D448"}; continue };
+ if ( w(1,"за по на") &&
+      (qi_duom(2)||wc(2,"[234][^0-9]*$")) && s(0,1) )
+ { rett=stopp=1; d[448]++; if(dbg){print "D448"}; continue };
  if ( (qi_duom(-1)||wc(-1,"[234][^0-9]*$")) && s(-1) )
  { rett=stopp=1; d[449]++; if(dbg){print "D449"}; continue };
  if ( (qi_duom(1)||wc(1,"[234][^0-9]*$")) && s(0) )
@@ -2556,6 +2565,8 @@ function sw_ez_t_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_ez_p_f(rett, stopp) { while (stopp == 0) {
+ if ( id(1,"uw4edpr") && s(0) )
+ { rett=stopp=1; d[1]++; if(dbg){print "D1"}; continue };
  # 
  if ( muk_edzepr(-2) &&
        w(-1,"же лишь только") && s(-2,-1) )
