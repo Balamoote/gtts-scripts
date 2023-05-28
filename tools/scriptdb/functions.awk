@@ -435,6 +435,8 @@ function preph_tv(n,                                                            
                           qxs(n,"вдогонку вслед далеко следом","за") ||
                           qxs(n,"вместе наравне наряду рядом совместно совокупно согласно сообразно сообща соответственно соразмерно сравнительно","с со") )
                                                                                                                                                {rett=1} else {rett=0}; return rett}
+function preph_any(n,   rett) { if ( preph_vi(n)||preph_da(n)||preph_ro(n)||preph_tv(n) )                                                      {rett=1} else {rett=0}; return rett }
+
 # прилагательные
 function prl_kred_mu(n,   wd,rett) { if(!(wd))wd=lc(n); if (wd in pl_kred_mu)                                                                  {rett=1} else {rett=0}; return rett}
 function prl_kred_ze(n,   wd,rett) { if(!(wd))wd=lc(n); if (wd in pl_kred_ze)                                                                  {rett=1} else {rett=0}; return rett}
@@ -1462,6 +1464,8 @@ function suw_odedro(n,                                                          
                       if (wd in swo_edmu_ro||wd in swo_edob_ro||wd in swo_edsr_ro||wd in swo_edze_ro)                                           {rett=1} else {rett=0}; return rett}
 function suw_odedda(n,                                                                                                                          wd,rett) { if(!(wd))wd=lc(n);
                       if (wd in swo_edmu_da||wd in swo_edob_da||wd in swo_edsr_da||wd in swo_edze_da)                                           {rett=1} else {rett=0}; return rett}
+function suw_odedmuda(n,  wd,rett) { if(!(wd))wd=lc(n); if (wd in swo_edmu_da||wd in swo_edob_da)                                               {rett=1} else {rett=0}; return rett}
+function suw_odedsrda(n,  wd,rett) { if(!(wd))wd=lc(n); if (wd in swo_edob_da||wd in swo_edsr_da)                                               {rett=1} else {rett=0}; return rett}
 function suw_odedtv(n,                                                                                                                          wd,rett) { if(!(wd))wd=lc(n);
                       if (wd in swo_edmu_tv||wd in swo_edob_tv||wd in swo_edsr_tv||wd in swo_edze_tv)                                           {rett=1} else {rett=0}; return rett}
 function suw_odedpr(n,                                                                                                                          wd,rett) { if(!(wd))wd=lc(n);
@@ -1470,6 +1474,7 @@ function suw_odmnvi(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in swo_mn_ro)    
 function suw_odmnim(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in swo_mn_im||wd in swo_mn_ne)                                                   {rett=1} else {rett=0}; return rett}
 function suw_odmn(n,                                                                                                                            wd,rett) { if(!(wd))wd=lc(n);
                       if (wd in swo_mn_da||wd in swo_mn_im||wd in swo_mn_ne||wd in swo_mn_pr||wd in swo_mn_ro||wd in swo_mn_sq||wd in swo_mn_tv){rett=1} else {rett=0}; return rett}
+function suw_odmnda(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in swo_mn_da||wd in swo_mn_ne)                                                   {rett=1} else {rett=0}; return rett}
 function suw_noed(n,                                                                                                                            wd,rett) { if(!(wd))wd=lc(n);
                       if (wd in swn_edmu_da||wd in swn_edmu_im||wd in swn_edmu_me||wd in swn_edmu_ne||wd in swn_edmu_pr||wd in swn_edmu_pt||
                           wd in swn_edmu_ro||wd in swn_edmu_sq||wd in swn_edmu_tv||wd in swn_edob_da||wd in swn_edob_im||wd in swn_edob_ne||
@@ -1479,16 +1484,24 @@ function suw_noed(n,                                                            
                           wd in swn_edze_vi)                                                                                                    {rett=1} else {rett=0}; return rett}
 function suw_noedim(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_edmu_im||wd in swn_edob_im||wd in swn_edsr_im||wd in swn_edze_im)         {rett=1} else {rett=0}; return rett}
 function suw_noedmuim(n,  wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_edmu_im||wd in swn_edob_im)                                               {rett=1} else {rett=0}; return rett}
+function suw_noedmuda(n,  wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_edmu_da||wd in swn_edob_da||wd in sw_edmu_da||wd in sw_edob_da)           {rett=1} else {rett=0}; return rett}
+function suw_noedsrda(n,  wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_edsr_da||wd in swn_edob_da||wd in sw_edsr_da||wd in sw_edob_da)           {rett=1} else {rett=0}; return rett}
 function suw_noedvi(n,                                                                                                                          wd,rett) { if(!(wd))wd=lc(n);
                       if (wd in swn_edmu_im||wd in swn_edob_im||wd in swn_edob_vi||wd in swn_edsr_im||wd in swn_edsr_vi||wd in swn_edze_im||
                           wd in swn_edze_vi)                                                                                                    {rett=1} else {rett=0}; return rett}
 function suw_noedro(n,                                                                                                                          wd,rett) { if(!(wd))wd=lc(n);
-                      if (wd in swn_edmu_ro||wd in swn_edob_ro||wd in swn_edsr_ro||wd in swn_edze_ro)                                           {rett=1} else {rett=0}; return rett}
+                      if (wd in swn_edmu_ro||wd in swn_edob_ro||wd in swn_edsr_ro||wd in swn_edze_ro||wd in sw_edob_ro)                         {rett=1} else {rett=0}; return rett}
+function suw_noedtv(n,                                                                                                                          wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in swn_edmu_tv||wd in swn_edob_tv||wd in swn_edsr_tv||wd in swn_edze_tv)                                           {rett=1} else {rett=0}; return rett}
+function suw_noedpr(n,                                                                                                                          wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in swn_edmu_pr||wd in swn_edob_pr||wd in swn_edsr_pr||wd in swn_edze_pr)                                           {rett=1} else {rett=0}; return rett}
 function suw_nomnim(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_mn_im)                                                                    {rett=1} else {rett=0}; return rett}
 function suw_nomn(n,                                                                                                                            wd,rett) { if(!(wd))wd=lc(n);
                       if (wd in swn_mn_da||wd in swn_mn_im||wd in swn_mn_ne||wd in swn_mn_pr||wd in swn_mn_ro||wd in swn_mn_sq||wd in swn_mn_tv){rett=1} else {rett=0}; return rett}
 function suw_nomnvi(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_mn_im||wd in swn_mn_ne)                                                   {rett=1} else {rett=0}; return rett}
 function suw_nomnro(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in sw_mn_ro||wd in swn_mn_ro)                                                    {rett=1} else {rett=0}; return rett}
+function suw_nomntv(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_mn_tv)                                                                    {rett=1} else {rett=0}; return rett}
+function suw_nomnpr(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_mn_pr)                                                                    {rett=1} else {rett=0}; return rett}
 function suw_edme(n,      wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_edmu_me||wd in swn_edze_me)                                               {rett=1} else {rett=0}; return rett}
 function suw_edmume(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_edmu_me)                                                                  {rett=1} else {rett=0}; return rett}
 function suw_edzeme(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in swn_edze_me)                                                                  {rett=1} else {rett=0}; return rett}
@@ -1783,8 +1796,9 @@ function ist_suw_pr(n,  wd,rett) { wd=tolower(l[i+n]); if (wd in is_suw_edmupr||
 function narph_vrem(n,                                                                                                                          rett) {
                      if ( qxs(n,"на","мгновение")||
                           qxs(n,"время","от","времени")||
+                          qxs(n,"в","этот тот","момент")||
                           qxs(n,"вчера завтра сегодня","утром днём вечером ночью")||
-                          qxs(n,"до","сих","пор") )                                                                                             {rett=1} else {rett=0}; return rett }
+                          qxs(n,"до","сих тех этих","пор") )                                                                                    {rett=1} else {rett=0}; return rett }
 function narph_napr(n,                                                                                                                          rett) {
                      if ( qxs(n,"во","все","стороны")||
                           qxs(n,"со","всех","направлений сторон")||
@@ -1801,6 +1815,7 @@ function narph_spos(n,                                                          
                      if ( qxs(n,"близко","к","сердцу")||
                           qxs(n,"в","общем","и","целом")||
                           qxs(n,"в","общем основном штыки целом")||
+                          qxs(n,"друг","другу дружке")||
                           qxs(n,"друг","с","другом дружкой")||
                           qxs(n,"на","веру")||
                           qxs(n,"со","мной")||

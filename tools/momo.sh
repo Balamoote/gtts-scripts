@@ -146,6 +146,8 @@ else
   awk -v indb="scriptdb/" -v inax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+)(#_#_# vsez !_#_!)$/#\1\2/g' scriptdb/deomo.awk) \
      $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
   mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
+printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
 fi # все
 
 rexsed="scriptdb/omo-index.sed"
@@ -153,9 +155,9 @@ rexsed="scriptdb/omo-index.sed"
 awk -vtmpdir=$bookwrkdir -vrexfile=$rexsed -f scriptdb/omopick.awk $bookwrkdir/text-book.txt >/dev/null 2>&1
 
 # При подсчете блоков омографов вычитаем стационарные блоки шаблонов
-statblock=4
-locomo=$(( $( grep -c "###" $bookwrkdir/book-index.sed ) - $statblock ))
-printf '\e[36m%s \e[93m%s %s%s%s\e[0m … ' "Омографов для sed-обработки:" $locomo "(" $statblock ")"
+#statblock=4
+#locomo=$(( $( grep -c "###" $bookwrkdir/book-index.sed ) - $statblock ))
+#printf '\e[36m%s \e[93m%s %s%s%s\e[0m … ' "Омографов для sed-обработки:" $locomo "(" $statblock ")"
 
  sedroll $bookwrkdir/book-index.sed $bookwrkdir/text-book.txt
 
