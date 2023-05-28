@@ -280,6 +280,18 @@ function sw_da_f(rett, stopp) { while (stopp == 0) {
  if ( q(1,"gl_pnin gl_pned gl_pnmn deep_pn") && (regn(1,"Ud")||type(1,"giv gov")) && s(0) &&
        W(0,"смогу") )
  { rett=stopp=1; d[71]++; if(dbg){print "D71"}; continue };
+ if ( w(1,"не") &&
+       q(2,"gl_in gl_ed gl_mn deep") && (regn(2,"Ud")||type(2,"giv gov")) && s(0,1) &&
+       W(0,"смогу") )
+ { rett=stopp=1; d[71]++; if(dbg){print "D71"}; continue };
+#if ( w(1,"не") &&
+#      q(2,"gl_nein gl_need gl_nemn deep_ne") && (regn(2,"Ud")||type(2,"giv gov")) && s(0,1) &&
+#      W(0,"смогу") )
+#{ rett=stopp=1; d[71]++; if(dbg){print "D71"}; continue };
+#if ( w(1,"не") &&
+#      q(2,"gl_pnin gl_pned gl_pnmn deep_pn") && (regn(2,"Ud")||type(2,"giv gov")) && s(0,1) &&
+#      W(0,"смогу") )
+#{ rett=stopp=1; d[71]++; if(dbg){print "D71"}; continue };
 
 break}; return rett }
 

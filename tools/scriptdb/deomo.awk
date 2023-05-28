@@ -989,11 +989,18 @@ for(wrd in omap["x1067"]){omakevars(x1067,"x1067");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x1068"]){omakevars(x1068,"x1068");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( base(-1,"бегать блестеть маленький крошечный блестящий злой") && s(-1) )
+ cst="бегать блестеть"
+ cst=cst " маленький крошечный блестящий злой поросячий цепкий голубой красный свиной злобный сонный"
+ if ( base(-1,cst) && s(-1) )
  { l[i]=omo1; r[146]++; if(dbg){print "R146"}; continue};
  #
-#if ( base(-1,"ядовитый зловонный") && s(-1) )
-#{ l[i]=omo2; r[147]++; if(dbg){print "R147"}; continue};
+ cst="щёлочка пуковка"
+ if ( sc(0,"-") &&
+       base(1,cst) )
+ { l[i]=omo1; r[147]++; if(dbg){print "R147"}; continue};
+
+ if ( q(1,"isname") && s(0) )
+ { l[i]=omo1; r[147]++; if(dbg){print "R147"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 
