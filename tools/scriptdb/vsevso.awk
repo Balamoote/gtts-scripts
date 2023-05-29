@@ -122,26 +122,26 @@ hyphback(book[b]);hyphbscy(bscy[b]);getwpos(wrd);for(i in wpos){i=strtonum(i);if
  if ( qxs(-1,"на","все всё","про") && s(-3,-1) )
  { l[i]=is_vsyo; V[28]++; if(dbg){print "V28"}; continue};
 
- if ((phs(-1,"вот и")||
-      phs(-1,"ну вот и") ) && s(hsn+1,-1) && p(0) )
+ if ((qxs(-1,"вот","и")||
+      qxs(-1,"ну","вот","и")) && p(0) )
  { l[i]=is_vsyo; V[29]++; if(dbg){print "V29"}; continue};
 
 
- if ((phf(1,"не слава богу")||
-      phf(1,"одно и то же")||
-      phf(1,"раз и навсегда")||
-      phf(1,"как на духу")||
-      phf(1,"точно так")||
-      phf(1,"или ничего")||
-      phf(1,"и дело")||
-      phf(1,"это само по себе")||
-      phf(1,"совсем не так") ) && s(0,hfn-2) )
+ if ( qxs(1,"не","слава","богу")||
+      qxs(1,"одно","и","то","же")||
+      qxs(1,"раз","и","навсегда")||
+      qxs(1,"как","на","духу")||
+      qxs(1,"точно","так")||
+      qxs(1,"или","ничего")||
+      qxs(1,"и","дело")||
+      qxs(1,"это","само","по","себе")||
+      qxs(1,"совсем","не","так") )
  { l[i]=is_vsyo; V[30]++; if(dbg){print "V30"}; continue};
 
- if ((phf(1,"на одно лицо")||
-      phf(1,"в одном лице")||
-      phf(1,"под богом ходим")||
-      phf(1,"за и против") ) && s(0,hfn-2) )
+ if ( qxs(1,"на","одно","лицо")||
+      qxs(1,"в","одном","лице")||
+      qxs(1,"под","богом","ходим")||
+      qxs(1,"за","и","против") )
  { l[i]=is_vsje; V[31]++; if(dbg){print "V31"}; continue};
 
  if (w(-1,"наконец наконец-то") &&
@@ -150,8 +150,8 @@ hyphback(book[b]);hyphbscy(bscy[b]);getwpos(wrd);for(i in wpos){i=strtonum(i);if
 
  if ( mest_mnim(1) &&
        q(2,"nar_mest nar_vrem") &&
-       (phf(3,"на одно лицо")||
-        phf(3,"под богом ходим") ) && s(0,hfn-2) )
+       (qxs(3,"на","одно","лицо")||
+        qxs(3,"под","богом","ходим") ) && s(0,1) )
  { l[i]=is_vsje; V[33]++; if(dbg){print "V33"}; continue};
 
  if ( mest_mnim(1) &&
@@ -202,6 +202,9 @@ hyphback(book[b]);hyphbscy(bscy[b]);getwpos(wrd);for(i in wpos){i=strtonum(i);if
  if ( phf(1,"больше по") &&
       q(3,"suw_edda suw_mnda") && s(0,2) )
  { l[i]=is_vsyo; V[47]++; if(dbg){print "V47"}; continue};
+ if ( gl_mn(1) &&
+       qxs(2,"кто","во","что","горазд") && s(0) )
+ { l[i]=is_vsje; V[46]++; if(dbg){print "V46"}; continue};
 
  if ( (phf(1,"песенка спета")) &&
        (cap(0)||p(-1)||w(-1,"и")) && sc(0,",") && s(1,hfn-2) && p(hfn-1) )
@@ -2612,7 +2615,7 @@ if ( gl_nemn(1) &&
  { l[i]=is_vsje; V[665]++; if(dbg){print "V665"}; continue};
  if ( wb(-7,-2,"всё") && sQ(wbn,-2,"[!.?]") && p(-1) )
  { l[i]=is_vsyo; V[666]++; if(dbg){print "V666"}; continue};
- if ( qxs(-1,"далеко не") &&  wb(-15,xsn-1,"всё") &&p(0) )
+ if ( qxs(-1,"далеко","не") &&  wb(-15,xsn-1,"всё") &&p(0) )
  { l[i]=is_vsyo; V[667]++; if(dbg){print "V667"}; continue};
 
 

@@ -1693,7 +1693,7 @@ function qip_edda(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in qpo_ed_ze_da||wd
 function qip_edtv(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in qpo_ed_ze_tv||wd in qpo_ed_mu_tv||wd in qpo_ed_sr_tv)                           {rett=1} else {rett=0}; return rett}
 function qip_edpr(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in qpo_ed_ze_pr||wd in qpo_ed_mu_pr||wd in qpo_ed_sr_pr)                           {rett=1} else {rett=0}; return rett}
 function qip_mnim(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in qpo_mn_im)                                                                      {rett=1} else {rett=0}; return rett}
-function qip_mnvi(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in qpo_mn_im||qpo_mn_ro)                                                           {rett=1} else {rett=0}; return rett}
+function qip_mnvi(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in qpo_mn_im||wd in qpo_mn_ro)                                                     {rett=1} else {rett=0}; return rett}
 function qip_mnro(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in qpo_mn_ro)                                                                      {rett=1} else {rett=0}; return rett}
 function qip_mnda(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in qpo_mn_da)                                                                      {rett=1} else {rett=0}; return rett}
 function qip_mntv(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in qpo_mn_tv)                                                                      {rett=1} else {rett=0}; return rett}
@@ -1735,7 +1735,7 @@ function ist_any(n,                                                             
 			wd in is_suw_edsrro||wd in is_suw_edsrtv||wd in is_suw_edsrvi||wd in is_suw_edsrzv||wd in is_suw_edzeda||
 			wd in is_suw_edzeim||wd in is_suw_edzelo||wd in is_suw_edzepr||wd in is_suw_edzero||wd in is_suw_edzetv||
 			wd in is_suw_edzevi||wd in is_suw_mnda||wd in is_suw_mnim||wd in is_suw_mnpr||wd in is_suw_mnro||
-			wd in is_suw_mnvi||wd in is_suw_edmuro||wd in is_suw_edmuzv||wd in is_suw_edzero)                                                   {rett=1} else {rett=0}; return rett}
+			wd in is_suw_mnvi||wd in is_suw_edmuro||wd in is_suw_edmuzv||wd in is_suw_edzero)                                       {rett=1} else {rett=0}; return rett}
 function ist_nar_mest   (n,    wd,rett) { wd=tolower(l[i+n]); if (wd in is_nar_mest    )                                                        {rett=1} else {rett=0}; return rett}
 function ist_nar_napr   (n,    wd,rett) { wd=tolower(l[i+n]); if (wd in is_nar_napr    )                                                        {rett=1} else {rett=0}; return rett}
 function ist_nar_spos   (n,    wd,rett) { wd=tolower(l[i+n]); if (wd in is_nar_spos    )                                                        {rett=1} else {rett=0}; return rett}
