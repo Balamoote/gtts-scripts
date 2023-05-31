@@ -2127,6 +2127,9 @@ if ( gl_nemn(1) &&
  if ( sc(0,",") &&
        mest_edsr(1) && W(2,"есть") )
  { l[i]=is_vsyo; V[549]++; if(dbg){print "V549"}; continue};
+ if ( gl_mn(1) && sc(1,",") &&
+       w(2,"что кто когда") && s(0) )
+ { l[i]=is_vsje; V[645]++; if(dbg){print "V645"}; continue};
  # все те, кто
  if ( w(1,"те") && sc(1,",") &&
        q(1,"mest_edmu mest_edze") )
@@ -2528,9 +2531,8 @@ if ( gl_nemn(1) &&
         vv(2,9) &&
          suw_mnim(vvn+1) )
  { l[i]=is_vsje; V[642]++; if(dbg){print "V642"}; continue};
- if ( vv(0,7) &&
-       suw_mnim(vvn+1) )
- { l[i]=is_vsje; V[643]++; if(dbg){print "V643"}; continue};
+ if ( vv(0,7) && q(vvn+1,"gl_vzmn gl_nemn suw_mnim mest_mnim muk_mnim") )
+ { l[i]=is_vsje; V[648]++; if(dbg){print "V648"}; continue};
  if ( mest_mnim(1) && vv(1,8) &&
        q(vvn+1,"nar_spos prl_kred_sr") &&
         prl_krmn(vvn+2) && s(0) && s(vvn+1,vvn+1) && p(vvn+2) )
@@ -2543,10 +2545,8 @@ if ( gl_nemn(1) &&
         nar_mest(vvn+2) && s(0) && s(vvn+1,vvn+1) )
  { l[i]=is_vsje; V[646]++; if(dbg){print "V646"}; continue};
  if ( vv(1,8) &&
-       gl_edsr(vvn+1) )
+       q(vvn+1,"gl_edsr mest_im") )
  { l[i]=is_vsyo; V[647]++; if(dbg){print "V647"}; continue};
- if ( vv(0,7) && q(vvn+1,"gl_vzmn gl_nemn") )
- { l[i]=is_vsje; V[648]++; if(dbg){print "V648"}; continue};
  if ( vvb(-8,-1) && suw_mnim(vvn) )
  { l[i]=is_vsje; V[649]++; if(dbg){print "V649"}; continue};
  if ( vvb(-9,-2) &&

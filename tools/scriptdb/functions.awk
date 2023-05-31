@@ -183,9 +183,11 @@ function qsb(m, n, sym,   k, rett)                # поиск НАЗАД раз
 function sos(m, n,   stps,k,rett)                # найти адрес разделителя до начала текущего предложения, и выдать его адрес в son
                 { son=rett=""; stps="[….:;!?]"; for(k=n; k>=m; k--) { if(sep[i+k]~stps||sep[i+k]~/<[pv]>/||sep[i+k]=="") {rett=1; son=k; break};}; return rett }
 function vv(n,m,    k, rett)                      # выдать границы вводного предложения: , и —, n= первая запятая (vvpat задана в шапке основного скрипта)
-                { vvn=rett=""; if(sep[i+n]~vvpat) {for(k=++n;k<=m;k++) {if(sep[i+k] !~ "[….:;!?]") {if(sep[i+k]~vvpat) {rett=1;vvn=k;break};}else{break};};}; return rett}
+                { vvn=rett=""; if(sep[i+n]~vvpat && sep[i+n]!~/[….:;!?]/) {for(k=++n;k<=m;k++) {if(sep[i+k] !~ "[….:;!?]") {if(sep[i+k]~vvpat)
+                  {rett=1;vvn=k;break};}else{break};};}; return rett}
 function vvb(m,n,    k, rett)                     # выдать границы вводного предложения: , и —, n= первая запятая
-                { vvn=rett=""; if(sep[i+n]~vvpat) {for(k=--n;k>=m;k--) {if(sep[i+k] !~ "[….:;!?]") {if(sep[i+k]~vvpat) {rett=1;vvn=k;break};}else{break};};}; return rett}
+                { vvn=rett=""; if(sep[i+n]~vvpat && sep[i+n]!~/[….:;!?]/) {for(k=--n;k>=m;k--) {if(sep[i+k] !~ "[….:;!?]") {if(sep[i+k]~vvpat)
+                  {rett=1;vvn=k;break};}else{break};};}; return rett}
 function phs(n, wl,    itmz, k, lk, cnt, rett)    # фраза от адреса влево, проверка пробелов отдельно! определяет глобальную переменную = адрес первого слова фразы
                 { hsn="";lk=split(wl,itmz," "); for(k=1;k<=lk;k++) {if(lc(k+n-lk)==itmz[k]) {cnt++} else {cnt=0; break};};
                   if(cnt==lk) {rett=1; hsn=n-lk} else {rett=0}; return rett}
