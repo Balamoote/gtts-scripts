@@ -1832,6 +1832,10 @@ for(wrd in omap["x2032"]){omakevars(x2032,"x2032");for(y=1;y<=wln;y++)         #
  #  x2033 gl_mn1e_      pq_kr_em_
 for(wrd in omap["x2033"]){omakevars(x2033,"x2033");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
+ if(iwrd=="переходим") {
+   if ( w(1,"в на под из через") && s(0) )
+   { l[i]=omo1; d[100]++; if(dbg){print "D100"}; continue };
+ };
  #
  if ( gl_mn1e_f() )
  { l[i]=omo1; r[270]++; if(dbg){print "R270", "gl_mn1e_f"}; continue};
@@ -7452,6 +7456,8 @@ for(wrd in omap["x4700"]){omakevars(x4700,"x4700");for(y=1;y<=wln;y++)         #
  if (  qxs(1,"один","другого")||
        qxs(1,"в","зависимости","от")||
        qxs(1,"выеденного","яйца")||
+       qxs(1,"ни","копейки гроша цента")||
+       qxs(1,"по","колено щиколотку пояс горло уши брови")||
        qxs(1,"мало","что")||
        qxs(1,"друг","друга")  )
  { l[i]=omo1; r[1327]++; if(dbg){print "R1327"}; continue};
@@ -7508,6 +7514,14 @@ for(wrd in omap["x4700"]){omakevars(x4700,"x4700");for(y=1;y<=wln;y++)         #
  if ( pre_ro(1) &&
        q(2,"suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro mest_ro") && s(0,1) )
  { l[i]=omo2; r[1335]++; if(dbg){print "R1335"}; continue};
+ #
+ if ( pre_pr(1) &&
+       q(2,"suw_edme") && s(0,1) )
+ { l[i]=omo2; r[1336]++; if(dbg){print "R1336"}; continue};
+ if ( pre_pr(1) &&
+       q(2,"prl_edpr") &&
+        q(3,"suw_edme") && s(0,2) )
+ { l[i]=omo2; r[1336]++; if(dbg){print "R1336"}; continue};
  #
  if ( pre_pr(1) &&
        q(2,"suw_edpr suw_mnpr prl_edpr prl_mnpr prq_edpr prq_mnpr mest_pr") && s(0,1) )
