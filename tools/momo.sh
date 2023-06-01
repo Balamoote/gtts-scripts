@@ -23,7 +23,7 @@ nocaps=0  # Если 1, то капсов в "пастеризованых" не
 edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' scriptdb/settings.ini)
 
 # Установка корректировки ширины вывода превью в дискретных скриптах
-termcor=$(sed -rn 's/^termcorrection\s*=\s*([-0-9]*)$/\1/ p' scriptdb/settings.ini)
+termcor=$(sed -rn 's/^\s*termcorrection\s*=\s*([-0-9]*)\s*$/\1/ p' scriptdb/settings.ini)
 
 # Переменные алфавита и служебных
 RUUC=АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ
@@ -135,7 +135,7 @@ yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
 if [[ ! $yop -eq 0 ]]; then
 	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m … ' "Все (" $yop ") ==> Все́/Всё"
 	
-  awk -v indb="scriptdb/" -v inax="scriptaux/" -vbkscydir="$bookscydir/" -f scriptdb/deomo.awk $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+  awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f scriptdb/deomo.awk $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
   mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
 
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
@@ -143,7 +143,7 @@ mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "обработано за" $duration "сек. Остаток:" $yop
 
 else
-  awk -v indb="scriptdb/" -v inax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+)(#_#_# vsez !_#_!)$/#\1\2/g' scriptdb/deomo.awk) \
+  awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+)(#_#_# vsez !_#_!)$/#\1\2/g' scriptdb/deomo.awk) \
      $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
   mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
 mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
@@ -162,7 +162,7 @@ awk -vtmpdir=$bookwrkdir -vrexfile=$rexsed -f scriptdb/omopick.awk $bookwrkdir/t
  sedroll $bookwrkdir/book-index.sed $bookwrkdir/text-book.txt
 
 mo_uni2=$(date +%s.%N); duration=$( echo $mo_uni2 - $mo_uni1 | bc )
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "обработано за" $duration "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Обработано sed за" $duration "сек"
 
 fi # fixomo?
 
@@ -180,14 +180,14 @@ zgrep -Ff $bookwrkdir/manofi-lc.pat scriptdb/mano-lc0.txt.gz >> $bookwrkdir/mano
 
 if [[ -s $bookwrkdir/mano-luc.txt ]]; then # Проверяем найдено ли хоть что-то из омографов… discretchk 0
 sed -r "
-    s/^_(.+)=/\1/g
-	s/\x27/\xcc\x81/g
-	s/\\\xcc\\\xa0/\xcc\xa0/g
-	s/\\\xcc\\\xa3/\xcc\xa3/g
-	s/\\\xcc\\\xa4/\xcc\xa4/g
-	s/\\\xcc\\\xad/\xcc\xad/g
-	s/\\\xcc\\\xb0/\xcc\xb0/g
-    " $bookwrkdir/mano-luc.txt > $bookwrkdir/omo-luc.lst
+       s/^_(.+)=/\1/g
+       s/\x27/\xcc\x81/g
+       s/\\\xcc\\\xa0/\xcc\xa0/g
+       s/\\\xcc\\\xa3/\xcc\xa3/g
+       s/\\\xcc\\\xa4/\xcc\xa4/g
+       s/\\\xcc\\\xad/\xcc\xad/g
+       s/\\\xcc\\\xb0/\xcc\xb0/g
+       " $bookwrkdir/mano-luc.txt > $bookwrkdir/omo-luc.lst
 
 mo_pre=$(date +%s.%N); duration=$( echo $mo_pre - $mo_time0 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Всего обработка омографов заняла:" $duration "сек"

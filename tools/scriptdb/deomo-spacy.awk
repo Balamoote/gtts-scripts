@@ -317,9 +317,9 @@ for(wrd in omap["x1021"]){omakevars(x1021,"x1021");for(y=1;y<=wln;y++)          
 for(wrd in omap["x1022"]){omakevars(x1022,"x1022");for(y=1;y<=wln;y++)                    # header1
 {makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( s1(0,"-") && ismark(1,"Yhyf") && w(1,"то") )
+ if ( s1(0,"-") && ismark(1,"YHY") && w(1,"то") )
  { l[i]=omo1; l[i+1]=gensub(/^(.+)$/,"\xcc\xa0\\1\xcc\xa0",1,l[i+1]); r[677]++; if(dbg){print "R677"}; continue};
- if ( s1(0,"-") && ismark(1,"Yhyf") )
+ if ( s1(0,"-") && ismark(1,"YHY") )
  { l[i]=omo1; r[678]++; if(dbg){print "R678"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer

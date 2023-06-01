@@ -54,10 +54,10 @@ suf=nam
 backup="$book".$suf
 
 # Установка редактора: vim или neovim
-edi=$(sed -rn 's/^editor\s*=\s*(vim|nvim)$/\1/ p' scriptdb/settings.ini)
+edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' scriptdb/settings.ini)
 
 # Установка корректировки ширины вывода превью в дискретных скриптах
-termcor=$(sed -rn 's/^termcorrection\s*=\s*([-0-9]*)$/\1/ p' scriptdb/settings.ini)
+termcor=$(sed -rn 's/^\s*termcorrection\s*=\s*([-0-9]*)\s*$/\1/ p' scriptdb/settings.ini)
 
 # Переменные алфавита и служебных
 RUUC=АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ
@@ -379,9 +379,9 @@ zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_
        	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
 sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $tmpdir/text-book.txt | \
-    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -f scriptdb/preview.awk
+    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vtermcor=$termcor -veditor=$edi -vindb="scriptdb/" -vbkwrkdir="$bookwrkdir/" -f scriptdb/preview.awk
 
-printf '\e[36m%s \e[093m%s\e[36m%s \e[36m%s\e[0m\n' "Найдено имён-омографов:" $(ls -l $bookwrkdir/*.sh | wc -l) "шт."
+printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Найдено имён-омографов         :" $(ls -l $bookwrkdir/*.sh | wc -l) "шт."
 
 	chmod +x $bookwrkdir/*.sh
 
@@ -401,7 +401,7 @@ gw_proc=$(date +%s.%N); duration=$( echo $gw_proc - $gw_sed | bc ); tot_dur=$( e
 
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Создание дискретных скриптов   :" $duration "сек"
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Общее время работы скрипта имён:" $tot_dur "сек"
-printf '\e[32;4;1m%s\e[0m \e[32m%s \e[33m%s \e[36m%s \e[33m%s\e[0m\n' "\"Имена:\"" "Обработка книги" "$book" "завершена. Бэкап:" "$backup"
+printf '\e[32;4;1m%s\e[0m \e[32m%s \e[33m%s \e[32m%s \e[36m%s \e[33m%s\e[0m\n' "\"Имена:\"" "Обработка книги" "$book" "завершена." "Бэкап:" "$backup"
 
 
 # -------------------------- Блок локального словаря ----------------------------------------

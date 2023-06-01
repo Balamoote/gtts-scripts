@@ -175,10 +175,13 @@ for ( wrd in omos ) { #e2
             for (j in prevar) { prevblock = prevblock sprintf ("%s\n", prevar[j]) };
 
             # Обнуление цикла
-            totnum = totnum + ennum; ennum=0; delete prevar;
+            totnum = totnum + ennum; wrdnum = ennum; ennum=0; delete prevar;
 
         }; #preview
+	# Три варианта имен дискретных скриптов: без номер слов, в номером после слова и с номером до слова
         ofile = bkwrkdir wrd ".sh"
+#       ofile = bkwrkdir wrd "_" wrdnum ".sh"
+#       ofile = bkwrkdir wrdnum "_" wrd ".sh"
         outblock = shblock[wrd] prevblock
         print outblock >> ofile; fflush();
         close(ofile);

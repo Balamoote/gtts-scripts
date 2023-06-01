@@ -194,7 +194,7 @@ function phs(n, wl,    itmz, k, lk, cnt, rett)    # фраза от адреса
 function phf(n, wl,    itmz, k, lk, cnt, rett)    # фраза от адреса вправо, проверка пробелов отдельно! определяет глобальную переменную = адрес последнего слова фразы
                 { hfn="";lk=split(wl,itmz," "); for(k=1;k<=lk;k++) {if(lc(n+k-1)==itmz[k]) {cnt++} else {cnt=0; break};};
                   if(cnt==lk) {rett=1;hfn=n+lk} else {rett=0}; return rett}
-function ismark(n,mrk,    k, el, vmrk, rett)     # нахождение СЛОВА в метке, начинающейся с mrk (переменная winfo): для управления омонимами из automo.gz
+function ismark(n,mrk,    k, el, vmrk, rett)     # нахождение СЛОВА в метке основного слова winfo, начинающейся с mrk (переменная winfo): для управления омонимами из automo.gz
                 { el="_" tolower(l[i+n]) "_";vmrk= "^" mrk;split(winfo,itmz,"#");for(k in itmz){if(itmz[k]~vmrk&&itmz[k]~el){rett=1;break}else{rett=0};}; return rett }
 function notmark(n,mrk,    k, el, vmrk, rett)    # НЕ нахождение СЛОВА в метке, начинающейся с mrk (переменная winfo): для управления омонимами из automo.gz
                 { el="_" tolower(l[i+n]) "_";vmrk= "^" mrk;split(winfo,itmz,"#");for(k in itmz){if(itmz[k]~vmrk&&itmz[k]~el){rett=0;break}else{rett=1};}; return rett }

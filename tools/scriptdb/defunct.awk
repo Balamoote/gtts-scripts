@@ -277,8 +277,11 @@ function sw_da_f(rett, stopp) { while (stopp == 0) {
  { rett=stopp=1; d[71]++; if(dbg){print "D71"}; continue };
  if ( q(-1,"gl_pein gl_peed gl_pemn gl_popeed gl_popemn deep_pe") && (regn(-1,"Ud")||type(-1,"giv gov")) && s(-1) )
  { rett=stopp=1; d[72]++; if(dbg){print "D72"}; continue };
+ if ( q(-1,"gl_nein gl_need gl_nemn gl_poneed gl_ponemn deep_ne") && (regn(-1,"Ud")||type(-1,"giv gov")) && s(-1) &&
+      W(0,"смогу тому") )
+ { rett=stopp=1; d[72]++; if(dbg){print "D72"}; continue };
  if ( q(1,"gl_pnin gl_pned gl_pnmn deep_pn") && (regn(1,"Ud")||type(1,"giv gov")) && s(0) &&
-       W(0,"смогу") )
+       W(0,"смогу тому") )
  { rett=stopp=1; d[73]++; if(dbg){print "D73"}; continue };
  if ( w(1,"не") &&
        q(2,"gl_in gl_ed gl_mn deep") && (regn(2,"Ud")||type(2,"giv gov")) && s(0,1) &&
@@ -3686,7 +3689,16 @@ function pl_es_i_f(rett, stopp) { while (stopp == 0) {
  if ( q(-1,"pre_im") &&
        suw_edsrim(1) && s(-1,0) )
  { rett=stopp=1; d[895]++; if(dbg){print "D895"}; continue };
+ if ( q(1,"prl_edsrim prq_edsrim") &&
+      suw_edsrim(2) && s(0,1) )
+ { rett=stopp=1; d[896]++; if(dbg){print "D896"}; continue };
  if ( suw_edsrim(1) && s(0) )
+ { rett=stopp=1; d[896]++; if(dbg){print "D896"}; continue };
+ if ( q(-2,"prl_edsrim") &&
+       q(-1,"souz_iili") && s(-2,-1) )
+ { rett=stopp=1; d[896]++; if(dbg){print "D896"}; continue };
+ if ( q(1,"souz_iili") &&
+       q(2,"prl_edsrim") && s(0,1) )
  { rett=stopp=1; d[896]++; if(dbg){print "D896"}; continue };
 break}; return rett }
 
@@ -3730,7 +3742,10 @@ break}; return rett }
 
 function pl_ez_r_f(rett, stopp) { while (stopp == 0) {
  if ( q(-1,"pre_ro preph_ro") &&
-       suw_edro(1) && s(-1,0) )
+       suw_edzero(1) && s(-1,0) )
+ { rett=stopp=1; d[906]++; if(dbg){print "D906"}; continue };
+ if ( q(-1,"prl_edzero prq_edzero") &&
+       suw_edzero(1) && s(-1,0) )
  { rett=stopp=1; d[906]++; if(dbg){print "D906"}; continue };
 break}; return rett }
 
