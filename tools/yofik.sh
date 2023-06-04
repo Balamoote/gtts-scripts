@@ -169,7 +169,7 @@ zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_
        	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
 sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $tmpdir/text-book.txt | \
-    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -f scriptdb/preview.awk
+    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -vindb="scriptdb/" -f scriptdb/preview.awk
 
 # Допечатываем превьюшку из текста книги для поискового слова
 printf '\e[36m%s \e[093m%s\e[36m%s\e[0m\n' "Найдено ё-омографов:" $(ls -l $bookwrkdir/*.sh | wc -l)
