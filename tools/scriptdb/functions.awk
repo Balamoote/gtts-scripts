@@ -85,13 +85,13 @@ function seek(n,m, isclass, notclass,    k, rett) # поиск на n шагов
 #               if (n < 0){for(k=m;k>=n;k--){if(q(k,isclass)){rett=1;skn=k;if(q(k,notclass)&&k>skn&&k<m){rett=0;break};break}else{if(q(k,notclass)&&k>n&&k<m){rett=0;break};};};}
 #               else      {for(k=n;k<=m;k++){if(q(k,isclass)){rett=1;skn=k;if(q(k,notclass)&&k<skn&&k<m){rett=0;break};break}else{if(q(k,notclass)&&k>n&&k<m){rett=0;break};};};return rett}
 function qf(n,m, isclass,    k, rett)               # поиск на n шагов вперёд наличия слова в классе
-                { rett=qfn=""; for (k=n; k<=m; k++) { if ( q(k,isclass) ) {rett=1; qfn=k; break}; }; return rett }
+                { rett=qfn=""; if(n<=m){for (k=n; k<=m; k++) { if ( q(k,isclass) ) {rett=1; qfn=k; break}; };}; return rett }
 function qF(n,m, isclass, notclass,    k, rett)     # поиск на n шагов вперёд наличия слова в классе и отсутсвия его же в другом классе
-                { rett=qfn=""; for (k=n; k<=m; k++) { if ( q(k,isclass) && Q(k,notclass) ) {rett=1; qfn=k; break}; }; return rett }
+                { rett=qfn=""; if(n<=m){for (k=n; k<=m; k++) { if ( q(k,isclass) && Q(k,notclass) ) {rett=1; qfn=k; break}; };}; return rett }
 function Qb(n,m, isclass,    k, rett)               # поиск на n шагов назад отсутствия слова в слассе
-                { rett=1; for (k=-1; k>=n; k--)   { if ( q(k,isclass) && s(k) ) {rett=0; break}; }; return rett }
+                { rett=1; if(n<=m){for (k=m; k>=n; k--)   { if ( q(k,isclass) && s(k) ) {rett=0; break}; };}; return rett }
 function Qf(n,m, isclass,    k, rett)               # поиск на n шагов вперёд отсутствия слова в классе
-                { rett=1; for (k= 1; k<=n; k++)   { if ( q(k,isclass) && s(k-1) ) {rett=0; break}; }; return rett }
+                { rett=1; if(n<=m){for (k=n; k<=m; k++)   { if ( q(k,isclass) && s(k-1) ) {rett=0; break}; };}; return rett }
 function Q1f(n,m, isclass,    k, rett)               # поиск на n шагов вперёд отсутствия слова в классе
                 { rett=1; for (k= 1; k<=n; k++)   { if ( @isclass(k) ) {rett=0; break}; }; return rett }
 function qb_(n, array,    k, rett)                  # поиск на n шагов назад наличия слова в БАЗОВОМ массиве
@@ -158,13 +158,13 @@ function Ww_(n, wl,    itmz, rett)                  # НЕнахождение �
 function W_w(n, wl,    itmz, rett)                  # НЕнахождение в списке? != "одно из слов"
                 { stoar(wl, itmz, "[ |]"); if (lc(n) in itmz && s(n-1)) {rett=0} else {rett=1}; return rett }
 function wb(n,m, wl,    itmz, k, rett)            # поиск на n шагов назад слова из списка
-                { rett=0; wbn=""; stoar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if (lc(k) in itmz) {rett=1; wbn=k; break};}; return rett }
+                { rett=0; wbn=""; if(n<=m){stoar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if (lc(k) in itmz) {rett=1; wbn=k; break};};}; return rett }
 function wb_raw(n,m, wl,    itmz, k, rett)        # поиск на n шагов назад НЕОЧИЩЕННОГО слова из списка
-                { rett=0; wbn=""; stoar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if (tolower(l[i+k]) in itmz) {rett=1; wbn=k; break};}; return rett }
+                { rett=0; wbn=""; if(n<=m){stoar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if (tolower(l[i+k]) in itmz) {rett=1; wbn=k; break};};}; return rett }
 function wf(n,m, wl,    itmz, k, rett)            # поиск на n шагов вперёд наличия слова в массиве
                 { rett=0; wfn=""; stoar(wl, itmz, "[ |]"); for (k=n; k<=m; k++) { if (lc(k) in itmz) {rett=1; wfn=k; break};}; return rett }
 function s(m, n,    k, rett)  {                   # разделители в диапазоне НЕ содержат препинаний? = пробел (не видит дефис)
-                if (n!="") { for (k=m; k<=n; k++) { if (sep[i+k] ~ "[…,.:;!?—]" ) {rett=0; break} else {rett=1}; };}
+                if (n!=""&&m<n) { for (k=m; k<=n; k++) { if (sep[i+k] ~ "[…,.:;!?—]" ) {rett=0; break} else {rett=1}; };}
                 else { if (sep[i+m] ~ "[…,.:;!?—]" ) {rett=0} else {rett=1}; }; return rett }
 function sc(n, sym,    el, k, rett)               # поиск символа в разделителе: "содержит"
                 { el = sep[i+n]; if (el ~ sym)    {rett=1} else {rett=0}; return rett }
