@@ -90,11 +90,12 @@ for ( wrd in omos ) { #e2
         replstring = sprintf( "%" wlen "s", "");
         lnumwidt = length(num);	                             # Ширина вывода номера строки из количества строк в книге
         lookfwrd = totallen-lookback-wlen-lnumwidt+correcti; # Длина правой части превьюшки
-        maxprint += wlen + 1;                                # Текущая длина вывода в консоль, считаем для перевода строки
 
-        if ( maxprint >= maxwidth ) { printf ("\n" ); maxprint = 0 };
-
-        printf ( "\033[33m%s ", wrd );
+        if ( progs ) { 
+          maxprint += wlen + 1;                                # Текущая длина вывода в консоль, считаем для перевода строки
+          if ( maxprint >= maxwidth ) { printf ("\n" ); maxprint = 0 };
+          printf ( "\033[33m%s ", wrd );
+        };
 
         for ( i=1; i<=lifo; i++ ) { #e3
             if (omlin[i] == omlin[i+1])  {continue};

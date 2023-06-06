@@ -12,6 +12,7 @@ export LC_COLLATE=C
 mo_time0=$(date +%s.%N);
 key="$1"
 book="$2"
+somo="$3"
 bookwrkdir=mano-"$book"
 bookscydir=mano-"$book".scy
 suf=man
@@ -57,19 +58,29 @@ case $key in
 		if [[ -d "mano-$book" ]]; then rm -rf "mano-$book"; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; exit 1
 		else printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директории" $bookwrkdir "не существует. Используйте другой ключ."; exit 1; fi ;;
 	-x) # Однозначние омографы+дискретные скрипты; существующую директорию mano- не удалять
-		fixomo=1; preview=0; spacy=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы и дискретные скрипты." ;;
+		fixomo=1; preview=0; spacy=0; progs=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы и дискретные скрипты." ;;
 	-p) # Превью текста и дискретные скрипты; существующую директорию mano- не удалять
-		fixomo=0; preview=1; spacy=0; printf '\e[36m%s\e[0m\n' "Превью текста и дискретные скрипты." ;;
+		fixomo=0; preview=1; spacy=0; progs=0; printf '\e[36m%s\e[0m\n' "Превью текста и дискретные скрипты." ;;
 	-px | -xp | -g) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- не удалять
-		fixomo=1; preview=1; spacy=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы, превью и дискретные скрипты." ;;
+		fixomo=1; preview=1; spacy=0; progs=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы, превью и дискретные скрипты." ;;
 	-fpx | -fxp | -fg | -gg ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; +Spacy (!!!)
-		fixomo=1; preview=1; spacy=1; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=1; preview=1; spacy=1; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+	-fpxo | -fxpo | -fgo | -ggo ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; +Spacy (!!!) + список в слов консоль
+		fixomo=1; preview=1; spacy=1; progs=1; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-fpc | -ggc ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
-		fixomo=1; preview=1; spacy=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=1; preview=1; spacy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+	-fps | -si ) # один омограф, превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
+		fixomo=1; preview=1; spacy=0; progs=0; swrd=1; single=1
+		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельный омограф не задан."; exit 1; fi; 
+		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+	-fpg | -sg ) # группа омографов, превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
+		fixomo=1; preview=1; spacy=0; progs=0; sgrp=1; single=1
+		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельная группа омографов не задана."; exit 1; fi; 
+		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-xf | -fx) # Превью текста и дискретные скрипты; существующую директорию mano- удалить
-		fixomo=1; preview=0; spacy=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=1; preview=0; spacy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-fp | -pf) # Однозначные омографы Не делать, дискретные скрипты; существующую директорию mano- удалить
-		fixomo=0; preview=1; spacy=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=0; preview=1; spacy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	*) # Нечто другое
 		printf '\e[32m%s \e[93m%s \e[32m%s \e[93m%s\e[0m\n' "Задайте ключ или книгу. Например:" "./momo.sh -xp book.fb2" "или" "./momo.fb2 book.fb2"; exit 0 ;;
 esac
@@ -132,23 +143,44 @@ fi;
 
 # Проверить наличие необработанных "все": если есть, применить все правила, иначе выключить пару "все/всё"
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
-if [[ ! $yop -eq 0 ]]; then
-	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m … ' "Все (" $yop ") ==> Все́/Всё"
+if [[ ! $single -eq 1 ]]; then
+  if [[ ! $yop -eq 0 ]]; then
+     printf '\e[36m%s \e[93m%s \e[36m%s\e[0m … ' "Все (" $yop ") ==> Все́/Всё"
 	
-  awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f scriptdb/deomo.awk $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
-  mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+     awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f scriptdb/deomo.awk $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
 
-yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
-mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "обработано за" $duration "сек. Остаток:" $yop
+     yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
+     mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
+     LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "обработано за" $duration "сек. Остаток:" $yop
 
+  else
+     awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+#_#_# vsez !_#_!)$/#\1/g' scriptdb/deomo.awk) \
+        $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+     mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
+     printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
+  fi # все
 else
-  awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+)(#_#_# vsez !_#_!)$/#\1\2/g' scriptdb/deomo.awk) \
-     $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
-  mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
-mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
-printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
-fi # все
+  if [[ $swrd -eq 1 ]]; then
+    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
+            s/^(.+#_#_# vsez !_#_!)$/#\1/g;
+	        s/^(.+#_#_# all_omos !_#_!)$/#\1/g;
+            s/^#([^"]+")dummy(".+#_#_# single_word !_#_!)$/\1'$somo'\2/g}' scriptdb/deomo.awk) $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+    mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+    mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
+    printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
+  fi # 
+  if [[ $sgrp -eq 1 ]]; then
+    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
+            s/^(.+#_#_# vsez !_#_!)$/#\1/g;
+            s/^(.+#_#_# all_omos !_#_!)$/#\1/g;
+            s/^#([^"]+")dummy(".+#_#_# single_group !_#_!)$/\1'$somo'\2/g}' scriptdb/deomo.awk) $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+    mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+    mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
+    printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
+  fi # 
+fi
 
 rexsed="scriptdb/omo-index.sed"
 
@@ -202,7 +234,7 @@ zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_
        	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
 sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $bookwrkdir/text-book.txt | \
-    awk -v obook=$obook -v twd=$twd -v preview=$preview -v termcor=$termcor -v editor=$edi -vbkwrkdir="$bookwrkdir/" -v indb="scriptdb/" -f scriptdb/preview.awk 
+    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vprogs=$progs -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -vindb="scriptdb/" -f scriptdb/preview.awk 
 
 totnum=$(cat $bookwrkdir/totnum)
 
