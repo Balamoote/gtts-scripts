@@ -69,7 +69,7 @@ case $key in
 		fixomo=1; preview=1; spacy=1; progs=1; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-fpc | -ggc ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
 		fixomo=1; preview=1; spacy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
-	-fps | -si ) # один омограф, превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
+	-fps | -sw ) # один омограф, превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
 		fixomo=1; preview=1; spacy=0; progs=0; swrd=1; single=1
 		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельный омограф не задан."; exit 1; fi; 
 		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;

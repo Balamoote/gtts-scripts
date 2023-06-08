@@ -13,10 +13,12 @@ function sortchunk(chunk, sep,     rett, charr, chars, i, chnum)
          rett = chars[1]; for ( i = 2; i <= chnum; i++ ) { rett = rett sep chars[i] }; return rett };
 
 BEGIN { RS = "\n";
-        reg = "cst=\x22[А-ЯЁёа-я0-9 ]+\x22";
+        reg  = "^\\s*cst=\x22[А-ЯЁёа-я0-9 ]+\x22;$";
+        reg_ = "^\\s*cst=\x22[А-ЯЁёа-я0-9 ]+\x22$";
       }
 {
-    if ($0 ~ reg ) {
+    if ($0 ~ reg_ ) { $0 = $0 ";" };
+    if ($0 ~ reg  ) {
       cline = "";
       rump  = $0;
 
