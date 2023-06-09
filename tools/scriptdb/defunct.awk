@@ -387,7 +387,7 @@ break}; return rett }
 
 function sw_tv_f(rett, stopp) { while (stopp == 0) {
  if ( id(1,"uw4edtv") && s(0) )
- { rett=stopp=1; d[102]++; if(dbg){print "D102"}; continue};
+ { rett=stopp=1; d[102]++; if(dbg){print "D102"}; continue };
  #
  if ( q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && regn(-1,"Ut") && s(-1) )
  { rett=stopp=1; d[103]++; if(dbg){print "D103"}; continue };
@@ -882,15 +882,15 @@ function sw_edro_f(rett,   stopp) { while (stopp == 0) {
 
  if ( id(-2,"hw4edro") &&
        q(-1,"prl_edro prq_edro mest_ro") && s(-2,-1) )
- { rett=stopp=1; d[213]++; if(dbg){print "D213"}; continue};
+ { rett=stopp=1; d[213]++; if(dbg){print "D213"}; continue };
  if ( id(-1,"hw4edro") && s(-1) )
- { rett=stopp=1; d[214]++; if(dbg){print "D214"}; continue};
+ { rett=stopp=1; d[214]++; if(dbg){print "D214"}; continue };
  if ( id(-2,"hw4edro") && q(0,"ipa_liquid ipa_loose") &&
        pre_ro(-1) && s(-2,-1) )
- { rett=stopp=1; d[215]++; if(dbg){print "D215"}; continue};
+ { rett=stopp=1; d[215]++; if(dbg){print "D215"}; continue };
 
  if ( id(1,"uw4edro") && s(0) )
- { rett=stopp=1; d[216]++; if(dbg){print "D216"}; continue};
+ { rett=stopp=1; d[216]++; if(dbg){print "D216"}; continue };
 
  if ( prq_any(-2) && regn(-2,"Ur") &&
        q(-1,"prl_edro mest_ro muk_edro") && s(-2,-1) )
@@ -1040,7 +1040,7 @@ function sw_edro_f(rett,   stopp) { while (stopp == 0) {
  { rett=stopp=1; d[247]++; if(dbg){print "D247"}; continue };
  if ( (suw_any(-2)||w(-2,"был было была")) && Q(-2,"prl_mnim") &&
         w(-1,"цвета") && s(-2,-1) )
- { rett=stopp=1; d[248]++; if(dbg){print "D248"}; continue};
+ { rett=stopp=1; d[248]++; if(dbg){print "D248"}; continue };
 
  if ( prq_mnim(-3) &&
        pre_ro(-2) &&
@@ -2423,9 +2423,9 @@ break}; return rett }
 function sw_em_l_f(rett, stopp) { while (stopp == 0) {
  if ( W(0,"берегу бреду гною хмелю") && q(0,"suw_edmuda") &&
       !( (wb(-5,-1,"в во на") && !(sq(wbn,-1,"[….:;!?]"))) || (wf(1,3,"в во на") && !(sq(0,wfn-1,"[….:;!?]")))) )
- { rett=0; stopp=1; loc2emd=1; d[575]++; if(dbg){print "D575"}; continue};
+ { rett=0; stopp=1; loc2emd=1; d[575]++; if(dbg){print "D575"}; continue };
  if ( id(-1,"hw4loc") && s(-1) )
- { rett=stopp=1; d[576]++; if(dbg){print "D576"}; continue};
+ { rett=stopp=1; d[576]++; if(dbg){print "D576"}; continue };
 
  #
  if ( pre_pr(-3) &&
@@ -2467,7 +2467,7 @@ break}; return rett }
 function sw_ez_l_f(rett, stopp) { while (stopp == 0) {
  if ( W(0,"кости крови мели пыли шерсти") && q(0,"suw_edzeda") &&
       !( (wb(-5,-1,"в во на") && !(sq(wbn,-1,"[….:;!?]"))) || (wf(1,3,"в во на") && !(sq(0,wfn-1,"[….:;!?]")))) )
- { rett=0; stopp=1; loc2emd=1; d[585]++; if(dbg){print "D585"}; continue};
+ { rett=0; stopp=1; loc2emd=1; d[585]++; if(dbg){print "D585"}; continue };
  if ( (regn(-2,"Nme")||type(-2,"dvi del")) &&
        w(-1,"в во на") && s(-2,-1) )
  { rett=0; stopp=1; d[586]++; if(dbg){print "D586"}; continue };
@@ -3526,9 +3526,9 @@ function sw_mn_r_f(rett, stopp) { while (stopp == 0) {
 
  if ( id(-2,"hw4mnro") &&
        q(-1,"prl_mnro prq_mnro mest_ro") && s(-2,-1) )
- { rett=stopp=1; d[852]++; if(dbg){print "D852"}; continue};
+ { rett=stopp=1; d[852]++; if(dbg){print "D852"}; continue };
  if ( id(-1,"hw4mnro") && s(-1) )
- { rett=stopp=1; d[853]++; if(dbg){print "D853"}; continue};
+ { rett=stopp=1; d[853]++; if(dbg){print "D853"}; continue };
 
  if ( base(-1,"пара") && s(-1) )
  { rett=stopp=1; d[854]++; if(dbg){print "D854"}; continue };
