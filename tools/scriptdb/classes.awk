@@ -2287,6 +2287,12 @@ BEGIN {
     cst="его её их";                                                              stoar(cst,mstc_3e," ");
     cst="да и или иль";                                                           stoar(cst,soyz_iili," ");
 
+    cst="б бы";                                                                   stoar(cst,qst_cnd," ");
+    cst="давайте давай пускай пусть";                                             stoar(cst,qst_po," ");
+    cst="не ни";                                                                  stoar(cst,qst_ne," ");
+    cst="даже ни ж же ведь уж уже";                                               stoar(cst,qst_usil," ");
+    cst="только лишь почти";                                                      stoar(cst,qst_lim," ");
+
 # массив для "все"
     vse["все"];vse["Все"];vse["ВСЕ"];
     vsyo["все"]="всё";vsyo["Все"]="Всё";vsyo["ВСЕ"]="ВСЁ";vsje["все"]="все́";vsje["Все"]="Все́";vsje["ВСЕ"]="ВСЕ́";
