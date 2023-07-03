@@ -165,7 +165,7 @@ else
   if [[ $swrd -eq 1 ]]; then
     awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
             s/^(.+#_#_# vsez !_#_!)$/#\1/g;
-	        s/^(.+#_#_# all_omos !_#_!)$/#\1/g;
+            s/^(.+#_#_# all_omos !_#_!)$/#\1/g;
             s/^#([^"]+")dummy(".+#_#_# single_word !_#_!)$/\1'$somo'\2/g}' scriptdb/deomo.awk) $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
     mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
