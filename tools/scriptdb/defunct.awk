@@ -136,7 +136,7 @@ function sw_im_f(rett, stopp) { while (stopp == 0) {
     if ( q(2,"gl_pnin gl_pned deep_pn") && s(0,1) && p(2) &&
          w(1,"не") && W(2,cst_gl) && Qw_(-1,"pre_any") )
     { rett=stopp=1; D[33]++; if(dbg){print "D33"}; continue };
-    if ( q(1,"gl_nein gl_need deep_ne") && s(0) && p(1) &&
+    if ( q(1,"gl_nein deep_ne") && s(0) && p(1) &&
          W(1,cst_gl) && Qw_(-1,"pre_any") )
     { rett=stopp=1; D[34]++; if(dbg){print "D34"}; continue };
     if ( q(2,"gl_nein gl_need deep_ne") && s(0,1) && p(2) &&

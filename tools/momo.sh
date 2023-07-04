@@ -77,6 +77,10 @@ case $key in
 		fixomo=1; preview=1; spacy=0; progs=0; sgrp=1; single=1
 		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельная группа омографов не задана."; exit 1; fi; 
 		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+	-fpe | -se ) # один омограф, превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
+		fixomo=1; preview=1; spacy=0; progs=0; vse=1; single=1
+		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельный омограф не задан."; exit 1; fi; 
+		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-xf | -fx) # Превью текста и дискретные скрипты; существующую директорию mano- удалить
 		fixomo=1; preview=0; spacy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-fp | -pf) # Однозначные омографы Не делать, дискретные скрипты; существующую директорию mano- удалить
@@ -176,6 +180,13 @@ else
             s/^(.+#_#_# vsez !_#_!)$/#\1/g;
             s/^(.+#_#_# all_omos !_#_!)$/#\1/g;
             s/^#([^"]+")dummy(".+#_#_# single_group !_#_!)$/\1'$somo'\2/g}' scriptdb/deomo.awk) $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+    mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+    mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
+    printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
+  fi # 
+  if [[ $vse -eq 1 ]]; then
+    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
+            s/^(.+#_#_# all_omos !_#_!)$/#\1/g}' scriptdb/deomo.awk) $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
     mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
     printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
