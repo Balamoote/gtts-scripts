@@ -7542,8 +7542,8 @@ for(wrd in omap["x4700"]){omakevars(x4700,"x4700");for(y=1;y<=wln;y++)         #
  { l[i]=omo1; R[1515]++; if(dbg){print "R1515"}; continue };
  #
  if ( narph_kaq(1) &&
-              q(xsn+1,"qik_im qik_edim") &&
-              q(xsn+2,"suw_mnro") && type(xsn+2,"geld") && s(0,xsn+1) )
+              q(xwn+1,"qik_im qik_edim") &&
+              q(xwn+2,"suw_mnro") && type(xwn+2,"geld") && s(0,xwn+1) )
  { l[i]=omo1; R[1516]++; if(dbg){print "R1516"}; continue };
  if ( q(1,"qik_im qik_edim") &&
       q(2,"suw_edro suw_mnro") && type(2,"geld") && s(0,1) )

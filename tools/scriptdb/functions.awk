@@ -52,17 +52,17 @@ function q_(n, array,    el, rett)                # слово в БАЗОВОМ
                 { if(lc(n) in array) {rett=1} else {rett=0}; return rett}
 function q(n, alist,    k,wd, rett)               # обертка для нескольких функций
                 { rett=0; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd)) {rett=1; break} }; return rett}
-function q_w(n, alist,    k,wd, rett)              # обертка для нескольких функций - НЕ нахождение + пробел до
+function q_w(n, alist,    k,wd, rett)             # обертка для нескольких функций - НЕ нахождение + пробел до
                 { rett=0; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd) && s(n-1) && sv(n-1,"-") ) {rett=1; break} }; return rett}
-function qw_(n, alist,    k,wd, rett)              # обертка для нескольких функций - НЕ нахождение + пробел после
+function qw_(n, alist,    k,wd, rett)             # обертка для нескольких функций - НЕ нахождение + пробел после
                 { rett=0; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd) && s(n) && sv(n,"-") ) {rett=1; break} }; return rett}
-function Qist(n, alist,    k,wd, rett)               # обертка для нескольких функций
+function Qist(n, alist,    k,wd, rett)            # обертка для нескольких функций
                 { rett=1; split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n)) {rett=0; break} }; return rett}
-function Q(n, alist,    k,wd, rett)              # обертка для нескольких функций - НЕ нахождение
+function Q(n, alist,    k,wd, rett)               # обертка для нескольких функций - НЕ нахождение
                 { rett=1; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd)) {rett=0; break} }; return rett}
-function Qw_(n, alist,    k,wd, rett)              # обертка для нескольких функций - НЕ нахождение + пробел после
+function Qw_(n, alist,    k,wd, rett)             # обертка для нескольких функций - НЕ нахождение + пробел после
                 { rett=1; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd) && s(n) && sv(n,"-") ) {rett=0; break} }; return rett}
-function Q_w(n, alist,    k,wd, rett)              # обертка для нескольких функций - НЕ нахождение + пробел до
+function Q_w(n, alist,    k,wd, rett)             # обертка для нескольких функций - НЕ нахождение + пробел до
                 { rett=1; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd) && s(n-1) && sv(n-1,"-") ) {rett=0; break} }; return rett}
 function id(n, wl,    rett)                       # связанное слово в позиции и с морфорлогической функцией wl
                 { if ( wl in omoid[iwrd][lc(n)] ) {rett=1} else {rett=0}; return rett }
@@ -74,9 +74,9 @@ function qm(n, isclass, mrk, mlist,    k,wd, rett)# обертка для нес
                 { if ( q(n,isclass) && nmark(n,mrk,mlist) ) {rett=1} else {rett=0}; return rett}
 function qq(n, m,    rett)                        # слово m равно слово n?
                 { if ( lc(m) == lc(n) ) {rett=1} else {rett=0}; return rett}
-function qb(n,m, isclass,    k, rett)               # поиск на n шагов назад наличия слова в классе
+function qb(n,m, isclass,    k, rett)             # поиск на n шагов назад наличия слова в классе
                 { rett=qbn=""; if(n>m)n=m; for (k=m; k>=n; k--) { if ( q(k,isclass) ) {rett=1; qbn=k; break}; }; return rett }
-function qB(n,m, isclass, notclass,    k, rett)     # поиск на n шагов назад наличия слова в классе и отсутсвия его же в другом классе
+function qB(n,m, isclass, notclass,    k, rett)   # поиск на n шагов назад наличия слова в классе и отсутсвия его же в другом классе
                 { rett=qbn=""; if(n>m)n=m; for (k=m; k>=n; k--) { if ( q(k,isclass) && Q(k,notclass) ) {rett=1; qbn=k; break}; }; return rett }
 function seek(n,m, isclass, notclass,    k, rett) # поиск на n шагов наличия слова в классах и отсутсвия слов в интервале в других классах, прервать, если найден notclass
                 { rett=skn="";                    # SLOW?
@@ -205,18 +205,34 @@ function notsym(n,sym,    rett)                   # НЕ нахождение п
 function qxs(n,a0,b0,c0,d0,e0,      a_,b_,c_,d_,e_,asu,rett) # фраза от адреса, составленная из 1-5 переменных элементов, проверка пробелов, xsn=адрес первого слова
                 { if(a0) a_=1; if(b0) b_=1; if(c0) c_=1; if(d0) d_=1; if(e0) e_=1; asu=a_+b_+c_+d_+e_; xsn=""
                   if (n < 0) { switch (asu) {
-                      case "1": if( s(n)       && w(n  ,a0)                                                     ) {xsn=n        ;rett=1} else {rett=0}; break
+                      case "1": if( s(n      ) && w(n  ,a0)                                                     ) {xsn=n        ;rett=1} else {rett=0}; break
                       case "2": if( s(n-1,n  ) && w(n-1,a0) && w(n  ,b0)                                        ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
                       case "3": if( s(n-2,n  ) && w(n-2,a0) && w(n-1,b0) && w(n  ,c0)                           ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
                       case "4": if( s(n-3,n  ) && w(n-3,a0) && w(n-2,b0) && w(n-1,c0) && w(n  ,d0)              ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
                       case "5": if( s(n-4,n  ) && w(n-4,a0) && w(n-3,b0) && w(n-2,c0) && w(n-1,d0) && w(n  ,e0) ) {xsn=n-(asu-1);rett=1} else {rett=0}; break
                       default: rett=xsn=""; break }
                   } else { switch (asu) {
-                      case "1": if( s(n-1)     && w(n  ,a0)                                                     ) {xsn=n+(asu-1);rett=1} else {rett=0}; break
+                      case "1": if( s(n-1    ) && w(n  ,a0)                                                     ) {xsn=n+(asu-1);rett=1} else {rett=0}; break
                       case "2": if( s(n-1,n  ) && w(n  ,a0) && w(n+1,b0)                                        ) {xsn=n+(asu-1);rett=1} else {rett=0}; break
                       case "3": if( s(n-1,n+1) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)                           ) {xsn=n+(asu-1);rett=1} else {rett=0}; break
                       case "4": if( s(n-1,n+2) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+3,d0)              ) {xsn=n+(asu-1);rett=1} else {rett=0}; break
                       case "5": if( s(n-1,n+3) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+4,d0) && w(n+5,e0) ) {xsn=n+(asu-1);rett=1} else {rett=0}; break
+                      default: rett=xfn=""; break };}; return rett}
+function qxw(n,a0,b0,c0,d0,e0,      a_,b_,c_,d_,e_,asu,rett) # фраза от адреса, составленная из 1-5 переменных элементов, проверка пробелов, xsn=адрес первого слова
+                { if(a0) a_=1; if(b0) b_=1; if(c0) c_=1; if(d0) d_=1; if(e0) e_=1; asu=a_+b_+c_+d_+e_; xsn=""
+                  if (n < 0) { switch (asu) {
+                      case "1": if(               w(n  ,a0)                                                     ) {xwn=n        ;rett=1} else {rett=0}; break
+                      case "2": if( s(n-1    ) && w(n-1,a0) && w(n  ,b0)                                        ) {xwn=n-(asu-1);rett=1} else {rett=0}; break
+                      case "3": if( s(n-2,n-1) && w(n-2,a0) && w(n-1,b0) && w(n  ,c0)                           ) {xwn=n-(asu-1);rett=1} else {rett=0}; break
+                      case "4": if( s(n-3,n-1) && w(n-3,a0) && w(n-2,b0) && w(n-1,c0) && w(n  ,d0)              ) {xwn=n-(asu-1);rett=1} else {rett=0}; break
+                      case "5": if( s(n-4,n-1) && w(n-4,a0) && w(n-3,b0) && w(n-2,c0) && w(n-1,d0) && w(n  ,e0) ) {xwn=n-(asu-1);rett=1} else {rett=0}; break
+                      default: rett=xsn=""; break }
+                  } else { switch (asu) {
+                      case "1": if( s(n      ) && w(n  ,a0)                                                     ) {xwn=n+(asu-1);rett=1} else {rett=0}; break
+                      case "2": if( s(n  ,n  ) && w(n  ,a0) && w(n+1,b0)                                        ) {xwn=n+(asu-1);rett=1} else {rett=0}; break
+                      case "3": if( s(n  ,n+1) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)                           ) {xwn=n+(asu-1);rett=1} else {rett=0}; break
+                      case "4": if( s(n  ,n+2) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+3,d0)              ) {xwn=n+(asu-1);rett=1} else {rett=0}; break
+                      case "5": if( s(n  ,n+3) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+4,d0) && w(n+5,e0) ) {xwn=n+(asu-1);rett=1} else {rett=0}; break
                       default: rett=xfn=""; break };}; return rett}
 function qxd(n,a0,b0,c0,      a_,b_,c_,asu,rett) # фраза от адреса, составленная из 1-5 переменных элементов, проверка дефисов, xsn=адрес первого слова
                 { if(a0) a_=1; if(b0) b_=1; if(c0) c_=1; asu=a_+b_+c_; xsn=""
@@ -1744,36 +1760,36 @@ function ist_suw_da(n,  wd,rett) { wd=tolower(l[i+n]); if (wd in is_suw_edmuda||
 function ist_suw_tv(n,  wd,rett) { wd=tolower(l[i+n]); if (wd in is_suw_edmutv||wd in is_suw_edsrtv||wd in is_suw_edzetv)                       {rett=1} else {rett=0}; return rett}
 function ist_suw_pr(n,  wd,rett) { wd=tolower(l[i+n]); if (wd in is_suw_edmupr||wd in is_suw_edsrpr||wd in is_suw_edzepr||wd in is_suw_mnpr)    {rett=1} else {rett=0}; return rett}
 
-# наречные обороты
-function narph_vrem(n,                                                                                                                          rett) {
-                     if ( qxs(n,"на","мгновение")||
-                          qxs(n,"время","от","времени")||
-                          qxs(n,"в","этот тот","момент")||
-                          qxs(n,"вчера завтра сегодня","утром днём вечером ночью")||
-                          qxs(n,"до","сих тех этих","пор") )                                                                                    {rett=1} else {rett=0}; return rett }
-function narph_napr(n,                                                                                                                          rett) {
-                     if ( qxs(n,"во","все","стороны")||
-                          qxs(n,"со","всех","направлений сторон")||
-                          qxs(n,"перед передо","мной тобой вами нами ним ней ними собой") )                                                     {rett=1} else {rett=0}; return rett }
-function narph_priq(n,                                                                                                                          rett) {
-                     if ( qxs(n,"от","боли изумления радости страха удивления") )                                                               {rett=1} else {rett=0}; return rett }
-function narph_kaq(n,                                                                                                                           rett) {
-                     if ( qxs(n,"вовсе","не","нужно обязательно больно")||
-                          qxs(n,"по","крайней меньшей","мере")||
-                          qxs(n,"по","большому","счёту счету")||
-                          qxs(n,"первым","делом")||
-                          qxs(n,"не","нужно обязательно")  )                                                                                    {rett=1} else {rett=0}; return rett }
-function narph_spos(n,                                                                                                                          rett) {
-                     if ( qxs(n,"близко","к","сердцу")||
-                          qxs(n,"в","общем","и","целом")||
-                          qxs(n,"в","общем основном штыки целом")||
-                          qxs(n,"друг","другу дружке")||
-                          qxs(n,"друг","с","другом дружкой")||
-                          qxs(n,"на","веру")||
-                          qxs(n,"со","мной")||
-                          qxs(n,"с","ходу тобой собой ней ним ними вами нами") )                                                                {rett=1} else {rett=0}; return rett }
+# наречные обороты, wd - заглушка для совместимости
+function narph_vrem(n,  wd,                                                                                                                     rett) {
+                     if ( qxw(n,"на","мгновение")||
+                          qxw(n,"время","от","времени")||
+                          qxw(n,"в","этот тот","момент")||
+                          qxw(n,"вчера завтра сегодня","утром днём вечером ночью")||
+                          qxw(n,"до","сих тех этих","пор") )                                                                                    {rett=1} else {rett=0}; return rett }
+function narph_napr(n,  wd,                                                                                                                      rett) {
+                     if ( qxw(n,"во","все","стороны")||
+                          qxw(n,"со","всех","направлений сторон")||
+                          qxw(n,"перед передо","мной тобой вами нами ним ней ними собой") )                                                     {rett=1} else {rett=0}; return rett }
+function narph_priq(n,  wd,                                                                                                                      rett) {
+                     if ( qxw(n,"от","боли изумления радости страха удивления") )                                                               {rett=1} else {rett=0}; return rett }
+function narph_kaq(n,   wd,                                                                                                                      rett) {
+                     if ( qxw(n,"вовсе","не","нужно обязательно больно")||
+                          qxw(n,"по","крайней меньшей","мере")||
+                          qxw(n,"по","большому","счёту счету")||
+                          qxw(n,"первым","делом")||
+                          qxw(n,"не","нужно обязательно")  )                                                                                    {rett=1} else {rett=0}; return rett }
+function narph_spos(n,  wd,                                                                                                                      rett) {
+                     if ( qxw(n,"близко","к","сердцу")||
+                          qxw(n,"в","общем","и","целом")||
+                          qxw(n,"в","общем основном штыки целом")||
+                          qxw(n,"друг","другу дружке")||
+                          qxw(n,"друг","с","другом дружкой")||
+                          qxw(n,"на","веру")||
+                          qxw(n,"со","мной")||
+                          qxw(n,"с","ходу тобой собой ней ним ними вами нами") )                                                                {rett=1} else {rett=0}; return rett }
 
-function narph_any(n,   rett) { if ( narph_vrem(n)||narph_spos(n)||narph_kaq(n)||narph_napr(n)||narph_priq(n) )                                 {rett=1} else {rett=0}; return rett }
+function narph_any(n,wd,  rett) { if ( narph_vrem(n)||narph_spos(n)||narph_kaq(n)||narph_napr(n)||narph_priq(n) )                               {rett=1} else {rett=0}; return rett }
 
 # составные "существительные" - обороты
 function swc_edtv(n,                                                                                                                            rett) {

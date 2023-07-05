@@ -529,13 +529,13 @@ sz_iili(-1) &&
       q(-1,"suw_edim suw_mnim") && s(-2,-1) && sv(-1,"-") )
  { rett=stopp=1; D[137]++; if(dbg){print "D137"}; continue };
 
- if ( q(1,"mest_im suw_edim suw_mnim") && s(0) &&
+ if ( q(1,"mest_im suw_edim suw_mnim") && s(0,1) &&
           narph_any(2) &&
-      w(xsn+1,"не") &&
-      q(xsn+2,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && regn(xsn+2,"Ynero") && s(xsn,xsn+1) )
+      w(xwn+1,"не") &&
+      q(xwn+2,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && regn(xwn+2,"Ynero") && s(xwn,xwn+1) )
  { rett=stopp=1; D[138]++; if(dbg){print "D138"}; continue };
- if ( q(1,"mest_im suw_edim suw_mnim") && s(0) &&
-          narph_any(2) && vv(xsn,xsn+5) &&
+ if ( q(1,"mest_im suw_edim suw_mnim") && s(0,1) &&
+          narph_any(2) && vv(xwn,xwn+5) &&
       w(vvn+1,"не") &&
       q(vvn+2,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && regn(vvn+2,"Ynero") && s(vvn+1) )
  { rett=stopp=1; D[139]++; if(dbg){print "D139"}; continue };
@@ -663,7 +663,7 @@ sz_iili(-3) &&
  if ( q(-4,"mest_im suw_edim suw_mnim sz") &&
  pre_ro(-3) &&
       q(-2,"prl_edro prl_mnro mest_ro") &&
-      q(-1,"suw_edro suw_mnro") && s(-4,-1) && !(narph_any(-1)) )
+      q(-1,"suw_edro suw_mnro") && s(-4,-1) && Q(-1,"narph_any") )
  { rett=stopp=1; D[165]++; if(dbg){print "D165"}; continue };
  if ( q(-3,"mest_im suw_edim suw_mnim sz") && prex!=1 &&
  pre_ro(-2) &&
@@ -800,7 +800,7 @@ sz_iili(-1) &&
  if ( pre_vi(-3) &&
            q(-2,"prl_edvi prl_mnvi mest_vi") &&
            q(-1,"suw_edvi suw_mnvi") && Q(-1,"prl_mnvi") && !( qf(1,5,"gl_mn gl_vzmn") && s(0,qfn-1) ) && s(-3,-1) &&
- !(narph_any(-1)) )
+           Q(-1,"narph_any") )
  { rett=stopp=1; D[196]++; if(dbg){print "D196"}; continue };
 
  if ( w(-1,"и ни") &&
@@ -1089,8 +1089,8 @@ sz_iili(-2) &&
 sz_iili(-1) && s(-3,-1) )
  { rett=0; edro2mnim=1; stopp=1; D[257]++; if(dbg){print "D257"}; continue };
 
- if ( narph_any(-1) &&
-        gl_nemn(xsn-1) && s(xsn-1,-1) )
+ if ( narph_any(-1) && s(-1) &&
+        gl_nemn(xwn-1) && s(xwn-1) )
  { rett=0; edro2mnvi=1; stopp=1; D[258]++; if(dbg){print "D258"}; continue };
 
  if ( se(-1,"-") && suw_mnim(0) && suw_mnim(-1) && prl_mnim(-2) )
@@ -3117,7 +3117,7 @@ sz_iili(-2) &&
       q(-1,"prl_mnvi mest_mnvi") && s(-2,-1) )
  { rett=stopp=1; D[750]++; if(dbg){print "D750"}; continue };
  if ( q(-1,"narph_priq") &&
-      q(xsn-1,"prq_pe prq_pn") && s(xsn-1,-1) )
+      q(xwn-1,"prq_pe prq_pn") && s(xwn-1,-1) )
  { rett=stopp=1; D[751]++; if(dbg){print "D751"}; continue };
  if ( q(-1,"prq_pe prq_pn") && s(-1) )
  { rett=stopp=1; D[752]++; if(dbg){print "D752"}; continue };
@@ -3160,7 +3160,7 @@ sz_iili(3) &&
  if ( (q(-2,"prl_mnim prq_mnim muk_mnim")||(mest_mnim(-2) && Q(0,"prl_krmn"))||wc(-2,"[ео]вы$")) && s(-2) && sc(-1,"-") )
  { rett=stopp=1; D[761]++; if(dbg){print "D761"}; continue };
  if ( narph_any(-1) &&
-             (q(xsn-1,"prl_mnim prq_mnim muk_mnim")||(mest_mnim(xsn-1) && Q(0,"prl_krmn"))||wc(xsn-1,"[ео]вы$")) && s(xsn-1) )
+             (q(xwn-1,"prl_mnim prq_mnim muk_mnim")||(mest_mnim(xwn-1) && Q(0,"prl_krmn"))||wc(xwn-1,"[ео]вы$")) && s(xwn-1,-1) )
  { rett=stopp=1; D[762]++; if(dbg){print "D762"}; continue };
 
  if ( Qw_(-3,"mest_mnim suw_mnim") &&
@@ -3220,11 +3220,11 @@ function sw_mn_v_f(rett, stopp) { while (stopp == 0) {
       q(2,"gl_pein gl_peed gl_pemn gl_popeed gl_popemn deep_pe") &&
       q(3,"suw_edtv suw_mntv") && s(0,2) )
  { rett=stopp=1; D[775]++; if(dbg){print "D775"}; continue };
- if ( q(1,"suw_edro suw_mnro name_ro_sy isname") && s(0) &&
+ if ( q(1,"suw_edro suw_mnro name_ro_sy isname") && s(0,1) &&
           narph_any(2) &&
-      q(xsn+1,"gl_pein gl_peed gl_pemn gl_popeed gl_popemn deep_pe") &&
- pre_tv(xsn+2) &&
-      q(xsn+3,"suw_edtv suw_mntv") && s(xsn,xsn+2) )
+      q(xwn+1,"gl_pein gl_peed gl_pemn gl_popeed gl_popemn deep_pe") &&
+ pre_tv(xwn+2) &&
+      q(xwn+3,"suw_edtv suw_mntv") && s(xwn,xwn+2) )
  { rett=stopp=1; D[776]++; if(dbg){print "D776"}; continue };
 
  if ( q(-4,"gl_pein gl_peed gl_pemn gl_popeed gl_popemn deep_pe") &&
@@ -3247,7 +3247,7 @@ sz_iili(-2) &&
 sz_iili(-1) && s(-3,-1) )
  { rett=stopp=1; D[781]++; if(dbg){print "D781"}; continue };
  if ( narph_any(-3) &&
-              q(xsn-1,"gl_pnin gl_pned gl_pnmn gl_popned gl_popnmn deep_pn") &&
+              q(xwn-1,"gl_pnin gl_pned gl_pnmn gl_popned gl_popnmn deep_pn") &&
        suw_mnvi(-2) &&
         sz_iili(-1) && s(-3,-1) )
  { rett=stopp=1; D[782]++; if(dbg){print "D782"}; continue };
@@ -3268,11 +3268,11 @@ sz_iili(-1) && s(-3,-1) )
  { rett=stopp=1; D[786]++; if(dbg){print "D786"}; continue };
 
  # narphy
- if ( q(-1,"narph_any") &&
-      q(xsn-1,"gl_pnin gl_pned gl_pnmn gl_popned gl_popnmn deep_pn") && s(xsn-1) && W(0,"сорок") )
+ if ( q(-1,"narph_any") && s(-1) &&
+      q(xwn-1,"gl_pnin gl_pned gl_pnmn gl_popned gl_popnmn deep_pn") && s(xwn-1) && W(0,"сорок") )
  { rett=stopp=1; D[787]++; if(dbg){print "D787"}; continue };
- if ( q(-1,"narph_any") &&
-      q(xsn-1,"gl_pein gl_peed gl_pemn gl_popeed gl_popemn deep_pe") && s(xsn-1) )
+ if ( q(-1,"narph_any") && s(-1) &&
+      q(xwn-1,"gl_pein gl_peed gl_pemn gl_popeed gl_popemn deep_pe") && s(xwn-1) )
  { rett=stopp=1; D[788]++; if(dbg){print "D788"}; continue };
 
  if ( q(1,"mest_im suw_edim suw_mnim") &&
@@ -3312,13 +3312,13 @@ sz_iili(-1) && s(-3,-1) )
       q(3,"prl_edim prl_mnim") &&
       q(4,"suw_edim suw_mnim") && s(0,3) )
  { rett=stopp=1; D[797]++; if(dbg){print "D797"}; continue };
- if ( q(1,"mest_ro suw_edro suw_mnro name_ro_sy isname") && s(0) &&
+ if ( q(1,"mest_ro suw_edro suw_mnro name_ro_sy isname") && s(0,1) &&
       q(2,"narph_any") &&
-      q(xsn+1,"gl_paedsr") && s(xsn) &&
+      q(xwn+1,"gl_paedsr") && s(xwn) &&
       Q(0,"gl_paedze suw_edsrim") && Q(1,"gl_vzed") )
  { rett=stopp=1; D[798]++; if(dbg){print "D798"}; continue };
- if ( q(1,"narph_any") &&
-      q(xsn+1,"gl_paedsr") && s(xsn) &&
+ if ( q(1,"narph_any") && s(0) &&
+      q(xwn+1,"gl_paedsr") && s(xwn) &&
       Q(0,"gl_paedze suw_edsrim") && Q(1,"gl_vzed") )
  { rett=stopp=1; D[799]++; if(dbg){print "D799"}; continue };
  if ( q(1,"gl_paedsr") && s(0) &&
