@@ -43,7 +43,7 @@ sedroll () { local lico=$(wc -l < "$1"); local i=0; local j=0; for i in $(seq 1 
 printf '\e[32m%s \e[32;4;1m%s\e[0m\n' "Скрипт" "\"Ручные омографы\""
 
 if [[ -s "$1" ]]; then book=$1; backup="$book".$suf; key="-xp"; printf '\e[33m%s \e[93m%s\e[0m\n' "Ключи не заданы, но книга указана. Используем ключ:" "-xp"
-elif [[ -s "$2" ]]; then printf '\e[36m%s \e[33m%s\e[0m\n' "Обрабатывается книга:" "$book"
+elif [[ -e "$2" ]]; then printf '\e[36m%s \e[33m%s\e[0m\n' "Обрабатывается книга:" "$book"
 else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./momo.sh [ключ] book.fb2"; exit 1; fi
 
 # Дискретные скрипты пишутся в файл, который задан переменной obook

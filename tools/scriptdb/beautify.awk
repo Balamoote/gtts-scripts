@@ -4,7 +4,7 @@
 # 
 # Для приведения в порядок скриптов awk с их списками вариантов поисковых строк:
 # 
-#   awk -f sort_cst.awk deomo.awk > deomo.awk_sorted
+#   awk -f beautify.awk deomo.awk > deomo.awk_sorted
 #   или
 #   ./hclean.awk -ord  -- "причесать" все скрипты
 #
@@ -16,8 +16,10 @@ function sortchunk(chunk, sep,     rett, charr, chars, i, chnum)
 BEGIN { 
         PROCINFO["sorted_in"]="@ind_num_asc"
         RS = "\n";
-        reg  = "^\\s*cst[0-9]*=\x22[А-ЯЁёа-я0-9 ]+\x22;$";
-        reg_ = "^\\s*cst[0-9]*=\x22[А-ЯЁёа-я0-9 ]+\x22$";
+#       reg  = "^\\s*cst[0-9]*=\x22[-А-ЯЁёа-я0-9 ]+\x22;$";
+        reg  = "^\\s*cst[0-9]*=\x22[^\x22]+\x22;$";
+#       reg_ = "^\\s*cst[0-9]*=\x22[-А-ЯЁёа-я0-9 ]+\x22$";
+        reg_ = "^\\s*cst[0-9]*=\x22[^\x22]+\x22$";
         ifreg= "^\\s*if[ !(]*[A-Za-z_0-9]+\\("; 
       }
 { 

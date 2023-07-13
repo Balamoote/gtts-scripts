@@ -914,7 +914,7 @@ BEGIN {
         if ($2~ /^прл_неизм$/                       ){  pl_neiz           [$1]=$3; continue };
     }; # чтение prl-dic
    close(cmd);
-   cmd = "zcat " indb "dic_suw.gz " indb "dic_suw_add.gz";
+   cmd = "zcat " indb "dic_suw.gz";
    while ((cmd|getline) > 0) {
 
       if ($1~  "-"  ) { dichyph[$1] };
@@ -1064,7 +1064,7 @@ BEGIN {
       };
     }; # чтение suw-dic
    close(cmd);
-   cmd = "zcat " indb "dic_gl.gz " indb "dic_gl_add.gz";
+   cmd = "zcat " indb "dic_gl.gz";
    while ((cmd|getline) > 0) {
 
       if ($1~  "-"  ) { dichyph[$1] };
@@ -1391,7 +1391,7 @@ BEGIN {
     }; # чтение gl-dic
 
    close(cmd);
-   cmd = "zcat " indb "dic_rest.gz " indb "dic_rest_add.gz";
+   cmd = "zcat " indb "dic_rest.gz";
    while ((cmd|getline) > 0) {
 
     if ($1~  "-"  ) { dichyph[$1] };
@@ -2236,101 +2236,21 @@ BEGIN {
      }; # связаных слов
    close(cmd);
 
-    # массивы для разных целей
-
-    # расширенное "это"
-    cst="оно се сие сё то это";                                                                         stoar(cst,mst_it," ");
-    # Предлоги, разделенные по однозначности
-    cst="а-ля";                                                                                         stoar(cst,predc_im," ");
-    cst="включая исключая минуя погодя покеда про сквозь скрозь спустя считая через черезо чрез чрезо"; stoar(cst,predc_vi," ");
-    cst="акромя без безо близ близ вблизи вверху ввиду вглубь вдали вдоль взамен вкось вкруг вместо вне внизу внутри внутрь вовнутрь возле вокруг волею вперед впереди времен времён вроде вследствие встречь выше для до заботами заместо заради из из-за из-под из-подо изнутри изо именем имени касаемо касательно кроме кругом мимо наверху навроде назади накануне наподобие наподобье напротив насупротив насчет насчёт недалеко независимо ниже обок обочь около окрест окроме окромя опосля опричь от относительно ото памяти поблизости повдоль поверх подле позади позадь позднее поздней позже помимо поперед поперек поперёд поперёк порядка посереди посередине посередке посередь посерёдке после посреди посредине посредством превыше прежде против противу путем путём ради раньше сбоку сверх сверху свыше середи середь сзади силами снаружи снизу спереди среди средь супротив типа у ценой ценою";
-                                                                                  stoar(cst,predc_ro," ");
-    cst="благодаря вдогон вдогонку вопреки вослед вразрез вслед к ко навстречу наперекор наперерез наперехват подобно противно согласно сообразно соответственно соразмерно сродни";
-                                                                                  stoar(cst,predc_da," ");
-    cst="кончая над надо начиная по-над по-под";                                  stoar(cst,predc_tv," ");
-    cst="при";                                                                    stoar(cst,predc_pr," ");
-    cst="в во";                                                                   stoar(cst,predc_imvipr," ");
-    cst="на о об обо";                                                            stoar(cst,predc_vipr," ");
-    cst="за пред предо по-за под подо пред предо";                                stoar(cst,predc_vitv," ");
-    cst="меж между промеж промежду";                                              stoar(cst,predc_rotv," ");
-    cst="с со";                                                                   stoar(cst,predc_virotv," ");
-    cst="по";                                                                     stoar(cst,predc_vidapr," ");
-    # двойственное число
-    cst="два оба половина полтора три четверть четыре";                           stoar(cst,qd_duom," ");
-    cst="две обе половина полторы три четверть четыре";                           stoar(cst,qd_duoz," ");
-    # местоимения с точки зрения определения рода существительного
-    cst="ваш весь мой наш свой сей такой твой тот эдакий этот";                   stoar(cst,mstc_edmuim," ");
-    cst="вашего всего моего нашего своего сего такого твоего того эдакого этого"; stoar(cst,mstc_edmuro," ");
-    cst="вашему всему моему нашему своему сему такому твоему тому эдакому этому"; stoar(cst,mstc_edmuda," ");
-    cst="вашим всем моим нашим своим сим таким твоим тем эдаким этим";            stoar(cst,mstc_edmutv," ");
-    cst="вашем всём моём нашем своём сём таком твоём том эдаком этом";            stoar(cst,mstc_edmupr," ");
-
-    cst="ваше всё моё наше своё сё такое твоё то эдакое это";                     stoar(cst,mstc_edsrim," ");
-#   cst="вашего всего моего нашего своего сего такого твоего того эдакого этого"; stoar(cst,mstc_edsrro," ");
-#   cst="вашему всему моему нашему своему сему такому твоему тому эдакому этому"; stoar(cst,mstc_edsrda," ");
-#   cst="вашим всем моим нашим своим сим таким твоим тем эдаким этим";            stoar(cst,mstc_edsrtv," ");
-#   cst="вашем всём моём нашем своём сём таком твоём том эдаком этом";            stoar(cst,mstc_edsrpr," ");
-
-    cst="ваша вся моя наша своя сия та такая твоя эдакая эта";                    stoar(cst,mstc_edzeim," ");
-    cst="вашу всю мою нашу свою сию такую твою ту эдакую эту";                    stoar(cst,mstc_edzevi," ");
-    cst="вашей всей моей нашей своей сей такой твоей той эдакой этой";            stoar(cst,mstc_edzero," ");
-#   cst="вашей всей моей нашей своей сей такой твоей той эдакой этой";            stoar(cst,mstc_edzeda," ");
-#   cst="вашей всей моей нашей своей сей такой твоей той эдакой этой";            stoar(cst,mstc_edzetv," ");
-#   cst="вашей всей моей нашей своей сей такой твоей той эдакой этой";            stoar(cst,mstc_edzepr," ");
-
-    cst="ваши все мои наши свои си такие твои те эдакие эти";                     stoar(cst,mstc_mnim," ");
-    cst="ваших всех моих наших своих сих таких твоих тех эдаких этих";            stoar(cst,mstc_mnro," ");
-    cst="вашим всем моим нашим своим сим таким твоим тем эдаким этим";            stoar(cst,mstc_mnda," ");
-    cst="вашими всеми моими нашими своими сими такими твоими теми эдакими этими"; stoar(cst,mstc_mntv," ");
-    cst="ваших всех моих наших своих сих таких твоих тех эдаких этих";            stoar(cst,mstc_mnpr," ");
-
-    cst="его её их";                                                              stoar(cst,mstc_3e," ");
-    cst="да и или иль";                                                           stoar(cst,soyz_iili," ");
-
-    cst="б бы";                                                                   stoar(cst,qst_cnd," ");
-    cst="давайте давай пускай пусть";                                             stoar(cst,qst_po," ");
-    cst="не ни";                                                                  stoar(cst,qst_ne," ");
-    cst="даже ни ж же ведь уж уже";                                               stoar(cst,qst_usil," ");
-    cst="только лишь почти";                                                      stoar(cst,qst_lim," ");
-
-# массив для "все"
-    vse["все"];vse["Все"];vse["ВСЕ"];
-    vsyo["все"]="всё";vsyo["Все"]="Всё";vsyo["ВСЕ"]="ВСЁ";vsje["все"]="все́";vsje["Все"]="Все́";vsje["ВСЕ"]="ВСЕ́";
-    vsyos["всё"];vsyos["Всё"];vsyos["ВСЁ"];vsjes["все́"];vsjes["Все́"];vsjes["ВСЕ́"];
 
    dbg=dbgstat=""
 
  # Записать состояние словарных массивов
   if (gawk52 == 1) { writeall(classcache) };
-  cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_gl_add.gz " indb "dic_prl.gz " indb "dic_prq.gz " \
-         indb "dic_rest.gz " indb "dic_rest_add.gz " indb "dic_suw.gz " indb "dic_suw_add.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_an.gz " \
+# cmd = "md5sum " indb "classes.awk " indb "class_cst.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " \
+#        indb "dic_rest.gz " indb "dic_suw.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_an.gz " \
+#        indb "omoid_aus.gz " indb "omoid_part.gz " indb "omos_part.gz " indb "ist.gz " "> " inax "classes.md5"
+  cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " \
+         indb "dic_rest.gz " indb "dic_suw.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_an.gz " \
          indb "omoid_aus.gz " indb "omoid_part.gz " indb "omos_part.gz " indb "ist.gz " "> " inax "classes.md5"
   system(cmd); close(cmd)
    } #gnuawk
 
- # Коррекции - удаление омографов из массивов
-
-#delete g2_nena_e1["есть"];delete g2_nena_e2["есть"];delete g2_nena_e3["есть"];delete g2_nena_m1["есть"];delete g2_nena_m2["есть"];delete g2_nena_m3["есть"];delete qst["есть"];
-#delete gs_pebu_m3["выглядят"];
-#delete gn_nepo_ed["времени"];
-#delete gs_pepa_edze["дела"];
-#delete gs_pepo_ed["почти"];delete gs_pepo_ed["пришли"];delete gs_pepo_ed["отели"];
-#delete gn_pepo_ed["пять"];
-#delete gn_nepa_edsr["тускло"];
-#delete gs_pepa_edsr["дело"];
-#delete soyz["все-таки"]; delete qst["все-таки"];
-#delete dpn_pe_na["для"];
-#delete dpn_pn_na["хотя"];
-#delete gn_pepo_ed["три"];
-#delete swn_edsr_ne["надо"];
-#delete swn_edze_da["были"];delete swn_edze_pr["были"];delete swn_edze_ro["были"];delete swn_mn_im["были"];
-#delete swo_edmu_tv["им"];
-#delete swo_edmu_ro["его"];delete swo_edmu_ro["этого"];delete sw_edmu_ro["этого"];
-#delete swn_edsr_im["сто"];delete swn_edsr_vi["сто"];
-#delete swn_edmu_im["сорок"]
-#delete swn_edmu_im["тут"];delete swn_mn_ro["тут"];
-#delete swn_mn_im["или"];
-#delete swn_edsr_ne["но"]
+ # Коррекции - удаление омографов из массивов производятся выставлений 3-го поля в NOP.
 
 # for (k=1; k<=664; k++) { printf ("%s%s %s %s\n", "R", k, "=", DIC[k]); sumdic = sumdic + DIC[k] }; print sumdic;
 

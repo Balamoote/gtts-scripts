@@ -35,6 +35,8 @@ case $key in
                  $0 = rega[1] "Z" rega[2] rule rega[3] "Z" rule rega[4]
                  print $0 } else { print $0 };
             }' zamok.awk | awk -f beautify.awk > zamok.awk_ord; mv zamok.awk_ord zamok.awk;
+       awk -f beautify.awk class_cst.awk > class_cst.awk_ord; mv class_cst.awk_ord class_cst.awk;
+
         exit 1; ;;
 
     * ) exit 0; ;;
