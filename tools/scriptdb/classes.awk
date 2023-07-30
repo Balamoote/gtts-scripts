@@ -26,7 +26,7 @@ BEGIN {
    while ((cmd|getline) > 0) {
 
       if ($1~  "-"  ) { dichyph[$1] };
-      if ($3== "NOP") { continue };
+      if ($4== "NOP") { continue };
 
       if($2~ /_ед_жен_/ ){
        if ($2~ /_ед_жен_тв$/ && $1~ /[ео]ю(ся)?$/  ){
@@ -832,7 +832,7 @@ BEGIN {
    while ((cmd|getline) > 0) {
 
       if ($1~  "-"  ) { dichyph[$1] };
-      if ($3== "NOP") { continue };
+      if ($4== "NOP") { continue };
 
       if($2~  /^прл_ед_жен_/ ){
         if ($2~ /^прл_ед_жен_тв$/ && $1~ /[ео]ю$/   ){  pl_edze_tv        [$1]=$3; continue };
@@ -918,7 +918,7 @@ BEGIN {
    while ((cmd|getline) > 0) {
 
       if ($1~  "-"  ) { dichyph[$1] };
-      if ($3== "NOP") { continue };
+      if ($4== "NOP") { continue };
 
       if ($2~ /^сущ_неод_/ ) {
        if ($2~ /^сущ_неод_мн_/ ) {
@@ -1068,7 +1068,7 @@ BEGIN {
    while ((cmd|getline) > 0) {
 
       if ($1~  "-"  ) { dichyph[$1] };
-      if ($3== "NOP") { continue };
+      if ($4== "NOP") { continue };
 
       if($2~  /^гл_несов_непер_/ ){
 
@@ -1395,7 +1395,7 @@ BEGIN {
    while ((cmd|getline) > 0) {
 
     if ($1~  "-"  ) { dichyph[$1] };
-    if ($3== "NOP") { continue };
+    if ($4== "NOP") { continue };
 
     if($2~  /^нар/ ){
         if ($2~ /^нар_сравн$/                       ){  nr_srv            [$1]=$3; continue };
@@ -1586,7 +1586,7 @@ BEGIN {
    while ((cmd|getline) > 0) {
 
    if ($1~  "-"  ) { dichyph[$1] };
-   if ($3== "NOP") { continue };
+   if ($4== "NOP") { continue };
 
 #       if ($2~ /^gl_/ && $2~ /_мн/ && $2!~ /_пов/ && $2!~ /_воз/ ){ gc_mn[$1]=$3; continue };
 #       if ($2~ /^gl_/ && $2~ /_инф/                              ){ gc_in[$1]=$3; continue };

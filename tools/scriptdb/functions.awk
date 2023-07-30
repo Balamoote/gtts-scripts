@@ -133,6 +133,8 @@ function bb(n,m,wl,    k, el, rett)               # нахождение ВПЕ�
 function bba(n,m,wl,    k, el, rett)              # нахождение ВПЕРЁД в подстроке BF (базовая форма слова) заданных слов в базовой же форме (wl) для n -- частная функция
                 {bbn=rett="";if(n>m)n=m;for(j=m;j>=n;j--){if(rett){break};split(wordmark(j),itmz,"#");
                  for(k in itmz){if(itmz[k]~/^BF_/)el=gensub(/^BF_([^_]+)_$/,"\\1","g",itmz[k]);if(el in omarr[wl]){rett=1;bbn=j;break};};}; return rett }
+function getBF(n,file,    k, el, rett)               # выдать BF (базовая форма слова) для сканирования
+                {split(wordmark(n),itmz,"#");for(k in itmz){if(itmz[k]~/^BF_/) {el=gensub(/^BF_([^_]+)_$/,"\\1","g",itmz[k]); print el >> file };};}
 function type(n,wl,    k, el, rett)               # принадлежность слова в n к типу TY (тип/класс слова) -- частная функция
                 { el="_" gensub(" ","_|_","g",wl) "_";split(wordmark(n),itmz,"#");for(k in itmz){if(itmz[k]~"^TY"&&itmz[k]~el){rett=1;break}else{rett=0};}; return rett }
 function tf(n,m,wl,   j,k,el, rett)               # нахождение ВПЕРЁД в подстроке BF (базовая форма слова) заданных слов в базовой же форме (wl) для n -- частная функция
@@ -281,6 +283,7 @@ function glc_po(n,wl,     el,k,itmz,wd,rett) { if(wl=="") { wd = lc(n); if (wd i
 function mod_bz(n,        wd,rett) { if(!(wd))wd=lc(n); if (wd in md_bz)                                                                       {rett=1} else {rett=0}; return rett}
 function mod_ed(n,        wd,rett) { if(!(wd))wd=lc(n); if (wd in md_ed)                                                                       {rett=1} else {rett=0}; return rett}
 function mod_mn(n,        wd,rett) { if(!(wd))wd=lc(n); if (wd in md_mn)                                                                       {rett=1} else {rett=0}; return rett}
+function mod_any(n,       wd,rett) { if(!(wd))wd=lc(n); if (wd in md_bz||wd in md_ed||wd in md_mn)                                             {rett=1} else {rett=0}; return rett}
 
 # указательные местоимения
 function muk_edmuim(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in muc_edmuim)                                                                  {rett=1} else {rett=0}; return rett}
@@ -522,6 +525,24 @@ function prl_mntv(n,      wd,rett) { if(!(wd))wd=lc(n); if (wd in pl_mn_tv||wd i
 function prl_mnpr(n,      wd,rett) { if(!(wd))wd=lc(n); if (wd in pl_mn_ro||wd in pl_pv_mn_pr)                                                 {rett=1} else {rett=0}; return rett}
 function prl_pvedtv(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in pl_pv_edmu_tv||wd in pl_pv_edsr_tv||wd in pl_pv_edze_tv)                     {rett=1} else {rett=0}; return rett}
 function prl_pvmntv(n,    wd,rett) { if(!(wd))wd=lc(n); if (wd in pl_pv_mn_tv)                                                                 {rett=1} else {rett=0}; return rett}
+function prl_im(n,                                                                                                                             wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in pl_edmu_im||wd in pl_edsr_im||wd in pl_edze_im||wd in pl_pv_edmu_im||wd in pl_pv_edsr_im||wd in pl_pv_edze_im||
+			  wd in pl_mn_im||wd in pl_pv_mn_im)                                                                                   {rett=1} else {rett=0}; return rett}
+function prl_vi(n,                                                                                                                             wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in pl_edmu_im||wd in pl_edmu_ro||wd in pl_edsr_im||wd in pl_edze_vi||wd in pl_pv_edmu_im||wd in pl_pv_edmu_ro||
+                          wd in pl_pv_edsr_im||wd in pl_pv_edze_vi||wd in pl_mn_im||wd in pl_mn_ro||wd in pl_pv_mn_im||wd in pl_pv_mn_ro)      {rett=1} else {rett=0}; return rett}
+function prl_ro(n,                                                                                                                             wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in pl_edmu_ro||wd in pl_edsr_ro||wd in pl_edze_dr||wd in pl_pv_edmu_ro||wd in pl_pv_edsr_ro||wd in pl_pv_edze_dr||
+			  wd in pl_mn_ro||wd in pl_pv_mn_ro)                                                                                   {rett=1} else {rett=0}; return rett}
+function prl_da(n,                                                                                                                             wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in pl_edmu_da||wd in pl_edsr_da||wd in pl_edze_dr||wd in pl_pv_edmu_da||wd in pl_pv_edsr_da||wd in pl_pv_edze_dr||
+			  wd in pl_mn_da||wd in pl_pv_mn_da)                                                                                   {rett=1} else {rett=0}; return rett}
+function prl_tv(n,                                                                                                                             wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in pl_edmu_tv||wd in pl_edsr_tv||wd in pl_edze_tv||wd in pl_edze_dr||wd in pl_pv_edmu_tv||wd in pl_pv_edsr_tv||
+                          wd in pl_pv_edze_tv||wd in pl_pv_edze_dr||wd in pl_mn_tv||wd in pl_pv_mn_tv)                                         {rett=1} else {rett=0}; return rett}
+function prl_pr(n,                                                                                                                             wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in pl_edmu_pr||wd in pl_edsr_pr||wd in pl_edze_dr||wd in pl_pv_edmu_pr||wd in pl_pv_edsr_pr||wd in pl_pv_edze_dr||
+			  wd in pl_mn_ro||wd in pl_pv_mn_pr)                                                                                   {rett=1} else {rett=0}; return rett}
 function prl_ed(n,                                                                                                                             wd,rett) { if(!(wd))wd=lc(n);
                       if (wd in pl_edmu_im||wd in pl_edsr_im||wd in pl_edze_im||wd in pl_pv_edmu_im||wd in pl_pv_edsr_im||wd in pl_edmu_da||
                           wd in pl_edze_vi||wd in pl_pv_edze_vi||wd in pl_edmu_ro||wd in pl_pv_edmu_ro|| wd in pl_edsr_ro||wd in pl_edze_dr||
@@ -896,6 +917,173 @@ function prq_mnpr(n,                                                            
                           wd in pqn_ne_vz_na_mn_ro||wd in pqn_ne_vz_pa_mn_ro||wd in pqn_ne_na_mn_ro||wd in pqn_ne_pa_mn_ro||wd in pqn_pe_na_mn_ro||
                           wd in pqn_pe_pa_mn_ro||wd in pqn_pe_sd_na_mn_ro||wd in pqn_pe_sd_pa_mn_ro||wd in pqn_pn_na_mn_ro||wd in pqn_pn_pa_mn_ro||
                           wd in pqs_ne_vz_pa_mn_ro||wd in pqs_ne_pa_mn_ro||wd in pqs_pe_pa_mn_ro||wd in pqs_pe_sd_pa_mn_ro||wd in pqs_pn_pa_mn_ro) {rett=1} else {rett=0}; return rett}
+function prq_im(n,                                                                                                                           wd,rett) { if(!(wd))wd=lc(n); 
+                      if (wd in pq2_ne_vz_na_ed_mu_im||wd in pq2_ne_vz_pa_ed_mu_im||wd in pq2_ne_na_ed_mu_im||wd in pq2_ne_pa_ed_mu_im||
+                          wd in pq2_pe_na_ed_mu_im||wd in pq2_pe_pa_ed_mu_im||wd in pq2_pe_sd_na_ed_mu_im||wd in pq2_pe_sd_pa_ed_mu_im||
+                          wd in pq2_pn_na_ed_mu_im||wd in pq2_pn_pa_ed_mu_im||wd in pqn_ne_vz_na_ed_mu_im||wd in pqn_ne_vz_pa_ed_mu_im||
+                          wd in pqn_ne_na_ed_mu_im||wd in pqn_ne_pa_ed_mu_im||wd in pqn_pe_na_ed_mu_im||wd in pqn_pe_pa_ed_mu_im||
+                          wd in pqn_pe_sd_na_ed_mu_im||wd in pqn_pe_sd_pa_ed_mu_im||wd in pqn_pn_na_ed_mu_im||wd in pqn_pn_pa_ed_mu_im||
+                          wd in pqs_ne_vz_pa_ed_mu_im||wd in pqs_ne_pa_ed_mu_im||wd in pqs_pe_pa_ed_mu_im||wd in pqs_pe_sd_pa_ed_mu_im||
+                          wd in pqs_pn_pa_ed_mu_im||wd in pq2_ne_vz_na_ed_sr_im||wd in pq2_ne_vz_pa_ed_sr_im||wd in pq2_ne_na_ed_sr_im||
+                          wd in pq2_ne_pa_ed_sr_im||wd in pq2_pe_na_ed_sr_im||wd in pq2_pe_pa_ed_sr_im||wd in pq2_pe_sd_na_ed_sr_im||
+                          wd in pq2_pe_sd_pa_ed_sr_im||wd in pq2_pn_na_ed_sr_im||wd in pq2_pn_pa_ed_sr_im||wd in pqn_ne_vz_na_ed_sr_im||
+                          wd in pqn_ne_vz_pa_ed_sr_im||wd in pqn_ne_na_ed_sr_im||wd in pqn_ne_pa_ed_sr_im||wd in pqn_pe_na_ed_sr_im||
+                          wd in pqn_pe_pa_ed_sr_im||wd in pqn_pe_sd_na_ed_sr_im||wd in pqn_pe_sd_pa_ed_sr_im||wd in pqn_pn_na_ed_sr_im||
+                          wd in pqn_pn_pa_ed_sr_im||wd in pqs_ne_vz_pa_ed_sr_im||wd in pqs_ne_pa_ed_sr_im||wd in pqs_pe_pa_ed_sr_im||
+                          wd in pqs_pe_sd_pa_ed_sr_im||wd in pqs_pn_pa_ed_sr_im||wd in pq2_ne_vz_na_ed_ze_im||wd in pq2_ne_vz_pa_ed_ze_im||
+                          wd in pq2_ne_na_ed_ze_im||wd in pq2_ne_pa_ed_ze_im||wd in pq2_pe_na_ed_ze_im||wd in pq2_pe_pa_ed_ze_im||
+                          wd in pq2_pe_sd_na_ed_ze_im||wd in pq2_pe_sd_pa_ed_ze_im||wd in pq2_pn_na_ed_ze_im||wd in pq2_pn_pa_ed_ze_im||
+                          wd in pqn_ne_vz_na_ed_ze_im||wd in pqn_ne_vz_pa_ed_ze_im||wd in pqn_ne_na_ed_ze_im||wd in pqn_ne_pa_ed_ze_im||
+                          wd in pqn_pe_na_ed_ze_im||wd in pqn_pe_pa_ed_ze_im||wd in pqn_pe_sd_na_ed_ze_im||wd in pqn_pe_sd_pa_ed_ze_im||
+                          wd in pqn_pn_na_ed_ze_im||wd in pqn_pn_pa_ed_ze_im||wd in pqs_ne_vz_pa_ed_ze_im||wd in pqs_ne_pa_ed_ze_im||
+                          wd in pqs_pe_pa_ed_ze_im||wd in pqs_pe_sd_pa_ed_ze_im||wd in pqs_pn_pa_ed_ze_im||
+			  wd in pq2_ne_vz_na_mn_im||wd in pq2_ne_vz_pa_mn_im||wd in pq2_ne_na_mn_im||wd in pq2_ne_pa_mn_im||wd in pq2_pe_na_mn_im||
+                          wd in pq2_pe_pa_mn_im||wd in pq2_pe_sd_na_mn_im||wd in pq2_pe_sd_pa_mn_im||wd in pq2_pn_na_mn_im||wd in pq2_pn_pa_mn_im||
+                          wd in pqn_ne_vz_na_mn_im||wd in pqn_ne_vz_pa_mn_im||wd in pqn_ne_na_mn_im||wd in pqn_ne_pa_mn_im||wd in pqn_pe_na_mn_im||
+                          wd in pqn_pe_pa_mn_im||wd in pqn_pe_sd_na_mn_im||wd in pqn_pe_sd_pa_mn_im||wd in pqn_pn_na_mn_im||wd in pqn_pn_pa_mn_im||
+                          wd in pqs_ne_vz_pa_mn_im||wd in pqs_ne_pa_mn_im||wd in pqs_pe_pa_mn_im||wd in pqs_pe_sd_pa_mn_im||wd in pqs_pn_pa_mn_im){rett=1} else {rett=0}; return rett}
+function prq_vi(n,                                                                                                                           wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in pq2_ne_vz_na_ed_mu_im||wd in pq2_ne_vz_pa_ed_mu_im||wd in pq2_ne_na_ed_mu_im||wd in pq2_ne_pa_ed_mu_im||
+                          wd in pq2_pe_na_ed_mu_im||wd in pq2_pe_pa_ed_mu_im||wd in pq2_pe_sd_na_ed_mu_im||wd in pq2_pe_sd_pa_ed_mu_im||
+                          wd in pq2_pn_na_ed_mu_im||wd in pq2_pn_pa_ed_mu_im||wd in pqn_ne_vz_na_ed_mu_im||wd in pqn_ne_vz_pa_ed_mu_im||
+                          wd in pqn_ne_na_ed_mu_im||wd in pqn_ne_pa_ed_mu_im||wd in pqn_pe_na_ed_mu_im||wd in pqn_pe_pa_ed_mu_im||
+                          wd in pqn_pe_sd_na_ed_mu_im||wd in pqn_pe_sd_pa_ed_mu_im||wd in pqn_pn_na_ed_mu_im||wd in pqn_pn_pa_ed_mu_im||
+                          wd in pqs_ne_vz_pa_ed_mu_im||wd in pqs_ne_pa_ed_mu_im||wd in pqs_pe_pa_ed_mu_im||wd in pqs_pe_sd_pa_ed_mu_im||
+                          wd in pqs_pn_pa_ed_mu_im||wd in pq2_ne_vz_na_ed_mu_ro||wd in pq2_ne_vz_pa_ed_mu_ro||wd in pq2_ne_na_ed_mu_ro||
+                          wd in pq2_ne_pa_ed_mu_ro||wd in pq2_pe_na_ed_mu_ro||wd in pq2_pe_pa_ed_mu_ro||wd in pq2_pe_sd_na_ed_mu_ro||
+                          wd in pq2_pe_sd_pa_ed_mu_ro||wd in pq2_pn_na_ed_mu_ro||wd in pq2_pn_pa_ed_mu_ro||wd in pqn_ne_vz_na_ed_mu_ro||
+                          wd in pqn_ne_vz_pa_ed_mu_ro||wd in pqn_ne_na_ed_mu_ro||wd in pqn_ne_pa_ed_mu_ro||wd in pqn_pe_na_ed_mu_ro||
+                          wd in pqn_pe_pa_ed_mu_ro||wd in pqn_pe_sd_na_ed_mu_ro||wd in pqn_pe_sd_pa_ed_mu_ro||wd in pqn_pn_na_ed_mu_ro||
+                          wd in pqn_pn_pa_ed_mu_ro||wd in pqs_ne_vz_pa_ed_mu_ro||wd in pqs_ne_pa_ed_mu_ro||wd in pqs_pe_pa_ed_mu_ro||
+                          wd in pqs_pe_sd_pa_ed_mu_ro||wd in pqs_pn_pa_ed_mu_ro||wd in pq2_ne_vz_na_ed_sr_im||wd in pq2_ne_vz_pa_ed_sr_im||
+                          wd in pq2_ne_na_ed_sr_im||wd in pq2_ne_pa_ed_sr_im||wd in pq2_pe_na_ed_sr_im||wd in pq2_pe_pa_ed_sr_im||
+                          wd in pq2_pe_sd_na_ed_sr_im||wd in pq2_pe_sd_pa_ed_sr_im||wd in pq2_pn_na_ed_sr_im||wd in pq2_pn_pa_ed_sr_im||
+                          wd in pqn_ne_vz_na_ed_sr_im||wd in pqn_ne_vz_pa_ed_sr_im||wd in pqn_ne_na_ed_sr_im||wd in pqn_ne_pa_ed_sr_im||
+                          wd in pqn_pe_na_ed_sr_im||wd in pqn_pe_pa_ed_sr_im||wd in pqn_pe_sd_na_ed_sr_im||wd in pqn_pe_sd_pa_ed_sr_im||
+                          wd in pqn_pn_na_ed_sr_im||wd in pqn_pn_pa_ed_sr_im||wd in pqs_ne_vz_pa_ed_sr_im||wd in pqs_ne_pa_ed_sr_im||
+                          wd in pqs_pe_pa_ed_sr_im||wd in pqs_pe_sd_pa_ed_sr_im||wd in pqs_pn_pa_ed_sr_im||wd in pq2_ne_vz_na_ed_ze_vi||
+                          wd in pq2_ne_vz_pa_ed_ze_vi||wd in pq2_ne_na_ed_ze_vi||wd in pq2_ne_pa_ed_ze_vi||wd in pq2_pe_na_ed_ze_vi||
+                          wd in pq2_pe_pa_ed_ze_vi||wd in pq2_pe_sd_na_ed_ze_vi||wd in pq2_pe_sd_pa_ed_ze_vi||wd in pq2_pn_na_ed_ze_vi||
+                          wd in pq2_pn_pa_ed_ze_vi||wd in pqn_ne_vz_na_ed_ze_vi||wd in pqn_ne_vz_pa_ed_ze_vi||wd in pqn_ne_na_ed_ze_vi||
+                          wd in pqn_ne_pa_ed_ze_vi||wd in pqn_pe_na_ed_ze_vi||wd in pqn_pe_pa_ed_ze_vi||wd in pqn_pe_sd_na_ed_ze_vi||
+                          wd in pqn_pe_sd_pa_ed_ze_vi||wd in pqn_pn_na_ed_ze_vi||wd in pqn_pn_pa_ed_ze_vi||wd in pqs_ne_vz_pa_ed_ze_vi||
+                          wd in pqs_ne_pa_ed_ze_vi||wd in pqs_pe_pa_ed_ze_vi||wd in pqs_pe_sd_pa_ed_ze_vi||wd in pqs_pn_pa_ed_ze_vi||
+			  wd in pq2_ne_vz_na_mn_im||wd in pq2_ne_vz_pa_mn_im||wd in pq2_ne_na_mn_im||wd in pq2_ne_pa_mn_im||wd in pq2_pe_na_mn_im||
+                          wd in pq2_pe_pa_mn_im||wd in pq2_pe_sd_na_mn_im||wd in pq2_pe_sd_pa_mn_im||wd in pq2_pn_na_mn_im||wd in pq2_pn_pa_mn_im||
+                          wd in pqn_ne_vz_na_mn_im||wd in pqn_ne_vz_pa_mn_im||wd in pqn_ne_na_mn_im||wd in pqn_ne_pa_mn_im||wd in pqn_pe_na_mn_im||
+                          wd in pqn_pe_pa_mn_im||wd in pqn_pe_sd_na_mn_im||wd in pqn_pe_sd_pa_mn_im||wd in pqn_pn_na_mn_im||wd in pqn_pn_pa_mn_im||
+                          wd in pqs_ne_vz_pa_mn_im||wd in pqs_ne_pa_mn_im||wd in pqs_pe_pa_mn_im||wd in pqs_pe_sd_pa_mn_im||wd in pqs_pn_pa_mn_im||
+                          wd in pq2_ne_vz_na_mn_ro||wd in pq2_ne_vz_pa_mn_ro||wd in pq2_ne_na_mn_ro||wd in pq2_ne_pa_mn_ro||wd in pq2_pe_na_mn_ro||
+                          wd in pq2_pe_pa_mn_ro||wd in pq2_pe_sd_na_mn_ro||wd in pq2_pe_sd_pa_mn_ro||wd in pq2_pn_na_mn_ro||wd in pq2_pn_pa_mn_ro||
+                          wd in pqn_ne_vz_na_mn_ro||wd in pqn_ne_vz_pa_mn_ro||wd in pqn_ne_na_mn_ro||wd in pqn_ne_pa_mn_ro||wd in pqn_pe_na_mn_ro||
+                          wd in pqn_pe_pa_mn_ro||wd in pqn_pe_sd_na_mn_ro||wd in pqn_pe_sd_pa_mn_ro||wd in pqn_pn_na_mn_ro||wd in pqn_pn_pa_mn_ro||
+                          wd in pqs_ne_vz_pa_mn_ro||wd in pqs_ne_pa_mn_ro||wd in pqs_pe_pa_mn_ro||wd in pqs_pe_sd_pa_mn_ro||wd in pqs_pn_pa_mn_ro){rett=1} else {rett=0}; return rett}
+function prq_ro(n,                                                                                                                           wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in pq2_ne_vz_na_ed_mu_ro||wd in pq2_ne_vz_pa_ed_mu_ro||wd in pq2_ne_na_ed_mu_ro||wd in pq2_ne_pa_ed_mu_ro||
+                          wd in pq2_pe_na_ed_mu_ro||wd in pq2_pe_pa_ed_mu_ro||wd in pq2_pe_sd_na_ed_mu_ro||wd in pq2_pe_sd_pa_ed_mu_ro||
+                          wd in pq2_pn_na_ed_mu_ro||wd in pq2_pn_pa_ed_mu_ro||wd in pqn_ne_vz_na_ed_mu_ro||wd in pqn_ne_vz_pa_ed_mu_ro||
+                          wd in pqn_ne_na_ed_mu_ro||wd in pqn_ne_pa_ed_mu_ro||wd in pqn_pe_na_ed_mu_ro||wd in pqn_pe_pa_ed_mu_ro||
+                          wd in pqn_pe_sd_na_ed_mu_ro||wd in pqn_pe_sd_pa_ed_mu_ro||wd in pqn_pn_na_ed_mu_ro||wd in pqn_pn_pa_ed_mu_ro||
+                          wd in pqs_ne_vz_pa_ed_mu_ro||wd in pqs_ne_pa_ed_mu_ro||wd in pqs_pe_pa_ed_mu_ro||wd in pqs_pe_sd_pa_ed_mu_ro||
+                          wd in pqs_pn_pa_ed_mu_ro||wd in pq2_ne_vz_na_ed_sr_ro||wd in pq2_ne_vz_pa_ed_sr_ro||wd in pq2_ne_na_ed_sr_ro||
+                          wd in pq2_ne_pa_ed_sr_ro||wd in pq2_pe_na_ed_sr_ro||wd in pq2_pe_pa_ed_sr_ro||wd in pq2_pe_sd_na_ed_sr_ro||
+                          wd in pq2_pe_sd_pa_ed_sr_ro||wd in pq2_pn_na_ed_sr_ro||wd in pq2_pn_pa_ed_sr_ro||wd in pqn_ne_vz_na_ed_sr_ro||
+                          wd in pqn_ne_vz_pa_ed_sr_ro||wd in pqn_ne_na_ed_sr_ro||wd in pqn_ne_pa_ed_sr_ro||wd in pqn_pe_na_ed_sr_ro||
+                          wd in pqn_pe_pa_ed_sr_ro||wd in pqn_pe_sd_na_ed_sr_ro||wd in pqn_pe_sd_pa_ed_sr_ro||wd in pqn_pn_na_ed_sr_ro||
+                          wd in pqn_pn_pa_ed_sr_ro||wd in pqs_ne_vz_pa_ed_sr_ro||wd in pqs_ne_pa_ed_sr_ro||wd in pqs_pe_pa_ed_sr_ro||
+                          wd in pqs_pe_sd_pa_ed_sr_ro||wd in pqs_pn_pa_ed_sr_ro||wd in pq2_ne_vz_na_ed_ze_dr||wd in pq2_ne_vz_pa_ed_ze_dr||
+                          wd in pq2_ne_na_ed_ze_dr||wd in pq2_ne_pa_ed_ze_dr||wd in pq2_pe_na_ed_ze_dr||wd in pq2_pe_pa_ed_ze_dr||
+                          wd in pq2_pe_sd_na_ed_ze_dr||wd in pq2_pe_sd_pa_ed_ze_dr||wd in pq2_pn_na_ed_ze_dr||wd in pq2_pn_pa_ed_ze_dr||
+                          wd in pqn_ne_vz_na_ed_ze_dr||wd in pqn_ne_vz_pa_ed_ze_dr||wd in pqn_ne_na_ed_ze_dr||wd in pqn_ne_pa_ed_ze_dr||
+                          wd in pqn_pe_na_ed_ze_dr||wd in pqn_pe_pa_ed_ze_dr||wd in pqn_pe_sd_na_ed_ze_dr||wd in pqn_pe_sd_pa_ed_ze_dr||
+                          wd in pqn_pn_na_ed_ze_dr||wd in pqn_pn_pa_ed_ze_dr||wd in pqs_ne_vz_pa_ed_ze_dr||wd in pqs_ne_pa_ed_ze_dr||
+                          wd in pqs_pe_pa_ed_ze_dr||wd in pqs_pe_sd_pa_ed_ze_dr||wd in pqs_pn_pa_ed_ze_dr||
+			  wd in pq2_ne_vz_na_mn_ro||wd in pq2_ne_vz_pa_mn_ro||wd in pq2_ne_na_mn_ro||wd in pq2_ne_pa_mn_ro||wd in pq2_pe_na_mn_ro||
+                          wd in pq2_pe_pa_mn_ro||wd in pq2_pe_sd_na_mn_ro||wd in pq2_pe_sd_pa_mn_ro||wd in pq2_pn_na_mn_ro||wd in pq2_pn_pa_mn_ro||
+                          wd in pqn_ne_vz_na_mn_ro||wd in pqn_ne_vz_pa_mn_ro||wd in pqn_ne_na_mn_ro||wd in pqn_ne_pa_mn_ro||wd in pqn_pe_na_mn_ro||
+                          wd in pqn_pe_pa_mn_ro||wd in pqn_pe_sd_na_mn_ro||wd in pqn_pe_sd_pa_mn_ro||wd in pqn_pn_na_mn_ro||wd in pqn_pn_pa_mn_ro||
+                          wd in pqs_ne_vz_pa_mn_ro||wd in pqs_ne_pa_mn_ro||wd in pqs_pe_pa_mn_ro||wd in pqs_pe_sd_pa_mn_ro||wd in pqs_pn_pa_mn_ro){rett=1} else {rett=0}; return rett}
+function prq_da(n,                                                                                                                           wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in pq2_ne_vz_na_ed_mu_da||wd in pq2_ne_vz_pa_ed_mu_da||wd in pq2_ne_na_ed_mu_da||wd in pq2_ne_pa_ed_mu_da||
+                          wd in pq2_pe_na_ed_mu_da||wd in pq2_pe_pa_ed_mu_da||wd in pq2_pe_sd_na_ed_mu_da||wd in pq2_pe_sd_pa_ed_mu_da||
+                          wd in pq2_pn_na_ed_mu_da||wd in pq2_pn_pa_ed_mu_da||wd in pqn_ne_vz_na_ed_mu_da||wd in pqn_ne_vz_pa_ed_mu_da||
+                          wd in pqn_ne_na_ed_mu_da||wd in pqn_ne_pa_ed_mu_da||wd in pqn_pe_na_ed_mu_da||wd in pqn_pe_pa_ed_mu_da||
+                          wd in pqn_pe_sd_na_ed_mu_da||wd in pqn_pe_sd_pa_ed_mu_da||wd in pqn_pn_na_ed_mu_da||wd in pqn_pn_pa_ed_mu_da||
+                          wd in pqs_ne_vz_pa_ed_mu_da||wd in pqs_ne_pa_ed_mu_da||wd in pqs_pe_pa_ed_mu_da||wd in pqs_pe_sd_pa_ed_mu_da||
+                          wd in pqs_pn_pa_ed_mu_da||wd in pq2_ne_vz_na_ed_sr_da||wd in pq2_ne_vz_pa_ed_sr_da||wd in pq2_ne_na_ed_sr_da||
+                          wd in pq2_ne_pa_ed_sr_da||wd in pq2_pe_na_ed_sr_da||wd in pq2_pe_pa_ed_sr_da||wd in pq2_pe_sd_na_ed_sr_da||
+                          wd in pq2_pe_sd_pa_ed_sr_da||wd in pq2_pn_na_ed_sr_da||wd in pq2_pn_pa_ed_sr_da||wd in pqn_ne_vz_na_ed_sr_da||
+                          wd in pqn_ne_vz_pa_ed_sr_da||wd in pqn_ne_na_ed_sr_da||wd in pqn_ne_pa_ed_sr_da||wd in pqn_pe_na_ed_sr_da||
+                          wd in pqn_pe_pa_ed_sr_da||wd in pqn_pe_sd_na_ed_sr_da||wd in pqn_pe_sd_pa_ed_sr_da||wd in pqn_pn_na_ed_sr_da||
+                          wd in pqn_pn_pa_ed_sr_da||wd in pqs_ne_vz_pa_ed_sr_da||wd in pqs_ne_pa_ed_sr_da||wd in pqs_pe_pa_ed_sr_da||
+                          wd in pqs_pe_sd_pa_ed_sr_da||wd in pqs_pn_pa_ed_sr_da||wd in pq2_ne_vz_na_ed_ze_dr||wd in pq2_ne_vz_pa_ed_ze_dr||
+                          wd in pq2_ne_na_ed_ze_dr||wd in pq2_ne_pa_ed_ze_dr||wd in pq2_pe_na_ed_ze_dr||wd in pq2_pe_pa_ed_ze_dr||
+                          wd in pq2_pe_sd_na_ed_ze_dr||wd in pq2_pe_sd_pa_ed_ze_dr||wd in pq2_pn_na_ed_ze_dr||wd in pq2_pn_pa_ed_ze_dr||
+                          wd in pqn_ne_vz_na_ed_ze_dr||wd in pqn_ne_vz_pa_ed_ze_dr||wd in pqn_ne_na_ed_ze_dr||wd in pqn_ne_pa_ed_ze_dr||
+                          wd in pqn_pe_na_ed_ze_dr||wd in pqn_pe_pa_ed_ze_dr||wd in pqn_pe_sd_na_ed_ze_dr||wd in pqn_pe_sd_pa_ed_ze_dr||
+                          wd in pqn_pn_na_ed_ze_dr||wd in pqn_pn_pa_ed_ze_dr||wd in pqs_ne_vz_pa_ed_ze_dr||wd in pqs_ne_pa_ed_ze_dr||
+                          wd in pqs_pe_pa_ed_ze_dr||wd in pqs_pe_sd_pa_ed_ze_dr||wd in pqs_pn_pa_ed_ze_dr||
+			  wd in pq2_ne_vz_na_mn_da||wd in pq2_ne_vz_pa_mn_da||wd in pq2_ne_na_mn_da||wd in pq2_ne_pa_mn_da||wd in pq2_pe_na_mn_da||
+                          wd in pq2_pe_pa_mn_da||wd in pq2_pe_sd_na_mn_da||wd in pq2_pe_sd_pa_mn_da||wd in pq2_pn_na_mn_da||wd in pq2_pn_pa_mn_da||
+                          wd in pqn_ne_vz_na_mn_da||wd in pqn_ne_vz_pa_mn_da||wd in pqn_ne_na_mn_da||wd in pqn_ne_pa_mn_da||wd in pqn_pe_na_mn_da||
+                          wd in pqn_pe_pa_mn_da||wd in pqn_pe_sd_na_mn_da||wd in pqn_pe_sd_pa_mn_da||wd in pqn_pn_na_mn_da||wd in pqn_pn_pa_mn_da||
+                          wd in pqs_ne_vz_pa_mn_da||wd in pqs_ne_pa_mn_da||wd in pqs_pe_pa_mn_da||wd in pqs_pe_sd_pa_mn_da||wd in pqs_pn_pa_mn_da){rett=1} else {rett=0}; return rett}
+function prq_tv(n,                                                                                                                           wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in pq2_ne_vz_na_ed_mu_tv||wd in pq2_ne_vz_pa_ed_mu_tv||wd in pq2_ne_na_ed_mu_tv||wd in pq2_ne_pa_ed_mu_tv||
+                          wd in pq2_pe_na_ed_mu_tv||wd in pq2_pe_pa_ed_mu_tv||wd in pq2_pe_sd_na_ed_mu_tv||wd in pq2_pe_sd_pa_ed_mu_tv||
+                          wd in pq2_pn_na_ed_mu_tv||wd in pq2_pn_pa_ed_mu_tv||wd in pqn_ne_vz_na_ed_mu_tv||wd in pqn_ne_vz_pa_ed_mu_tv||
+                          wd in pqn_ne_na_ed_mu_tv||wd in pqn_ne_pa_ed_mu_tv||wd in pqn_pe_na_ed_mu_tv||wd in pqn_pe_pa_ed_mu_tv||
+                          wd in pqn_pe_sd_na_ed_mu_tv||wd in pqn_pe_sd_pa_ed_mu_tv||wd in pqn_pn_na_ed_mu_tv||wd in pqn_pn_pa_ed_mu_tv||
+                          wd in pqs_ne_vz_pa_ed_mu_tv||wd in pqs_ne_pa_ed_mu_tv||wd in pqs_pe_pa_ed_mu_tv||wd in pqs_pe_sd_pa_ed_mu_tv||
+                          wd in pqs_pn_pa_ed_mu_tv||wd in pq2_ne_vz_na_ed_sr_tv||wd in pq2_ne_vz_pa_ed_sr_tv||wd in pq2_ne_na_ed_sr_tv||
+                          wd in pq2_ne_pa_ed_sr_tv||wd in pq2_pe_na_ed_sr_tv||wd in pq2_pe_pa_ed_sr_tv||wd in pq2_pe_sd_na_ed_sr_tv||
+                          wd in pq2_pe_sd_pa_ed_sr_tv||wd in pq2_pn_na_ed_sr_tv||wd in pq2_pn_pa_ed_sr_tv||wd in pqn_ne_vz_na_ed_sr_tv||
+                          wd in pqn_ne_vz_pa_ed_sr_tv||wd in pqn_ne_na_ed_sr_tv||wd in pqn_ne_pa_ed_sr_tv||wd in pqn_pe_na_ed_sr_tv||
+                          wd in pqn_pe_pa_ed_sr_tv||wd in pqn_pe_sd_na_ed_sr_tv||wd in pqn_pe_sd_pa_ed_sr_tv||wd in pqn_pn_na_ed_sr_tv||
+                          wd in pqn_pn_pa_ed_sr_tv||wd in pqs_ne_vz_pa_ed_sr_tv||wd in pqs_ne_pa_ed_sr_tv||wd in pqs_pe_pa_ed_sr_tv||
+                          wd in pqs_pe_sd_pa_ed_sr_tv||wd in pqs_pn_pa_ed_sr_tv||wd in pq2_ne_vz_na_ed_ze_tv||wd in pq2_ne_vz_pa_ed_ze_tv||
+                          wd in pq2_ne_na_ed_ze_tv||wd in pq2_ne_pa_ed_ze_tv||wd in pq2_pe_na_ed_ze_tv||wd in pq2_pe_pa_ed_ze_tv||
+                          wd in pq2_pe_sd_na_ed_ze_tv||wd in pq2_pe_sd_pa_ed_ze_tv||wd in pq2_pn_na_ed_ze_tv||wd in pq2_pn_pa_ed_ze_tv||
+                          wd in pqn_ne_vz_na_ed_ze_tv||wd in pqn_ne_vz_pa_ed_ze_tv||wd in pqn_ne_na_ed_ze_tv||wd in pqn_ne_pa_ed_ze_tv||
+                          wd in pqn_pe_na_ed_ze_tv||wd in pqn_pe_pa_ed_ze_tv||wd in pqn_pe_sd_na_ed_ze_tv||wd in pqn_pe_sd_pa_ed_ze_tv||
+                          wd in pqn_pn_na_ed_ze_tv||wd in pqn_pn_pa_ed_ze_tv||wd in pqs_ne_vz_pa_ed_ze_tv||wd in pqs_ne_pa_ed_ze_tv||
+                          wd in pqs_pe_pa_ed_ze_tv||wd in pqs_pe_sd_pa_ed_ze_tv||wd in pqs_pn_pa_ed_ze_tv||wd in pq2_ne_vz_na_ed_ze_dr||
+                          wd in pq2_ne_vz_pa_ed_ze_dr||wd in pq2_ne_na_ed_ze_dr||wd in pq2_ne_pa_ed_ze_dr||wd in pq2_pe_na_ed_ze_dr||
+                          wd in pq2_pe_pa_ed_ze_dr||wd in pq2_pe_sd_na_ed_ze_dr||wd in pq2_pe_sd_pa_ed_ze_dr||wd in pq2_pn_na_ed_ze_dr||
+                          wd in pq2_pn_pa_ed_ze_dr||wd in pqn_ne_vz_na_ed_ze_dr||wd in pqn_ne_vz_pa_ed_ze_dr||wd in pqn_ne_na_ed_ze_dr||
+                          wd in pqn_ne_pa_ed_ze_dr||wd in pqn_pe_na_ed_ze_dr||wd in pqn_pe_pa_ed_ze_dr||wd in pqn_pe_sd_na_ed_ze_dr||
+                          wd in pqn_pe_sd_pa_ed_ze_dr||wd in pqn_pn_na_ed_ze_dr||wd in pqn_pn_pa_ed_ze_dr||wd in pqs_ne_vz_pa_ed_ze_dr||
+                          wd in pqs_ne_pa_ed_ze_dr||wd in pqs_pe_pa_ed_ze_dr||wd in pqs_pe_sd_pa_ed_ze_dr||wd in pqs_pn_pa_ed_ze_dr||
+			  wd in pq2_ne_vz_na_mn_tv||wd in pq2_ne_vz_pa_mn_tv||wd in pq2_ne_na_mn_tv||wd in pq2_ne_pa_mn_tv||wd in pq2_pe_na_mn_tv||
+                          wd in pq2_pe_pa_mn_tv||wd in pq2_pe_sd_na_mn_tv||wd in pq2_pe_sd_pa_mn_tv||wd in pq2_pn_na_mn_tv||wd in pq2_pn_pa_mn_tv||
+                          wd in pqn_ne_vz_na_mn_tv||wd in pqn_ne_vz_pa_mn_tv||wd in pqn_ne_na_mn_tv||wd in pqn_ne_pa_mn_tv||wd in pqn_pe_na_mn_tv||
+                          wd in pqn_pe_pa_mn_tv||wd in pqn_pe_sd_na_mn_tv||wd in pqn_pe_sd_pa_mn_tv||wd in pqn_pn_na_mn_tv||wd in pqn_pn_pa_mn_tv||
+                          wd in pqs_ne_vz_pa_mn_tv||wd in pqs_ne_pa_mn_tv||wd in pqs_pe_pa_mn_tv||wd in pqs_pe_sd_pa_mn_tv||wd in pqs_pn_pa_mn_tv){rett=1} else {rett=0}; return rett}
+function prq_pr(n,                                                                                                                           wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in pq2_ne_vz_na_ed_mu_pr||wd in pq2_ne_vz_pa_ed_mu_pr||wd in pq2_ne_na_ed_mu_pr||wd in pq2_ne_pa_ed_mu_pr||
+                          wd in pq2_pe_na_ed_mu_pr||wd in pq2_pe_pa_ed_mu_pr||wd in pq2_pe_sd_na_ed_mu_pr||wd in pq2_pe_sd_pa_ed_mu_pr||
+                          wd in pq2_pn_na_ed_mu_pr||wd in pq2_pn_pa_ed_mu_pr||wd in pqn_ne_vz_na_ed_mu_pr||wd in pqn_ne_vz_pa_ed_mu_pr||
+                          wd in pqn_ne_na_ed_mu_pr||wd in pqn_ne_pa_ed_mu_pr||wd in pqn_pe_na_ed_mu_pr||wd in pqn_pe_pa_ed_mu_pr||
+                          wd in pqn_pe_sd_na_ed_mu_pr||wd in pqn_pe_sd_pa_ed_mu_pr||wd in pqn_pn_na_ed_mu_pr||wd in pqn_pn_pa_ed_mu_pr||
+                          wd in pqs_ne_vz_pa_ed_mu_pr||wd in pqs_ne_pa_ed_mu_pr||wd in pqs_pe_pa_ed_mu_pr||wd in pqs_pe_sd_pa_ed_mu_pr||
+                          wd in pqs_pn_pa_ed_mu_pr||wd in pq2_ne_vz_na_ed_sr_pr||wd in pq2_ne_vz_pa_ed_sr_pr||wd in pq2_ne_na_ed_sr_pr||
+                          wd in pq2_ne_pa_ed_sr_pr||wd in pq2_pe_na_ed_sr_pr||wd in pq2_pe_pa_ed_sr_pr||wd in pq2_pe_sd_na_ed_sr_pr||
+                          wd in pq2_pe_sd_pa_ed_sr_pr||wd in pq2_pn_na_ed_sr_pr||wd in pq2_pn_pa_ed_sr_pr||wd in pqn_ne_vz_na_ed_sr_pr||
+                          wd in pqn_ne_vz_pa_ed_sr_pr||wd in pqn_ne_na_ed_sr_pr||wd in pqn_ne_pa_ed_sr_pr||wd in pqn_pe_na_ed_sr_pr||
+                          wd in pqn_pe_pa_ed_sr_pr||wd in pqn_pe_sd_na_ed_sr_pr||wd in pqn_pe_sd_pa_ed_sr_pr||wd in pqn_pn_na_ed_sr_pr||  
+                          wd in pqn_pn_pa_ed_sr_pr||wd in pqs_ne_vz_pa_ed_sr_pr||wd in pqs_ne_pa_ed_sr_pr||wd in pqs_pe_pa_ed_sr_pr||
+                          wd in pqs_pe_sd_pa_ed_sr_pr||wd in pqs_pn_pa_ed_sr_pr||wd in pq2_ne_vz_na_ed_ze_dr||wd in pq2_ne_vz_pa_ed_ze_dr||
+                          wd in pq2_ne_na_ed_ze_dr||wd in pq2_ne_pa_ed_ze_dr||wd in pq2_pe_na_ed_ze_dr||wd in pq2_pe_pa_ed_ze_dr||
+                          wd in pq2_pe_sd_na_ed_ze_dr||wd in pq2_pe_sd_pa_ed_ze_dr||wd in pq2_pn_na_ed_ze_dr||wd in pq2_pn_pa_ed_ze_dr||
+                          wd in pqn_ne_vz_na_ed_ze_dr||wd in pqn_ne_vz_pa_ed_ze_dr||wd in pqn_ne_na_ed_ze_dr||wd in pqn_ne_pa_ed_ze_dr||
+                          wd in pqn_pe_na_ed_ze_dr||wd in pqn_pe_pa_ed_ze_dr||wd in pqn_pe_sd_na_ed_ze_dr||wd in pqn_pe_sd_pa_ed_ze_dr||
+                          wd in pqn_pn_na_ed_ze_dr||wd in pqn_pn_pa_ed_ze_dr||wd in pqs_ne_vz_pa_ed_ze_dr||wd in pqs_ne_pa_ed_ze_dr||
+                          wd in pqs_pe_pa_ed_ze_dr||wd in pqs_pe_sd_pa_ed_ze_dr||wd in pqs_pn_pa_ed_ze_dr||
+			  wd in pq2_ne_vz_na_mn_ro||wd in pq2_ne_vz_pa_mn_ro||wd in pq2_ne_na_mn_ro||wd in pq2_ne_pa_mn_ro||wd in pq2_pe_na_mn_ro||
+                          wd in pq2_pe_pa_mn_ro||wd in pq2_pe_sd_na_mn_ro||wd in pq2_pe_sd_pa_mn_ro||wd in pq2_pn_na_mn_ro||wd in pq2_pn_pa_mn_ro||
+                          wd in pqn_ne_vz_na_mn_ro||wd in pqn_ne_vz_pa_mn_ro||wd in pqn_ne_na_mn_ro||wd in pqn_ne_pa_mn_ro||wd in pqn_pe_na_mn_ro||
+                          wd in pqn_pe_pa_mn_ro||wd in pqn_pe_sd_na_mn_ro||wd in pqn_pe_sd_pa_mn_ro||wd in pqn_pn_na_mn_ro||wd in pqn_pn_pa_mn_ro||
+                          wd in pqs_ne_vz_pa_mn_ro||wd in pqs_ne_pa_mn_ro||wd in pqs_pe_pa_mn_ro||wd in pqs_pe_sd_pa_mn_ro||wd in pqs_pn_pa_mn_ro){rett=1} else {rett=0}; return rett}
 function prq_ed(n,                                                                                                                             wd,rett) { if(!(wd))wd=lc(n);
                       if (wd in pq2_ne_vz_na_ed_mu_im||wd in pq2_ne_vz_pa_ed_mu_im||wd in pq2_ne_na_ed_mu_im||wd in pq2_ne_pa_ed_mu_im||
                           wd in pq2_pe_na_ed_mu_im||wd in pq2_pe_pa_ed_mu_im||wd in pq2_pe_sd_na_ed_mu_im||wd in pq2_pe_sd_pa_ed_mu_im||
@@ -1437,6 +1625,30 @@ function suw_mnro(n,      wd,rett) { if(!(wd))wd=lc(n); if (wd in sw_mn_ro||wd i
 function suw_mnda(n,      wd,rett) { if(!(wd))wd=lc(n); if (wd in sw_mn_da||wd in swn_mn_da||wd in swo_mn_da)                                   {rett=1} else {rett=0}; return rett}
 function suw_mntv(n,      wd,rett) { if(!(wd))wd=lc(n); if (wd in sw_mn_tv||wd in swn_mn_tv||wd in swo_mn_tv)                                   {rett=1} else {rett=0}; return rett}
 function suw_mnpr(n,      wd,rett) { if(!(wd))wd=lc(n); if (wd in sw_mn_pr||wd in swn_mn_pr||wd in swo_mn_pr)                                   {rett=1} else {rett=0}; return rett}
+function suw_im(n,                                                                                                                              wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in sw_edmu_im||wd in sw_edob_im||wd in sw_edsr_im||wd in sw_edze_im||wd in swn_edmu_im||wd in swn_edob_im||
+                          wd in swn_edsr_im||wd in swn_edze_im||wd in swo_edmu_im||wd in swo_edob_im||wd in swo_edsr_im||wd in swo_edze_im||
+			  wd in swn_mn_im||wd in swo_mn_im||wd in sw_mn_im)                                                                     {rett=1} else {rett=0}; return rett}
+function suw_vi(n,                                                                                                                              wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in sw_edmu_vi||wd in sw_edob_vi||wd in sw_edsr_vi||wd in sw_edze_vi||wd in swn_edmu_im||wd in swn_edob_vi||
+                          wd in swn_edsr_vi||wd in swn_edze_vi||wd in swo_edmu_ro||wd in swo_edob_vi||wd in swo_edsr_vi||wd in swo_edze_vi||
+			  wd in sw_mn_vi||wd in swn_mn_im||wd in swo_mn_ro)                                                                     {rett=1} else {rett=0}; return rett}
+function suw_ro(n,                                                                                                                              wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in sw_edmu_ro||wd in sw_edob_ro||wd in sw_edsr_ro||wd in sw_edze_ro||wd in swn_edmu_ro||wd in swn_edob_ro||
+                          wd in swn_edsr_ro||wd in swn_edze_ro||wd in swo_edmu_ro||wd in swo_edob_ro||wd in swo_edsr_ro||wd in swo_edze_ro||
+			  wd in sw_mn_ro||wd in swn_mn_ro||wd in swo_mn_ro)                                                                     {rett=1} else {rett=0}; return rett}
+function suw_da(n,                                                                                                                              wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in sw_edmu_da||wd in sw_edob_da||wd in sw_edsr_da||wd in sw_edze_da||wd in swn_edmu_da||wd in swn_edob_da||
+                          wd in swn_edsr_da||wd in swn_edze_da||wd in swo_edmu_da||wd in swo_edob_da||wd in swo_edsr_da||wd in swo_edze_da||
+			  wd in sw_mn_da||wd in swn_mn_da||wd in swo_mn_da)                                                                     {rett=1} else {rett=0}; return rett}
+function suw_tv(n,                                                                                                                              wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in sw_edmu_tv||wd in sw_edob_tv||wd in sw_edsr_tv||wd in sw_edze_tv||wd in swn_edmu_tv||wd in swn_edob_tv||
+                          wd in swn_edsr_tv||wd in swn_edze_tv||wd in swo_edmu_tv||wd in swo_edob_tv||wd in swo_edsr_tv||wd in swo_edze_tv||
+			  wd in sw_mn_tv||wd in swn_mn_tv||wd in swo_mn_tv)                                                                     {rett=1} else {rett=0}; return rett}
+function suw_pr(n,                                                                                                                              wd,rett) { if(!(wd))wd=lc(n);
+                      if (wd in sw_edmu_pr||wd in sw_edob_pr||wd in sw_edsr_pr||wd in sw_edze_pr||wd in swn_edmu_pr||wd in swn_edob_pr||
+                          wd in swn_edsr_pr||wd in swn_edze_pr||wd in swo_edmu_pr||wd in swo_edob_pr||wd in swo_edsr_pr||wd in swo_edze_pr||
+			  wd in sw_mn_pr||wd in swn_mn_pr||wd in swo_mn_pr)                                                                     {rett=1} else {rett=0}; return rett}
 function suw_oded(n,                                                                                                                            wd,rett) { if(!(wd))wd=lc(n);
                       if (wd in swo_edmu_da||wd in swo_edmu_im||wd in swo_edmu_ne||wd in swo_edmu_pr||wd in swo_edmu_ro||wd in swo_edmu_tv||
                           wd in swo_edmu_zv||wd in swo_edob_da||wd in swo_edob_im||wd in swo_edob_ne||wd in swo_edob_pr||wd in swo_edob_ro||

@@ -87,7 +87,7 @@ for(wrd in omap["x1002"]){omakevars(x1002,"x1002");for(y=1;y<=wln;y++)         #
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
 
  if(iwrd=="избегаем") {
-   if ( q(1,"suw_edro suw_mnro") && sc(0) )
+   if ( q(1,"suw_ro") && sc(0) )
    { l[i]=omo1; R[4]++; if(dbg){print "R4"}; continue };
  };
 
@@ -498,7 +498,7 @@ for(wrd in omap["x1035"]){omakevars(x1035,"x1035");for(y=1;y<=wln;y++)          
  if ( base(-1,cst) && s(-1) )
  { l[i]=omo2; R[64]++; if(dbg){print "R64"}; continue };
  if ( wc(-2,cst) &&
-       q(-1,"mest_ro prl_edro prl_mnro") && s(-2,-1) )
+       q(-1,"mest_ro prl_ro") && s(-2,-1) )
  { l[i]=omo2; R[65]++; if(dbg){print "R65"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
@@ -519,7 +519,7 @@ for(wrd in omap["x1036"]){omakevars(x1036,"x1036");for(y=1;y<=wln;y++)          
  { l[i]=omo1; R[68]++; if(dbg){print "R68"}; continue };
  #
  if ( pre_ro(1) &&
-           q(2,"suw_edro suw_mnro") && s(0,1) )
+           q(2,"suw_ro") && s(0,1) )
  { l[i]=omo2; R[69]++; if(dbg){print "R69"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
@@ -761,7 +761,7 @@ for(wrd in omap["x1052"]){omakevars(x1052,"x1052");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x1053"]){omakevars(x1053,"x1053");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( q(1,"suw_edro suw_mnro") && s(0) )
+ if ( q(1,"suw_ro") && s(0) )
  { l[i]=omo1; R[107]++; if(dbg){print "R107"}; continue };
  if ( q(-1,"pre_ro preph_ro") && s(-1) )
  { l[i]=omo2; R[108]++; if(dbg){print "R108"}; continue };
@@ -803,9 +803,9 @@ for(wrd in omap["x1056"]){omakevars(x1056,"x1056");for(y=1;y<=wln;y++)         #
  cst="внутренний душевный звенящий истинный мучительный настоящий невыносимый немыслимый нестерпимый острый подлинный сильный страшный сущий ужасающий";
  if ( base(-1,cst) && s(-1) )
  { l[i]=omo2; R[113]++; if(dbg){print "R113"}; continue };
- if ( q(1,"mest_da suw_edda suw_mnda") &&
+ if ( q(1,"mest_da suw_da") &&
       w(2,"с") &&
-      q(3,"mest_tv suw_edtv suw_mntv") && s(0,2) )
+      q(3,"mest_tv suw_tv") && s(0,2) )
  { l[i]=omo2; R[114]++; if(dbg){print "R114"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -843,7 +843,7 @@ for(wrd in omap["x1058"]){omakevars(x1058,"x1058");for(y=1;y<=wln;y++)         #
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
  cst="вонь перегар смрад тепло холод";
- if ( q(1,"suw_edtv suw_mntv") && base(1,cst) && s(0) )
+ if ( q(1,"suw_tv") && base(1,cst) && s(0) )
  { l[i]=omo1; R[121]++; if(dbg){print "R121"}; continue };
 
 #cst="";
@@ -858,7 +858,7 @@ for(wrd in omap["x1059"]){omakevars(x1059,"x1059");for(y=1;y<=wln;y++)         #
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
 #cst="вонь перегар смрад тепло холод";
-#if ( q(1,"suw_edtv suw_mntv") && base(1,cst) && s(-1) )
+#if ( q(1,"suw_tv") && base(1,cst) && s(-1) )
 #{ l[i]=omo1; R[123]++; if(dbg){print "R123"}; continue };
 
 #cst="";
@@ -873,7 +873,7 @@ for(wrd in omap["x1060"]){omakevars(x1060,"x1060");for(y=1;y<=wln;y++)         #
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
 #cst="вонь перегар смрад тепло холод";
-#if ( q(1,"suw_edtv suw_mntv") && base(1,cst) && s(-1) )
+#if ( q(1,"suw_tv") && base(1,cst) && s(-1) )
 #{ l[i]=omo1; R[125]++; if(dbg){print "R125"}; continue };
 
 #cst="";
@@ -1140,7 +1140,7 @@ for(wrd in omap["x1074"]){omakevars(x1074,"x1074");for(y=1;y<=wln;y++)         #
  if ( q(-2,"gl_poed gl_pomn") &&
       w(-1,"как что") && s(-2,-1) )
  { l[i]=omo2; R[172]++; if(dbg){print "R172"}; continue };
- if ( q(-2,"mest_da suw_edda suw_mnda") &&
+ if ( q(-2,"mest_da suw_da") &&
       q(-1,"gl_in") && s(-2,-1) && p(1) )
  { l[i]=omo2; R[173]++; if(dbg){print "R173"}; continue };
 
@@ -1173,13 +1173,13 @@ for(wrd in omap["x1075"]){omakevars(x1075,"x1075");for(y=1;y<=wln;y++)         #
  if ( qxs(-1,"так","что вот") )
  { l[i]=omo2; R[181]++; if(dbg){print "R181"}; continue };
  if ( w(-2,"а да") &&
-      w(-1,"вы") && s(-2,-1) && Q_w(1,"mest_da suw_edda suw_mnda") )
+      w(-1,"вы") && s(-2,-1) && Q_w(1,"mest_da suw_da") )
  { l[i]=omo2; R[182]++; if(dbg){print "R182"}; continue };
  if ( w(-2,"вы") &&
       w(-1,"только лучше") && s(-2,-1) )
  { l[i]=omo2; R[183]++; if(dbg){print "R183"}; continue };
  if ( w(-3,"вы") &&
-      q(-2,"mest_vi suw_edvi suw_mnvi") &&
+      q(-2,"mest_vi suw_vi") &&
       w(-1,"не") && s(-3,-1) && p(0,"?") )
  { l[i]=omo2; R[184]++; if(dbg){print "R184"}; continue };
 
@@ -1263,7 +1263,7 @@ for(wrd in omap["x2001"]){omakevars(x2001,"x2001");for(y=1;y<=wln;y++)         #
  { l[i]=omo2; R[202]++; if(dbg){print "R202"}; continue };
  if ( p(-1) && p(0) )
  { l[i]=omo2; R[203]++; if(dbg){print "R203"}; continue };
- if ( q(-2,"mest_im suw_edim suw_mnim") && s(-2,-1) &&
+ if ( q(-2,"mest_im suw_im") && s(-2,-1) &&
       w(-1,"и или да да") &&
            suw_edzeim(1) && s(-2,0) )
  { l[i]=omo2; R[204]++; if(dbg){print "R204"}; continue };
@@ -1294,17 +1294,17 @@ for(wrd in omap["x2001"]){omakevars(x2001,"x2001");for(y=1;y<=wln;y++)         #
 
  cst="";
 
- if ( mest_im(-2) && q(-1,"suw_edim suw_mnim") && s(-2) && sc(-1,",") &&
+ if ( mest_im(-2) && q(-1,"suw_im") && s(-2) && sc(-1,",") &&
      suw_edim(1) && s(0) && p(1) )
  { l[i]=omo2; R[213]++; if(dbg){print "R213"}; continue };
  if ( suw_edim(1) && s(0) && p(1) &&
-       mest_im(2) && q(3,"suw_edim suw_mnim") && s(2) && p(3) )
+       mest_im(2) && q(3,"suw_im") && s(2) && p(3) )
  { l[i]=omo2; R[214]++; if(dbg){print "R214"}; continue };
  #
- if ( p(-1) && q(1,"mest_vi prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
-      q(2,"suw_edvi suw_mnvi") && s(0,1) )
+ if ( p(-1) && q(1,"mest_vi prl_vi prq_vi") &&
+      q(2,"suw_vi") && s(0,1) )
  { l[i]=omo1; R[215]++; if(dbg){print "R215"}; continue };
- if ( p(-1) && q(1,"suw_edvi suw_mnvi mest_vi") && s(0) )
+ if ( p(-1) && q(1,"suw_vi mest_vi") && s(0) )
  { l[i]=omo1; R[216]++; if(dbg){print "R216"}; continue };
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 
@@ -1319,10 +1319,10 @@ for(wrd in omap["x2002"]){omakevars(x2002,"x2002");for(y=1;y<=wln;y++)         #
  if ( sw_em_r_f() )
  { l[i]=omo2; R[218]++; if(dbg){print "R218", "sw_em_r_f"}; continue };
  #
- if ( p(-1) && q(1,"mest_vi prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
-      q(2,"suw_edvi suw_mnvi") && s(0,1) )
+ if ( p(-1) && q(1,"mest_vi prl_vi prq_vi") &&
+      q(2,"suw_vi") && s(0,1) )
  { l[i]=omo1; R[219]++; if(dbg){print "R219"}; continue };
- if ( p(-1) && q(1,"suw_edvi suw_mnvi mest_vi") && s(0) )
+ if ( p(-1) && q(1,"suw_vi mest_vi") && s(0) )
  { l[i]=omo1; R[220]++; if(dbg){print "R220"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -1335,10 +1335,10 @@ for(wrd in omap["x2003"]){omakevars(x2003,"x2003");for(y=1;y<=wln;y++)         #
  if ( sw_em_r_f() )
  { l[i]=omo2; R[221]++; if(dbg){print "R221", "sw_em_r_f"}; continue };
  #
- if ( p(-1) && q(1,"mest_vi prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
-      q(2,"suw_edvi suw_mnvi") && s(0,1) )
+ if ( p(-1) && q(1,"mest_vi prl_vi prq_vi") &&
+      q(2,"suw_vi") && s(0,1) )
  { l[i]=omo1; R[222]++; if(dbg){print "R222"}; continue };
- if ( p(-1) && q(1,"suw_edvi suw_mnvi mest_vi") && s(0) )
+ if ( p(-1) && q(1,"suw_vi mest_vi") && s(0) )
  { l[i]=omo1; R[223]++; if(dbg){print "R223"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -1354,10 +1354,10 @@ for(wrd in omap["x2004"]){omakevars(x2004,"x2004");for(y=1;y<=wln;y++)         #
  if ( sw_em_r_f() )
  { l[i]=omo2; R[225]++; if(dbg){print "R225", "sw_em_r_f"}; continue };
  #
- if ( p(-1) && q(1,"mest_vi prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
-      q(2,"suw_edvi suw_mnvi") && s(0,1) )
+ if ( p(-1) && q(1,"mest_vi prl_vi prq_vi") &&
+      q(2,"suw_vi") && s(0,1) )
  { l[i]=omo1; R[226]++; if(dbg){print "R226"}; continue };
- if ( p(-1) && q(1,"suw_edvi suw_mnvi mest_vi") && s(0) )
+ if ( p(-1) && q(1,"suw_vi mest_vi") && s(0) )
  { l[i]=omo1; R[227]++; if(dbg){print "R227"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -1370,10 +1370,10 @@ for(wrd in omap["x2005"]){omakevars(x2005,"x2005");for(y=1;y<=wln;y++)         #
  if ( sw_es_r_f() )
  { l[i]=omo2; R[228]++; if(dbg){print "R228", "sw_es_r_f"}; continue };
  #
- if ( p(-1) && q(1,"mest_vi prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
-      q(2,"suw_edvi suw_mnvi") && s(0,1) )
+ if ( p(-1) && q(1,"mest_vi prl_vi prq_vi") &&
+      q(2,"suw_vi") && s(0,1) )
  { l[i]=omo1; R[229]++; if(dbg){print "R229"}; continue };
- if ( p(-1) && q(1,"suw_edvi suw_mnvi mest_vi") && s(0) )
+ if ( p(-1) && q(1,"suw_vi mest_vi") && s(0) )
  { l[i]=omo1; R[230]++; if(dbg){print "R230"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -1386,10 +1386,10 @@ for(wrd in omap["x2006"]){omakevars(x2006,"x2006");for(y=1;y<=wln;y++)         #
  if ( sw_ez_i_f() )
  { l[i]=omo2; R[231]++; if(dbg){print "R231", "sw_ez_i_f"}; continue };
  #
- if ( p(-1) && q(1,"mest_vi prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
-      q(2,"suw_edvi suw_mnvi") && s(0,1) )
+ if ( p(-1) && q(1,"mest_vi prl_vi prq_vi") &&
+      q(2,"suw_vi") && s(0,1) )
  { l[i]=omo1; R[232]++; if(dbg){print "R232"}; continue };
- if ( p(-1) && q(1,"suw_edvi suw_mnvi mest_vi") && s(0) )
+ if ( p(-1) && q(1,"suw_vi mest_vi") && s(0) )
  { l[i]=omo1; R[233]++; if(dbg){print "R233"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -1405,10 +1405,10 @@ for(wrd in omap["x2007"]){omakevars(x2007,"x2007");for(y=1;y<=wln;y++)         #
  if ( sw_em_v_f() )
  { l[i]=omo2; R[235]++; if(dbg){print "R235", "sw_em_v_f"}; continue };
  #
- if ( p(-1) && q(1,"mest_vi prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
-      q(2,"suw_edvi suw_mnvi") && s(0,1) )
+ if ( p(-1) && q(1,"mest_vi prl_vi prq_vi") &&
+      q(2,"suw_vi") && s(0,1) )
  { l[i]=omo1; R[236]++; if(dbg){print "R236"}; continue };
- if ( p(-1) && q(1,"suw_edvi suw_mnvi mest_vi") && s(0) )
+ if ( p(-1) && q(1,"suw_vi mest_vi") && s(0) )
  { l[i]=omo1; R[237]++; if(dbg){print "R237"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -1421,10 +1421,10 @@ for(wrd in omap["x2008"]){omakevars(x2008,"x2008");for(y=1;y<=wln;y++)         #
  if ( sw_em_r_f() )
  { l[i]=omo2; R[238]++; if(dbg){print "R238", "sw_em_r_f"}; continue };
  #
- if ( p(-1) && q(1,"mest_vi prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
-      q(2,"suw_edvi suw_mnvi") && s(0,1) )
+ if ( p(-1) && q(1,"mest_vi prl_vi prq_vi") &&
+      q(2,"suw_vi") && s(0,1) )
  { l[i]=omo1; R[239]++; if(dbg){print "R239"}; continue };
- if ( p(-1) && q(1,"suw_edvi suw_mnvi mest_vi") && s(0) )
+ if ( p(-1) && q(1,"suw_vi mest_vi") && s(0) )
  { l[i]=omo1; R[240]++; if(dbg){print "R240"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -1437,10 +1437,10 @@ for(wrd in omap["x2009"]){omakevars(x2009,"x2009");for(y=1;y<=wln;y++)         #
  if ( sw_ez_i_f() )
  { l[i]=omo2; R[241]++; if(dbg){print "R241", "sw_ez_i_f"}; continue };
  #
- if ( p(-1) && q(1,"mest_vi prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
-      q(2,"suw_edvi suw_mnvi") && s(0,1) )
+ if ( p(-1) && q(1,"mest_vi prl_vi prq_vi") &&
+      q(2,"suw_vi") && s(0,1) )
  { l[i]=omo1; R[242]++; if(dbg){print "R242"}; continue };
- if ( p(-1) && q(1,"suw_edvi suw_mnvi mest_vi") && s(0) )
+ if ( p(-1) && q(1,"suw_vi mest_vi") && s(0) )
  { l[i]=omo1; R[243]++; if(dbg){print "R243"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -1453,10 +1453,10 @@ for(wrd in omap["x2010"]){omakevars(x2010,"x2010");for(y=1;y<=wln;y++)         #
  if ( sw_mn_r_f() )
  { l[i]=omo2; R[244]++; if(dbg){print "R244", "sw_mn_r_f"}; continue };
  #
- if ( p(-1) && q(1,"mest_vi prl_edvi prl_mnvi prq_edvi prq_mnvi") &&
-      q(2,"suw_edvi suw_mnvi") && s(0,1) )
+ if ( p(-1) && q(1,"mest_vi prl_vi prq_vi") &&
+      q(2,"suw_vi") && s(0,1) )
  { l[i]=omo1; R[245]++; if(dbg){print "R245"}; continue };
- if ( p(-1) && q(1,"suw_edvi suw_mnvi mest_vi") && s(0) )
+ if ( p(-1) && q(1,"suw_vi mest_vi") && s(0) )
  { l[i]=omo1; R[246]++; if(dbg){print "R246"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -1519,7 +1519,7 @@ for(wrd in omap["x2014"]){omakevars(x2014,"x2014");for(y=1;y<=wln;y++)         #
  #  x2015 gl_ed1e_      sw_1em_v_2ez_vd_
 for(wrd in omap["x2015"]){omakevars(x2015,"x2015");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
- if ( q(1,"suw_edro suw_mnro") && s(0) )
+ if ( q(1,"suw_ro") && s(0) )
  { l[i]=omo2; R[256]++; if(dbg){print "R256"}; continue };
  #
  if ( sw_ez_d_f() )
@@ -1540,7 +1540,7 @@ for(wrd in omap["x2015"]){omakevars(x2015,"x2015");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2016"]){omakevars(x2016,"x2016");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  if(iwrd=="тону") {
-   if ( q(1,"suw_edro suw_mnro") && s(0) )
+   if ( q(1,"suw_ro") && s(0) )
    { l[i]=omo2; R[261]++; if(dbg){print "R261"}; continue };
  };
  if ( gl_in(1) && s(0) )
@@ -1561,7 +1561,7 @@ for(wrd in omap["x2017"]){omakevars(x2017,"x2017");for(y=1;y<=wln;y++)         #
    if ( w(-1,"что") && s(-1) )
    { l[i]=omo2; R[265]++; if(dbg){print "R265"}; continue };
    if ( w(1,"от") &&
-        q(2,"mest_vi suw_edvi suw_mnvi") && s(0,1) )
+        q(2,"mest_vi suw_vi") && s(0,1) )
    { l[i]=omo2; R[266]++; if(dbg){print "R266"}; continue };
  };
  #
@@ -1659,7 +1659,7 @@ for(wrd in omap["x2023"]){omakevars(x2023,"x2023");for(y=1;y<=wln;y++)         #
    { l[i]=omo1; R[285]++; if(dbg){print "R285"}; continue };
  };
  if(iwrd=="уйму") {
-   if ( q(1,"suw_edro suw_mnro") && s(0) )
+   if ( q(1,"suw_ro") && s(0) )
    { l[i]=omo2; R[286]++; if(dbg){print "R286"}; continue };
  };
  #
@@ -2046,7 +2046,7 @@ for(wrd in omap["x2048"]){omakevars(x2048,"x2048");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2049"]){omakevars(x2049,"x2049");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  if(iwrd=="осел") {
-   if ( q(1,"suw_edro suw_mnro") && s(0) )
+   if ( q(1,"suw_ro") && s(0) )
    { l[i]=omo2; R[357]++; if(dbg){print "R357"}; continue };
  };
  #
@@ -2063,23 +2063,23 @@ for(wrd in omap["x2049"]){omakevars(x2049,"x2049");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2050"]){omakevars(x2050,"x2050");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  if(iwrd=="запах") {
-   if ( q(1,"suw_edro suw_mnro") && s(0) )
+   if ( q(1,"suw_ro") && s(0) )
    { l[i]=omo2; R[360]++; if(dbg){print "R360"}; continue };
  };
  if(iwrd=="замер") {
-   if ( q(1,"suw_edro suw_mnro") && s(0) )
+   if ( q(1,"suw_ro") && s(0) )
    { l[i]=omo2; R[361]++; if(dbg){print "R361"}; continue };
  };
  if(iwrd=="обмер") {
-   if ( q(1,"suw_edro suw_mnro") && s(0) )
+   if ( q(1,"suw_ro") && s(0) )
    { l[i]=omo2; R[362]++; if(dbg){print "R362"}; continue };
  };
  if(iwrd=="перемер") {
-   if ( q(1,"suw_edro suw_mnro") && s(0) )
+   if ( q(1,"suw_ro") && s(0) )
    { l[i]=omo2; R[363]++; if(dbg){print "R363"}; continue };
  };
  if(iwrd=="погреб") {
-   if ( q(1,"suw_edro suw_mnro") && s(0) )
+   if ( q(1,"suw_ro") && s(0) )
    { l[i]=omo2; R[364]++; if(dbg){print "R364"}; continue };
  };
  #
@@ -2132,7 +2132,7 @@ for(wrd in omap["x2053"]){omakevars(x2053,"x2053");for(y=1;y<=wln;y++)         #
    { l[i]=omo1; R[373]++; if(dbg){print "R373"}; continue };
    if ( q(1,"prl_kred_sr prq_kred_sr") && s(0) && Q_w(2,"gl_in") )
    { l[i]=omo2; R[374]++; if(dbg){print "R374"}; continue };
-   if ( q(1,"suw_edro suw_mnro") && s(0) )
+   if ( q(1,"suw_ro") && s(0) )
    { l[i]=omo2; R[375]++; if(dbg){print "R375"}; continue };
  };
  #
@@ -2245,7 +2245,7 @@ for(wrd in omap["x2058"]){omakevars(x2058,"x2058");for(y=1;y<=wln;y++)         #
  #
  if ( w(1,"под") && s(0) )
  { l[i]=omo1; R[400]++; if(dbg){print "R400", "gl_pamn_f"}; continue };
- if ( q(-1,"mest_da suw_edda suw_mnda") && s(-1) )
+ if ( q(-1,"mest_da suw_da") && s(-1) )
  { l[i]=omo1; R[401]++; if(dbg){print "R401", "gl_pamn_f"}; continue };
 
  if ( wb(-5,-1,"пока если когда") && s(wbn,-1) )
@@ -2735,7 +2735,7 @@ for(wrd in omap["x2084"]){omakevars(x2084,"x2084");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2085"]){omakevars(x2085,"x2085");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( q(-2,"suw_edim suw_mnim") &&
+ if ( q(-2,"suw_im") &&
    base(-1,"идти") && s(-2,-1) )
  { l[i]=omo2; R[510]++; if(dbg){print "R510", "sw_em_t_f"}; continue };
  #
@@ -2774,7 +2774,7 @@ for(wrd in omap["x2086"]){omakevars(x2086,"x2086");for(y=1;y<=wln;y++)         #
  if ( sw_em_p_f() )
  { l[i]=omo2; R[519]++; if(dbg){print "R519", "sw_em_p_f"}; continue };
  #
- if ( q(1,"suw_edro suw_mnro prl_edro prl_mnro mest_ro") )
+ if ( q(1,"suw_ro prl_ro mest_ro") )
  { l[i]=omo1; R[520]++; if(dbg){print "R520"}; continue };
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 
@@ -2943,8 +2943,8 @@ for(wrd in omap["x2094"]){omakevars(x2094,"x2094");for(y=1;y<=wln;y++)         #
  { l[i]=omo2; R[559]++; if(dbg){print "R559"}; continue };
  if ( w(-3,"на") &&
       q(-2,"qin_im qik_im") &&
-      q(-1,"suw_edro suw_mnro") &&
-      q(1,"suw_edro suw_mnro") && s(-3,0) )
+      q(-1,"suw_ro") &&
+      q(1,"suw_ro") && s(-3,0) )
  { l[i]=omo2; R[560]++; if(dbg){print "R560"}; continue };
  #
  cst="о об обо про с со через";
@@ -2956,24 +2956,24 @@ for(wrd in omap["x2094"]){omakevars(x2094,"x2094");for(y=1;y<=wln;y++)         #
  if ( q(1,"nar_vrem nar_step nar_mest nar_spos nar_nar") && s(0) )
  { l[i]=omo1; R[563]++; if(dbg){print "R563"}; continue };
  if ( w(1,"не") &&
-      q(2,"prl_edim prl_mnim prq_edim prq_mnim mest_im") &&
-      q(3,"suw_edim suw_mnim prl_edim prl_mnim") && s(0,2) )
+      q(2,"prl_im prq_im mest_im") &&
+      q(3,"suw_im prl_im") && s(0,2) )
  { l[i]=omo1; R[564]++; if(dbg){print "R564"}; continue };
  if ( w(1,"не") &&
-      q(2,"suw_edim suw_mnim") && s(0,1) )
+      q(2,"suw_im") && s(0,1) )
  { l[i]=omo1; R[565]++; if(dbg){print "R565"}; continue };
- if ( q(1,"prl_edim prl_mnim prq_edim prq_mnim mest_im") &&
-      q(2,"suw_edim suw_mnim prl_edim prl_mnim") && s(0,1) )
+ if ( q(1,"prl_im prq_im mest_im") &&
+      q(2,"suw_im prl_im") && s(0,1) )
  { l[i]=omo1; R[566]++; if(dbg){print "R566"}; continue };
- if ( q(1,"suw_edim suw_mnim prl_srav") && s(0) )
+ if ( q(1,"suw_im prl_srav") && s(0) )
  { l[i]=omo1; R[567]++; if(dbg){print "R567"}; continue };
- if ( q(1,"prl_edvi prl_mnvi prq_edvi prq_mnvi mest_vi") &&
-      q(2,"suw_edvi suw_mnvi") && s(0,1) )
+ if ( q(1,"prl_vi prq_vi mest_vi") &&
+      q(2,"suw_vi") && s(0,1) )
  { l[i]=omo1; R[568]++; if(dbg){print "R568"}; continue };
- if ( q(1,"prl_edtv prl_mntv prq_edtv prq_mntv mest_tv") &&
-      q(2,"suw_edtv suw_mntv prl_edtv prl_mntv") && s(0,1) )
+ if ( q(1,"prl_tv prq_tv mest_tv") &&
+      q(2,"suw_tv prl_tv") && s(0,1) )
  { l[i]=omo1; R[569]++; if(dbg){print "R569"}; continue };
- if ( q(1,"suw_edtv suw_mntv") && s(0) )
+ if ( q(1,"suw_tv") && s(0) )
  { l[i]=omo1; R[570]++; if(dbg){print "R570"}; continue };
  if ( (w(1,"не всё")||q(1,"prl_kred_sr")) &&
        q(2,"gl_in gl_ed gl_mn gl_vzmn deep prq_kred prq_krmn prl_kred prl_krmn") && s(0,1) )
@@ -2987,14 +2987,14 @@ for(wrd in omap["x2094"]){omakevars(x2094,"x2094");for(y=1;y<=wln;y++)         #
       q(2,"suw_edro") && s(0,1) )
  { l[i]=omo1; R[574]++; if(dbg){print "R574"}; continue };
  if ( q(1,"pre_pr") &&
-      q(2,"prl_edpr prl_mnpr mest_pr prq_edpr prq_mnpr") &&
-      q(3,"suw_edpr suw_mnpr suw_edme") && s(0,2) )
+      q(2,"prl_pr mest_pr prq_pr") &&
+      q(3,"suw_pr suw_edme") && s(0,2) )
  { l[i]=omo1; R[575]++; if(dbg){print "R575"}; continue };
  if ( q(1,"pre_pr") &&
-      q(2,"suw_edpr suw_mnpr suw_edme") && s(0,1) )
+      q(2,"suw_pr suw_edme") && s(0,1) )
  { l[i]=omo1; R[576]++; if(dbg){print "R576"}; continue };
- if ( q(-1,"mest_im suw_edim suw_mnim") &&
-      q(1,"mest_da suw_edda suw_mnda mest_vi suw_edvi suw_mnvi mest_3e") &&
+ if ( q(-1,"mest_im suw_im") &&
+      q(1,"mest_da suw_da mest_vi suw_vi mest_3e") &&
       q(2,"gl_in gl_ed gl_mn gl_vzmn deep") && s(-1,1) )
  { l[i]=omo1; R[577]++; if(dbg){print "R577"}; continue };
  #
@@ -3077,7 +3077,7 @@ for(wrd in omap["x2099"]){omakevars(x2099,"x2099");for(y=1;y<=wln;y++)         #
 
  if ( base(-2,"воздеть") && w(-1,"руки") && s(-2,-1) )
  { l[i]=omo1; R[594]++; if(dbg){print "R594"}; continue };
- if ( w(-1,"на") && s(-1) && (qw_(-2,"mest_da suw_edda suw_mnda")||q_w(1,"mest_da suw_edda suw_mnda")) )
+ if ( w(-1,"на") && s(-1) && (qw_(-2,"mest_da suw_da")||q_w(1,"mest_da suw_da")) )
  { l[i]=omo2; R[595]++; if(dbg){print "R595"}; continue };
  if ( sw_es_i_f() )
  { l[i]=omo2; R[596]++; if(dbg){print "R596", "sw_es_i_f"}; continue };
@@ -3172,7 +3172,7 @@ for(wrd in omap["x2102"]){omakevars(x2102,"x2102");for(y=1;y<=wln;y++)         #
  if(iwrd=="души") {
    if ( w(1,"не") && base(2,"чаять") && s(0,1) )
    { l[i]=omo1; R[619]++; if(dbg){print "R619"}; continue };
-   if ( w(1,"в") && q(2,"mest_pr suw_edpr suw_mnpr name_pr_sy") && w(3,"не") && base(4,"чаять") && s(0,3) )
+   if ( w(1,"в") && q(2,"mest_pr suw_pr name_pr_sy") && w(3,"не") && base(4,"чаять") && s(0,3) )
    { l[i]=omo1; R[620]++; if(dbg){print "R620"}; continue };
  };
  #
@@ -3257,7 +3257,7 @@ for(wrd in omap["x2106"]){omakevars(x2106,"x2106");for(y=1;y<=wln;y++)         #
  if ( w(1,"нет") && s(0) && p(1) )
  { l[i]=omo2; R[639]++; if(dbg){print "R639"}; continue };
  if ( w(-1,"не") &&
-      q(1,"suw_edro suw_mnro") && s(-1,0) )
+      q(1,"suw_ro") && s(-1,0) )
  { l[i]=omo1; R[640]++; if(dbg){print "R640"}; continue };
  #
  if ( gl_poed_f() )
@@ -3857,17 +3857,17 @@ for(wrd in omap["x2146"]){omakevars(x2146,"x2146");for(y=1;y<=wln;y++)         #
  #
  cst="быть оказаться стать";
  if ( base(-1,cst) &&
-         q(1,"prl_edro prl_mnro") &&
-         q(2,"suw_edro suw_mnro") && s(-1,1) )
+         q(1,"prl_ro") &&
+         q(2,"suw_ro") && s(-1,1) )
  { l[i]=omo2; R[755]++; if(dbg){print "R755"}; continue };
  if ( base(-1,cst) &&
-         q(1,"suw_edro suw_mnro") && s(-1,0) )
+         q(1,"suw_ro") && s(-1,0) )
  { l[i]=omo2; R[756]++; if(dbg){print "R756"}; continue };
 
  if (q(1,"gl_in gl_ed gl_mn deep") && s(0) )
  { l[i]=omo2; R[757]++; if(dbg){print "R757"}; continue };
  if ( pre_tv(-2) &&
-           q(-1,"mest_tv suw_edtv suw_mntv") && s(-2,-1) )
+           q(-1,"mest_tv suw_tv") && s(-2,-1) )
  { l[i]=omo1; R[758]++; if(dbg){print "R758"}; continue };
  #
  if ( sw_em_t_f() )
@@ -4280,17 +4280,17 @@ for(wrd in omap["x2175"]){omakevars(x2175,"x2175");for(y=1;y<=wln;y++)         #
  { l[i]=omo1; R[831]++; if(dbg){print "R831"}; continue };
  if ( wc(1,"им$ ом$ ой$ ами$ ими$ ыми$ ями$") && s(0) )
  { l[i]=omo1; R[832]++; if(dbg){print "R832"}; continue };
- if ( q(-1,"suw_edim suw_mnim") && wc(1,"им$ ом$ ой$ ами$ ими$ ыми$") && s(-1,0) )
+ if ( q(-1,"suw_im") && wc(1,"им$ ом$ ой$ ами$ ими$ ыми$") && s(-1,0) )
  { l[i]=omo1; R[833]++; if(dbg){print "R833"}; continue };
  if ( isname(1) &&
       isname(2) && wc(2,"им$ ом$ ой$ ами$ ими$ ыми$") && s(0,1) )
  { l[i]=omo1; R[834]++; if(dbg){print "R834"}; continue };
 
  #
- if ( q(1,"prl_edtv prl_mntv prq_edtv prq_mntv mest_tv mest_mn mest_3e") &&
-      q(2,"suw_edtv suw_mntv prl_edtv prl_mntv prq_edtv prq_mntv mest_tv") && s(0,1) )
+ if ( q(1,"prl_tv prq_tv mest_tv mest_mn mest_3e") &&
+      q(2,"suw_tv prl_tv prq_tv mest_tv") && s(0,1) )
  { l[i]=omo1; R[835]++; if(dbg){print "R835"}; continue };
- if ( q(1,"suw_edtv suw_mntv prl_edtv prl_mntv mest_tv") && s(0) )
+ if ( q(1,"suw_tv prl_tv mest_tv") && s(0) )
  { l[i]=omo1; R[836]++; if(dbg){print "R836"}; continue };
  #
  if ( sw_em_i_f() )
@@ -4452,7 +4452,7 @@ for(wrd in omap["x2183"]){omakevars(x2183,"x2183");for(y=1;y<=wln;y++)         #
    { l[i]=omo2; R[870]++; if(dbg){print "R870"}; continue };
    cst="войти входить вывести выйти выходить";
    if ( base(-3,cst) &&
-           q(-2,"suw_edvi suw_mnvi") &&
+           q(-2,"suw_vi") &&
            w(-1,"в из") && s(-3,-1) )
    { l[i]=omo2; r[1230]++; if(dbg){print "r1230"}; continue };
    if ( base(-2,cst) &&
@@ -5050,7 +5050,7 @@ for(wrd in omap["x2216"]){omakevars(x2216,"x2216");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2217"]){omakevars(x2217,"x2217");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( Q(-1,"suw_edro suw_mnro") && p(-1) && p(0) )
+ if ( Q(-1,"suw_ro") && p(-1) && p(0) )
  { l[i]=omo1; R[993]++; if(dbg){print "R993"}; continue };
  #
  if ( sw_em_i_f() )
@@ -5367,11 +5367,11 @@ for(wrd in omap["x2235"]){omakevars(x2235,"x2235");for(y=1;y<=wln;y++)         #
    { l[i]=omo1; R[1054]++; if(dbg){print "R1054"}; continue };
  };
  if(iwrd=="роста") {
-   if ( w(1,"в") && q(2,"mest_pr suw_edpr suw_mnpr") && s(0,1) )
+   if ( w(1,"в") && q(2,"mest_pr suw_pr") && s(0,1) )
    { l[i]=omo1; R[1055]++; if(dbg){print "R1055"}; continue };
  };
  if(iwrd=="веса") {
-   if ( w(1,"в") && q(2,"mest_pr suw_edpr suw_mnpr") && s(0,1) )
+   if ( w(1,"в") && q(2,"mest_pr suw_pr") && s(0,1) )
    { l[i]=omo1; R[1056]++; if(dbg){print "R1056"}; continue };
  };
  if(iwrd=="шенкеля") {
@@ -5489,13 +5489,13 @@ for(wrd in omap["x2241"]){omakevars(x2241,"x2241");for(y=1;y<=wln;y++)         #
  #
  if(iwrd=="черта") {
    if ( w(-1,"ни") &&
-      Q_w(1,"suw_edro suw_mnro mest_ro") && s(-1) )
+      Q_w(1,"suw_ro mest_ro") && s(-1) )
    { l[i]=omo2; R[1081]++; if(dbg){print "R1081"}; continue };
    if ( w(-1,"ни") &&
         q(1,"prl_edro") && s(-1) )
    { l[i]=omo2; R[1082]++; if(dbg){print "R1082"}; continue };
    if ( w(-1,"на") &&
-        q(1,"mest_da suw_edda suw_mnda") && s(-1,0) )
+        q(1,"mest_da suw_da") && s(-1,0) )
    { l[i]=omo2; R[1083]++; if(dbg){print "R1083"}; continue };
  };
  #
@@ -5572,7 +5572,7 @@ for(wrd in omap["x2244"]){omakevars(x2244,"x2244");for(y=1;y<=wln;y++)         #
    { l[i]=omo1; R[1099]++; if(dbg){print "R1099"}; continue };
    if ( gl_in(1) && s(0) )
    { l[i]=omo1; R[1100]++; if(dbg){print "R1100"}; continue };
-   if ( (w(1,"было")||q(1,"prl_kred_sr mest_da suw_edda suw_mnda")) &&
+   if ( (w(1,"было")||q(1,"prl_kred_sr mest_da suw_da")) &&
         (q(2,"gl_in name_im_sy isname")||w(2,"он")) && s(0,1) )
    { l[i]=omo1; R[1101]++; if(dbg){print "R1101"}; continue };
    if ( sc(-2,"—") &&
@@ -5583,21 +5583,21 @@ for(wrd in omap["x2244"]){omakevars(x2244,"x2244");for(y=1;y<=wln;y++)         #
         (q(1,"suw_edmuim name_im_sy isname prl_edmuim")||w(1,"он")||wc(1,"[A-Za-z0-9]+")) && s(0) )
    { l[i]=omo1; R[1103]++; if(dbg){print "R1103"}; continue };
    if ( q(1,"pre_vi preph_vi") &&
-        q(2,"suw_edvi suw_mnvi prl_edvi prl_mnvi prq_edvi prq_mnvi mest_vi") && s(0,1) )
+        q(2,"suw_vi prl_vi prq_vi mest_vi") && s(0,1) )
    { l[i]=omo1; R[1104]++; if(dbg){print "R1104"}; continue };
    if ( q(1,"pre_ro preph_ro") &&
-        q(2,"suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro mest_ro") && s(0,1) )
+        q(2,"suw_ro prl_ro prq_ro mest_ro") && s(0,1) )
    { l[i]=omo1; R[1105]++; if(dbg){print "R1105"}; continue };
    if ( q(1,"pre_tv preph_tv") &&
-        q(2,"suw_edtv suw_mntv prl_edtv prl_mntv prq_edtv prq_mntv mest_tv") && s(0,1) )
+        q(2,"suw_tv prl_tv prq_tv mest_tv") && s(0,1) )
    { l[i]=omo1; R[1106]++; if(dbg){print "R1106"}; continue };
    if ( pre_pr(1) &&
-             q(2,"suw_edpr suw_mnpr prl_edpr prl_mnpr prq_edpr prq_mnpr mest_pr") && s(0,1) )
+             q(2,"suw_pr prl_pr prq_pr mest_pr") && s(0,1) )
    { l[i]=omo1; R[1107]++; if(dbg){print "R1107"}; continue };
    if ( gl_in(1) && s(0) )
    { l[i]=omo1; R[1108]++; if(dbg){print "R1108"}; continue };
    if ( (q(-1,"suw_edmuim name_im_sy isname")||w(-1,"он")) &&
-         q(1,"suw_edvi suw_mnvi") && s(-1,0) )
+         q(1,"suw_vi") && s(-1,0) )
    { l[i]=omo1; R[1109]++; if(dbg){print "R1109"}; continue };
 
  #
@@ -5755,25 +5755,25 @@ for(wrd in omap["x2255"]){omakevars(x2255,"x2255");for(y=1;y<=wln;y++)         #
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  if ( ( suw_mnim(-2)||(suw_mnim(-3) && q(-2,"name_ro_sy isname")) && s(-3)) &&
                w(-1,"были") &&
-               q(1,"prl_edro suw_edro prq_edro prl_mnro suw_mnro prq_mnro suw_edne") && s(-2,0) )
+               q(1,"prl_ro suw_ro prq_ro suw_edne") && s(-2,0) )
  { l[i]=omo1; R[1136]++; if(dbg){print "R1136"}; continue };
  cst="был была было";
  if ( (suw_any(-1)||w(-1,cst)) && Q(-1,"prl_mnim") &&
-             q(1,"prl_edro suw_edro prq_edro prl_mnro suw_mnro prq_mnro suw_edne") && s(-1,0) )
+             q(1,"prl_ro suw_ro prq_ro suw_edne") && s(-1,0) )
  { l[i]=omo1; R[1137]++; if(dbg){print "R1137"}; continue };
  cst="был была было";
  if ( (suw_any(-1)||w(-1,cst)) && Q(-1,"prl_mnim") &&
-            qf(1,5,"suw_edro suw_mnro suw_edne") && s(-1,qfn-1) )
+            qf(1,5,"suw_ro suw_edne") && s(-1,qfn-1) )
  { l[i]=omo1; R[1138]++; if(dbg){print "R1138"}; continue };
  if ( muk_edmuro(-2) &&
-               q(-1,"mest_im suw_edim suw_mnim") && s(-2,-1) )
+               q(-1,"mest_im suw_im") && s(-2,-1) )
  { l[i]=omo1; R[1139]++; if(dbg){print "R1139"}; continue };
  if ( prl_any(-1) && sc(-1,",") &&
-            q(1,"mest_ro prl_edro prl_mnro prq_edro prq_mnro") &&
-            q(2,"suw_edro suw_mnro") && s(0,1) )
+            q(1,"mest_ro prl_ro prq_ro") &&
+            q(2,"suw_ro") && s(0,1) )
  { l[i]=omo1; R[1140]++; if(dbg){print "R1140"}; continue };
  if ( prl_any(-1) && sc(-1,",") &&
-            q(1,"suw_edro suw_mnro") && s(0) )
+            q(1,"suw_ro") && s(0) )
  { l[i]=omo1; R[1141]++; if(dbg){print "R1141"}; continue };
  #
  if ( pre_ro(-1) && Q(-1,"pre_im pre_vi") && s(-1) )
@@ -6046,7 +6046,7 @@ for(wrd in omap["x2269"]){omakevars(x2269,"x2269");for(y=1;y<=wln;y++)         #
  if ( w(1,"же") &&
       q(2,"suw_edmuda suw_edsrda") && s(0,1) )
  { l[i]=omo1; R[1196]++; if(dbg){print "R1196"}; continue };
- if ( q(-1,"suw_edro suw_mnro qik_im") &&
+ if ( q(-1,"suw_ro qik_im") &&
       w(1,"назад") && s(-1) )
  { l[i]=omo1; R[1197]++; if(dbg){print "R1197"}; continue };
 
@@ -6091,7 +6091,7 @@ for(wrd in omap["x2271"]){omakevars(x2271,"x2271");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2272"]){omakevars(x2272,"x2272");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  if ( q(-4,"gl_pein gl_peed gl_pemn deep_pe prq_pe gl_pnin gl_pned gl_pnmn deep_pn prq_pn") &&
-      q(-3,"suw_edvi suw_mnvi") &&
+      q(-3,"suw_vi") &&
          suw_edro(-2) && sz_iili(-1) && s(-4,-1) )
  { l[i]=omo1; R[1205]++; if(dbg){print "R1205"}; continue };
  if ( qxs(-1,"как","при","этом") )
@@ -6180,7 +6180,7 @@ sz_iili(-1) &&
  if ( mest_vi(1) && s(0) )
  { l[i]=omo2; R[1230]++; if(dbg){print "R1230"}; continue };
  if ( pre_ro(-2) && W(-2,"с") &&
-     mest_ro(-1) && s(-2,-1) && !(q(1,"suw_edro suw_mnro") && s(0)) )
+     mest_ro(-1) && s(-2,-1) && !(q(1,"suw_ro") && s(0)) )
  { l[i]=omo2; R[1231]++; if(dbg){print "R1231"}; continue };
  if ( pre_ro(-1) &&
          (q_(1,swn_edmu_ro)||q_(1,swn_edsr_ro)||mest_ro(1)) && s(-1,0) )
@@ -6276,7 +6276,7 @@ mest_3e(2) &&
  { l[i]=omo1; R[1252]++; if(dbg){print "R1252"}; continue };
  if ( q(1,"prl_edzeda prl_edzero prl_edzetv") &&
       q(2,"gl_need gl_nemn gl_vzmn") &&
-      q(3,"suw_edim suw_mnim") && s(0,2) )
+      q(3,"suw_im") && s(0,2) )
  { l[i]=omo1; R[1253]++; if(dbg){print "R1253"}; continue };
  #
  if ( q(1,"prl_edzeda") &&
@@ -6293,10 +6293,10 @@ sz_iili(2) &&
 
  if ( q(1,"prl_edzetv prq_edzetv") && s(0) && p(1) )
  { l[i]=omo1; R[1257]++; if(dbg){print "R1257"}; continue };
- if ( q(1,"suw_edtv suw_mntv") &&
+ if ( q(1,"suw_tv") &&
       q(2,"gl_pein gl_peed gl_pemn deep_pe prq_pe") && s(0,1) )
  { l[i]=omo2; R[1258]++; if(dbg){print "R1258"}; continue };
- if ( q(1,"suw_edtv suw_mntv") &&
+ if ( q(1,"suw_tv") &&
    base(2,"быть") &&
       q(3,"prq_pe") && s(0,2) )
  { l[i]=omo2; R[1259]++; if(dbg){print "R1259"}; continue };
@@ -6416,7 +6416,7 @@ suw_edda(1) && s(-1,0) )
  if ( muk_edmuda(-2) &&
                w(-1,"же") && s(-2,-1) )
  { l[i]=omo1; R[1286]++; if(dbg){print "R1286"}; continue };
- if ( q(1,"suw_odedmuda suw_odedsrda suw_odmnda name_da_sy isname") && s(0) && Q(1,"prl_edda prl_mnda") )
+ if ( q(1,"suw_odedmuda suw_odedsrda suw_odmnda name_da_sy isname") && s(0) && Q(1,"prl_da") )
  { l[i]=omo2; R[1287]++; if(dbg){print "R1287"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -6454,7 +6454,7 @@ for(wrd in omap["x2279"]){omakevars(x2279,"x2279");for(y=1;y<=wln;y++)         #
  #
  if ( qxs(-1,"как и","будто") )
  { l[i]=omo1; R[1294]++; if(dbg){print "R1294"}; continue };
- if ( q(-1,"mest_da suw_edda suw_mnda") )
+ if ( q(-1,"mest_da suw_da") )
  { l[i]=omo1; R[1295]++; if(dbg){print "R1295"}; continue };
  #
  cst="где как какой кого кто ли того что";
@@ -6520,15 +6520,15 @@ for(wrd in omap["x2283"]){omakevars(x2283,"x2283");for(y=1;y<=wln;y++)         #
  if ( base(-1,cst) &&  s(-1) )
  { l[i]=omo1; R[1306]++; if(dbg){print "R1306"}; continue };
 
- if ( q(-2,"mest_vi mest_3e suw_edvi suw_mnvi") &&
+ if ( q(-2,"mest_vi mest_3e suw_vi") &&
       q(-1,"gl_pemn gl_pnmn") &&
-      q(1,"mest_edvi suw_edvi suw_mnvi") && s(-2,0) )
+      q(1,"mest_edvi suw_vi") && s(-2,0) )
  { l[i]=omo1; R[1307]++; if(dbg){print "R1307"}; continue };
- if ( q(1,"mest_vi mest_3e suw_edvi suw_mnvi") &&
+ if ( q(1,"mest_vi mest_3e suw_vi") &&
       q(2,"mod_mn") &&
       q(3,"gl_in") && s(0,2) )
  { l[i]=omo1; R[1308]++; if(dbg){print "R1308"}; continue };
- if ( q(1,"mest_vi mest_3e suw_edvi suw_mnvi") &&
+ if ( q(1,"mest_vi mest_3e suw_vi") &&
       q(2,"nar_vrem nar_spos") &&
       q(3,"mod_mn") &&
       q(4,"gl_in") && s(0,3) )
@@ -6544,41 +6544,41 @@ for(wrd in omap["x2283"]){omakevars(x2283,"x2283");for(y=1;y<=wln;y++)         #
  if ( q(-2,"mest_mnim suw_mnim") && Q(-2,"gl_mn") &&
       q(-1,"prl_krmn") && s(-2,-1) )
  { l[i]=omo1;; R[1313]++; if(dbg){print "R1313"}; continue };
- if ( q(1,"mest_im suw_edim suw_mnim") &&
+ if ( q(1,"mest_im suw_im") &&
       q(2,"gl_peed gl_pemn gl_popeed gl_popemn") &&
-      q(3,"prl_edda prl_mnda mest_da") &&
-      q(4,"prl_edvi prl_mnvi") &&
-      q(5,"suw_edvi suw_mnvi name_vi_sy isname") && s(0,4) && p(-1) )
+      q(3,"prl_da mest_da") &&
+      q(4,"prl_vi") &&
+      q(5,"suw_vi name_vi_sy isname") && s(0,4) && p(-1) )
  { l[i]=omo1; R[1314]++; if(dbg){print "R1314"}; continue };
- if ( q(1,"mest_im suw_edim suw_mnim") &&
+ if ( q(1,"mest_im suw_im") &&
       q(2,"gl_peed gl_pemn gl_popeed gl_popemn") &&
-      q(3,"prl_edda prl_mnda mest_da") &&
-      q(4,"suw_edvi suw_mnvi name_vi_sy isname") && s(0,3) && p(-1) )
+      q(3,"prl_da mest_da") &&
+      q(4,"suw_vi name_vi_sy isname") && s(0,3) && p(-1) )
  { l[i]=omo1; R[1315]++; if(dbg){print "R1315"}; continue };
- if ( q(1,"mest_im suw_edim suw_mnim") &&
+ if ( q(1,"mest_im suw_im") &&
       q(2,"gl_peed gl_pemn gl_popeed gl_popemn") &&
-      q(3,"prl_edvi prl_mnvi") &&
-      q(4,"suw_edvi suw_mnvi name_vi_sy isname") && s(0,3) && p(-1) )
+      q(3,"prl_vi") &&
+      q(4,"suw_vi name_vi_sy isname") && s(0,3) && p(-1) )
  { l[i]=omo1; R[1316]++; if(dbg){print "R1316"}; continue };
- if ( q(1,"mest_im suw_edim suw_mnim") &&
+ if ( q(1,"mest_im suw_im") &&
       q(2,"gl_peed gl_pemn gl_popeed gl_popemn") &&
-      q(3,"suw_edvi suw_mnvi name_vi_sy isname") && s(0,2) && p(-1) )
+      q(3,"suw_vi name_vi_sy isname") && s(0,2) && p(-1) )
  { l[i]=omo1; R[1317]++; if(dbg){print "R1317"}; continue };
 
  #
- if ( q(-2,"mest_im suw_edim suw_mnim name_im_sy isname") && Q(-2,"prl_edim prl_mnim") &&
+ if ( q(-2,"mest_im suw_im name_im_sy isname") && Q(-2,"prl_im") &&
       w(-1,"не же ведь") && s(-2,-1))
  { l[i]=omo1; R[1318]++; if(dbg){print "R1318"}; continue };
  #
  if ( prq_mnim(-3) &&
         pre_ro(-2) &&
-             q(-1,"suw_edro suw_mnro mest_ro") && s(-3,-1))
+             q(-1,"suw_ro mest_ro") && s(-3,-1))
  { l[i]=omo2; R[1319]++; if(dbg){print "R1319"}; continue };
  if ( pre_ro(-2) &&
-           q(-1,"suw_edro suw_mnro mest_ro") && s(-2,-1))
+           q(-1,"suw_ro mest_ro") && s(-2,-1))
  { l[i]=omo1; R[1320]++; if(dbg){print "R1320"}; continue };
  if ( w(1,"у") &&
-      q(2,"suw_edro suw_mnro mest_ro") && s(0,1))
+      q(2,"suw_ro mest_ro") && s(0,1))
  { l[i]=omo1; R[1321]++; if(dbg){print "R1321"}; continue };
  #
  cst="вы кто мы он она оно ты я";
@@ -6674,7 +6674,7 @@ for(wrd in omap["x2287"]){omakevars(x2287,"x2287");for(y=1;y<=wln;y++)         #
  { l[i]=omo1; R[1341]++; if(dbg){print "R1341"}; continue };
  if ( pre_tv(-2) &&
            w(-1"чем тем ещё") &&
-           q(1,"suw_edtv suw_mntv") && s(-2,0) )
+           q(1,"suw_tv") && s(-2,0) )
  { l[i]=omo1; R[1342]++; if(dbg){print "R1342"}; continue };
  #
  cst="весьма довольно достаточно очень самым слишком чересчур";
@@ -6765,11 +6765,11 @@ for(wrd in omap["x2291"]){omakevars(x2291,"x2291");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2292"]){omakevars(x2292,"x2292");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  if(iwrd=="извести") {
-   if ( q(1,"mest_vi suw_edvi suw_mnvi") && s(0) )
+   if ( q(1,"mest_vi suw_vi") && s(0) )
    { l[i]=omo1; R[1359]++; if(dbg){print "R1359"}; continue };
  };
  if(iwrd=="повести") {
-   if ( q(1,"gl_in mest_vi suw_edvi suw_mnvi") && s(0) )
+   if ( q(1,"gl_in mest_vi suw_vi") && s(0) )
    { l[i]=omo1; R[1360]++; if(dbg){print "R1360"}; continue };
  };
  #
@@ -6915,16 +6915,16 @@ for(wrd in omap["x2298"]){omakevars(x2298,"x2298");for(y=1;y<=wln;y++)         #
    (isname(1)||suw_edmuim(1)||w(1,"он")) && s(0) )
    { l[i]=omo1; R[1393]++; if(dbg){print "R1393"}; continue };
    if ( q(1,"pre_vi preph_vi") &&
-        q(2,"suw_edvi suw_mnvi prl_edvi prl_mnvi prq_edvi prq_mnvi mest_vi") && s(0,1) )
+        q(2,"suw_vi prl_vi prq_vi mest_vi") && s(0,1) )
    { l[i]=omo1; R[1394]++; if(dbg){print "R1394"}; continue };
    if ( q(1,"pre_ro preph_ro") &&
-        q(2,"suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro mest_ro") && s(0,1) )
+        q(2,"suw_ro prl_ro prq_ro mest_ro") && s(0,1) )
    { l[i]=omo1; R[1395]++; if(dbg){print "R1395"}; continue };
    if ( q(1,"pre_tv preph_tv") &&
-        q(2,"suw_edtv suw_mntv prl_edtv prl_mntv prq_edtv prq_mntv mest_tv") && s(0,1) )
+        q(2,"suw_tv prl_tv prq_tv mest_tv") && s(0,1) )
    { l[i]=omo1; R[1396]++; if(dbg){print "R1396"}; continue };
    if ( pre_pr(1) &&
-             q(2,"suw_edpr suw_mnpr prl_edpr prl_mnpr prq_edpr prq_mnpr mest_pr") && s(0,1) )
+             q(2,"suw_pr prl_pr prq_pr mest_pr") && s(0,1) )
    { l[i]=omo1; R[1397]++; if(dbg){print "R1397"}; continue };
    if ( gl_in(1) && s(0) )
    { l[i]=omo1; R[1398]++; if(dbg){print "R1398"}; continue };
@@ -7008,7 +7008,7 @@ sz_iili(-1) && s(-2,-1) )
       qxs(1,"на","перекосяк") )
  { l[i]=omo1; R[1415]++; if(dbg){print "R1415"}; continue };
  if ( q(1,"pre_vi preph_vi") &&
-      q(2,"suw_edvi suw_mnvi") && s(0,1) )
+      q(2,"suw_vi") && s(0,1) )
  { l[i]=omo1; R[1416]++; if(dbg){print "R1416"}; continue };
 
  if ( gl_paedsr_f() )
@@ -7126,7 +7126,7 @@ for(wrd in omap["x2307"]){omakevars(x2307,"x2307");for(y=1;y<=wln;y++)         #
  #
  if ( w(-1,"друг") && s(-1) )
  { l[i]=omo2; R[1438]++; if(dbg){print "R1438", "sw_em_t_f"}; continue };
- if ( q(-2,"suw_edtv suw_mntv") &&
+ if ( q(-2,"suw_tv") &&
 sz_iili(-1) && s(-2,-1) )
  { l[i]=omo2; R[1439]++; if(dbg){print "R1439", "sw_em_t_f"}; continue };
  #
@@ -7225,10 +7225,10 @@ for(wrd in omap["x2312"]){omakevars(x2312,"x2312");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2313"]){omakevars(x2313,"x2313");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( q(1,"prl_edro prl_mnro") &&
-      q(2,"suw_edro suw_mnro") && s(0) )
+ if ( q(1,"prl_ro") &&
+      q(2,"suw_ro") && s(0) )
  { l[i]=omo2; R[1458]++; if(dbg){print "R1458"}; continue };
- if ( q(1,"suw_edro suw_mnro") && s(0) )
+ if ( q(1,"suw_ro") && s(0) )
  { l[i]=omo2; R[1459]++; if(dbg){print "R1459"}; continue };
  #
  if ( sw_mn_r_f() )
@@ -7519,10 +7519,10 @@ for(wrd in omap["x3016"]){omakevars(x3016,"x3016");for(y=1;y<=wln;y++)          
 for(wrd in omap["x4700"]){omakevars(x4700,"x4700");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  if(iwrd=="стоит") {
-   if ( q(1,"prl_edro prl_mnro mest_ro") &&
-        q(2,"suw_edro suw_mnro") && s(0,1) && Q(1,"suw_edim") )
+   if ( q(1,"prl_ro mest_ro") &&
+        q(2,"suw_ro") && s(0,1) && Q(1,"suw_edim") )
    { l[i]=omo1; R[1512]++; if(dbg){print "R1512"}; continue };
-   if ( q(1,"suw_edro suw_mnro") && s(0) && Q(1,"suw_edim") )
+   if ( q(1,"suw_ro") && s(0) && Q(1,"suw_edim") )
    { l[i]=omo1; R[1513]++; if(dbg){print "R1513"}; continue };
  };
  #
@@ -7551,19 +7551,19 @@ for(wrd in omap["x4700"]){omakevars(x4700,"x4700");for(y=1;y<=wln;y++)         #
               q(xwn+2,"suw_mnro") && type(xwn+2,"geld") && s(0,xwn+1) )
  { l[i]=omo1; R[1517]++; if(dbg){print "R1517"}; continue };
  if ( q(1,"qik_im qik_edim") &&
-      q(2,"suw_edro suw_mnro") && type(2,"geld") && s(0,1) )
+      q(2,"suw_ro") && type(2,"geld") && s(0,1) )
  { l[i]=omo1; R[1518]++; if(dbg){print "R1518"}; continue };
- if ( q(-1,"mest_it suw_edim suw_mnim") &&
-      q(1,"suw_edim suw_mnim") && type(1,"geld") && s(-1,0) )
+ if ( q(-1,"mest_it suw_im") &&
+      q(1,"suw_im") && type(1,"geld") && s(-1,0) )
  { l[i]=omo1; R[1519]++; if(dbg){print "R1519"}; continue };
- if ( q(1,"prl_edro prl_mnro mest_ro") &&
-      q(2,"suw_edro suw_mnro") && s(0,1) && Q(1,"suw_edim suw_mnim") )
+ if ( q(1,"prl_ro mest_ro") &&
+      q(2,"suw_ro") && s(0,1) && Q(1,"suw_im") )
  { l[i]=omo1; R[1520]++; if(dbg){print "R1520"}; continue };
- if ( q(1,"suw_edro suw_mnro") && s(0) && Q(1,"suw_edim suw_mnim") )
+ if ( q(1,"suw_ro") && s(0) && Q(1,"suw_im") )
  { l[i]=omo1; R[1521]++; if(dbg){print "R1521"}; continue };
  if ( w(1,"по") &&
       q(2,"qik_im qik_edim") &&
-      q(3,"suw_edro suw_mnro") && type(3,"geld") && s(0,3) )
+      q(3,"suw_ro") && type(3,"geld") && s(0,3) )
  { l[i]=omo1; R[1522]++; if(dbg){print "R1522"}; continue };
  #
  if ( p(-2) && w(-1,"не") && s(-1) && p(0) )
@@ -7613,16 +7613,16 @@ for(wrd in omap["x4700"]){omakevars(x4700,"x4700");for(y=1;y<=wln;y++)         #
  { l[i]=omo2; R[1537]++; if(dbg){print "R1537"}; continue };
  #
  if ( pre_ro(1) &&
-           q(2,"suw_edro suw_mnro prl_edro prl_mnro prq_edro prq_mnro mest_ro") && s(0,1) )
+           q(2,"suw_ro prl_ro prq_ro mest_ro") && s(0,1) )
  { l[i]=omo2; R[1538]++; if(dbg){print "R1538"}; continue };
  if ( pre_ro(-2) &&
-           q(-1,"suw_edro suw_mnro") &&
-           q(1,"suw_edim suw_mnim") && s(-2,0) )
+           q(-1,"suw_ro") &&
+           q(1,"suw_im") && s(-2,0) )
  { l[i]=omo2; R[1539]++; if(dbg){print "R1539"}; continue };
  if ( pre_ro(-2) &&
-           q(-1,"suw_edro suw_mnro") &&
-           q(1,"prl_edim prl_mnim prq_edim prq_mnim mest_im") &&
-           q(2,"suw_edim suw_mnim") && s(-2,1) )
+           q(-1,"suw_ro") &&
+           q(1,"prl_im prq_im mest_im") &&
+           q(2,"suw_im") && s(-2,1) )
  { l[i]=omo2; R[1540]++; if(dbg){print "R1540"}; continue };
  #
  if ( pre_pr(1) &&
@@ -7634,29 +7634,29 @@ for(wrd in omap["x4700"]){omakevars(x4700,"x4700");for(y=1;y<=wln;y++)         #
  { l[i]=omo2; R[1542]++; if(dbg){print "R1542"}; continue };
  #
  if ( pre_pr(1) &&
-           q(2,"suw_edpr suw_mnpr prl_edpr prl_mnpr prq_edpr prq_mnpr mest_pr") && s(0,1) )
+           q(2,"suw_pr prl_pr prq_pr mest_pr") && s(0,1) )
  { l[i]=omo2; R[1543]++; if(dbg){print "R1543"}; continue };
  if ( pre_pr(-2) &&
-           q(-1,"suw_edpr suw_mnpr") &&
-           q(1,"suw_edim suw_mnim") && s(-2,0) )
+           q(-1,"suw_pr") &&
+           q(1,"suw_im") && s(-2,0) )
  { l[i]=omo2; R[1544]++; if(dbg){print "R1544"}; continue };
  if ( pre_pr(-2) &&
-           q(-1,"suw_edpr suw_mnpr") &&
-           q(1,"prl_edim prl_mnim prq_edim prq_mnim mest_im") &&
-           q(2,"suw_edim suw_mnim") && s(-2,1) )
+           q(-1,"suw_pr") &&
+           q(1,"prl_im prq_im mest_im") &&
+           q(2,"suw_im") && s(-2,1) )
  { l[i]=omo2; R[1545]++; if(dbg){print "R1545"}; continue };
  #
  if ( pre_tv(1) &&
-           q(2,"suw_edtv suw_mntv prl_edtv prl_mntv prq_edtv prq_mntv mest_tv") && s(0,1) )
+           q(2,"suw_tv prl_tv prq_tv mest_tv") && s(0,1) )
  { l[i]=omo2; R[1546]++; if(dbg){print "R1546"}; continue };
  if ( pre_tv(-2) &&
-           q(-1,"suw_edtv suw_mntv") &&
-           q(1,"suw_edim suw_mnim") && s(-2,0) )
+           q(-1,"suw_tv") &&
+           q(1,"suw_im") && s(-2,0) )
  { l[i]=omo2; R[1547]++; if(dbg){print "R1547"}; continue };
  if ( pre_tv(-2) &&
-           q(-1,"suw_edtv suw_mntv") &&
-           q(1,"prl_edim prl_mnim prq_edim prq_mnim mest_im") &&
-           q(2,"suw_edim suw_mnim") && s(-2,1) )
+           q(-1,"suw_tv") &&
+           q(1,"prl_im prq_im mest_im") &&
+           q(2,"suw_im") && s(-2,1) )
  { l[i]=omo2; R[1548]++; if(dbg){print "R1548"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -7667,16 +7667,16 @@ for(wrd in omap["x4701"]){omakevars(x4701,"x4701");for(y=1;y<=wln;y++)         #
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
  if ( q(1,"pre_vi") &&
-      q(2,"suw_edvi suw_mnvi prl_edvi prl_mnvi prq_edvi prq_mnvi mest_vi") && s(0,1) )
+      q(2,"suw_vi prl_vi prq_vi mest_vi") && s(0,1) )
  { l[i]=omo1; R[1549]++; if(dbg){print "R1549"}; continue };
  if ( q(1,"pre_ro") &&
-      q(2,"suw_edro suw_edda suw_mnro prl_edro prl_mnro prq_edro prq_mnro mest_ro") && s(0,1) )
+      q(2,"suw_ro prl_ro prq_ro mest_ro") && s(0,1) )
  { l[i]=omo1; R[1550]++; if(dbg){print "R1550"}; continue };
  if ( q(1,"pre_da") &&
-      q(2,"suw_edda suw_mnda prl_edda prl_mnda prq_edda prq_mnda mest_da") && s(0,1) )
+      q(2,"suw_da prl_da prq_da mest_da") && s(0,1) )
  { l[i]=omo1; R[1551]++; if(dbg){print "R1551"}; continue };
  if ( pre_pr(1) &&
-           q(2,"suw_edpr suw_edme suw_mnpr prl_edpr prl_mnpr prq_edpr prq_mnpr mest_pr") && s(0,1) )
+           q(2,"suw_pr suw_edme prl_pr prq_pr mest_pr") && s(0,1) )
  { l[i]=omo1; R[1552]++; if(dbg){print "R1552"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -7689,24 +7689,24 @@ for(wrd in omap["x4702"]){omakevars(x4702,"x4702");for(y=1;y<=wln;y++)         #
  cst="быть находиться передавать передаваться передать";
  if ( w(-2,"в") &&
       q(-1,"mest_vi mest_pr") &&
-      q(0,"suw_edvi suw_mnvi suw_edpr suw_mnpr") &&
-      q(1,"suw_edro suw_mnro") &&
+      q(0,"suw_vi suw_pr") &&
+      q(1,"suw_ro") &&
    base(2,cst) && s(-2,1) )
  { l[i]=omo1; R[1553]++; if(dbg){print "R1553"}; continue };
  if ( w(-2,"в") &&
       q(-1,"mest_vi mest_pr") &&
-      q(0,"suw_edvi suw_mnvi suw_edpr suw_mnpr") &&
+      q(0,"suw_vi suw_pr") &&
    base(1,cst) && s(-2,0) )
  { l[i]=omo1; R[1554]++; if(dbg){print "R1554"}; continue };
  #
  if ( prl_kred_sr(1) &&
-                q(2,"prl_edro prl_mnro prq_edro prq_mnro mest_ro") &&
-                q(3,"prl_edro prl_mnro prq_edro prq_mnro mest_ro suw_edro suw_mnro") && s(0,2) )
+                q(2,"prl_ro prq_ro mest_ro") &&
+                q(3,"prl_ro prq_ro mest_ro suw_ro") && s(0,2) )
  { l[i]=omo2; R[1555]++; if(dbg){print "R1555"}; continue };
- if ( q(1,"prl_edro prl_mnro prq_edro prq_mnro mest_ro") &&
-      q(2,"suw_edro suw_mnro") && s(0,1) )
+ if ( q(1,"prl_ro prq_ro mest_ro") &&
+      q(2,"suw_ro") && s(0,1) )
  { l[i]=omo2; R[1556]++; if(dbg){print "R1556"}; continue };
- if ( q(1,"suw_edro suw_mnro") && s(0) )
+ if ( q(1,"suw_ro") && s(0) )
  { l[i]=omo2; R[1557]++; if(dbg){print "R1557"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
@@ -7742,30 +7742,30 @@ for(wrd in omap["x4704"]){omakevars(x4704,"x4704");for(y=1;y<=wln;y++)         #
  if ( q(0,"gl_povzmn") )
  { l[i]=omo1; R[1564]++; if(dbg){print "R1564"}; continue };
  if ( pre_pr(1) &&
-           q(2,"prl_edro suw_mnro prq_edro prq_mnro") &&
-           q(3,"suw_edro suw_mnro") && s(0,2) )
+           q(2,"prl_ro prq_ro") &&
+           q(3,"suw_ro") && s(0,2) )
  { l[i]=omo1; R[1565]++; if(dbg){print "R1565"}; continue };
  if ( pre_ro(1) &&
-           q(2,"suw_edro suw_mnro") && s(0,1) )
+           q(2,"suw_ro") && s(0,1) )
  { l[i]=omo1; R[1566]++; if(dbg){print "R1566"}; continue };
  if ( pre_pr(1) &&
-           q(2,"prl_edpr suw_mnpr prq_edpr prq_mnpr") &&
-           q(3,"suw_edpr suw_mnpr") && s(0,2) )
+           q(2,"prl_pr prq_pr") &&
+           q(3,"suw_pr") && s(0,2) )
  { l[i]=omo1; R[1567]++; if(dbg){print "R1567"}; continue };
  if ( pre_pr(1) &&
-           q(2,"suw_edpr suw_mnpr") && s(0,1) )
+           q(2,"suw_pr") && s(0,1) )
  { l[i]=omo1; R[1568]++; if(dbg){print "R1568"}; continue };
  if ( pre_pr(-2) &&
-           q(-1,"suw_edpr suw_mnpr") && s(-2,-1) )
+           q(-1,"suw_pr") && s(-2,-1) )
  { l[i]=omo1; R[1569]++; if(dbg){print "R1569"}; continue };
  if ( sc(0,",") &&
        w(1,"как словно") &&
-       q(2,"suw_edim suw_mnim") && s(1) )
+       q(2,"suw_im") && s(1) )
  { l[i]=omo1; R[1570]++; if(dbg){print "R1570"}; continue };
  if ( sc(0,",") &&
        w(1,"как словно") &&
-       q(2,"prl_edim prl_mnim") &&
-       q(3,"suw_edim suw_mnim") && s(1,2) )
+       q(2,"prl_im") &&
+       q(3,"suw_im") && s(1,2) )
  { l[i]=omo1; R[1571]++; if(dbg){print "R1571"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
