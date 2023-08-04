@@ -12,7 +12,11 @@
 function sortchunk(chunk, sep,     rett, charr, chars, i, chnum)
 {        split(chunk, charr, sep); for ( i in charr ) { chars[charr[i]] = charr[i] }; chnum = asort(chars);
          rett = chars[1]; for ( i = 2; i <= chnum; i++ ) { rett = rett sep chars[i] }; return rett };
-
+function wrap(text,wr,pad,   qu, wy, nx) { pad = sprintf("%" pad "s","");
+         while (text) { qu = match(text, / |$/); wy += qu
+            if (wy > wr) { nx = nx " \\\n" pad; wy = qu-1 } else if (nx) nx = nx FS;
+            nx = nx substr(text,1,qu-1); text = substr(text,qu+1) }; return nx
+}
 BEGIN { 
         PROCINFO["sorted_in"]="@ind_num_asc"
         RS = "\n";
@@ -21,9 +25,20 @@ BEGIN {
 #       reg_ = "^\\s*cst[0-9]*=\x22[-А-ЯЁёа-я0-9 ]+\x22$";
         reg_ = "^\\s*cst[0-9]*=\x22[^\x22]+\x22$";
         ifreg= "^\\s*if[ !(]*[A-Za-z_0-9]+\\("; 
+        LW = 160;
       }
 { 
-  num++; book[num] = $0;
+  if ($0 ~ /^\s+cst[0-9]*=\x22[^\\"]+\\$/) {
+     num++; book[num] = gensub(/\\$/," ","g", $0);
+     while ($0 ~ /\\$/) {
+           getline;
+           book[num] = book[num] " " gensub(/\\$/," ","g", $0);
+                        };
+
+     } else {  num++; book[num] = $0 };
+
+# print substr($0,sl,1)
+# num++; book[num] = $0
 }
 
 END {
@@ -41,6 +56,7 @@ END {
         sp = RSTART+RLENGTH
         fp = length(b) - 1
         chunk = sortchunk(substr (b, sp, fp-sp), " ");
+        chunk = wrap(chunk,LW,sp-1)
         
         book[i] = substr(b, 1, sp-1) chunk substr(b, fp);
 

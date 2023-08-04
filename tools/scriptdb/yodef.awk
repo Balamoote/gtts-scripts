@@ -170,7 +170,7 @@ FS = savefs
 ### е !_#_!
     if(tolower(wrd)== "е" ){regwpos(wrd);for(i in wpos){i=strtonum(i); # header
 
-       if ( se(0,"-") && w(1,"моё") )
+       if ( se(0,"-") && w(1,"моё мое") )
        { l[i]=somo; r[9]++; if(dbg){print "R9"}; continue;};
    
     }; delete wpos; book[b]=joinpat(l,sep,nf)}; # footer

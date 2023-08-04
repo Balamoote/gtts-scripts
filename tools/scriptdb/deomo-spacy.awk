@@ -462,12 +462,12 @@ for(wrd in omap["x1031"]){omakevars(x1031,"x1031");for(y=1;y<=wln;y++)          
 for(wrd in omap["x1031"]){omakevars(x1031,"x1031");for(y=1;y<=wln;y++)                    # header1
 {makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( w(-1,"светлыми добрыми злыми лесными подземными тёмными") && s(-1) )
+ if ( w(-1,"светлыми добрыми злыми лесными подземными тёмными темными") && s(-1) )
  { l[i]=omo1; r[699]++; if(dbg){print "R699"}; continue};
  #
  if ( wc(-1,"^запах ^благоух ^воня ^пользова") && s(-1) )
  { l[i]=omo2; r[700]++; if(dbg){print "R700"}; continue};
- if ( w(-1,"дешёвыми дорогими женскими модными мужскими тошнотворными") && s(-1) )
+ if ( w(-1,"дешёвыми дешевыми дорогими женскими модными мужскими тошнотворными") && s(-1) )
  { l[i]=omo2; r[701]++; if(dbg){print "R701"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
@@ -477,10 +477,10 @@ for(wrd in omap["x1031"]){omakevars(x1031,"x1031");for(y=1;y<=wln;y++)          
 for(wrd in omap["x1033"]){omakevars(x1033,"x1033");for(y=1;y<=wln;y++)                    # header1
 {makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( w(-1,"светлых добрых злых лесных подземных тысячи тёмных") && s(-1) )
+ if ( w(-1,"светлых добрых злых лесных подземных тысячи тёмных темных") && s(-1) )
  { l[i]=omo1; r[702]++; if(dbg){print "R702"}; continue};
  #
- if ( w(-1,"дешёвых дорогих женских модных мужских тошнотворных") && s(-1) )
+ if ( w(-1,"дешёвых дешевых дорогих женских модных мужских тошнотворных") && s(-1) )
  { l[i]=omo2; r[703]++; if(dbg){print "R703"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
@@ -490,10 +490,10 @@ for(wrd in omap["x1033"]){omakevars(x1033,"x1033");for(y=1;y<=wln;y++)          
 for(wrd in omap["x1034"]){omakevars(x1034,"x1034");for(y=1;y<=wln;y++)                    # header1
 {makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( w(-1,"светлые добрые злые лесные подземные тёмные") && s(-1) )
+ if ( w(-1,"светлые добрые злые лесные подземные тёмные темные") && s(-1) )
  { l[i]=omo1; r[704]++; if(dbg){print "R704"}; continue};
  #
- if ( w(-1,"дешёвые дорогие женские модные мужские тошнотворные") && s(-1) )
+ if ( w(-1,"дешёвые дешевые дорогие женские модные мужские тошнотворные") && s(-1) )
  { l[i]=omo2; r[705]++; if(dbg){print "R705"}; continue};
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                           ##_footer
@@ -503,12 +503,12 @@ for(wrd in omap["x1034"]){omakevars(x1034,"x1034");for(y=1;y<=wln;y++)          
 for(wrd in omap["x1035"]){omakevars(x1035,"x1035");for(y=1;y<=wln;y++)                    # header1
 {makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( w(-1,"светлых добрых злых лесных подземных тысяч тёмных вонь") && s(-1) )
+ if ( w(-1,"светлых добрых злых лесных подземных тысяч тёмных темных вонь") && s(-1) )
  { l[i]=omo1; r[706]++; if(dbg){print "R706"}; continue};
  if ( wc(-1,"^впусти ^вызава ^выпусти ^заклина ^призыв ^укроти ^укрощ") && s(-1) )
  { l[i]=omo1; r[707]++; if(dbg){print "R707"}; continue};
  #
- if ( w(-1,"дешёвых дорогих женских модных мужских тошнотворных") && s(-1) )
+ if ( w(-1,"дешёвых дешевых дорогих женских модных мужских тошнотворных") && s(-1) )
  { l[i]=omo2; r[708]++; if(dbg){print "R708"}; continue};
  if ( wc(-1,"^аромат ^запах ^благоух ^изготов ^флакон ^шлейф ^воня ^пользова") && s(-1) )
  { l[i]=omo2; r[709]++; if(dbg){print "R709"}; continue};
@@ -4559,7 +4559,7 @@ for(wrd in omap["x2275"]){omakevars(x2275,"x2275");for(y=1;y<=wln;y++)         #
  if ( w(1,"себе себя ей") && s(0) )
  { l[i]=omo2; r[1437]++; if(dbg){print "R1437"}; continue};
  if ( w(-1,"по и") &&
-       w(1,"своей твоей его её их нашей вашей") &&
+       w(1,"своей твоей его её ее их нашей вашей") &&
         q(2,"suw_edzeda suw_edzero suw_edzetv suw_edzepr") && s(-1,1) )
  { l[i]=omo2; r[1438]++; if(dbg){print "R1438"}; continue};
  #
@@ -4581,9 +4581,9 @@ for(wrd in omap["x2275"]){omakevars(x2275,"x2275");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2276"]){omakevars(x2276,"x2276");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( w(-1,"себе мне нём тебе") && s(-1) )
+ if ( w(-1,"себе мне нём нем тебе") && s(-1) )
  { l[i]=omo2; r[1442]++; if(dbg){print "R1442"}; continue};
- if ( (w(1,"себе мне нём тебе")||muk_edmupr(1)) && s(0) )
+ if ( (w(1,"себе мне нём нем тебе")||muk_edmupr(1)) && s(0) )
  { l[i]=omo2; r[1443]++; if(dbg){print "R1443"}; continue};
  if ( muk_edmupr(-1) && s(-1) )
  { l[i]=omo1; r[1444]++; if(dbg){print "R1444"}; continue};
@@ -4733,7 +4733,7 @@ for(wrd in omap["x2283"]){omakevars(x2283,"x2283");for(y=1;y<=wln;y++)         #
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
  if ( pre_ro(-2) &&
-      q(-1,"suw_edro suw_mnro mest_ro") && W(-1,"неё") && s(-2,-1))
+      q(-1,"suw_edro suw_mnro mest_ro") && W(-1,"неё нее") && s(-2,-1))
  { l[i]=omo1; r[1471]++; if(dbg){print "R1471"}; continue};
  #
  if ( ( w(-1,"я мы ты вы он она оно кто")||mest_edim(-1)||q_(-1,mst_ed_mu_im)) && s(-1))
@@ -4815,7 +4815,7 @@ for(wrd in omap["x2287"]){omakevars(x2287,"x2287");for(y=1;y<=wln;y++)         #
  if ( sc(0,",") && w(1,"чем") )
  { l[i]=omo1; r[1490]++; if(dbg){print "R1490"}; continue};
  if ( pre_tv(-2) &&
-       w(-1"чем тем ещё") &&
+       w(-1"чем тем ещё еще") &&
         q(1,"suw_edtv suw_mntv") && s(-2,0) )
  { l[i]=omo1; r[1491]++; if(dbg){print "R1491"}; continue};
  #
@@ -5112,10 +5112,10 @@ for(wrd in omap["x4700"]){omakevars(x4700,"x4700");for(y=1;y<=wln;y++)         #
        phf(1,"друг друга") ) && s(0,hfn-1) )
  { l[i]=omo1; r[1543]++; if(dbg){print "R1543"}; continue};
  #
- if ( w(1,"дёшево денег дорого недорого немало мало") && s(0) )
+ if ( w(1,"дёшево дешево денег дорого недорого немало мало") && s(0) )
  { l[i]=omo1; r[1544]++; if(dbg){print "R1544"}; continue};
  #
- if ( w(-1,"дёшево денег дорого недорого немало мало") && s(-1) )
+ if ( w(-1,"дёшево дешево денег дорого недорого немало мало") && s(-1) )
  { l[i]=omo1; r[1545]++; if(dbg){print "R1545"}; continue};
  #
  if ( qb(-5,-1,"gl_in") && s(qbn,-1) )

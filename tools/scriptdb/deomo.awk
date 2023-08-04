@@ -369,7 +369,8 @@ for(wrd in omap["x1026"]){omakevars(x1026,"x1026");for(y=1;y<=wln;y++)          
  if ( w(1,cst) && s(0) )
  { l[i]=omo1; R[46]++; if(dbg){print "R46"}; continue };
  #
- cst="внутренний государственный местный официальный полицейский половой руководящий советский союзный судебный федеральный хватательный чувствительный электровосприимчивый";
+ cst="внутренний государственный местный официальный полицейский половой руководящий советский союзный судебный федеральный хватательный чувствительный \
+      электровосприимчивый";
  if ( base(-1,cst) && s(-1) )
  { l[i]=omo1; R[47]++; if(dbg){print "R47"}; continue };
 
@@ -436,14 +437,14 @@ for(wrd in omap["x1031"]){omakevars(x1031,"x1031");for(y=1;y<=wln;y++)          
 for(wrd in omap["x1031"]){omakevars(x1031,"x1031");for(y=1;y<=wln;y++)                    # header1
 {makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- cst="добрыми злыми лесными подземными светлыми тёмными";
+ cst="добрыми злыми лесными подземными светлыми темными тёмными";
  if ( w(-1,cst) && s(-1) )
  { l[i]=omo1; R[54]++; if(dbg){print "R54"}; continue };
  #
  cst="благоухание благоухать вонь вонять запах запахнуть пользоваться";
  if ( base(-1,cst) && s(-1) )
  { l[i]=omo2; R[55]++; if(dbg){print "R55"}; continue };
- cst="дешёвыми дорогими женскими модными мужскими тошнотворными";
+ cst="дешевыми дешёвыми дорогими женскими модными мужскими тошнотворными";
  if ( w(-1,cst) && s(-1) )
  { l[i]=omo2; R[56]++; if(dbg){print "R56"}; continue };
 
@@ -454,11 +455,11 @@ for(wrd in omap["x1031"]){omakevars(x1031,"x1031");for(y=1;y<=wln;y++)          
 for(wrd in omap["x1033"]){omakevars(x1033,"x1033");for(y=1;y<=wln;y++)                    # header1
 {makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- cst="добрых злых лесных подземных светлых тысячи тёмных";
+ cst="добрых злых лесных подземных светлых темных тысячи тёмных";
  if ( w(-1,cst) && s(-1) )
  { l[i]=omo1; R[57]++; if(dbg){print "R57"}; continue };
  #
- cst="дешёвых дорогих женских модных мужских тошнотворных";
+ cst="дешевых дешёвых дорогих женских модных мужских тошнотворных";
  if ( w(-1,cst) && s(-1) )
  { l[i]=omo2; R[58]++; if(dbg){print "R58"}; continue };
 
@@ -469,11 +470,11 @@ for(wrd in omap["x1033"]){omakevars(x1033,"x1033");for(y=1;y<=wln;y++)          
 for(wrd in omap["x1034"]){omakevars(x1034,"x1034");for(y=1;y<=wln;y++)                    # header1
 {makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- cst="добрые злые лесные подземные светлые тёмные";
+ cst="добрые злые лесные подземные светлые темные тёмные";
  if ( w(-1,cst) && s(-1) )
  { l[i]=omo1; R[59]++; if(dbg){print "R59"}; continue };
  #
- cst="дешёвые дорогие женские модные мужские тошнотворные";
+ cst="дешевые дешёвые дорогие женские модные мужские тошнотворные";
  if ( w(-1,cst) && s(-1) )
  { l[i]=omo2; R[60]++; if(dbg){print "R60"}; continue };
 
@@ -484,14 +485,14 @@ for(wrd in omap["x1034"]){omakevars(x1034,"x1034");for(y=1;y<=wln;y++)          
 for(wrd in omap["x1035"]){omakevars(x1035,"x1035");for(y=1;y<=wln;y++)                    # header1
 {makebookvars_nohyphback();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- cst="вонь добрых злых лесных подземных светлых тысяч тёмных";
+ cst="вонь добрых злых лесных подземных светлых темных тысяч тёмных";
  if ( w(-1,cst) && s(-1) )
  { l[i]=omo1; R[61]++; if(dbg){print "R61"}; continue };
  cst="впустить вызвать вызывать выпускать выпустить выпусть заклинатель заклинать призвание призывать укротитель укротить укрощать";
  if ( base(-1,cst) && s(-1) )
  { l[i]=omo1; R[62]++; if(dbg){print "R62"}; continue };
  #
- cst="дешёвых дорогих женских модных мужских тошнотворных";
+ cst="дешевых дешёвых дорогих женских модных мужских тошнотворных";
  if ( w(-1,cst) && s(-1) )
  { l[i]=omo2; R[63]++; if(dbg){print "R63"}; continue };
  cst="аромат благоухание вонь вонять запах изготовление пользоваться флакон шлейф";
@@ -582,7 +583,7 @@ for(wrd in omap["x1040"]){omakevars(x1040,"x1040");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x1041"]){omakevars(x1041,"x1041");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- cst="датчик детектор диск индикатор прибор счётчик циферблат часы";
+ cst="датчик детектор диск индикатор прибор счетчик счётчик циферблат часы";
  if ( base(1,cst) && s(0) )
  { l[i]=omo1; R[78]++; if(dbg){print "R78"}; continue };
  if ( pre_pr(1) &&
@@ -716,7 +717,7 @@ for(wrd in omap["x1048"]){omakevars(x1048,"x1048");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x1049"]){omakevars(x1049,"x1049");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- cst="вбок вверх влево вниз вперёд вправо";
+ cst="вбок вверх влево вниз вперед вперёд вправо";
  if ( w(1,cst) && s(0) )
  { l[i]=omo2; R[102]++; if(dbg){print "R102"}; continue };
 
@@ -796,7 +797,7 @@ for(wrd in omap["x1055"]){omakevars(x1055,"x1055");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x1056"]){omakevars(x1056,"x1056");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- cst="белая каменный качественный косный низносортный овсяный пшеничный ржаной серая солёный сырой";
+ cst="белая каменный качественный косный низносортный овсяный пшеничный ржаной серая соленый солёный сырой";
  if ( base(-1,cst) && s(-1) )
  { l[i]=omo1; R[112]++; if(dbg){print "R112"}; continue };
 
@@ -815,11 +816,12 @@ for(wrd in omap["x1056"]){omakevars(x1056,"x1056");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x1057"]){omakevars(x1057,"x1057");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- cst="белая каменный качественный косный низносортный овсяный пшеничный ржаной серая солёный сырой";
+ cst="белая каменный качественный косный низносортный овсяный пшеничный ржаной серая соленый солёный сырой";
  if ( base(-1,cst) && s(-1) )
  { l[i]=omo1; R[115]++; if(dbg){print "R115"}; continue };
 
- cst="внутренний душевный звенящий изнурительный истинный мучительный настоящий невыносимый немыслимый нестерпимый острый подлинный сильный страшный сущий ужасающий";
+ cst="внутренний душевный звенящий изнурительный истинный мучительный настоящий невыносимый немыслимый нестерпимый острый подлинный сильный страшный сущий \
+      ужасающий";
  if ( base(-1,cst) && s(-1) )
  { l[i]=omo2; R[116]++; if(dbg){print "R116"}; continue };
  #
@@ -970,7 +972,7 @@ for(wrd in omap["x1066"]){omakevars(x1066,"x1066");for(y=1;y<=wln;y++)          
 for(wrd in omap["x1067"]){omakevars(x1067,"x1067");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- cst="влюблённые крепкие супружеские";
+ cst="влюбленные влюблённые крепкие супружеские";
  if ( w(-1,cst) && s(-1) )
  { l[i]=omo1; R[139]++; if(dbg){print "R139"}; continue };
  cst="гулять идти кружиться танцевать";
@@ -998,7 +1000,7 @@ for(wrd in omap["x1068"]){omakevars(x1068,"x1068");for(y=1;y<=wln;y++)         #
  if ( base(-1,cst) && s(-1) )
  { l[i]=omo1; R[144]++; if(dbg){print "R144"}; continue };
  #
- cst="пуговка щёлочка";
+ cst="пуговка щелочка щёлочка";
  if ( sc(0,"-") &&
     base(1,cst) )
  { l[i]=omo1; R[145]++; if(dbg){print "R145"}; continue };
@@ -2975,7 +2977,7 @@ for(wrd in omap["x2094"]){omakevars(x2094,"x2094");for(y=1;y<=wln;y++)         #
  { l[i]=omo1; R[569]++; if(dbg){print "R569"}; continue };
  if ( q(1,"suw_tv") && s(0) )
  { l[i]=omo1; R[570]++; if(dbg){print "R570"}; continue };
- if ( (w(1,"не всё")||q(1,"prl_kred_sr")) &&
+ if ( (w(1,"не всё все")||q(1,"prl_kred_sr")) &&
        q(2,"gl_in gl_ed gl_mn gl_vzmn deep prq_kred prq_krmn prl_kred prl_krmn") && s(0,1) )
  { l[i]=omo1; R[571]++; if(dbg){print "R571"}; continue };
  if ( q(1,"gl_in gl_ed gl_mn gl_vzmn deep prq_kred prq_krmn prl_kred prl_krmn") && s(0) )
@@ -3882,7 +3884,7 @@ for(wrd in omap["x2146"]){omakevars(x2146,"x2146");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2147"]){omakevars(x2147,"x2147");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  if(iwrd=="дорог") {
-   cst="перекрёсток прокладка";
+   cst="перекресток перекрёсток прокладка";
    if ( base(-1,cst) && s(-1) )
    { l[i]=omo2; R[761]++; if(dbg){print "R761"}; continue };
  };
@@ -5359,7 +5361,7 @@ for(wrd in omap["x2235"]){omakevars(x2235,"x2235");for(y=1;y<=wln;y++)         #
    { l[i]=omo1; R[1052]++; if(dbg){print "R1052"}; continue };
  };
  if(iwrd=="города") {
-   if ( w(-1,"смелость") && w(1,"берёт") && s(-1,0) )
+   if ( w(-1,"смелость") && w(1,"берёт берет") && s(-1,0) )
    { l[i]=omo2; R[1053]++; if(dbg){print "R1053"}; continue };
  };
  if(iwrd=="рода") {
@@ -6050,7 +6052,8 @@ for(wrd in omap["x2269"]){omakevars(x2269,"x2269");for(y=1;y<=wln;y++)         #
       w(1,"назад") && s(-1) )
  { l[i]=omo1; R[1197]++; if(dbg){print "R1197"}; continue };
 
- cst="подобна подобная подобнее подобней подобно подобного подобное подобной подобном подобному подобною подобную подобны подобные подобный подобным подобными подобных";
+ cst="подобна подобная подобнее подобней подобно подобного подобное подобной подобном подобному подобною подобную подобны подобные подобный подобным подобными \
+      подобных";
  if ( w(-1,"а и но") &&
       w(1,cst) && s(-1) )
  { l[i]=omo1; R[1198]++; if(dbg){print "R1198"}; continue };
@@ -6206,7 +6209,7 @@ for(wrd in omap["x2275"]){omakevars(x2275,"x2275");for(y=1;y<=wln;y++)         #
 #if ( w(-1,"по") &&
 #      w(1,cst) && s(-1,0) )
 #{ l[i]=omo2; R[1234]++; if(dbg){print "R1234"}; continue };
- cst="высоте глубине глубинке гуще середине серёдке чаще";
+ cst="высоте глубине глубинке гуще середине середке серёдке чаще";
  if ( w(-1,"в") &&
       w(1,cst) && s(-1,0) )
  { l[i]=omo1; R[1235]++; if(dbg){print "R1235"}; continue };
@@ -6237,12 +6240,12 @@ for(wrd in omap["x2275"]){omakevars(x2275,"x2275");for(y=1;y<=wln;y++)         #
  cst="ей себе себя тебе";
  if ( (w(1,cst)||q(1,"gl_mn gl_ed muk_edzeda")) && s(0) && Q(1,"suw_any") )
  { l[i]=omo2; R[1242]++; if(dbg){print "R1242"}; continue };
- if ( w(1,"её") && p(1) && s(0) )
+ if ( w(1,"ее её") && p(1) && s(0) )
  { l[i]=omo2; R[1243]++; if(dbg){print "R1243"}; continue };
- cst="ей меня мне неё себе себя тебе тебя";
+ cst="ей меня мне нее неё себе себя тебе тебя";
  if ( (w(-1,cst)||muk_edzeda(-1)) && s(-1) )
  { l[i]=omo2; R[1244]++; if(dbg){print "R1244"}; continue };
- if ( (w(-1,"её")||muk_edzeda(-1)) && (p(0)||q_w(1,"sz_iili pre_any")) && s(-1) )
+ if ( (w(-1,"ее её")||muk_edzeda(-1)) && (p(0)||q_w(1,"sz_iili pre_any")) && s(-1) )
  { l[i]=omo2; R[1245]++; if(dbg){print "R1245"}; continue };
 
 
@@ -6253,7 +6256,7 @@ for(wrd in omap["x2275"]){omakevars(x2275,"x2275");for(y=1;y<=wln;y++)         #
  if ( muk_edzeda(-1) && s(-1) )
  { l[i]=omo1; R[1247]++; if(dbg){print "R1247"}; continue };
 
- cst="вашей его её их нашей своей твоей";
+ cst="вашей его ее её их нашей своей твоей";
  if ( w(-1,"по и") &&
       w(1,cst) &&
       q(2,"suw_edzeda suw_edzero suw_edzetv suw_edzepr") && s(-1,1) )
@@ -6330,7 +6333,7 @@ for(wrd in omap["x2276"]){omakevars(x2276,"x2276");for(y=1;y<=wln;y++)         #
 
  if ( q(1,"prl_edmupr") && s(0) && (p(1)||q_w(2,"pre_any sz_iili")) && Q(1,"suw_odedpr") )
  { l[i]=omo1; R[1264]++; if(dbg){print "R1264"}; continue };
- cst="мне нём себе тебе";
+ cst="мне нем нём себе тебе";
  if ( w(-1,cst) && s(-1) )
  { l[i]=omo2; R[1265]++; if(dbg){print "R1265"}; continue };
  if ( (w(1,cst)||muk_edmupr(1)) && s(0) )
@@ -6604,7 +6607,8 @@ for(wrd in omap["x2283"]){omakevars(x2283,"x2283");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2284"]){omakevars(x2284,"x2284");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- cst="армию борозду бутылку вечность галактику горку гору группу деревню историю квартиру колонку колонну корзину кружку кучу неделю ночь пачку планету пригоршню расу свинью секунду стену страницу страну сумку тонну цивилизацию чашку эскадрилью";
+ cst="армию борозду бутылку вечность галактику горку гору группу деревню историю квартиру колонку колонну корзину кружку кучу неделю ночь пачку планету пригоршню \
+      расу свинью секунду стену страницу страну сумку тонну цивилизацию чашку эскадрилью";
  if ( w(1,cst) && s(0))
  { l[i]=omo2; R[1327]++; if(dbg){print "R1327"}; continue };
  #
@@ -6673,7 +6677,7 @@ for(wrd in omap["x2287"]){omakevars(x2287,"x2287");for(y=1;y<=wln;y++)         #
  if ( sc(0,",") && w(1,"чем") )
  { l[i]=omo1; R[1341]++; if(dbg){print "R1341"}; continue };
  if ( pre_tv(-2) &&
-           w(-1"чем тем ещё") &&
+           w(-1"чем тем ещё еще") &&
            q(1,"suw_tv") && s(-2,0) )
  { l[i]=omo1; R[1342]++; if(dbg){print "R1342"}; continue };
  #
@@ -6959,7 +6963,7 @@ for(wrd in omap["x2299"]){omakevars(x2299,"x2299");for(y=1;y<=wln;y++)         #
 for(wrd in omap["x2300"]){omakevars(x2300,"x2300");for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  if(iwrd=="пищи") {
-   cst="запас приём производство";
+   cst="запас прием приём производство";
    if ( base(-1,cst) && s(-1) )
    { l[i]=omo2; R[1404]++; if(dbg){print "R1404"}; continue };
  };
@@ -7577,7 +7581,7 @@ for(wrd in omap["x4700"]){omakevars(x4700,"x4700");for(y=1;y<=wln;y++)         #
  if ( w(-1,cst) && s(-1) )
  { l[i]=omo1; R[1526]++; if(dbg){print "R1526"}; continue };
  #
- cst="более больше денег дорого дорогого дёшево мало менее меньше многого недорого немало немногого побольше поменьше того";
+ cst="более больше денег дешево дорого дорогого дёшево мало менее меньше многого недорого немало немногого побольше поменьше того";
  if ( w(1,cst) && s(0) )
  { l[i]=omo1; R[1527]++; if(dbg){print "R1527"}; continue };
  if ( w(-1,cst) && s(-1) )
@@ -7590,7 +7594,7 @@ for(wrd in omap["x4700"]){omakevars(x4700,"x4700");for(y=1;y<=wln;y++)         #
       w(1,"риска") && s(-1,0) )
  { l[i]=omo1; R[1530]++; if(dbg){print "R1530"}; continue };
  #
- cst="больше дорого дёшево меньше";
+ cst="больше дешево дорого дёшево меньше";
  if ( q(1,"prl_kred_sr nar_step") &&
       w(2,cst) && s(0,1) )
  { l[i]=omo1; R[1531]++; if(dbg){print "R1531"}; continue };

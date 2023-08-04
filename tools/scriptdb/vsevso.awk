@@ -198,7 +198,7 @@ gl_pnmn(3) && s(0,2) )
  if ( w(-1,"и") && p(0,",") && s(-1) && (sc(-2,"p")||p(-2)) )
  { l[i]=is_vsyo; V[46]++; if(dbg){print "V46"}; continue };
 
- if ( phs(-1,"всё равно") &&
+ if ( qxs(-1,"всё все","равно") &&
   gl_pnmn(1) &&
         q(2,"mest_ed mest_mn") && s(-1,0) && sc(1,",") )
  { l[i]=is_vsje; V[47]++; if(dbg){print "V47"}; continue };
@@ -235,23 +235,23 @@ gl_pnmn(3) && s(0,2) )
  if ( mest_it(1) &&
             q(2,"gl_vzmn gl_nemn mod_bz") && s(0,1) )
  { l[i]=is_vsyo; V[56]++; if(dbg){print "V56"}; continue };
- if ((phs(-1,"ещё далеко не")||
-      phs(-1,"ещё не")||
-      phs(-1,"далеко не") ) &&
-  mest_it(hsn) && s(hsn,-1) )
+ if ((qxs(-1,"ещё еще","далеко","не")||
+      qxs(-1,"ещё еще","не")||
+      qxs(-1,"далеко","не") ) &&
+  mest_it(xsn-1) && s(xsn-1) )
  { l[i]=is_vsyo; V[57]++; if(dbg){print "V57"}; continue };
 
  if ( mest_it(1) &&
-         (phf(2,"не более чем")||
-          phf(2,"не в счёт") ) && s(0,hfn-2) )
+         (qxs(2,"не","более","чем")||
+          qxs(2,"не","в","счёт счет") ) && s(0) )
  { l[i]=is_vsyo; V[58]++; if(dbg){print "V58"}; continue };
  if ( mest_it(-1) &&
-          phf(1,"не по душе" ) && s(0,hfn-2) )
+          qxs(1,"не","по","душе" ) && s(-1) )
  { l[i]=is_vsyo; V[59]++; if(dbg){print "V59"}; continue };
- if ( mest_it(1) &&
-          phf(2,"и в самом деле") &&
-     nar_step(6) &&
-  prl_kred_sr(7) && s(0,6) )
+ if ( mest_it(1) && s(0) &&
+          qxs(2,"и","в","самом","деле") &&
+     nar_step(xsn+1) &&
+  prl_kred_sr(xsn+2) && s(xsn,xsn+1) )
  { l[i]=is_vsyo; V[60]++; if(dbg){print "V60"}; continue };
  if ( mest_it(1) &&
             w(2,"никак") &&
@@ -2166,7 +2166,7 @@ mest_da(-1) &&
  # Ну всё,
  if ( w(-1,"ну") && s(-1) )
  { l[i]=is_vsyo; V[560]++; if(dbg){print "V560"}; continue };
- if ( phs(-1,"ну всё") && sc(-1,",") && p(0) )
+ if ( qxw(-1,"ну","всё все") && sc(-1,",") && p(0) )
  { l[i]=is_vsyo; V[561]++; if(dbg){print "V561"}; continue };
 
 
@@ -2624,9 +2624,9 @@ prq_krmn(qfn+1) && s(0,qfn) )
 
  if ( wb_raw(-7,-2,"все́") && sQ(wbn,-2,"[!.?]") && p(-1) )
  { l[i]=is_vsje; V[669]++; if(dbg){print "V669"}; continue };
- if ( wb(-7,-2,"всё") && sQ(wbn,-2,"[!.?]") && p(-1) )
+ if ( wb(-7,-2,"всё все") && sQ(wbn,-2,"[!.?]") && p(-1) )
  { l[i]=is_vsyo; V[670]++; if(dbg){print "V670"}; continue };
- if ( qxs(-1,"далеко","не") &&  wb(-15,xsn-1,"всё") &&p(0) )
+ if ( qxs(-1,"далеко","не") &&  wb(-15,xsn-1,"всё все") &&p(0) )
  { l[i]=is_vsyo; V[671]++; if(dbg){print "V671"}; continue };
 
 
@@ -2667,7 +2667,7 @@ prq_krmn(qfn+1) && s(0,qfn) )
       w(-1,"как") && s(-1) && p(0) )
  { l[i]=is_vsje; V[679]++; if(dbg){print "V679"}; continue };
  if ( w(1,"и") && sc(0,",") &&
-    qxs(2,"ещё","больше") )
+    qxs(2,"ещё еще","больше") )
  { l[i]=is_vsyo; V[680]++; if(dbg){print "V680"}; continue };
 
 
