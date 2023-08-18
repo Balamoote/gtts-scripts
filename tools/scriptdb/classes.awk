@@ -1073,7 +1073,7 @@ BEGIN {
          # md_gl для глаголов с признаками модальности
          if ($2 ~ /_прош_ед_ср$/                ) {split($3,itmz,"#"); for (j in itmz) { if (itmz[j] && itmz[j] in md_gl) { md_bz[$1]=$3 };};};
          if ($2 ~ /_ед/ && $2 !~ /_прош_ед_ср$/ ) {split($3,itmz,"#"); for (j in itmz) { if (itmz[j] && itmz[j] in md_gl) { md_ed[$1]=$3 };};};
-         if ($2 ~ /_мн/                         ) {split($3,itmz,"#"); for (j in itmz) { if (itmz[j] && itmz[j] in md_gl) { md_mn[$1]=$3 };};}; 
+         if ($2 ~ /_мн/                         ) {split($3,itmz,"#"); for (j in itmz) { if (itmz[j] && itmz[j] in md_gl) { md_mn[$1]=$3 };};};
 
       if($2~  /^гл_несов_непер_/ ){
 
@@ -1669,442 +1669,19 @@ BEGIN {
                   s/^(x[0-9]+)\\s([^ ]+)\\s([^ ]+)\\s([^ ]+)(\\s.+)?/\\1 \\3 \\2 \\4 \\u\\2 \\u\\4 \\U\\2\\E \\U\\4\\E \\5/g'";
                                                                     #  1   2   3   4      5      6      7         8      9
    while ((cmd|getline) > 0) {
-
-         if($1== "x1000" ){ grp="x1000"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1001" ){ grp="x1001"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1002" ){ grp="x1002"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1003" ){ grp="x1003"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1004" ){ grp="x1004"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1005" ){ grp="x1005"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1006" ){ grp="x1006"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1007" ){ grp="x1007"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1008" ){ grp="x1008"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1009" ){ grp="x1009"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1010" ){ grp="x1010"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1011" ){ grp="x1011"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1012" ){ grp="x1012"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1013" ){ grp="x1013"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1014" ){ grp="x1014"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1015" ){ grp="x1015"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1016" ){ grp="x1016"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1017" ){ grp="x1017"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1018" ){ grp="x1018"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1019" ){ grp="x1019"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1020" ){ grp="x1020"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1021" ){ grp="x1021"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1022" ){ grp="x1022"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1023" ){ grp="x1023"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1024" ){ grp="x1024"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1025" ){ grp="x1025"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1026" ){ grp="x1026"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1027" ){ grp="x1027"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1028" ){ grp="x1028"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1029" ){ grp="x1029"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1030" ){ grp="x1030"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1031" ){ grp="x1031"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1032" ){ grp="x1032"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1033" ){ grp="x1033"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1034" ){ grp="x1034"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1035" ){ grp="x1035"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1036" ){ grp="x1036"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1037" ){ grp="x1037"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1038" ){ grp="x1038"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1039" ){ grp="x1039"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1040" ){ grp="x1040"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1041" ){ grp="x1041"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1042" ){ grp="x1042"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1043" ){ grp="x1043"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1044" ){ grp="x1044"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1045" ){ grp="x1045"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1046" ){ grp="x1046"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1047" ){ grp="x1047"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1048" ){ grp="x1048"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1049" ){ grp="x1049"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1050" ){ grp="x1050"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1051" ){ grp="x1051"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1052" ){ grp="x1052"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1053" ){ grp="x1053"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1054" ){ grp="x1054"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1055" ){ grp="x1055"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1056" ){ grp="x1056"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1057" ){ grp="x1057"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1058" ){ grp="x1058"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1059" ){ grp="x1059"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1060" ){ grp="x1060"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1061" ){ grp="x1061"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1062" ){ grp="x1062"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1063" ){ grp="x1063"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1064" ){ grp="x1064"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1065" ){ grp="x1065"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1066" ){ grp="x1066"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1067" ){ grp="x1067"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1068" ){ grp="x1068"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1069" ){ grp="x1069"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1070" ){ grp="x1070"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1071" ){ grp="x1071"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1072" ){ grp="x1072"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1073" ){ grp="x1073"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1074" ){ grp="x1074"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1075" ){ grp="x1075"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1076" ){ grp="x1076"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1077" ){ grp="x1077"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x1078" ){ grp="x1078"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2001" ){ grp="x2001"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2002" ){ grp="x2002"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2003" ){ grp="x2003"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2004" ){ grp="x2004"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2005" ){ grp="x2005"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2006" ){ grp="x2006"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2007" ){ grp="x2007"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2008" ){ grp="x2008"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2009" ){ grp="x2009"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2010" ){ grp="x2010"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2011" ){ grp="x2011"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2012" ){ grp="x2012"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2013" ){ grp="x2013"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2014" ){ grp="x2014"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2015" ){ grp="x2015"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2016" ){ grp="x2016"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2017" ){ grp="x2017"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2018" ){ grp="x2018"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2019" ){ grp="x2019"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2020" ){ grp="x2020"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2021" ){ grp="x2021"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2022" ){ grp="x2022"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2023" ){ grp="x2023"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2024" ){ grp="x2024"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2025" ){ grp="x2025"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2026" ){ grp="x2026"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2027" ){ grp="x2027"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2028" ){ grp="x2028"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2029" ){ grp="x2029"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2030" ){ grp="x2030"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2031" ){ grp="x2031"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2032" ){ grp="x2032"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2033" ){ grp="x2033"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2034" ){ grp="x2034"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2035" ){ grp="x2035"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2036" ){ grp="x2036"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2037" ){ grp="x2037"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2038" ){ grp="x2038"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2039" ){ grp="x2039"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2040" ){ grp="x2040"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2041" ){ grp="x2041"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2042" ){ grp="x2042"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2043" ){ grp="x2043"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2044" ){ grp="x2044"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2045" ){ grp="x2045"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2046" ){ grp="x2046"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2047" ){ grp="x2047"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2048" ){ grp="x2048"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2049" ){ grp="x2049"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2050" ){ grp="x2050"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2051" ){ grp="x2051"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2052" ){ grp="x2052"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2053" ){ grp="x2053"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2054" ){ grp="x2054"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2055" ){ grp="x2055"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2056" ){ grp="x2056"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2057" ){ grp="x2057"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2058" ){ grp="x2058"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2059" ){ grp="x2059"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2060" ){ grp="x2060"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2061" ){ grp="x2061"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2062" ){ grp="x2062"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2063" ){ grp="x2063"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2064" ){ grp="x2064"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2065" ){ grp="x2065"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2066" ){ grp="x2066"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2067" ){ grp="x2067"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2068" ){ grp="x2068"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2069" ){ grp="x2069"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2070" ){ grp="x2070"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2071" ){ grp="x2071"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2072" ){ grp="x2072"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2073" ){ grp="x2073"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2074" ){ grp="x2074"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2075" ){ grp="x2075"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2076" ){ grp="x2076"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2077" ){ grp="x2077"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2078" ){ grp="x2078"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2079" ){ grp="x2079"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2080" ){ grp="x2080"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2081" ){ grp="x2081"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2082" ){ grp="x2082"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2083" ){ grp="x2083"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2084" ){ grp="x2084"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2085" ){ grp="x2085"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2086" ){ grp="x2086"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2087" ){ grp="x2087"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2088" ){ grp="x2088"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2089" ){ grp="x2089"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2090" ){ grp="x2090"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2091" ){ grp="x2091"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2092" ){ grp="x2092"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2093" ){ grp="x2093"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2094" ){ grp="x2094"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2095" ){ grp="x2095"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2096" ){ grp="x2096"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2097" ){ grp="x2097"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2098" ){ grp="x2098"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2099" ){ grp="x2099"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2100" ){ grp="x2100"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2101" ){ grp="x2101"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2102" ){ grp="x2102"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2103" ){ grp="x2103"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2104" ){ grp="x2104"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2105" ){ grp="x2105"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2106" ){ grp="x2106"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2107" ){ grp="x2107"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2108" ){ grp="x2108"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2109" ){ grp="x2109"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2110" ){ grp="x2110"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2111" ){ grp="x2111"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2112" ){ grp="x2112"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2113" ){ grp="x2113"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2114" ){ grp="x2114"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2115" ){ grp="x2115"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2116" ){ grp="x2116"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2117" ){ grp="x2117"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2118" ){ grp="x2118"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2119" ){ grp="x2119"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2120" ){ grp="x2120"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2121" ){ grp="x2121"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2122" ){ grp="x2122"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2123" ){ grp="x2123"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2124" ){ grp="x2124"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2125" ){ grp="x2125"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2126" ){ grp="x2126"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2127" ){ grp="x2127"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2128" ){ grp="x2128"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2129" ){ grp="x2129"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2130" ){ grp="x2130"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2131" ){ grp="x2131"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2132" ){ grp="x2132"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2133" ){ grp="x2133"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2134" ){ grp="x2134"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2135" ){ grp="x2135"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2136" ){ grp="x2136"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2137" ){ grp="x2137"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2138" ){ grp="x2138"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2139" ){ grp="x2139"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2140" ){ grp="x2140"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2141" ){ grp="x2141"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2142" ){ grp="x2142"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2143" ){ grp="x2143"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2144" ){ grp="x2144"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2145" ){ grp="x2145"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2146" ){ grp="x2146"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2147" ){ grp="x2147"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2148" ){ grp="x2148"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2149" ){ grp="x2149"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2150" ){ grp="x2150"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2151" ){ grp="x2151"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2152" ){ grp="x2152"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2153" ){ grp="x2153"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2154" ){ grp="x2154"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2155" ){ grp="x2155"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2156" ){ grp="x2156"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2157" ){ grp="x2157"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2158" ){ grp="x2158"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2159" ){ grp="x2159"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2160" ){ grp="x2160"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2161" ){ grp="x2161"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2162" ){ grp="x2162"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2163" ){ grp="x2163"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2164" ){ grp="x2164"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2165" ){ grp="x2165"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2166" ){ grp="x2166"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2167" ){ grp="x2167"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2168" ){ grp="x2168"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2169" ){ grp="x2169"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2170" ){ grp="x2170"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2171" ){ grp="x2171"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2172" ){ grp="x2172"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2173" ){ grp="x2173"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2174" ){ grp="x2174"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2175" ){ grp="x2175"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2176" ){ grp="x2176"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2177" ){ grp="x2177"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2178" ){ grp="x2178"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2179" ){ grp="x2179"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2180" ){ grp="x2180"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2181" ){ grp="x2181"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2182" ){ grp="x2182"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2183" ){ grp="x2183"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2184" ){ grp="x2184"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2185" ){ grp="x2185"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2186" ){ grp="x2186"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2187" ){ grp="x2187"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2188" ){ grp="x2188"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2189" ){ grp="x2189"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2190" ){ grp="x2190"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2191" ){ grp="x2191"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2192" ){ grp="x2192"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2193" ){ grp="x2193"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2194" ){ grp="x2194"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2195" ){ grp="x2195"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2196" ){ grp="x2196"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2197" ){ grp="x2197"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2198" ){ grp="x2198"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2199" ){ grp="x2199"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2200" ){ grp="x2200"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2201" ){ grp="x2201"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2202" ){ grp="x2202"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2203" ){ grp="x2203"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2204" ){ grp="x2204"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2205" ){ grp="x2205"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2206" ){ grp="x2206"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2207" ){ grp="x2207"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2208" ){ grp="x2208"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2209" ){ grp="x2209"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2210" ){ grp="x2210"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2211" ){ grp="x2211"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2212" ){ grp="x2212"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2213" ){ grp="x2213"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2214" ){ grp="x2214"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2215" ){ grp="x2215"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2216" ){ grp="x2216"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2217" ){ grp="x2217"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2218" ){ grp="x2218"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2219" ){ grp="x2219"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2220" ){ grp="x2220"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2221" ){ grp="x2221"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2222" ){ grp="x2222"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2223" ){ grp="x2223"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2224" ){ grp="x2224"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2225" ){ grp="x2225"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2226" ){ grp="x2226"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2227" ){ grp="x2227"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2228" ){ grp="x2228"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2229" ){ grp="x2229"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2230" ){ grp="x2230"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2231" ){ grp="x2231"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2232" ){ grp="x2232"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2233" ){ grp="x2233"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2234" ){ grp="x2234"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2235" ){ grp="x2235"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2236" ){ grp="x2236"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2237" ){ grp="x2237"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2238" ){ grp="x2238"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2239" ){ grp="x2239"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2240" ){ grp="x2240"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2241" ){ grp="x2241"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2242" ){ grp="x2242"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2243" ){ grp="x2243"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2244" ){ grp="x2244"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2245" ){ grp="x2245"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2246" ){ grp="x2246"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2247" ){ grp="x2247"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2248" ){ grp="x2248"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2249" ){ grp="x2249"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2250" ){ grp="x2250"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2251" ){ grp="x2251"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2252" ){ grp="x2252"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2253" ){ grp="x2253"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2254" ){ grp="x2254"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2255" ){ grp="x2255"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2256" ){ grp="x2256"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2257" ){ grp="x2257"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2258" ){ grp="x2258"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2259" ){ grp="x2259"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2260" ){ grp="x2260"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2261" ){ grp="x2261"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2262" ){ grp="x2262"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2263" ){ grp="x2263"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2264" ){ grp="x2264"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2265" ){ grp="x2265"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2266" ){ grp="x2266"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2267" ){ grp="x2267"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2268" ){ grp="x2268"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2269" ){ grp="x2269"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2270" ){ grp="x2270"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2271" ){ grp="x2271"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2272" ){ grp="x2272"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2273" ){ grp="x2273"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2274" ){ grp="x2274"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2275" ){ grp="x2275"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2276" ){ grp="x2276"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2277" ){ grp="x2277"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2278" ){ grp="x2278"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2279" ){ grp="x2279"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2280" ){ grp="x2280"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2281" ){ grp="x2281"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2282" ){ grp="x2282"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2283" ){ grp="x2283"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2284" ){ grp="x2284"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2285" ){ grp="x2285"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2286" ){ grp="x2286"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2287" ){ grp="x2287"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2288" ){ grp="x2288"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2289" ){ grp="x2289"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2290" ){ grp="x2290"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2291" ){ grp="x2291"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2292" ){ grp="x2292"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2293" ){ grp="x2293"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2294" ){ grp="x2294"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2295" ){ grp="x2295"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2296" ){ grp="x2296"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2297" ){ grp="x2297"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2298" ){ grp="x2298"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2299" ){ grp="x2299"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2300" ){ grp="x2300"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2301" ){ grp="x2301"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2302" ){ grp="x2302"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2303" ){ grp="x2303"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2304" ){ grp="x2304"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2305" ){ grp="x2305"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2306" ){ grp="x2306"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2307" ){ grp="x2307"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2308" ){ grp="x2308"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2309" ){ grp="x2309"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2310" ){ grp="x2310"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2311" ){ grp="x2311"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2312" ){ grp="x2312"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2313" ){ grp="x2313"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2314" ){ grp="x2314"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2315" ){ grp="x2315"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x2316" ){ grp="x2316"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3001" ){ grp="x3001"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3002" ){ grp="x3002"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3003" ){ grp="x3003"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3004" ){ grp="x3004"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3005" ){ grp="x3005"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3006" ){ grp="x3006"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3007" ){ grp="x3007"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3008" ){ grp="x3008"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3009" ){ grp="x3009"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3010" ){ grp="x3010"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3011" ){ grp="x3011"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3012" ){ grp="x3012"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3013" ){ grp="x3013"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3014" ){ grp="x3014"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3015" ){ grp="x3015"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3016" ){ grp="x3016"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x3017" ){ grp="x3017"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x4700" ){ grp="x4700"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x4701" ){ grp="x4701"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x4702" ){ grp="x4702"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x4703" ){ grp="x4703"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x4704" ){ grp="x4704"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x4705" ){ grp="x4705"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x4706" ){ grp="x4706"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x4707" ){ grp="x4707"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x4708" ){ grp="x4708"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-         if($1== "x4777" ){ grp="x4777"; almo[$3]=almo[$5]=almo[$7]=grp; oms[grp][$2][$3]=$4; oms[grp][$2][$5]=$6; oms[grp][$2][$7]=$8; oms[grp]["info"][$3]=$9; continue };
-
+         almo[$3]=almo[$5]=almo[$7]=$1; oms[$1][$2][$3]=$4; oms[$1][$2][$5]=$6; oms[$1][$2][$7]=$8; oms[$1]["info"][$3]=$9;
    }; close(cmd);
-   # omoid[омограф][омоид][роль]
-   cmd = "zcat " indb "omos_part.gz";
-   while ((cmd|getline) > 0) {
-         ispa_any[$1]
-         if($2== "ispa_abst"  ) { ispa_abst  [$1]; continue };
-         if($2== "ispa_gas"   ) { ispa_gas   [$1]; continue };
-         if($2== "ispa_food"  ) { ispa_food  [$1]; continue };
-         if($2== "ispa_liquid") { ispa_liquid[$1]; continue };
-         if($2== "ispa_loose" ) { ispa_loose [$1]; continue };
-         if($2== "ispa_solid" ) { ispa_solid [$1]; continue };
-   }; close(cmd); # словарик партитивов по классам: any, abst, gas, food, liquid, loose, solid
+#  # omoid[омограф][омоид][роль]
+#  cmd = "zcat " indb "omos_part.gz";
+#  while ((cmd|getline) > 0) {
+#        ispa_any[$1]
+#        if($2== "ispa_abst"  ) { ispa_abst  [$1]; continue };
+#        if($2== "ispa_gas"   ) { ispa_gas   [$1]; continue };
+#        if($2== "ispa_food"  ) { ispa_food  [$1]; continue };
+#        if($2== "ispa_liquid") { ispa_liquid[$1]; continue };
+#        if($2== "ispa_loose" ) { ispa_loose [$1]; continue };
+#        if($2== "ispa_solid" ) { ispa_solid [$1]; continue };
+#  }; close(cmd); # словарик партитивов по классам: any, abst, gas, food, liquid, loose, solid
 
    cmd = "zcat " indb "omoid_part.gz";
    while ((cmd|getline) > 0) {
@@ -2121,21 +1698,34 @@ BEGIN {
            }; }
    }; close(cmd); # словарик связаных слов, картитивы представлены только в качестве указания их классов.
 
-   cmd = "zcat " indb "omoid_an.gz";
+   cmd = "zcat " indb "omoid_auto.gz";
    while ((cmd|getline) > 0) {
-       for (i=3; i<=NF; i++) {
-           if ($i ~ /^[а-яё]+$/) { omoid[$i][$1][$2]; continue }
+           if ($1 ~ /^[а-яё]+$/) { omoid[$1][$3][$2]; continue }
            else {
-              if ($i== "ispa_abst"   ) {for ( j in ispa_abst   ) { omoid[j][$1][$2] }; continue };
-              if ($i== "ispa_gas"    ) {for ( j in ispa_gas    ) { omoid[j][$1][$2] }; continue };
-              if ($i== "ispa_food"   ) {for ( j in ispa_food   ) { omoid[j][$1][$2] }; continue };
-              if ($i== "ispa_liquid" ) {for ( j in ispa_liquid ) { omoid[j][$1][$2] }; continue };
-              if ($i== "ispa_loose"  ) {for ( j in ispa_loose  ) { omoid[j][$1][$2] }; continue };
-              if ($i== "ispa_solid"  ) {for ( j in ispa_solid  ) { omoid[j][$1][$2] }; continue };
-              if ($i== "ispa_any"    ) {for ( j in ispa_any    ) { omoid[j][$1][$2] }; continue };
-           }; }
+              if ($1== "ispa_abst"   ) {for ( j in ispa_abst   ) { omoid[j][$3][$2] }; continue };
+              if ($1== "ispa_gas"    ) {for ( j in ispa_gas    ) { omoid[j][$3][$2] }; continue };
+              if ($1== "ispa_food"   ) {for ( j in ispa_food   ) { omoid[j][$3][$2] }; continue };
+              if ($1== "ispa_liquid" ) {for ( j in ispa_liquid ) { omoid[j][$3][$2] }; continue };
+              if ($1== "ispa_loose"  ) {for ( j in ispa_loose  ) { omoid[j][$3][$2] }; continue };
+              if ($1== "ispa_solid"  ) {for ( j in ispa_solid  ) { omoid[j][$3][$2] }; continue };
+              if ($1== "ispa_any"    ) {for ( j in ispa_any    ) { omoid[j][$3][$2] }; continue };
+           }
    }; close(cmd); # словарик связаных слов, омоид в поле 1, омограф(ы) с 3-го поля
-   cmd = "zcat " indb "omoid_aus.gz";
+#  cmd = "zcat " indb "omoid_an.gz";
+#  while ((cmd|getline) > 0) {
+#      for (i=3; i<=NF; i++) {
+#          if ($i ~ /^[а-яё]+$/) { omoid[$i][$1][$2]; continue }
+#          else {
+#             if ($i== "ispa_abst"   ) {for ( j in ispa_abst   ) { omoid[j][$1][$2] }; continue };
+#             if ($i== "ispa_gas"    ) {for ( j in ispa_gas    ) { omoid[j][$1][$2] }; continue };
+#             if ($i== "ispa_food"   ) {for ( j in ispa_food   ) { omoid[j][$1][$2] }; continue };
+#             if ($i== "ispa_liquid" ) {for ( j in ispa_liquid ) { omoid[j][$1][$2] }; continue };
+#             if ($i== "ispa_loose"  ) {for ( j in ispa_loose  ) { omoid[j][$1][$2] }; continue };
+#             if ($i== "ispa_solid"  ) {for ( j in ispa_solid  ) { omoid[j][$1][$2] }; continue };
+#             if ($i== "ispa_any"    ) {for ( j in ispa_any    ) { omoid[j][$1][$2] }; continue };
+#          }; }
+#  }; close(cmd); # словарик связаных слов, омоид в поле 1, омограф(ы) с 3-го поля
+   cmd = "zcat " indb "omoid_flat.gz";
    while ((cmd|getline) > 0) {
        for (i=3; i<=NF; i++) {
            if ($i ~ /^[а-яё]+$/) { omoid[$1][$i][$2]; continue }
@@ -2218,8 +1808,8 @@ BEGIN {
 #        indb "dic_rest.gz " indb "dic_suw.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_an.gz " \
 #        indb "omoid_aus.gz " indb "omoid_part.gz " indb "omos_part.gz " indb "ist.gz " "> " inax "classes.md5"
   cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " indb "dic_rest.gz " \
-         indb "dic_suw.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_an.gz " indb "omoid_aus.gz " indb "omoid_part.gz " indb "omos_part.gz " indb\
-         "ist.gz " indb "cstauto.awk " "> " inax "classes.md5"
+         indb "dic_suw.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_auto.gz " indb "omoid_flat.gz " indb "omoid_part.gz " indb "ist.gz " \
+         indb "cstauto.awk " "> " inax "classes.md5"
   system(cmd); close(cmd)
    } #gnuawk
 

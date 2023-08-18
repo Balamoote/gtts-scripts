@@ -593,5 +593,15 @@ stoar(cst,geo_edsrim," "); #
  mrk="_ge_vsyo_gl_answer"; stoar(cst,omarr[mrk]," "); #
 
 
+ # _gl4viski BASE
+ cst="бить гладить давить держаться зажать зажимать заломить ломить погладить подпереть потирать садануть сдавить сжать сжимать схватиться ударить ударять";
+ mrk="_gl_viski";stoar(cst,omarr[mrk]," "); #
+
+ # _gl4whisky BASE
+ cst="накачиваться торговать";
+ mrk="_gl_whisky";stoar(cst,omarr[mrk]," "); #
 
 }
+
+
+

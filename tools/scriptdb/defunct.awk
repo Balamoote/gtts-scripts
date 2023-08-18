@@ -3,7 +3,7 @@
 # При срабатывании функции выдают значение TRUE, при вызове аргументы НЕ указываются.
 function sw_im_f(rett, stopp) { while (stopp == 0) {
  #
- if ( id(1,"uw4edim") && s(0) )
+ if ( id(1,"usw4edim") && s(0) )
  { rett=stopp=1; D[1]++; if(dbg){print "D1"}; continue };
 
  if ( w(-1,"снова опять") && s(-1) && p(-2) && p(0) )
@@ -268,7 +268,7 @@ function sw_im_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_da_f(rett, stopp) { while (stopp == 0) {
- if ( id(1,"uw4edda") && s(0) )
+ if ( id(1,"usw4edda") && s(0) )
  { rett=stopp=1; D[70]++; if(dbg){print "D70"}; continue };
  #
  if ( !(qb(-5,-1,"pre_any") && s(qbn,-1) ) &&
@@ -301,7 +301,7 @@ function sw_da_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_vi_f(rett, stopp) { while (stopp == 0) {
- if ( id(1,"uw4edvi") && s(0) )
+ if ( id(1,"usw4edvi") && s(0) )
  { rett=stopp=1; D[79]++; if(dbg){print "D79"}; continue };
  #
  if ( q(-1,"gl_in gl_ed gl_mn gl_poed deep") && ba(-1,"_gg_obj_vi") && s(-1) )
@@ -388,7 +388,7 @@ function sw_vi_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_tv_f(rett, stopp) { while (stopp == 0) {
- if ( id(1,"uw4edtv") && s(0) )
+ if ( id(1,"usw4edtv") && s(0) )
  { rett=stopp=1; D[103]++; if(dbg){print "D103"}; continue };
  #
  if ( q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gg_obj_tv") && s(-1) )
@@ -912,16 +912,16 @@ break}; return rett }
 
 function sw_edro_f(rett,   stopp) { while (stopp == 0) {
 
- if ( id(-2,"hw4edro") &&
+ if ( id(-2,"hsw4edro") &&
        q(-1,"prl_edro prq_edro mest_ro") && s(-2,-1) )
  { rett=stopp=1; D[221]++; if(dbg){print "D221"}; continue };
- if ( id(-1,"hw4edro") && s(-1) )
+ if ( id(-1,"hsw4edro") && s(-1) )
  { rett=stopp=1; D[222]++; if(dbg){print "D222"}; continue };
- if ( id(-2,"hw4edro") && q(0,"ipa_liquid ipa_loose") &&
+ if ( id(-2,"hsw4edro") && q(0,"ipa_liquid ipa_loose") &&
   pre_ro(-1) && s(-2,-1) )
  { rett=stopp=1; D[223]++; if(dbg){print "D223"}; continue };
 
- if ( id(1,"uw4edro") && s(0) )
+ if ( id(1,"usw4edro") && s(0) )
  { rett=stopp=1; D[224]++; if(dbg){print "D224"}; continue };
 
  if ( ba(-2,"_gl_dvizh") &&
@@ -2487,8 +2487,8 @@ function sw_em_l_f(rett, stopp) { while (stopp == 0) {
  if ( W(0,"берегу бреду гною хмелю") && q(0,"suw_edmuda") &&
  !( (wb(-5,-1,"в во на") && !(sq(wbn,-1,"[….:;!?]"))) || (wf(1,3,"в во на") && !(sq(0,wfn-1,"[….:;!?]")))) )
  { rett=0; stopp=1; loc2emd=1; D[587]++; if(dbg){print "D587"}; continue };
- if ( id(-1,"hw4loc") && s(-1) )
- { rett=stopp=1; D[588]++; if(dbg){print "D588"}; continue };
+#if ( id(-1,"hsw4loc") && s(-1) )
+#{ rett=stopp=1; D[588]++; if(dbg){print "D588"}; continue };
 
  #
  if ( pre_pr(-3) &&
@@ -2688,7 +2688,7 @@ function sw_ez_t_f(rett, stopp) { while (stopp == 0) {
 break}; return rett }
 
 function sw_ez_p_f(rett, stopp) { while (stopp == 0) {
- if ( id(1,"uw4edpr") && s(0) )
+ if ( id(1,"usw4edpr") && s(0) )
  { rett=stopp=1; D[639]++; if(dbg){print "D639"}; continue };
  #
  if ( muk_edzepr(-2) &&
@@ -3627,10 +3627,10 @@ function sw_mn_r_f(rett, stopp) { while (stopp == 0) {
  if ( q(-1,"gl_nein gl_need gl_nemn gl_vzmn gl_vzed deep_ne") && ba(-1,"_gg_no_nero") && s(-1) )
  { rett=0; stopp=1; D[871]++; if(dbg){print "D871"}; continue };
 
- if ( id(-2,"hw4mnro") &&
+ if ( id(-2,"hsw4mnro") &&
        q(-1,"prl_mnro prq_mnro mest_ro") && s(-2,-1) )
  { rett=stopp=1; D[872]++; if(dbg){print "D872"}; continue };
- if ( id(-1,"hw4mnro") && s(-1) )
+ if ( id(-1,"hsw4mnro") && s(-1) )
  { rett=stopp=1; D[873]++; if(dbg){print "D873"}; continue };
 
  if ( base(-1,"пара") && s(-1) )
