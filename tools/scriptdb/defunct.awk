@@ -2053,9 +2053,9 @@ break}; return rett }
 
 function sw_msz_z_f(rett, stopp) { while (stopp == 0) {
  #
- if ( idb(-6,"gl4part") && Q(idn+1,"gl_in") && s(idn,-1) )
+ if ( idb(-6,"gl4pa") && Q(idn+1,"gl_in") && s(idn,-1) )
  { rett=stopp=1; D[475]++; if(dbg){print "D475"}; continue };
- if ( idf(6,"gl4part") && s(0,idn-1) )
+ if ( idf(6,"gl4pa") && s(0,idn-1) )
  { rett=stopp=1; D[476]++; if(dbg){print "D476"}; continue };
  if ( bb(-6,-1,"набрать") && Q(idn+1,"gl_in") && s(idn,-1) )
  { rett=stopp=1; D[477]++; if(dbg){print "D477"}; continue };
@@ -2069,7 +2069,7 @@ function sw_msz_z_f(rett, stopp) { while (stopp == 0) {
  if ( pre_vi(-7) &&
            q(-6,"suw_vi") &&
            q(-5,"mod_bz") &&
-          id(-4,"gl4part") &&
+          id(-4,"gl4pa") &&
      ipa_any(-3) && sc(-3,",") &&
           qq(-7,-2) && se(-1," — ") && s(-7,-4) )
  { rett=stopp=1; D[480]++; if(dbg){print "D480"}; continue };

@@ -2018,8 +2018,10 @@ function mqast(n,                                                               
                           qxs(n,"а","вон вот")||
                           qxs(n,"как","раз")||
                           qxs(n,"вовсе далека отнюдь","не") )                                                                                   {ret=1} else {ret=0}; return ret }
+function wordbf_(n,   el, stopp, ret) { el=lc(n); #_#new#_#
+   if(el in BF)  { ret = BF[el] } else {ret=""}; return ret }
 
-function wordbf(n,   el, stopp, ret) { el=lc(n);
+function wordbf(n,   el, stopp, ret) { el=lc(n); #_#old#_#
    if(el in dpn_ne_na              ) { ret = ret "#" dpn_ne_na              [el]; };
    if(el in dpn_ne_pa              ) { ret = ret "#" dpn_ne_pa              [el]; };
    if(el in dpn_pe_na              ) { ret = ret "#" dpn_pe_na              [el]; };

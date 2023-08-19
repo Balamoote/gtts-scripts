@@ -9,16 +9,17 @@
 #set -e
 # Ключи запуска: -f, -x, -p или их комбинация. Например: ./momo.sh -xp book.fb2 или ./momo.fb2 book.fb2
 export LC_COLLATE=C
-mo_time0=$(date +%s.%N);
+mo_time0=$(date +%s.%N); mo_prev=$mo_time0
 key="$1"
 book="$2"
 somo="$3"
 bookwrkdir=mano-"$book"
-bookscydir=mano-"$book".scy
+bookstadir=mano-"$book".stat
 suf=man
 backup="$book".$suf
 debug=0   # Если 1, то сделать отладку скриптов омографов: поиск искажений текста в "пастеризованных" версиях исходника и результата 
 nocaps=0  # Если 1, то капсов в "пастеризованых" не будет
+locdic=1
 
 # Установка редактора: vim или neovim
 edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' scriptdb/settings.ini)
@@ -48,10 +49,10 @@ else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не
 
 # Дискретные скрипты пишутся в файл, который задан переменной obook
 # Эта переменная имеет смысл ТОЛЬКО, если заново содаются скрипты в mano-$book, т.е. перед запуском скрипта её нужно удалить вручную. Если нужно.
-obook="$book" # ё-омографы пишутся в $book, т.е. в основной файл книги
-#obook="$book".man # ё-омографы пишутся в $book.man, т.е. в бэкап скрипта ./momo.sh
-#obook="$book".yoy # ё-омографы пишутся в $book.yoy, т.е. в бэкап скрипта ./yofik.sh
-#obook="$book".nam # ё-омографы пишутся в $book.nam, т.е. в бэкап скрипта ./get-words.sh.
+obook="$book" # омографы пишутся в $book, т.е. в основной файл книги
+#obook="$book".man # омографы пишутся в $book.man, т.е. в бэкап скрипта ./momo.sh
+#obook="$book".yoy # омографы пишутся в $book.yoy, т.е. в бэкап скрипта ./yofik.sh
+#obook="$book".nam # омографы пишутся в $book.nam, т.е. в бэкап скрипта ./get-words.sh.
 
 case $key in 
 	-f) # удалить директорию mano-book
@@ -121,29 +122,62 @@ sed "/<binary/Q" "$book" | sed -r "s/\xc2\xa0/ /g" > $bookwrkdir/text-book.txt
 sed -n '/<binary/,$p' "$book" > $bookwrkdir/binary-book.txt
 
 # Замены однозначных
-mo_uni=$(date +%s.%N); duration=$( echo $mo_uni - $mo_time0 | bc )
+mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
 if [[ $fixomo == "1" ]]; then
+
+if [[ $spacy == "1" ]] || [[ $locdic == "1" ]]; then
+# Создать директорию статических файлов для текущей книги
+ if [[ ! -d $bookstadir ]]; then mkdir $bookstadir
+ else printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Директория статических файлов для текущей книги" $bookstadir "существует."; fi; fi
 
 if [[ $spacy == "1" ]]; then
 # Создать копию текст книги и морфологией с помощью spacy << начало блока SpaCy
- if [[ ! -d $bookscydir ]]; then mkdir $bookscydir
- else printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Директория с морфологической разметкой книги" $bookscydir "существует."; fi
 
- if [[ -s $bookscydir/text-book.scy ]] && md5sum -c --status $bookscydir/text.scy.md5 >/dev/null 2>&1; then
-        printf '\e[36m%s \e[33m%s \e[32m%s\e[0m\n' "Файлы" $bookscydir/text.scy.md5 "OK!";
+ if [[ -s $bookstadir/text-book.scy ]] && md5sum -c --status $bookstadir/text.scy.md5 >/dev/null 2>&1; then
+        printf '\e[36m%s \e[33m%s \e[32m%s\e[0m\n' "Файлы в" $bookstadir/text.scy.md5 "OK: файл с разметкой уже создан.";
  else
     sed -r "s/[$unxc]+//g;
             s/[$unxs]/./g;
             s/([$RUUC])([$RUUC]+)/\1\L\2/g;
             s/<[-a-zA-Z_/.,;:#?! ]+>//g" $bookwrkdir/text-book.txt | \
-    python3 scriptdb/rulg_omo.py scriptdb/omo_list.scy.gz > $bookscydir/text-book.scy
-#   python3 scriptdb/rulg_all.py scriptdb/omo_list.scy > $bookscydir/text-book.scy
+    python3 scriptdb/rulg_omo.py scriptdb/omo_list.scy.gz > $bookstadir/text-book.scy
+#   python3 scriptdb/rulg_all.py scriptdb/omo_list.scy > $bookstadir/text-book.scy
 
-    md5sum $bookscydir/text-book.scy $bookwrkdir/text-book.txt scriptdb/rulg_omo.py scriptdb/rulg_all.py > $bookscydir/text.scy.md5
-    mo_uni_cy=$(date +%s.%N); duration=$( echo $mo_uni_cy - $mo_uni | bc )
+    md5sum $bookstadir/text-book.scy $bookwrkdir/text-book.txt scriptdb/rulg_omo.py scriptdb/rulg_all.py > $bookstadir/text.scy.md5
+    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
     LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк с омографами:" $duration "сек."; fi
 fi;
 # << Конец блока SpaCy
+
+if [[ $locdic == "1" ]]; then
+# Создать локальные для книги локальные словари для уменьшения используемой памяти << locdic
+
+ # Список слов
+ if [[ -s $bookstadir/bookwords.list ]] && md5sum -c --status $bookstadir/locdic.md5 >/dev/null 2>&1; then
+        printf '\e[36m%s \e[33m%s \e[32m%s\e[0m\n' "Файлы в" $bookstadir/locdic.md5 "  OK: файлы локальных словарей уже созданы.";
+ else
+ sed -r 's/^/ /g' $bookwrkdir/text-book.txt | grep -Eo "[$RUUC$rulc$unxc-]+" |\
+     sed -r "s/[$unxc]+//g;
+             s/^.*$/\L\0/g;
+             s/ё/е/g;
+             s/^.*$/_\0=/g;
+             s/^(.*)-(.*)$/\0\n\1=\n_\2/g
+             s/^(.*)-(.*)$/\0\n\1=\n_\2/g
+             s/^(.*)-(.*)$/\0\n\1=\n_\2/g" | sed -r "s/^_-/_/; s/-=$/=/" | sort -u > $bookstadir/bookwords.list
+
+ grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_gl.gz   | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_gl.gz
+ grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_prl.gz  | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_prl.gz
+ grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_prq.gz  | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_prq.gz
+ grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_rest.gz | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_rest.gz
+ grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_suw.gz  | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_suw.gz
+
+    md5sum $bookstadir/bookwords.list $bookwrkdir/text-book.txt scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz scriptdb/dic_suw.gz \
+           $bookstadir/dic_gl.gz $bookstadir/dic_prl.gz $bookstadir/dic_prq.gz $bookstadir/dic_rest.gz $bookstadir/dic_suw.gz > $bookstadir/locdic.md5
+
+    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
+    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Подготовка локальных словарей из словоформ в книге:" $duration "сек."; fi
+fi;
+# << Конец блока создания локальных словарей
 
 # Проверить наличие необработанных "все": если есть, применить все правила, иначе выключить пару "все/всё"
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
@@ -151,61 +185,63 @@ if [[ ! $single -eq 1 ]]; then
   if [[ ! $yop -eq 0 ]]; then
      printf '\e[36m%s \e[93m%s \e[36m%s\e[0m … ' "Все (" $yop ") ==> Все́/Всё"
 	
-     awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f scriptdb/deomo.awk $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
-     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+     awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f scriptdb/deomo.awk $bookwrkdir/text-book.txt \
+         > $bookwrkdir/text-book.awk.txt; mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
 
      yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
-     mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
+     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
      LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "обработано за" $duration "сек. Остаток:" $yop
 
   else
-     awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+#_#_# vsez !_#_!)$/#\1/g' scriptdb/deomo.awk) \
-        $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
-     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
-     mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
+     awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" \
+         -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+#_#_# vsez !_#_!)$/#\1/g' scriptdb/deomo.awk) \
+        $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt; mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+
+     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
      printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
   fi # все
 else
   if [[ $swrd -eq 1 ]]; then
-    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
+    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
             s/^(.+#_#_# vsez !_#_!)$/#\1/g;
             s/^(.+#_#_# all_omos !_#_!)$/#\1/g;
             s/^#([^"]+")dummy(".+#_#_# single_word !_#_!)$/\1'$somo'\2/g}' scriptdb/deomo.awk) $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
-    mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
+    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
     printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
   fi # 
   if [[ $sgrp -eq 1 ]]; then
-    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
+    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
             s/^(.+#_#_# vsez !_#_!)$/#\1/g;
             s/^(.+#_#_# all_omos !_#_!)$/#\1/g;
             s/^#([^"]+")dummy(".+#_#_# single_group !_#_!)$/\1'$somo'\2/g}' scriptdb/deomo.awk) $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
-    mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
+    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
     printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
   fi # 
   if [[ $vse -eq 1 ]]; then
-    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookscydir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
+    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
             s/^(.+#_#_# all_omos !_#_!)$/#\1/g}' scriptdb/deomo.awk) $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
-    mo_uni1=$(date +%s.%N); duration=$( echo $mo_uni1 - $mo_uni | bc )
+    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
     printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
   fi # 
 fi
 
 rexsed="scriptdb/omo-index.sed"
 
-awk -vtmpdir=$bookwrkdir -vrexfile=$rexsed -f scriptdb/omopick.awk $bookwrkdir/text-book.txt >/dev/null 2>&1
+#awk -vtmpdir=$bookwrkdir -vrexfile=$rexsed -f scriptdb/omopick.awk $bookwrkdir/text-book.txt >/dev/null 2>&1
 
-# При подсчете блоков омографов вычитаем стационарные блоки шаблонов
+##При подсчете блоков омографов вычитаем стационарные блоки шаблонов
 #statblock=4
 #locomo=$(( $( grep -c "###" $bookwrkdir/book-index.sed ) - $statblock ))
 #printf '\e[36m%s \e[93m%s %s%s%s\e[0m … ' "Омографов для sed-обработки:" $locomo "(" $statblock ")"
 
- sedroll $bookwrkdir/book-index.sed $bookwrkdir/text-book.txt
+#sedroll $bookwrkdir/book-index.sed $bookwrkdir/text-book.txt
+ sedroll $rexsed $bookwrkdir/text-book.txt
 
-mo_uni2=$(date +%s.%N); duration=$( echo $mo_uni2 - $mo_uni1 | bc )
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Обработано sed за" $duration "сек"
+mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Постобработка sed:" $duration "сек"
 
 fi # fixomo?
 
@@ -232,7 +268,7 @@ sed -r "
        s/\\\xcc\\\xb0/\xcc\xb0/g
        " $bookwrkdir/mano-luc.txt > $bookwrkdir/omo-luc.lst
 
-mo_pre=$(date +%s.%N); duration=$( echo $mo_pre - $mo_time0 | bc )
+mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_time0 | bc ); mo_prev=$mo_cur
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Всего обработка омографов заняла:" $duration "сек"
 
 # Формируем дискретные скрипты пословно
@@ -251,7 +287,7 @@ totnum=$(cat $bookwrkdir/totnum)
 
 printf '\e[36m%s \e[093m%s \e[36m%s \e[093m%s \e[0m' "Создано дискретных скриптов:" $(ls -l $bookwrkdir/*.sh | wc -l) "Всего остаток слов:" $totnum
 
-mo_disc=$(date +%s.%N); duration=$( echo $mo_disc - $mo_pre | bc )
+mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Время:" $duration "сек"
 
 chmod +x $bookwrkdir/*.sh

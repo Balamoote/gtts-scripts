@@ -15,18 +15,20 @@ BEGIN {
     if (gnuawk[1] == "GNU" && gnuawk[2] == "Awk" && gnuawk[3] >= 5 && gnuawk[4] >= 2 && gnuawk[5] >= 1) { gawk52 = 1 };
  # Если словари и этот скрипт не изменились и gawk>=5.2.1, восстановить состояние, иначе прочитать всё заново.
    if ( gawk52 == 1 ) {
-    cmd   = "md5sum -c --status " inax "classes.md5 >/dev/null 2>&1"
+     if (locdic ~ "^scriptdb\x2f$") { cmd = "md5sum -c --status " inax "classes.md5 >/dev/null 2>&1" }
+     else { cmd = "md5sum -c --status " locdic "classes.md5 >/dev/null 2>&1" }
     redix = system(cmd); close(cmd);};
 
-   classcache = inax "classes.bin"
+   if (locdic ~ "^scriptdb\x2f$") { classcache = inax "classes.bin" } else { classcache = locdic "classes.bin" };
 
    if (redix == 0 && gawk52 == 1) { readall(classcache) } else {
 
-   cmd = "zcat " indb "dic_prq.gz";
+   cmd = "zcat " locdic "dic_prq.gz";
    while ((cmd|getline) > 0) {
 
       if ($1~  "-"  ) { dichyph[$1] };
       if ($4== "NOP") { continue };
+  #    BF[$1] = "#" $3;
 
       if($2~ /_ед_жен_/ ){
        if ($2~ /_ед_жен_тв$/ && $1~ /[ео]ю(ся)?$/  ){
@@ -828,11 +830,12 @@ BEGIN {
 #       if ($2~ /_ед_ср$/                           ){  pq_kred_sr        [$1]=$3; continue };
 #       if ($2~ /_мн$/                              ){  pq_krmn           [$1]=$3; continue };
    close(cmd);
-   cmd = "zcat " indb "dic_prl.gz";
+   cmd = "zcat " locdic "dic_prl.gz";
    while ((cmd|getline) > 0) {
 
       if ($1~  "-"  ) { dichyph[$1] };
       if ($4== "NOP") { continue };
+  #    BF[$1] = "#" $3;
 
       if($2~  /^прл_ед_жен_/ ){
         if ($2~ /^прл_ед_жен_тв$/ && $1~ /[ео]ю$/   ){  pl_edze_tv        [$1]=$3; continue };
@@ -914,11 +917,12 @@ BEGIN {
         if ($2~ /^прл_неизм$/                       ){  pl_neiz           [$1]=$3; continue };
     }; # чтение prl-dic
    close(cmd);
-   cmd = "zcat " indb "dic_suw.gz";
+   cmd = "zcat " locdic "dic_suw.gz";
    while ((cmd|getline) > 0) {
 
       if ($1~  "-"  ) { dichyph[$1] };
       if ($4== "NOP") { continue };
+  #    BF[$1] = "#" $3;
 
       if ($2~ /^сущ_неод_/ ) {
        if ($2~ /^сущ_неод_мн_/ ) {
@@ -1064,11 +1068,12 @@ BEGIN {
       };
     }; # чтение suw-dic
    close(cmd);
-   cmd = "zcat " indb "dic_gl.gz";
+   cmd = "zcat " locdic "dic_gl.gz";
    while ((cmd|getline) > 0) {
 
       if ($1~  "-"  ) { dichyph[$1] };
       if ($4== "NOP") { continue };
+  #    BF[$1] = "#" $3;
 
          # md_gl для глаголов с признаками модальности
          if ($2 ~ /_прош_ед_ср$/                ) {split($3,itmz,"#"); for (j in itmz) { if (itmz[j] && itmz[j] in md_gl) { md_bz[$1]=$3 };};};
@@ -1396,11 +1401,12 @@ BEGIN {
     }; # чтение gl-dic
 
    close(cmd);
-   cmd = "zcat " indb "dic_rest.gz";
+   cmd = "zcat " locdic "dic_rest.gz";
    while ((cmd|getline) > 0) {
 
     if ($1~  "-"  ) { dichyph[$1] };
     if ($4== "NOP") { continue };
+#    BF[$1] = "#" $3;
 
     if($2~  /^нар/ ){
         if ($2~ /^нар_сравн$/                       ){  nr_srv            [$1]=$3; continue };
@@ -1683,20 +1689,19 @@ BEGIN {
 #        if($2== "ispa_solid" ) { ispa_solid [$1]; continue };
 #  }; close(cmd); # словарик партитивов по классам: any, abst, gas, food, liquid, loose, solid
 
-   cmd = "zcat " indb "omoid_part.gz";
-   while ((cmd|getline) > 0) {
-       for (i=3; i<=NF; i++) {
-           if ($i ~ /^[а-яё]+$/) { omoid[$i][$1][$2]; continue }
-           else {
-              if ($i== "ispa_abst"   ) {for ( j in ispa_abst   ) { omoid[j][$1][$2] }; continue };
-              if ($i== "ispa_gas"    ) {for ( j in ispa_gas    ) { omoid[j][$1][$2] }; continue };
-              if ($i== "ispa_food"   ) {for ( j in ispa_food   ) { omoid[j][$1][$2] }; continue };
-              if ($i== "ispa_liquid" ) {for ( j in ispa_liquid ) { omoid[j][$1][$2] }; continue };
-              if ($i== "ispa_loose"  ) {for ( j in ispa_loose  ) { omoid[j][$1][$2] }; continue };
-              if ($i== "ispa_solid"  ) {for ( j in ispa_solid  ) { omoid[j][$1][$2] }; continue };
-              if ($i== "ispa_any"    ) {for ( j in ispa_any    ) { omoid[j][$1][$2] }; continue };
-           }; }
-   }; close(cmd); # словарик связаных слов, картитивы представлены только в качестве указания их классов.
+#  cmd = "zcat " indb "omoid_part.gz";
+#  while ((cmd|getline) > 0) {
+#          if ($1 ~ /^[а-яё]+$/) { omoid[$1][$3][$2]; continue }
+#          else {
+#             if ($1== "ispa_abst"   ) {for ( j in ispa_abst   ) { omoid[j][$3][$2] }; continue };
+#             if ($1== "ispa_gas"    ) {for ( j in ispa_gas    ) { omoid[j][$3][$2] }; continue };
+#             if ($1== "ispa_food"   ) {for ( j in ispa_food   ) { omoid[j][$3][$2] }; continue };
+#             if ($1== "ispa_liquid" ) {for ( j in ispa_liquid ) { omoid[j][$3][$2] }; continue };
+#             if ($1== "ispa_loose"  ) {for ( j in ispa_loose  ) { omoid[j][$3][$2] }; continue };
+#             if ($1== "ispa_solid"  ) {for ( j in ispa_solid  ) { omoid[j][$3][$2] }; continue };
+#             if ($1== "ispa_any"    ) {for ( j in ispa_any    ) { omoid[j][$3][$2] }; continue };
+#           }
+#  }; close(cmd); # словарик связаных слов, картитивы представлены только в качестве указания их классов.
 
    cmd = "zcat " indb "omoid_auto.gz";
    while ((cmd|getline) > 0) {
@@ -1804,12 +1809,14 @@ BEGIN {
 
  # Записать состояние словарных массивов
   if (gawk52 == 1) { writeall(classcache) };
-# cmd = "md5sum " indb "classes.awk " indb "cstring.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " \
-#        indb "dic_rest.gz " indb "dic_suw.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_an.gz " \
-#        indb "omoid_aus.gz " indb "omoid_part.gz " indb "omos_part.gz " indb "ist.gz " "> " inax "classes.md5"
+
+  if (locdic ~ "^scriptdb\x2f$") { 
   cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " indb "dic_rest.gz " \
-         indb "dic_suw.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_auto.gz " indb "omoid_flat.gz " indb "omoid_part.gz " indb "ist.gz " \
-         indb "cstauto.awk " "> " inax "classes.md5"
+         indb "dic_suw.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_auto.gz " indb "omoid_flat.gz " indb "ist.gz " indb "cstauto.awk " "> " inax "classes.md5"
+  } else {
+  cmd = "md5sum " indb "classes.awk " locdic "classes.bin " indb "dic_cust.gz " locdic "dic_gl.gz " locdic "dic_prl.gz " locdic "dic_prq.gz " locdic "dic_rest.gz " \
+         locdic "dic_suw.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_auto.gz " indb "omoid_flat.gz " indb "ist.gz " indb "cstauto.awk " "> " locdic "classes.md5"
+  }
   system(cmd); close(cmd)
    } #gnuawk
 

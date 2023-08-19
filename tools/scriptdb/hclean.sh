@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # key:
-# -ord  перенумеровать все правила во всех рабочих скриптах
+# -ord    перенумеровать все правила во всех рабочих скриптах и отсортировать строки
+# -omoid  сгенеригорать базы omoid_auto.gz из omoid_ini.gz и omoid_pa_ini.gz
 
 key="$1"
 
@@ -40,8 +41,14 @@ case $key in
        awk -f beautify.awk classes.awk > classes.awk_ord; mv classes.awk_ord classes.awk;
        zcat omoid_ini.gz | awk '{delete chars; rett="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
                                 rett = $1 " " $2; for(j=1;j<=chnum;j++){rett=rett " " chars[j]}; print rett }' |\
-                           gzip > omoid_ini_ord.gz; mv omoid_ini_ord.gz omoid_ini.gz
-        exit 1; ;;
+                         sort -u | gzip > omoid_ini_ord.gz; mv omoid_ini_ord.gz omoid_ini.gz
+       zcat omoid_part_ini.gz | awk '{delete chars; rett="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
+                                rett = $1 " " $2; for(j=1;j<=chnum;j++){rett=rett " " chars[j]}; print rett }' |\
+                         sort -u | gzip > omoid_part_ini_ord.gz; mv omoid_part_ini_ord.gz omoid_part_ini.gz
+       zcat omoid_flat.gz | awk '{delete chars; rett="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
+                                rett = $1 " " $2; for(j=1;j<=chnum;j++){rett=rett " " chars[j]}; print rett }' |\
+                         sort -u | gzip > omoid_flat_ord.gz; mv omoid_flat_ord.gz omoid_flat.gz
+       exit 1; ;;
 
     -omoid )
 
@@ -60,21 +67,23 @@ case $key in
 
                for (i in hsw4edro_) {for (j in hsw4edro_[i]) {print i, "hsw4edro", j } }
                for (i in hsw4mnro_) {for (j in hsw4mnro_[i]) {print i, "hsw4mnro", j } }                
-             }' | sort -u | gzip > omoid_auto.gz 
+             }' > omoid_auto 
 
        awk 'BEGIN {
             
-               cmd = "zcat omoid_part_ini.gz";
+               cmd = "zcat omoid_pa_ini.gz";
                while ((cmd|getline) > 0) {
-                          if ($2== "gl4part" ) { in2=$2 " " $1; for (i=3; i<=NF; i++) { gl4part[$i] = in2 }; continue };
+                     if ($2== "gl4pa" ) { for (i=3; i<=NF; i++) gl4pa[$1][$i]; continue };
                }; close(cmd);
                 
                cmd = "zcat dic_gl.gz dic_prq.gz";
-               while ((cmd|getline) > 0) {
-                   gsub(/ё/,"е",$3); split($3,bf,"#")
-                   for(i in bf) {if(bf[i] in gl4part) gl4part_[$1]=gl4part[bf[i]] }; }; close(cmd);
-                   for(i in gl4part_) print i, gl4part_[i]
-                }' | sort -u | gzip > omoid_part.gz 
+               while ((cmd|getline) > 0) {gsub(/ё/,"е",$3); split($3,bf,"#");for(i in bf) { BF[bf[i]][$1] } }; close(cmd);
+
+               for (i in gl4pa)  {for (j in gl4pa[i] ) {if(j in BF) {for (k in BF[j]) gl4pa_[i][k]};};}
+
+               for (i in gl4pa_) {for (j in gl4pa_[i]) {print i, "gl4pa", j } }
+
+                }' >> omoid_auto; sort -u omoid_auto | gzip > omoid_auto.gz; rm omoid_auto
 
         exit 1; ;;
 
