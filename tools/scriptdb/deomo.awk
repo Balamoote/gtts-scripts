@@ -4409,7 +4409,7 @@ xgrp="x2181";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)         
  { l[i]=omo2; R[859]++; if(dbg){print "R859", "sw_em_z_f"}; continue };
  #
  if ( sw_em_z_f() )
- { l[i]=omo1; R[860]++; if(dbg){print "R860", "sw_em_z_f"}; continue };
+ { l[i]=omo2; R[860]++; if(dbg){print "R860", "sw_em_z_f"}; continue };
  #
  if ( sw_em_d_f() )
  { l[i]=omo2; R[861]++; if(dbg){print "R861", "sw_em_d_f"}; continue };
@@ -6517,7 +6517,7 @@ xgrp="x2282";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)         
 xgrp="x2283";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
- if ( idb(5,"gl4dOma") && s(idn,-1) )
+ if ( idb(1,5,"gl4dOma") && s(idn,-1) )
  { l[i]=omo1; R[1304]++; if(dbg){print "R1304"}; continue };
  cst="быть находиться оставаться остаться пребывать проводить сидеть спать";
  if ( base(-1,cst) &&  s(-1) )

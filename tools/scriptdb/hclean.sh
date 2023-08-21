@@ -39,14 +39,14 @@ case $key in
        awk -f beautify.awk cstring.awk > cstring.awk_ord; mv cstring.awk_ord cstring.awk;
        awk -f beautify.awk cstauto.awk > cstauto.awk_ord; mv cstauto.awk_ord cstauto.awk;
        awk -f beautify.awk classes.awk > classes.awk_ord; mv classes.awk_ord classes.awk;
-       zcat omoid_ini.gz | awk '{delete chars; rett="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
-                                rett = $1 " " $2; for(j=1;j<=chnum;j++){rett=rett " " chars[j]}; print rett }' |\
+       zcat omoid_ini.gz | awk '{delete chars; ret="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
+                                ret = $1 " " $2; for(j=1;j<=chnum;j++){ret=ret " " chars[j]}; print ret }' |\
                          sort -u | gzip > omoid_ini_ord.gz; mv omoid_ini_ord.gz omoid_ini.gz
-       zcat omoid_part_ini.gz | awk '{delete chars; rett="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
-                                rett = $1 " " $2; for(j=1;j<=chnum;j++){rett=rett " " chars[j]}; print rett }' |\
-                         sort -u | gzip > omoid_part_ini_ord.gz; mv omoid_part_ini_ord.gz omoid_part_ini.gz
-       zcat omoid_flat.gz | awk '{delete chars; rett="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
-                                rett = $1 " " $2; for(j=1;j<=chnum;j++){rett=rett " " chars[j]}; print rett }' |\
+       zcat omoid_pa_ini.gz | awk '{delete chars; ret="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
+                                ret = $1 " " $2; for(j=1;j<=chnum;j++){ret=ret " " chars[j]}; print ret }' |\
+                         sort -u | gzip > omoid_pa_ini_ord.gz; mv omoid_pa_ini_ord.gz omoid_pa_ini.gz
+       zcat omoid_flat.gz | awk '{delete chars; ret="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
+                                ret = $1 " " $2; for(j=1;j<=chnum;j++){ret=ret " " chars[j]}; print ret }' |\
                          sort -u | gzip > omoid_flat_ord.gz; mv omoid_flat_ord.gz omoid_flat.gz
        exit 1; ;;
 

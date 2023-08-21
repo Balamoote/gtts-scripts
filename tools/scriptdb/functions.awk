@@ -78,10 +78,10 @@ function id_(n, wl,   k, ret)                       # связанное сло�
                 { stotar(wordbf(n),itmz,"#");ret=""; for(k in itmz) {if ( wl in omoids[iwrd][k] ) {ret=1;break}}; return ret }
 function id(n, wl,    ret)                       # связанное слово в позиции и с морфорлогической функцией wl
                 { if ( wl in omoid[iwrd][lc(n)] ) {ret=1} else {ret=0}; return ret }
-function idf(n, wl,    k, ret)                   # связанное слово в позиции и с морфорлогической функцией на n позиций вперёд
-                { ret=idn=""; for (k= 1; k<=n; k++) { if ( wl in omoid[iwrd][lc(k)] ) {ret=1; idn=k; break}; }; return ret }
-function idb(n, wl,    k, ret)                   # связанное слово в позиции и с морфорлогической функцией на n позиций назад
-                { ret=idn=""; for (k=-1; k>=n; k--) { if ( wl in omoid[iwrd][lc(k)] ) {ret=1; idn=k; break}; }; return ret }
+function idf(n,m, wl,    k, ret)                   # связанное слово в позиции и с морфорлогической функцией на n позиций вперёд
+                { ret=idn=""; if(n>m)m=n; for (k=n; k<=m; k++) { if ( wl in omoid[iwrd][lc(k)] ) {ret=1; idn=k; break}; }; return ret }
+function idb(n,m, wl,    k, ret)                   # связанное слово в позиции и с морфорлогической функцией на n позиций назад
+                { ret=idn=""; if(n>m)n=m; for (k=m; k>=n; k--) { if ( wl in omoid[iwrd][lc(k)] ) {ret=1; idn=k; break}; }; return ret }
 function qm(n, isclass, wl,    ret)              # обертка для нескольких функций и ba
                 { if ( q(n,isclass) && bam(n,wl) ) {ret=1} else {ret=0}; return ret}
 function qq(n, m,    ret)                        # слово m равно слово n?

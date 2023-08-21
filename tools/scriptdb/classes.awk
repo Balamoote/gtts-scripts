@@ -1810,7 +1810,7 @@ BEGIN {
  # Записать состояние словарных массивов
   if (gawk52 == 1) { writeall(classcache) };
 
-  if (locdic ~ "^scriptdb\x2f$") { 
+  if (locdic ~ "^scriptdb\x2f$") {
   cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " indb "dic_rest.gz " \
          indb "dic_suw.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_auto.gz " indb "omoid_flat.gz " indb "ist.gz " indb "cstauto.awk " "> " inax "classes.md5"
   } else {

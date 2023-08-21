@@ -8,9 +8,9 @@
 # Если выходной файл отличается по размеру от входного, обязательно нужно проверить, почему так получилось.
 #
 # Последняя версия файла находится тут: https://github.com/Balamoote/gtts-scripts
-function sortchunk(chunk, sep,     rett, charr, chars, i, chnum)
+function sortchunk(chunk, sep,     ret, charr, chars, i, chnum)
 {        split(chunk, charr, sep); for ( i in charr ) { chars[charr[i]] = charr[i] }; chnum = asort(chars);
-         rett = chars[1]; for ( i = 2; i <= chnum; i++ ) { rett = rett sep chars[i] }; return rett };
+         ret = chars[1]; for ( i = 2; i <= chnum; i++ ) { ret = ret sep chars[i] }; return ret };
 
 BEGIN { RS = "\n";
 	reg = "\\[" "[А-ЯЁёа-я]+" "\\]";
