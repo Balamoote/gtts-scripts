@@ -1677,31 +1677,6 @@ BEGIN {
    while ((cmd|getline) > 0) {
          almo[$3]=almo[$5]=almo[$7]=$1; oms[$1][$2][$3]=$4; oms[$1][$2][$5]=$6; oms[$1][$2][$7]=$8; oms[$1]["info"][$3]=$9;
    }; close(cmd);
-#  # omoid[омограф][омоид][роль]
-#  cmd = "zcat " indb "omos_part.gz";
-#  while ((cmd|getline) > 0) {
-#        ispa_any[$1]
-#        if($2== "ispa_abst"  ) { ispa_abst  [$1]; continue };
-#        if($2== "ispa_gas"   ) { ispa_gas   [$1]; continue };
-#        if($2== "ispa_food"  ) { ispa_food  [$1]; continue };
-#        if($2== "ispa_liquid") { ispa_liquid[$1]; continue };
-#        if($2== "ispa_loose" ) { ispa_loose [$1]; continue };
-#        if($2== "ispa_solid" ) { ispa_solid [$1]; continue };
-#  }; close(cmd); # словарик партитивов по классам: any, abst, gas, food, liquid, loose, solid
-
-#  cmd = "zcat " indb "omoid_part.gz";
-#  while ((cmd|getline) > 0) {
-#          if ($1 ~ /^[а-яё]+$/) { omoid[$1][$3][$2]; continue }
-#          else {
-#             if ($1== "ispa_abst"   ) {for ( j in ispa_abst   ) { omoid[j][$3][$2] }; continue };
-#             if ($1== "ispa_gas"    ) {for ( j in ispa_gas    ) { omoid[j][$3][$2] }; continue };
-#             if ($1== "ispa_food"   ) {for ( j in ispa_food   ) { omoid[j][$3][$2] }; continue };
-#             if ($1== "ispa_liquid" ) {for ( j in ispa_liquid ) { omoid[j][$3][$2] }; continue };
-#             if ($1== "ispa_loose"  ) {for ( j in ispa_loose  ) { omoid[j][$3][$2] }; continue };
-#             if ($1== "ispa_solid"  ) {for ( j in ispa_solid  ) { omoid[j][$3][$2] }; continue };
-#             if ($1== "ispa_any"    ) {for ( j in ispa_any    ) { omoid[j][$3][$2] }; continue };
-#           }
-#  }; close(cmd); # словарик связаных слов, картитивы представлены только в качестве указания их классов.
 
    cmd = "zcat " indb "omoid_auto.gz";
    while ((cmd|getline) > 0) {
@@ -1716,20 +1691,7 @@ BEGIN {
               if ($1== "ispa_any"    ) {for ( j in ispa_any    ) { omoid[j][$3][$2] }; continue };
            }
    }; close(cmd); # словарик связаных слов, омоид в поле 1, омограф(ы) с 3-го поля
-#  cmd = "zcat " indb "omoid_an.gz";
-#  while ((cmd|getline) > 0) {
-#      for (i=3; i<=NF; i++) {
-#          if ($i ~ /^[а-яё]+$/) { omoid[$i][$1][$2]; continue }
-#          else {
-#             if ($i== "ispa_abst"   ) {for ( j in ispa_abst   ) { omoid[j][$1][$2] }; continue };
-#             if ($i== "ispa_gas"    ) {for ( j in ispa_gas    ) { omoid[j][$1][$2] }; continue };
-#             if ($i== "ispa_food"   ) {for ( j in ispa_food   ) { omoid[j][$1][$2] }; continue };
-#             if ($i== "ispa_liquid" ) {for ( j in ispa_liquid ) { omoid[j][$1][$2] }; continue };
-#             if ($i== "ispa_loose"  ) {for ( j in ispa_loose  ) { omoid[j][$1][$2] }; continue };
-#             if ($i== "ispa_solid"  ) {for ( j in ispa_solid  ) { omoid[j][$1][$2] }; continue };
-#             if ($i== "ispa_any"    ) {for ( j in ispa_any    ) { omoid[j][$1][$2] }; continue };
-#          }; }
-#  }; close(cmd); # словарик связаных слов, омоид в поле 1, омограф(ы) с 3-го поля
+
    cmd = "zcat " indb "omoid_flat.gz";
    while ((cmd|getline) > 0) {
        for (i=3; i<=NF; i++) {

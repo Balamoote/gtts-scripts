@@ -15,6 +15,8 @@ function stoid(string1, string2,wid,    k,j)        # добавить в omoid[
                 { split(string1, arr1," ");split(string2, arr2," "); for (k in arr1) {for(j in arr2){omoid[arr1[k]][arr2[j]][wid]};};}
 function atoid(string, arr,wid,    k,j)        # добавить в omoid[омограф из массива][омоид из строки][функция]
                 { split(string, arr1," "); for (k in arr1) {for(j in arr){omoid[j][arr1[k]][wid]};};}
+function sanit(string, sepin, sepout,   j,k,ret)         # строку с разделителями отсортировать и удалить повторения
+                {delete sant; split(string,arrtemp,sepin); for(k in arrtemp){if(arrtemp[k]){sant[arrtemp[k]]}; }; for(j in sant) {if(ret) {ret = ret sepout j}else{ret=j} }; return ret}
 function hyphback(hystring,  hyw)                 # Склеить слова с дефисом, присутствующие в словаре
                 { hystring = gensub(/unxyp/,"","g",tolower(hystring));
                   if (hystring ~ hysnip) { for (i=1; i<=nf-1; i++) { if ( se(0,"-") ) { hyw = lc(0) sep[i] lc(1); if ( hyw in dichyph )
@@ -50,6 +52,22 @@ function makewposvars()                           # определить пер�
                 { i=strtonum(i); prex=edro2mnim=edro2mnvi=nizm=mn2e2pomn=loc2emd=loc2ezd=NORULE="" }
 
 # функции обработки слов
+function getBF(n,file,    k)                     # выдать базовую форму слова по адресу n и записать ее в file, омограф при этом в файл не пишется
+                { stotar(wordbf(n),itmz,"#"); for(k in itmz) { print k >> file };}
+function getBFb(n,m,file,    k, ret)             # выдать базовые формы слов в диапазоне {-n,-m} и записать их в file (только словарные базовые формы, без препинаний)
+                { for (k=m; k>=n; k--) {if(l[i+k]) ret = sanit(wordbf(k),"#","\x2f") " " ret }; ret = ret iwrd; print ret >> file }
+function getBFf(n,m,file,    k, ret)             # выдать базовые формы слов в диапазоне {+n,+m} и записать их в file (только словарные базовые формы, без препинаний)
+                { ret = iwrd; for (k=n; k<=m; k++) {if(l[i+k]) ret = ret " " sanit(wordbf(k),"#","\x2f") }; print ret >> file }
+function getBFx(n,m,file,   sw,kw, k,j, ret)     # выдать базовые формы слов в диапазоне {n,m} и записать их в file, где n и m могут быть как "-" так и "+"
+                { sw=""; if(n<0 && m<0) sw=1; if(n>0 && m>0) sw=2; if(n<0 && m>0) sw=3;
+                  switch (sw) {
+                   case "1": for(j= m;j>=n;j--)        {if(l[i+j]){kw=sanit(wordbf(j),"#","\x2f");if(kw=="") kw=l[i+j];ret=kw  sep[i+j]   ret}   else {ret=ret iwrd sep[i]; break};};
+                             ret=ret iwrd sep[i]; break
+                   case "2": ret=iwrd;for(k=n;k<=m;k++){if(l[i+j]){kw=sanit(wordbf(k),"#","\x2f");if(kw=="") kw=l[i+k];ret=ret sep[i+k-1] kw};};       ret=ret sep[i+k];    break
+                   case "3": for(j=-1;j>=n;j--)        {if(l[i+j]){kw=sanit(wordbf(j),"#","\x2f");if(kw=="") kw=l[i+j];ret=kw  sep[i+j]   ret}   else {ret=ret iwrd;        break};};
+                             ret=ret sep[i-1] iwrd;
+                             for(k= 1;k<=m;k++)        {if(l[i+k]){kw=sanit(wordbf(k),"#","\x2f");if(kw=="") kw=l[i+k];ret=ret sep[i+k-1] kw};};       ret=ret sep[i+k];    break
+                   default: ret=iwrd; break }; print ret >> file }
 function s1(n,wl,    ret)                        # выдать 1-й символ строки-сеператора
                 { if( substr(sep[i+n],1,1) == wl ) {ret=1} else {ret=0}; return ret }
 function lc(n,   ret)                            # перевести в нижний гегистр
@@ -137,8 +155,6 @@ function bfa(n,m,wl,   j,k, ret)                 # нахождение ВПЕР
                 {bfn=ret="";if(n>m)m=n;for(j=n;j<=m;j++){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;bfn=j;break};};}; return ret }
 function bba(n,m,wl,    k, ret)                  # нахождение НАЗАД базовых форм из массива omarr[wl] в диапазоне n-m
                 {bbn=ret="";if(n>m)n=m;for(j=m;j>=n;j--){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;bbn=j;break};};}; return ret }
-function getBF(n,file,    k, el, ret)            # выдать базовую форму слова и записать ее в file
-                { stotar(wordbf(n),itmz,"#"); for(k in itmz) { print k >> file };}
 function w(n, wl,    itmz, ret)                  # нахождение в списке? = "одно из слов"
                 { stotar(wl, itmz, "[ |]"); if (lc(n) in itmz) {ret=1} else {ret=0}; return ret }
 function wa(n, wl,    ret)                       # нахождение в списке? = "одно из слов", но список в массиве omarr[wl] 
@@ -209,47 +225,47 @@ function notmark(n,mrk,    k, el, vmrk, ret)     # НЕ нахождение С�
                 { el="_" tolower(l[i+n]) "_";vmrk= "^" mrk;split(winfo,itmz,"#");for(k in itmz){if(itmz[k]~vmrk&&itmz[k]~el){ret=0;break}else{ret=1};}; return ret }
 function notsym(n,sym,    ret)                   # НЕ нахождение подстроки sym в слове
                 { if (l[i+n] !~ sym) {ret=1} else {ret=0}; return ret }
-function qxs(n,a0,b0,c0,d0,e0,      a_,b_,c_,d_,e_,asu,ret) # фраза от адреса, составленная из 1-5 переменных элементов, проверка пробелов, xsn=адрес слова с другой стороны
-                { if(a0) a_=1; if(b0) b_=1; if(c0) c_=1; if(d0) d_=1; if(e0) e_=1; asu=a_+b_+c_+d_+e_; xsn=""
-                  if (n < 0) { switch (asu) {
+function qxs(n,a0,b0,c0,d0,e0,      a_,b_,c_,d_,e_,sw,ret) # фраза от адреса, составленная из 1-5 переменных элементов, проверка пробелов, xsn=адрес слова с другой стороны
+                { if(a0) a_=1; if(b0) b_=1; if(c0) c_=1; if(d0) d_=1; if(e0) e_=1; sw=a_+b_+c_+d_+e_; xsn=""
+                  if (n < 0) { switch (sw) {
                       case "1": if( s(n      ) && w(n  ,a0)                                                     ) {xsn=n        ;ret=1} else {ret=0}; break
-                      case "2": if( s(n-1,n  ) && w(n-1,a0) && w(n  ,b0)                                        ) {xsn=n-(asu-1);ret=1} else {ret=0}; break
-                      case "3": if( s(n-2,n  ) && w(n-2,a0) && w(n-1,b0) && w(n  ,c0)                           ) {xsn=n-(asu-1);ret=1} else {ret=0}; break
-                      case "4": if( s(n-3,n  ) && w(n-3,a0) && w(n-2,b0) && w(n-1,c0) && w(n  ,d0)              ) {xsn=n-(asu-1);ret=1} else {ret=0}; break
-                      case "5": if( s(n-4,n  ) && w(n-4,a0) && w(n-3,b0) && w(n-2,c0) && w(n-1,d0) && w(n  ,e0) ) {xsn=n-(asu-1);ret=1} else {ret=0}; break
+                      case "2": if( s(n-1,n  ) && w(n-1,a0) && w(n  ,b0)                                        ) {xsn=n-(sw-1);ret=1} else {ret=0}; break
+                      case "3": if( s(n-2,n  ) && w(n-2,a0) && w(n-1,b0) && w(n  ,c0)                           ) {xsn=n-(sw-1);ret=1} else {ret=0}; break
+                      case "4": if( s(n-3,n  ) && w(n-3,a0) && w(n-2,b0) && w(n-1,c0) && w(n  ,d0)              ) {xsn=n-(sw-1);ret=1} else {ret=0}; break
+                      case "5": if( s(n-4,n  ) && w(n-4,a0) && w(n-3,b0) && w(n-2,c0) && w(n-1,d0) && w(n  ,e0) ) {xsn=n-(sw-1);ret=1} else {ret=0}; break
                       default: ret=xsn=""; break }
-                  } else { switch (asu) {
-                      case "1": if( s(n-1    ) && w(n  ,a0)                                                     ) {xsn=n+(asu-1);ret=1} else {ret=0}; break
-                      case "2": if( s(n-1,n  ) && w(n  ,a0) && w(n+1,b0)                                        ) {xsn=n+(asu-1);ret=1} else {ret=0}; break
-                      case "3": if( s(n-1,n+1) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)                           ) {xsn=n+(asu-1);ret=1} else {ret=0}; break
-                      case "4": if( s(n-1,n+2) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+3,d0)              ) {xsn=n+(asu-1);ret=1} else {ret=0}; break
-                      case "5": if( s(n-1,n+3) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+4,d0) && w(n+5,e0) ) {xsn=n+(asu-1);ret=1} else {ret=0}; break
+                  } else { switch (sw) {
+                      case "1": if( s(n-1    ) && w(n  ,a0)                                                     ) {xsn=n+(sw-1);ret=1} else {ret=0}; break
+                      case "2": if( s(n-1,n  ) && w(n  ,a0) && w(n+1,b0)                                        ) {xsn=n+(sw-1);ret=1} else {ret=0}; break
+                      case "3": if( s(n-1,n+1) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)                           ) {xsn=n+(sw-1);ret=1} else {ret=0}; break
+                      case "4": if( s(n-1,n+2) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+3,d0)              ) {xsn=n+(sw-1);ret=1} else {ret=0}; break
+                      case "5": if( s(n-1,n+3) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+4,d0) && w(n+5,e0) ) {xsn=n+(sw-1);ret=1} else {ret=0}; break
                       default: ret=xfn=""; break };}; return ret}
-function qxw(n,a0,b0,c0,d0,e0,      a_,b_,c_,d_,e_,asu,ret) # фраза от адреса, составленная из 1-5 переменных элементов, проверка пробелов, xsn=адрес первого слова
-                { if(a0) a_=1; if(b0) b_=1; if(c0) c_=1; if(d0) d_=1; if(e0) e_=1; asu=a_+b_+c_+d_+e_; xsn=""
-                  if (n < 0) { switch (asu) {
+function qxw(n,a0,b0,c0,d0,e0,      a_,b_,c_,d_,e_,sw,ret) # фраза от адреса, составленная из 1-5 переменных элементов, проверка пробелов, xsn=адрес первого слова
+                { if(a0) a_=1; if(b0) b_=1; if(c0) c_=1; if(d0) d_=1; if(e0) e_=1; sw=a_+b_+c_+d_+e_; xsn=""
+                  if (n < 0) { switch (sw) {
                       case "1": if(               w(n  ,a0)                                                     ) {xwn=n        ;ret=1} else {ret=0}; break
-                      case "2": if( s(n-1    ) && w(n-1,a0) && w(n  ,b0)                                        ) {xwn=n-(asu-1);ret=1} else {ret=0}; break
-                      case "3": if( s(n-2,n-1) && w(n-2,a0) && w(n-1,b0) && w(n  ,c0)                           ) {xwn=n-(asu-1);ret=1} else {ret=0}; break
-                      case "4": if( s(n-3,n-1) && w(n-3,a0) && w(n-2,b0) && w(n-1,c0) && w(n  ,d0)              ) {xwn=n-(asu-1);ret=1} else {ret=0}; break
-                      case "5": if( s(n-4,n-1) && w(n-4,a0) && w(n-3,b0) && w(n-2,c0) && w(n-1,d0) && w(n  ,e0) ) {xwn=n-(asu-1);ret=1} else {ret=0}; break
+                      case "2": if( s(n-1    ) && w(n-1,a0) && w(n  ,b0)                                        ) {xwn=n-(sw-1);ret=1} else {ret=0}; break
+                      case "3": if( s(n-2,n-1) && w(n-2,a0) && w(n-1,b0) && w(n  ,c0)                           ) {xwn=n-(sw-1);ret=1} else {ret=0}; break
+                      case "4": if( s(n-3,n-1) && w(n-3,a0) && w(n-2,b0) && w(n-1,c0) && w(n  ,d0)              ) {xwn=n-(sw-1);ret=1} else {ret=0}; break
+                      case "5": if( s(n-4,n-1) && w(n-4,a0) && w(n-3,b0) && w(n-2,c0) && w(n-1,d0) && w(n  ,e0) ) {xwn=n-(sw-1);ret=1} else {ret=0}; break
                       default: ret=xsn=""; break }
-                  } else { switch (asu) {
-                      case "1": if( s(n      ) && w(n  ,a0)                                                     ) {xwn=n+(asu-1);ret=1} else {ret=0}; break
-                      case "2": if( s(n  ,n  ) && w(n  ,a0) && w(n+1,b0)                                        ) {xwn=n+(asu-1);ret=1} else {ret=0}; break
-                      case "3": if( s(n  ,n+1) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)                           ) {xwn=n+(asu-1);ret=1} else {ret=0}; break
-                      case "4": if( s(n  ,n+2) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+3,d0)              ) {xwn=n+(asu-1);ret=1} else {ret=0}; break
-                      case "5": if( s(n  ,n+3) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+4,d0) && w(n+5,e0) ) {xwn=n+(asu-1);ret=1} else {ret=0}; break
+                  } else { switch (sw) {
+                      case "1": if( s(n      ) && w(n  ,a0)                                                     ) {xwn=n+(sw-1);ret=1} else {ret=0}; break
+                      case "2": if( s(n  ,n  ) && w(n  ,a0) && w(n+1,b0)                                        ) {xwn=n+(sw-1);ret=1} else {ret=0}; break
+                      case "3": if( s(n  ,n+1) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)                           ) {xwn=n+(sw-1);ret=1} else {ret=0}; break
+                      case "4": if( s(n  ,n+2) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+3,d0)              ) {xwn=n+(sw-1);ret=1} else {ret=0}; break
+                      case "5": if( s(n  ,n+3) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+4,d0) && w(n+5,e0) ) {xwn=n+(sw-1);ret=1} else {ret=0}; break
                       default: ret=xfn=""; break };}; return ret}
-function qxd(n,a0,b0,c0,      a_,b_,c_,asu,ret) # фраза от адреса, составленная из 1-5 переменных элементов, проверка дефисов, xsn=адрес первого слова
-                { if(a0) a_=1; if(b0) b_=1; if(c0) c_=1; asu=a_+b_+c_; xsn=""
-                  if (n < 0) { switch (asu) {
-                      case "2": if( se(n-1,"-") &&  w(n-1,a0 ) && w(n  ,b0)                                     ) {xsn=n-(asu-1);ret=1} else {ret=0}; break
-                      case "3": if( se(n-2,"-") && se(n-1,"-") && w(n-2,a0) && w(n-1,b0) && w(n  ,c0)           ) {xsn=n-(asu-1);ret=1} else {ret=0}; break
+function qxd(n,a0,b0,c0,      a_,b_,c_,sw,ret) # фраза от адреса, составленная из 1-5 переменных элементов, проверка дефисов, xsn=адрес первого слова
+                { if(a0) a_=1; if(b0) b_=1; if(c0) c_=1; sw=a_+b_+c_; xsn=""
+                  if (n < 0) { switch (sw) {
+                      case "2": if( se(n-1,"-") &&  w(n-1,a0 ) && w(n  ,b0)                                     ) {xsn=n-(sw-1);ret=1} else {ret=0}; break
+                      case "3": if( se(n-2,"-") && se(n-1,"-") && w(n-2,a0) && w(n-1,b0) && w(n  ,c0)           ) {xsn=n-(sw-1);ret=1} else {ret=0}; break
                       default: ret=xsn=""; break }
-                  } else { switch (asu) {
-                      case "2": if( se(n  ,"-") &&  w(n  ,a0 ) && w(n+1,b0)                                     ) {xsn=n+(asu-1);ret=1} else {ret=0}; break
-                      case "3": if( se(n  ,"-") && se(n+1,"-") && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)           ) {xsn=n+(asu-1);ret=1} else {ret=0}; break
+                  } else { switch (sw) {
+                      case "2": if( se(n  ,"-") &&  w(n  ,a0 ) && w(n+1,b0)                                     ) {xsn=n+(sw-1);ret=1} else {ret=0}; break
+                      case "3": if( se(n  ,"-") && se(n+1,"-") && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)           ) {xsn=n+(sw-1);ret=1} else {ret=0}; break
                       default: ret=xfn=""; break };}; return ret}
 
 
