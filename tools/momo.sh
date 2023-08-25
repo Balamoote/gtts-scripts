@@ -154,7 +154,8 @@ if [[ $locdic == "1" ]]; then
 
  # Список слов
  if [[ -s $bookstadir/bookwords.list ]] && md5sum -c --status $bookstadir/locdic.md5 >/dev/null 2>&1; then
-        printf '\e[36m%s \e[33m%s \e[32m%s\e[0m\n' "Файлы в" $bookstadir/locdic.md5 "  OK: файлы локальных словарей уже созданы.";
+	locdicsize=$(wc -l $bookstadir/bookwords.list)
+        printf '\e[36m%s \e[33m%s \e[32m%s \e[33m%s\e[0m\n' "Файлы в" $bookstadir/locdic.md5 "  OK: файлы локальных словарей уже созданы. Словоформ:" $locdicsize;
  else
  sed -r 's/^/ /g' $bookwrkdir/text-book.txt | grep -Eo "[$RUUC$rulc$unxc-]+" |\
      sed -r "s/[$unxc]+//g;
@@ -164,6 +165,7 @@ if [[ $locdic == "1" ]]; then
              s/^(.*)-(.*)$/\0\n\1=\n_\2/g
              s/^(.*)-(.*)$/\0\n\1=\n_\2/g
              s/^(.*)-(.*)$/\0\n\1=\n_\2/g" | sed -r "s/^_-/_/; s/-=$/=/" | sort -u > $bookstadir/bookwords.list
+    locdicsize=$(wc -l $bookstadir/bookwords.list)
 
  grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_gl.gz   | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_gl.gz
  grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_prl.gz  | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_prl.gz
@@ -175,7 +177,7 @@ if [[ $locdic == "1" ]]; then
            $bookstadir/dic_gl.gz $bookstadir/dic_prl.gz $bookstadir/dic_prq.gz $bookstadir/dic_rest.gz $bookstadir/dic_suw.gz > $bookstadir/locdic.md5
 
     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
-    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Подготовка локальных словарей из словоформ в книге:" $duration "сек."; fi
+    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "Подготовка локальных словарей из словоформ в книге:" $duration "сек. Словоформ:" $locdicsize; fi
 fi;
 # << Конец блока создания локальных словарей
 
