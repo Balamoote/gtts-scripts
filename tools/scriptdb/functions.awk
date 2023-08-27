@@ -61,12 +61,10 @@ function getBFf(n,m,file,    k, ret)              # выдать базовые 
 function getBFx(n,m,file,   sw,kw, k,j, ret)      # выдать базовые формы слов в диапазоне {n,m} и записать их в file, где n и m могут быть как "-" так и "+"
                 { sw=""; if(n<0 && m<0) sw=1; if(n>0 && m>0) sw=2; if(n<0 && m>0) sw=3;
                   switch (sw) {
-                   case "1": for(j= m;j>=n;j--)        {if(l[i+j]){kw=sanit(wordbf(j),"#","\x2f");if(kw=="") kw=l[i+j];ret=kw  sep[i+j]   ret}   else {ret=ret iwrd sep[i]; break};};
-                             ret=ret iwrd sep[i]; break
-                   case "2": ret=iwrd;for(k=n;k<=m;k++){if(l[i+j]){kw=sanit(wordbf(k),"#","\x2f");if(kw=="") kw=l[i+k];ret=ret sep[i+k-1] kw};};       ret=ret sep[i+k];    break
-                   case "3": for(j=-1;j>=n;j--)        {if(l[i+j]){kw=sanit(wordbf(j),"#","\x2f");if(kw=="") kw=l[i+j];ret=kw  sep[i+j]   ret}   else {ret=ret iwrd;        break};};
-                             ret=ret sep[i-1] iwrd;
-                             for(k= 1;k<=m;k++)        {if(l[i+k]){kw=sanit(wordbf(k),"#","\x2f");if(kw=="") kw=l[i+k];ret=ret sep[i+k-1] kw};};       ret=ret sep[i+k];    break
+                   case "1": for(j= m;j>=n;j--){if(l[i+j]){kw=sanit(wordbf(j),"#","\x2f");if(kw=="")kw=l[i+j];ret=kw  sep[i+j]   ret} else {break};};ret=ret iwrd sep[i]; break
+                   case "2": for(k= n;k<=m;k++){if(l[i+j]){kw=sanit(wordbf(k),"#","\x2f");if(kw=="")kw=l[i+k];ret=ret sep[i+k-1] kw } else {break};};ret=iwrd sep[i] ret sep[i+k]; break
+                   case "3": for(j=-1;j>=n;j--){if(l[i+j]){kw=sanit(wordbf(j),"#","\x2f");if(kw=="")kw=l[i+j];ret=kw  sep[i+j]   ret} else {break};};ret=ret iwrd sep[i];
+                             for(k= 1;k<=m;k++){if(l[i+k]){kw=sanit(wordbf(k),"#","\x2f");if(kw=="")kw=l[i+k];ret=ret sep[i+k-1] kw } else {break};};ret=ret sep[i+k]; break
                    default: ret=iwrd; break }; print ret >> file }
 function s1(n,wl,    ret)                         # выдать 1-й символ строки-сеператора
                 { if( substr(sep[i+n],1,1) == wl ) {ret=1} else {ret=0}; return ret }

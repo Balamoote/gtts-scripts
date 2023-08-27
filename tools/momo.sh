@@ -128,7 +128,7 @@ if [[ $fixomo == "1" ]]; then
 if [[ $spacy == "1" ]] || [[ $locdic == "1" ]]; then
 # Создать директорию статических файлов для текущей книги
  if [[ ! -d $bookstadir ]]; then mkdir $bookstadir
- else printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Директория статических файлов для текущей книги" $bookstadir "существует."; fi; fi
+ else printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория статических файлов для текущей книги" $bookstadir "существует."; fi; fi
 
 if [[ $spacy == "1" ]]; then
 # Создать копию текст книги и морфологией с помощью spacy << начало блока SpaCy
@@ -154,8 +154,8 @@ if [[ $locdic == "1" ]]; then
 
  # Список слов
  if [[ -s $bookstadir/bookwords.list ]] && md5sum -c --status $bookstadir/locdic.md5 >/dev/null 2>&1; then
-	locdicsize=$(wc -l $bookstadir/bookwords.list)
-        printf '\e[36m%s \e[33m%s \e[32m%s \e[33m%s\e[0m\n' "Файлы в" $bookstadir/locdic.md5 "  OK: файлы локальных словарей уже созданы. Словоформ:" $locdicsize;
+	locdicsize=$(cat $bookstadir/bookwords.list | wc -l)
+        printf '\e[36m%s \e[33m%s \e[32m%s \e[93m%s\e[0m\n' "Файлы в" $bookstadir/locdic.md5 "  OK: файлы локальных словарей уже созданы. Словоформ:" $locdicsize;
  else
  sed -r 's/^/ /g' $bookwrkdir/text-book.txt | grep -Eo "[$RUUC$rulc$unxc-]+" |\
      sed -r "s/[$unxc]+//g;
@@ -165,7 +165,7 @@ if [[ $locdic == "1" ]]; then
              s/^(.*)-(.*)$/\0\n\1=\n_\2/g
              s/^(.*)-(.*)$/\0\n\1=\n_\2/g
              s/^(.*)-(.*)$/\0\n\1=\n_\2/g" | sed -r "s/^_-/_/; s/-=$/=/" | sort -u > $bookstadir/bookwords.list
-    locdicsize=$(wc -l $bookstadir/bookwords.list)
+    locdicsize=$(cat $bookstadir/bookwords.list | wc -l )
 
  grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_gl.gz   | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_gl.gz
  grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_prl.gz  | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_prl.gz
@@ -182,7 +182,7 @@ fi;
 # << Конец блока создания локальных словарей
 
 # Проверить наличие необработанных "все": если есть, применить все правила, иначе выключить пару "все/всё"
-yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
+yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt | wc -l)
 if [[ ! $single -eq 1 ]]; then
   if [[ ! $yop -eq 0 ]]; then
      printf '\e[36m%s \e[93m%s \e[36m%s\e[0m … ' "Все (" $yop ") ==> Все́/Всё"
