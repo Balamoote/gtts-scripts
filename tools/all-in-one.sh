@@ -1,4 +1,5 @@
 #!/bin/bash
+# УСТАРЕЛ!!!
 # Модульный скрипт автоматической простановки ударений в книге. Только для голосового движка Гугл.
 # Последняя версия файла тут: https://github.com/Balamoote/gtts-scripts 
 
@@ -17,7 +18,7 @@
 #  --word | -g  = Собрать неизвестные слова и имена, словарь lexx НЕ проверять (см. примечание 3)
 #  --name | -n  = проставить ударения в именах собственных, собрать неизвестные слова и имена, проверить словарь lexx (см. примечание 3)
 #  --nald | -nl = проставить ударения в именах собственных, собрать неизвестные слова и имена, создать частный словарь, проверить lexx (ldic+name=nald)
-#  --omog | -o  = проставить ударения в омографах в book.fb2 (включение скриптов внутри ./omofix.sh, см. примечание 4)
+#  --omog | -o  = ВЫКЛЮЧЕНО! проставить ударения в омографах в book.fb2 (включение скриптов внутри ./omofix.sh, см. примечание 4)
 #  --naom | -no = проставить ударения в именах собственных и омографах в book.fb2 (name+omog=naom)
 #  --ldon | -na = проставить ударения в именах собственных и омографах в book.fb2 и создать частный словарь (name+omog+ldic=ldon)
 
@@ -44,7 +45,7 @@ sedbook="$book".regex
 #read -a param <<< $p
 
 # Массив со списком обязательных файлов
-pack="add2lexx.sh addnames.sh all-in-one.sh check-lexx.sh dic.sh get-words.sh lexx2txt.sh momo.sh omofix.sh scriptdb/omo-index.sed scriptdb/exclusion.pat.gz scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/nomo.txt.gz scriptdb/vse.sed scriptdb/wordbase0.gz scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptdb/yomodef.sed scriptomo/00-on.sed scriptomo/01-yo.sed scriptomo/11-num.sed scriptomo/20-index.sed scriptomo/41-1_eo-ast.sed scriptomo/41-2_eo.sed scriptomo/99-fin.sed stripper.sh txt2lexx.sh yofik.sh"
+pack="add2lexx.sh addnames.sh all-in-one.sh check-lexx.sh dic.sh get-words.sh lexx2txt.sh momo.sh scriptdb/omo-index.sed scriptdb/exclusion.pat.gz scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/nomo.txt.gz scriptdb/vse.sed scriptdb/wordbase0.gz scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptdb/yomodef.sed stripper.sh txt2lexx.sh yofik.sh"
 read -a minpack <<< $pack
 
 # Массив со списком системных утилит
@@ -89,25 +90,25 @@ case $key in
 	--nald | -nl) # =ldic+name вместе
            	if [[ -s "$book" ]]; then ./check-lexx.sh && ./get-words.sh -ld "$book"
     		else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./all-in-one.sh --nald book.fb2"; fi ;;
-	--omog | -o) # Обработать омографы АВТОМАТИЧЕСКИ
-    		if [[ -s "$book" ]]; then ./check-lexx.sh && ./omofix.sh "$book"
-    		else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./all-in-one.sh --omog book.fb2"; fi ;;
-	--naom | -no) # =omog+name вместе
-    		if [[ -s "$book" ]]; then ./check-lexx.sh && ./get-words.sh "$book" && ./omofix.sh "$book"
-    		else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./all-in-one.sh --naom book.fb2"; fi ;;
-	--ldon | -na) # =ldic+name+omog вместе
-           	if [[ -s "$book" ]]; then ./check-lexx.sh && ./get-words.sh "$book" -ld && ./omofix.sh "$book"
-    		else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./all-in-one.sh --ldon book.fb2"; fi ;;
+####--omog | -o) # Обработать омографы АВТОМАТИЧЕСКИ
+####		if [[ -s "$book" ]]; then ./check-lexx.sh && ./omofix.sh "$book"
+####		else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./all-in-one.sh --omog book.fb2"; fi ;;
+####--naom | -no) # =omog+name вместе
+####		if [[ -s "$book" ]]; then ./check-lexx.sh && ./get-words.sh "$book" && ./omofix.sh "$book"
+####		else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./all-in-one.sh --naom book.fb2"; fi ;;
+####--ldon | -na) # =ldic+name+omog вместе
+####       	if [[ -s "$book" ]]; then ./check-lexx.sh && ./get-words.sh "$book" -ld && ./omofix.sh "$book"
+####		else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./all-in-one.sh --ldon book.fb2"; fi ;;
 	--alna | -an) # =ldic+name+all_stress: частный словарь, имена с ударениями, ударения по всему тексту как в lexx, кроме омографов
            	if [[ -s "$book" ]]; then ./check-lexx.sh "$book" && ./get-words.sh "$book" -ld
     			printf '\e[32m%s\e[0m\n' "Расставляем ударения во всех словах книги..."
     			sed -i -rf "$book".sed "$book"; printf '\e[32m%s \e[33m%s\e[0m\n' "Обработка полностью закончена. Файл книги:" "$book"
     		else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./all-in-one.sh --alna book.fb2"; fi ;;
-	--alin | -al) # =ldic+name+omog+all_stress вместе: частный словарь, имена с ударениями, ударения по всему тексту как в lexx, омографы
-           	if [[ -s "$book" ]]; then ./check-lexx.sh "$book" && ./get-words.sh "$book" -ld && ./omofix.sh "$book"
-		    	printf '\e[32m%s\e[0m\n' "\e[32mРасставляем ударения во всех словах книги...\e[0m"
-			    sed -i -rf "$book".sed "$book"; printf '\e[32m%s \e[33m%s\e[0m\n' "Обработка полностью закончена. Файл книги:" "$book"
-    		else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./all-in-one.sh --alin book.fb2"; fi ;;
+####--alin | -al) # =ldic+name+omog+all_stress вместе: частный словарь, имена с ударениями, ударения по всему тексту как в lexx, омографы
+####       	if [[ -s "$book" ]]; then ./check-lexx.sh "$book" && ./get-words.sh "$book" -ld && ./omofix.sh "$book"
+####	    	printf '\e[32m%s\e[0m\n' "\e[32mРасставляем ударения во всех словах книги...\e[0m"
+####		    sed -i -rf "$book".sed "$book"; printf '\e[32m%s \e[33m%s\e[0m\n' "Обработка полностью закончена. Файл книги:" "$book"
+####		else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./all-in-one.sh --alin book.fb2"; fi ;;
 	*)
     		printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' \
 			"Использование:" "./all-in-one.sh [параметр из списка] book.fb2" "или" "./all-in-one.sh -help" "-- справка."; exit 0; ;;

@@ -36,7 +36,7 @@ case "$1" in
 esac; fi
 
 # Массив со списком обязательных файлов
-pack="add2lexx.sh addnames.sh all-in-one.sh check-lexx.sh dic.sh get-words.sh lexx2txt.sh momo.sh omofix.sh scriptdb/omo-index.sed scriptdb/exclusion.pat.gz scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/deomo.awk scriptdb/gw_caplists.awk scriptdb/yodef.awk scriptdb/wordbase0.gz scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptomo/00-on.sed scriptomo/01-yo.sed scriptomo/11-num.sed scriptomo/20-index.sed scriptomo/41-1_eo-ast.sed scriptomo/41-2_eo.sed scriptomo/99-fin.sed stripper.sh txt2lexx.sh yofik.sh"
+pack="add2lexx.sh addnames.sh all-in-one.sh check-lexx.sh dic.sh get-words.sh lexx2txt.sh momo.sh scriptdb/omo-index.sed scriptdb/exclusion.pat.gz scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/deomo.awk scriptdb/gw_caplists.awk scriptdb/yodef.awk scriptdb/wordbase0.gz scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz stripper.sh txt2lexx.sh yofik.sh"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
