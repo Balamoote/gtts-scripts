@@ -77,7 +77,7 @@ case $key in
 		fixomo=1; preview=1; spacy=0; progs=0; sgrp=1; single=1
 		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельная группа омографов не задана."; exit 1; fi; 
 		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
-	-fpe | -se ) # один омограф, превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
+	-fpe | -se ) # омограф = "все", превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
 		fixomo=1; preview=1; spacy=0; progs=0; vse=1; single=1
 		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельный омограф не задан."; exit 1; fi; 
 		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
@@ -286,7 +286,7 @@ sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $bookwrkdir/text-book.txt | \
 
 totnum=$(cat $bookwrkdir/totnum)
 
-printf '\e[36m%s \e[093m%s \e[36m%s \e[093m%s \e[0m' "Создано дискретных скриптов:" $(ls -l $bookwrkdir/*.sh | wc -l) "Всего остаток слов:" $totnum
+printf '\e[36m%s \e[093m%s \e[36m%s \e[093m%s \e[0m' "Создано дискретных скриптов:" $(ls -l $bookwrkdir/*.sh | wc -l) "Всего остаток омографов:" $totnum
 
 mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Время:" $duration "сек"

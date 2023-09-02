@@ -114,6 +114,8 @@ function seek(n,m, isclass, notclass,    k, ret)  # поиск на n шагов
 #               else      {for(k=n;k<=m;k++){if(q(k,isclass)){ret=1;skn=k;if(q(k,notclass)&&k<skn&&k<m){ret=0;break};break}else{if(q(k,notclass)&&k>n&&k<m){ret=0;break};};};return ret}
 function qf(n,m, isclass,    k, ret)              # поиск на n шагов вперёд наличия слова в классе
                 { ret=qfn=""; if(n>m)m=n; for (k=n; k<=m; k++) { if ( q(k,isclass) ) {ret=1; qfn=k; break}; }; return ret }
+function qif(n,m, isclass,    k, ret)              # поиск на n шагов вперёд наличия слова в классе, в промежутке задаооном функции: при n>=m = true
+                { ret=1;qfn=""; if(n>=m)ret=1; for (k=n; k<=m; k++) { if ( !(q(k,isclass)) ) {ret=0; qfn=k; break}; }; return ret }
 function qF(n,m, isclass, notclass,    k, ret)    # поиск на n шагов вперёд наличия слова в классе и отсутсвия его же в другом классе
                 { ret=qfn=""; if(n>m)m=n ;if(n<=m){for (k=n; k<=m; k++) { if ( q(k,isclass) && Q(k,notclass) ) {ret=1; qfn=k; break}; };}; return ret }
 function Qb(n,m, isclass,    k, ret)              # поиск на n шагов назад отсутствия слова в слассе
@@ -380,13 +382,15 @@ function otnsz_da(n,        wd,ret) { if(!(wd))wd=lc(n); if (wd in otm_edmuda||w
 function otnsz_ro(n,        wd,ret) { if(!(wd))wd=lc(n); if (wd in otm_edmuro||wd in otm_edzero||wd in otm_edsrro||wd in otm_mnro)          {ret=1} else {ret=0}; return ret}
 function otnsz_tv(n,        wd,ret) { if(!(wd))wd=lc(n); if (wd in otm_edmutv||wd in otm_edzetv||wd in otm_edsrtv||wd in otm_mntv)          {ret=1} else {ret=0}; return ret}
 function otnsz_pr(n,        wd,ret) { if(!(wd))wd=lc(n); if (wd in otm_edmupr||wd in otm_edzepr||wd in otm_edsrpr||wd in otm_mnpr)          {ret=1} else {ret=0}; return ret}
-function otnsz_ed(n,                                                                                                                         wd,ret) { if(!(wd))wd=lc(n);
+function otnsz_ed(n,                                                                                                                        wd,ret) { if(!(wd))wd=lc(n);
                       if (wd in otm_edmuim||wd in otm_edzeim||wd in otm_edsrim||wd in otm_edmuvi||wd in otm_edzevi||wd in otm_edsrvi||
                           wd in otm_edmuda||wd in otm_edzeda||wd in otm_edsrda||wd in otm_edmuro||wd in otm_edzero||wd in otm_edsrro||
-                          wd in otm_edmutv||wd in otm_edzetv||wd in otm_edsrtv||wd in otm_edmupr||wd in otm_edzepr||wd in otm_edsrpr)          {ret=1} else {ret=0}; return ret}
-function otnsz_mn(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
-                      if (wd in otm_mnim||wd in otm_mnvi||wd in otm_mnda||wd in otm_mnro||wd in otm_mntv||wd in otm_mnpr)                      {ret=1} else {ret=0}; return ret}
-
+                          wd in otm_edmutv||wd in otm_edzetv||wd in otm_edsrtv||wd in otm_edmupr||wd in otm_edzepr||wd in otm_edsrpr)       {ret=1} else {ret=0}; return ret}
+function otnsz_mn(n,                                                                                                                        wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in otm_mnim||wd in otm_mnvi||wd in otm_mnda||wd in otm_mnro||wd in otm_mntv||wd in otm_mnpr)                   {ret=1} else {ret=0}; return ret}
+function otnsz_mu(n,                                                                                                                        wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in otm_edmuim||wd in otm_edmuvi||wd in otm_edmuda||wd in otm_edmuro||wd in otm_edmutv||wd in otm_edmupr||
+			  wd in otm_mnim||wd in otm_mnvi||wd in otm_mnda||wd in otm_mnro||wd in otm_mntv||wd in otm_mnpr)                   {ret=1} else {ret=0}; return ret}
 
 # двойственное число
 function qi_duom(n,       wd,ret) { if(!(wd))wd=lc(n); if (wd in qd_duom)                                                                     {ret=1} else {ret=0}; return ret}

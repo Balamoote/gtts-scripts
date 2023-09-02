@@ -1,7 +1,7 @@
 #!/bin/bash
 
 S1=$(echo "$1" | sed -r "s/ё/е/g")
-printf "%s\n" $S1
+if [[ $S1 != $1 ]]; then printf "%s\n" $S1; fi
 
 dicword="^"$S1"\b"
 sstring="\b"$S1"\b"
