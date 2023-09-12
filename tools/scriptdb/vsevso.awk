@@ -165,7 +165,7 @@ gl_pnmn(3) && s(0,2) )
             prl_kred_sr(xsn+1) && s(xsn) )
  { l[i]=is_vsyo; V[35]++; if(dbg){print "V35"}; continue };
 
- if ( phf(1,"потому что") && s(0) && sc(1,",") )
+ if ( phf(1,"потому что") && s(0) && z(1) )
  { l[i]=is_vsyo; V[36]++; if(dbg){print "V36"}; continue };
  if ( qxd(1,"тип топ") && s(0) )
  { l[i]=is_vsyo; V[37]++; if(dbg){print "V37"}; continue };
@@ -185,7 +185,7 @@ gl_pnmn(3) && s(0,2) )
         w(xsn+2,"что") && s(xsn) && sc(xsn+1,",") )
  { l[i]=is_vsje; V[41]++; if(dbg){print "V41"}; continue };
  if ( w(1,"как") &&
-      w(2,"один одна") && ( s(0,1)||( sc(0,",") && s(1)) ) )
+      w(2,"один одна") && ( s(0,1)||( z(0) && s(1)) ) )
  { l[i]=is_vsje; V[42]++; if(dbg){print "V42"}; continue };
 
  if ( w(-1,"и") && p(0,",") && s(-1) && (sc(-2,"p")||p(-2)) )
@@ -193,7 +193,7 @@ gl_pnmn(3) && s(0,2) )
 
  if ( qxs(-1,"все","равно") &&
   gl_pnmn(1) &&
-        q(2,"mest_ed mest_mn") && s(-1,0) && sc(1,",") )
+        q(2,"mest_ed mest_mn") && s(-1,0) && z(1) )
  { l[i]=is_vsje; V[44]++; if(dbg){print "V44"}; continue };
  if ( qxs(1,"больше чаще","по") &&
         q(xsn+1,"suw_da") && s(xsn) )
@@ -203,7 +203,7 @@ gl_pnmn(3) && s(0,2) )
  { l[i]=is_vsje; V[46]++; if(dbg){print "V46"}; continue };
 
  if ( (qxw(1,"песенка","спета")) &&
-      (cap(0)||p(-1)||w(-1,"и")) && sc(0,",") && p(xwn) )
+      (cap(0)||p(-1)||w(-1,"и")) && z(0) && p(xwn) )
  { l[i]=is_vsyo; V[47]++; if(dbg){print "V47"}; continue };
 
  if ( w(1,"позади понапрасну") && s(0) && p(1) )
@@ -366,7 +366,7 @@ mest_it(1) && s(-1,0) )
             q(2,"gl_ed gl_in") && s(0,1) )
  { l[i]=is_vsyo; V[89]++; if(dbg){print "V89"}; continue };
  if ( q(-2,"vvod gl_ed") &&
-mest_it(-1) && sc(-2,",") && s(-1) && p(0) )
+mest_it(-1) && z(-2) && s(-1) && p(0) )
  { l[i]=is_vsyo; V[90]++; if(dbg){print "V90"}; continue };
 
 
@@ -384,7 +384,7 @@ mest_it(-1) && sc(-2,",") && s(-1) && p(0) )
    pre_ro(1) &&
   mest_ro(2) && s(0,1) )
  { l[i]=is_vsje; V[94]++; if(dbg){print "V94"}; continue };
- if ( qxs(-1,"как","и") && sc(0,",") &&
+ if ( qxs(-1,"как","и") && z(0) &&
         w(1,"что") )
  { l[i]=is_vsyo; V[95]++; if(dbg){print "V95"}; continue };
  if ( qxs(-1,"как","и") && sc(xsn-1,",") &&
@@ -399,12 +399,12 @@ mest_it(-1) && sc(-2,",") && s(-1) && p(0) )
 
  # как все
  if ( q(-2,"gl_in prl_im prl_tv") &&
-      w(-1,"как") && s(-1) && sc(-2,",") && p(0) )
+      w(-1,"как") && s(-1) && z(-2) && p(0) )
  { l[i]=is_vsje; V[99]++; if(dbg){print "V99"}; continue };
  if ( gl_in(-2) &&
           w(-1,"как") && s(-2,-1) && p(0) )
  { l[i]=is_vsje; V[100]++; if(dbg){print "V100"}; continue };
- if ( mod_ed(-2) && sc(-2,",") &&
+ if ( mod_ed(-2) && z(-2) &&
            w(-1,"как") && s(-2,-1) && p(0) )
  { l[i]=is_vsje; V[101]++; if(dbg){print "V101"}; continue };
  if ( qxs(1,"как","будто") &&
@@ -423,11 +423,11 @@ mest_it(-1) && sc(-2,",") && s(-1) && p(0) )
  if ( gl_pemn(1) &&
           qxs(2,"как","надо нужно есть было дома") && s(0,1) && p(xsn) )
  { l[i]=is_vsyo; V[106]++; if(dbg){print "V106"}; continue };
- if ( w(1,"как") && sc(0,",") &&
+ if ( w(1,"как") && z(0) &&
       q(2,"prl_tv") &&
       q(3,"suw_tv") && s(1,2) )
  { l[i]=is_vsyo; V[107]++; if(dbg){print "V107"}; continue };
- if ( w(1,"как") && sc(0,",") &&
+ if ( w(1,"как") && z(0) &&
       q(2,"mest_da suw_da") &&
       w(3,"и") &&
       q(4,"gl_in gl_ed gl_nemn gl_pemn gl_pnmn") && s(1,3) )
@@ -461,7 +461,7 @@ mest_mnim(-1) &&
  { l[i]=is_vsje; V[114]++; if(dbg){print "V114"}; continue };
 
  if ( w(1,"вместе") && se(1," — ") && s(0) &&
-      q(2,"mest_mn mest_ed cap") && sc(2,",") &&
+      q(2,"mest_mn mest_ed cap") && z(2) &&
       q(3,"mest_mn mest_ed cap") && p(3) )
  { l[i]=is_vsje; V[115]++; if(dbg){print "V115"}; continue };
  if ( w(1,"вместе") &&
@@ -487,7 +487,7 @@ mest_mnim(-1) &&
  { l[i]=is_vsje; V[119]++; if(dbg){print "V119"}; continue };
  if ( suw_mnro(-4) &&
              w(-3,"было") &&
-             w(-2,"много мало") && s(-4,-3) && sc(-2,",") &&
+             w(-2,"много мало") && s(-4,-3) && z(-2) &&
              w(-1,"и но") && s(-1) )
  { l[i]=is_vsje; V[120]++; if(dbg){print "V120"}; continue };
 
@@ -518,13 +518,13 @@ mest_ro(-1) &&
          nar_mest(1) && s(-2,0) && p(1) )
  { l[i]=is_vsyo; V[126]++; if(dbg){print "V126"}; continue };
  if ( pre_vi(-1) &&
-           w(1,"чтобы") && s(-1) && sc(0,",") )
+           w(1,"чтобы") && s(-1) && z(0) )
  { l[i]=is_vsyo; V[127]++; if(dbg){print "V127"}; continue };
- if ( mest_mnim(1) && sc(0,",") &&
+ if ( mest_mnim(1) && z(0) &&
               q(2,"pre_ro pre_vi") &&
               w(3,"кого") && s(1,2) )
  { l[i]=is_vsje; V[128]++; if(dbg){print "V128"}; continue };
- if ( q(1,"pre_ro pre_vi") && sc(0,",") &&
+ if ( q(1,"pre_ro pre_vi") && z(0) &&
       w(2,"кого" ) && s(1) )
  { l[i]=is_vsje; V[129]++; if(dbg){print "V129"}; continue };
  if ( pre_vi(1) &&
@@ -565,7 +565,7 @@ mest_ro(-1) &&
  if ( pre_ro(1) &&
     suw_mnro(2) && s(0,1) )
  { l[i]=is_vsje; V[138]++; if(dbg){print "V138"}; continue };
- if ( pre_ro(1) && sc(0,",") &&
+ if ( pre_ro(1) && z(0) &&
            q(2,"suw_mnro cap") && s(1) && p(2) )
  { l[i]=is_vsje; V[139]++; if(dbg){print "V139"}; continue };
  if ( q(-1,"pre_ro pre_tv") && s(-1) && p(0,",") )
@@ -599,33 +599,33 @@ mest_vi(2) &&
  { l[i]=is_vsyo; V[148]++; if(dbg){print "V148"}; continue };
 
  # всё, на что
- if ( sc(0,",") &&
-  pre_vi(1) &&
-       w(2,"что") && s(1) )
+ if ( z(0) &&
+ pre_vi(1) &&
+      w(2,"что") && s(1) )
  { l[i]=is_vsyo; V[149]++; if(dbg){print "V149"}; continue };
- if ( sc(0,",") &&
-  pre_vi(1) &&
-       w(2,"кого") && s(1) )
+ if ( z(0) &&
+ pre_vi(1) &&
+      w(2,"кого") && s(1) )
  { l[i]=is_vsje; V[150]++; if(dbg){print "V150"}; continue };
  if ( pre_vi(-1) &&
      gl_vzmn(1) &&
            q(2,"mest_im prl_im") && s(-1,1) )
  { l[i]=is_vsyo; V[151]++; if(dbg){print "V151"}; continue };
- if ( sc(0,",") &&
-  pre_da(1) &&
-       w(2,"чему") && s(1) )
+ if ( z(0) &&
+ pre_da(1) &&
+      w(2,"чему") && s(1) )
  { l[i]=is_vsyo; V[152]++; if(dbg){print "V152"}; continue };
- if ( sc(0,",") &&
-  pre_da(1) &&
-       w(2,"кому") && s(1) )
+ if ( z(0) &&
+ pre_da(1) &&
+      w(2,"кому") && s(1) )
  { l[i]=is_vsje; V[153]++; if(dbg){print "V153"}; continue };
- if ( sc(0,",") &&
-  pre_pr(1) &&
-       w(2,"чём чем") && s(1) )
+ if ( z(0) &&
+ pre_pr(1) &&
+      w(2,"чём чем") && s(1) )
  { l[i]=is_vsyo; V[154]++; if(dbg){print "V154"}; continue };
- if ( sc(0,",") &&
-  pre_pr(1) &&
-       w(2,"ком") && s(1) )
+ if ( z(0) &&
+ pre_pr(1) &&
+      w(2,"ком") && s(1) )
  { l[i]=is_vsje; V[155]++; if(dbg){print "V155"}; continue };
  if ( pre_pr(1) &&
            q(2,"mest_pr suw_pr") &&
@@ -644,9 +644,9 @@ mest_vi(2) &&
  { l[i]=is_vsyo; V[159]++; if(dbg){print "V159"}; continue };
 
  # предикат
- if ( predik(1) && sc(0,",") && p(1) )
+ if ( predik(1) && z(0) && p(1) )
  { l[i]=is_vsyo; V[160]++; if(dbg){print "V160"}; continue };
- if ( predik(1) && sc(0,",") && s(1) &&
+ if ( predik(1) && z(0) && s(1) &&
        gl_in(2) && p(2) )
  { l[i]=is_vsyo; V[161]++; if(dbg){print "V161"}; continue };
  if ( predik(1) &&
@@ -655,7 +655,7 @@ mest_vi(2) &&
  { l[i]=is_vsyo; V[162]++; if(dbg){print "V162"}; continue };
 
  # обращение
- if ( cap(1) && sc(0,",") && sc(1,",") &&
+ if ( cap(1) && z(0) && z(1) &&
  nar_step(2) && p(2) )
  { l[i]=is_vsyo; V[163]++; if(dbg){print "V163"}; continue };
 
@@ -703,25 +703,25 @@ mest_vi(2) &&
      pre_any(3) && s(0,3) )
  { l[i]=is_vsyo; V[173]++; if(dbg){print "V173"}; continue };
  if ( qm(-1,"gl_in","_ge_gl_qtoby_vsyo") && s(-1) &&
-      (w(1,"чтобы будто")||q(1,"mest_im nar_vopr")) && sc(0,",") )
+      (w(1,"чтобы будто")||q(1,"mest_im nar_vopr")) && z(0) )
  { l[i]=is_vsyo; V[174]++; if(dbg){print "V174"}; continue };
  if ( qm(-1,"gl_mn","_ge_gl_qtoby_vsyo") && s(-1) &&
-      (w(1,"чтобы будто")||q(1,"mest_im nar_vopr")) && sc(0,",") )
+      (w(1,"чтобы будто")||q(1,"mest_im nar_vopr")) && z(0) )
  { l[i]=is_vsyo; V[175]++; if(dbg){print "V175"}; continue };
  if ( q(1,"mest_mnim prl_kred_sr") &&
      qm(2,"gl_mn","_ge_gl_qtoby_vsje") && s(0,1) &&
-     (w(3,"чтобы будто куда")||q(3,"mest_im nar_vopr")) && sc(2,",") )
+     (w(3,"чтобы будто куда")||q(3,"mest_im nar_vopr")) && z(2) )
  { l[i]=is_vsje; V[176]++; if(dbg){print "V176"}; continue };
 #if ( qm(1,"gl_mn","_ge_gl_qtoby_vsje") && s(0) &&
 #pre_any(2) &&
-#     (w(3,"чтобы будто")||q(3,"mest_im nar_vopr")) && sc(1,",") )
+#     (w(3,"чтобы будто")||q(3,"mest_im nar_vopr")) && z(1) )
 #{ l[i]=is_vsje; V[177]++; if(dbg){print "V177"}; continue };
  if ( mest_mnim(-4) && s(-4) &&
             qxs(-1,"же ведь","и","так") &&
              qm(1,"gl_mn","_ge_subj_vsyo_gl") && s(0) )
  { l[i]=is_vsyo; V[178]++; if(dbg){print "V178"}; continue };
  if ( qm(1,"gl_mn","_ge_gl_qtoby_vsje") && s(0) &&
-      (w(2,"чтобы будто")||q(2,"mest_im nar_vopr")) && sc(1,",") )
+      (w(2,"чтобы будто")||q(2,"mest_im nar_vopr")) && z(1) )
  { l[i]=is_vsje; V[179]++; if(dbg){print "V179"}; continue };
  if ( mest_it(1) &&
            qm(2,"gl_mn","_ge_subj_vsyo_gl") && s(0,1) )
@@ -794,7 +794,7 @@ mest_vi(2) &&
      qm(-1,"gl_mn","_ge_obj_gl_vsje") && s(-2,-1) && p(0) )
  { l[i]=is_vsje; V[198]++; if(dbg){print "V198"}; continue };
  if ( qm(1,"gl_mn","_ge_vsyo_gl_answer") && s(0) &&
-   titul(2) && sc(1,",") )
+   titul(2) && z(1) )
  { l[i]=is_vsyo; V[199]++; if(dbg){print "V199"}; continue };
  if ( pre_pr(1) &&
            q(2,"suw_pr suw_edme") &&
@@ -811,7 +811,7 @@ mest_vi(2) &&
  mest_da(-1) && s(-2,-1) )
  { l[i]=is_vsje; V[203]++; if(dbg){print "V203"}; continue };
  if ( vvod(-2) &&
-        qm(-1,"gl_mn","_ge_obj_gl_vsje") && sc(-2,",") && s(-1) && p(0) )
+        qm(-1,"gl_mn","_ge_obj_gl_vsje") && z(-2) && s(-1) && p(0) )
  { l[i]=is_vsje; V[204]++; if(dbg){print "V204"}; continue };
  if ( qm(1,"gl_mn","_ge_vsje") && s(0) &&
      !(w(2,"и") && qq(1,3)) )
@@ -843,9 +843,9 @@ nar_step(1) && s(-1,0) )
  { l[i]=is_vsyo; V[214]++; if(dbg){print "V214"}; continue };
 
  # модальное mod_, с возможностью учёта метки m() в словаре dic_cust.gz
- if ( sc(0,",") && (cap(0)||p(-1)) &&
-       q(1,"mod_ed mod_mn") &&
-   gl_in(2) && s(1) )
+ if ( z(0) && (cap(0)||p(-1)) &&
+      q(1,"mod_ed mod_mn") &&
+  gl_in(2) && s(1) )
  { l[i]=is_vsyo; V[215]++; if(dbg){print "V215"}; continue };
  if ( mod_ed(1) &&
        gl_in(2) && s(0,1) )
@@ -951,16 +951,16 @@ nar_step(1) && s(-1,0) )
  if ( mest_it(1) &&
             q(2,"nar_vrem nar_mest nar_spos nar_step nar_srav nar_kaq") && s(0,2) && (p(2)||w(3,"и")) )
  { l[i]=is_vsyo; V[244]++; if(dbg){print "V244"}; continue };
- if ( mest_it(1) && s(0) && sc(1,",") &&
-         vvod(2) && sc(2,",") &&
+ if ( mest_it(1) && s(0) && z(1) &&
+         vvod(2) && z(2) &&
             q(3,"gl_ed gl_in") )
  { l[i]=is_vsyo; V[245]++; if(dbg){print "V245"}; continue };
  if ( gl_ed(-1) &&
           q(1,"muk_edtv muk_mntv") &&
           q(2,"suw_tv") s(-1,1) )
  { l[i]=is_vsyo; V[246]++; if(dbg){print "V246"}; continue };
- if ( mest_it(1) && s(0) && sc(1,",") &&
-         vvod(2) && sc(2,",") &&
+ if ( mest_it(1) && s(0) && z(1) &&
+         vvod(2) && z(2) &&
             q(3,"gl_nemn gl_pnmn") )
  { l[i]=is_vsje; V[247]++; if(dbg){print "V247"}; continue };
  if ( gl_ed(-1) &&
@@ -981,18 +981,18 @@ prl_kred_sr(2) && s(-1,1) )
        pre_any(1) && s(-2,1) )
  { l[i]=is_vsje; V[251]++; if(dbg){print "V251"}; continue };
  if ( (cap(0)||p(-1,",")) &&
-         q(1,"gl_ed gl_vzed") && sc(0,",") )
+         q(1,"gl_ed gl_vzed") && z(0) )
  { l[i]=is_vsyo; V[252]++; if(dbg){print "V252"}; continue };
 
 
 
- if ( sc(0,",") &&
-    vvod(1) && sc(1,",") &&
-       q(2,"gl_ed gl_in") )
+ if ( z(0) &&
+   vvod(1) && z(1) &&
+      q(2,"gl_ed gl_in") )
  { l[i]=is_vsyo; V[253]++; if(dbg){print "V253"}; continue };
- if ( sc(0,",") &&
-    vvod(1) && sc(1,",") &&
-       q(2,"gl_nemn gl_pnmn") )
+ if ( z(0) &&
+   vvod(1) && z(1) &&
+      q(2,"gl_nemn gl_pnmn") )
  { l[i]=is_vsje; V[254]++; if(dbg){print "V254"}; continue };
  if ( mest_it(1) &&
          qast(2) &&
@@ -1020,20 +1020,20 @@ prl_kred_sr(2) && s(-1,1) )
             q(3,"suw_ro") && s(-1,2) )
  { l[i]=is_vsyo; V[261]++; if(dbg){print "V261"}; continue };
  if ( mest_it(-1) &&
-            w(1,"что чтобы") && s(-1) && sc(0,",") )
+            w(1,"что чтобы") && s(-1) && z(0) )
  { l[i]=is_vsyo; V[262]++; if(dbg){print "V262"}; continue };
  if ( mest_it(-1) &&
-            w(1,"кто") && s(-1) && sc(0,",") )
+            w(1,"кто") && s(-1) && z(0) )
  { l[i]=is_vsje; V[263]++; if(dbg){print "V263"}; continue };
  if ( mest_it(-1) &&
        pre_ro(1) &&
             w(2,"того") &&
-            w(3,"что чтобы") && s(-1,1) && sc(2,",") )
+            w(3,"что чтобы") && s(-1,1) && z(2) )
  { l[i]=is_vsyo; V[264]++; if(dbg){print "V264"}; continue };
  if ( mest_it(1) &&
        pre_ro(2) &&
             w(3,"того") &&
-            w(4,"что чтобы") && s(0,2) && sc(3,",") )
+            w(4,"что чтобы") && s(0,2) && z(3) )
  { l[i]=is_vsyo; V[265]++; if(dbg){print "V265"}; continue };
  if ( mest_it(1) &&
       mest_da(2) &&
@@ -1092,7 +1092,7 @@ prl_kred_sr(2) && s(-1,1) )
          prq_krmn(3) && s(0,2) )
  { l[i]=is_vsje; V[278]++; if(dbg){print "V278"}; continue };
  if ( suw_edim(1) &&
-   prq_kred_sr(2) && sc(0,",") && s(1) )
+   prq_kred_sr(2) && z(0) && s(1) )
  { l[i]=is_vsyo; V[279]++; if(dbg){print "V279"}; continue };
  if ( q(1,"nar_mest nar_step") &&
             prq_kred_sr(2) && s(0,1) )
@@ -1121,7 +1121,7 @@ prl_kred_sr(2) && s(-1,1) )
            q(1,"prq_tv") &&
            q(2,"suw_tv") && s(-1,1) )
  { l[i]=is_vsyo; V[288]++; if(dbg){print "V288"}; continue };
- if ( q(-1,"prq_tv prl_tv") && sc(-1,",") &&
+ if ( q(-1,"prq_tv prl_tv") && z(-1) &&
       q(1,"prq_tv") &&
       q(2,"suw_tv") && s(0,1) )
  { l[i]=is_vsyo; V[289]++; if(dbg){print "V289"}; continue };
@@ -1141,12 +1141,12 @@ nar_kaq(2) &&
          prq_mnim(2) &&
  pre_ro(3) && s(0,2) )
  { l[i]=is_vsje; V[294]++; if(dbg){print "V294"}; continue };
- if ( w(1,"даже") && sc(0,",") &&
+ if ( w(1,"даже") && z(0) &&
       w(2,"не") &&
          prq_mnim(3) &&
          suw_edda(4) && s(1,3) )
  { l[i]=is_vsje; V[295]++; if(dbg){print "V295"}; continue };
- if ( w(1,"не") && sc(0,",") &&
+ if ( w(1,"не") && z(0) &&
          prq_mnim(2) &&
          suw_edda(3) && s(1,2) )
  { l[i]=is_vsje; V[296]++; if(dbg){print "V296"}; continue };
@@ -1158,7 +1158,7 @@ nar_kaq(2) &&
  { l[i]=is_vsyo; V[298]++; if(dbg){print "V298"}; continue };
  if ( q(1,"prq_ro") && s(0) )
  { l[i]=is_vsyo; V[299]++; if(dbg){print "V299"}; continue };
- if ( prq_edsrim(1) && sc(0,",") )
+ if ( prq_edsrim(1) && z(0) )
  { l[i]=is_vsyo; V[300]++; if(dbg){print "V300"}; continue };
  if ( qf(1,3,"prq_kred_sr") && s(0,qfn-1) && p(qfn) )
  { l[i]=is_vsyo; V[301]++; if(dbg){print "V301"}; continue };
@@ -1260,7 +1260,7 @@ suw_mnim(3) && s(0) && s(2))
             prl_kred_sr(4) && s(0,3) && p(4) )
  { l[i]=is_vsyo; V[327]++; if(dbg){print "V327"}; continue };
  if ( (w(1,"именно")||prl_kred_sr(1)) &&
-       w(2,"так") && sc(2,",") &&
+       w(2,"так") && z(2) &&
        w(3,"как чтобы") && s(0,1) )
  { l[i]=is_vsyo; V[328]++; if(dbg){print "V328"}; continue };
  if ( (w(1,"именно")||prl_kred_sr(1)) &&
@@ -1304,7 +1304,7 @@ suw_mnim(3) && s(0) && s(2))
            q(1,"prl_kred_sr prl_edsrim") && s(-1,0) && p(1) )
  { l[i]=is_vsyo; V[339]++; if(dbg){print "V339"}; continue };
  if ( vvod(-1) &&
-         q(1,"prl_kred_sr prl_edsrim") && sc(-1,",") && s(0) && p(1) )
+         q(1,"prl_kred_sr prl_edsrim") && z(-1) && s(0) && p(1) )
  { l[i]=is_vsyo; V[340]++; if(dbg){print "V340"}; continue };
  if ( q(-2,"gl_nemn gl_pnmn gl_pemn gl_in") &&
 mest_mn(-1) &&
@@ -1322,9 +1322,9 @@ mest_mn(-1) &&
             q(-1,"prl_kred_sr nar_kaq") && s(-2,-1) )
  { l[i]=is_vsje; V[345]++; if(dbg){print "V345"}; continue };
  if ( q(-1,"prl_kred_sr nar_kaq") &&
-      w(1,"кто кого кому кем") && sc(0,",") && s(-1) )
+      w(1,"кто кого кому кем") && z(0) && s(-1) )
  { l[i]=is_vsje; V[346]++; if(dbg){print "V346"}; continue };
- if (  w(1,"кто кого кому кем") && sc(0,",") )
+ if (  w(1,"кто кого кому кем") && z(0) )
  { l[i]=is_vsje; V[347]++; if(dbg){print "V347"}; continue };
  if ( q(-1,"prl_kred_sr nar_kaq") &&
  pre_ro(1) &&
@@ -1378,13 +1378,13 @@ sz_iili(2) &&
 
  # Все + ... + существительное =====================================
 
- if ( sz(1) && sc(0,",") &&
+ if ( sz(1) && z(0) &&
        w(2,"не") &&
 prq_mnim(3) &&
 suw_edda(4) &&
 suw_mnvi(5) && s(1,4) )
  { l[i]=is_vsje; V[363]++; if(dbg){print "V363"}; continue };
- if ( sz(1) && sc(0,",") &&
+ if ( sz(1) && z(0) &&
 prq_mnim(2) &&
 suw_edda(3) &&
 suw_mnvi(4) && s(1,3) )
@@ -1497,7 +1497,7 @@ mest_da(2) &&
  if ( suw_edim(1) &&
              q(2,"suw_ro") && s(0,1) )
  { l[i]=is_vsyo; V[396]++; if(dbg){print "V396"}; continue };
- if ( suw_mnim(-1) && sc(-1,",") &&
+ if ( suw_mnim(-1) && z(-1) &&
         pre_pr(1) &&
              q(2,"prl_pr") &&
              q(3,"suw_pr") && s(0,2) )
@@ -1511,12 +1511,12 @@ mest_da(2) &&
          suw_edvi(-1) &&
       w(1,"новые") && s(-2,0) )
  { l[i]=is_vsyo; V[399]++; if(dbg){print "V399"}; continue };
- if ( suw_edsrim(-1) && sc(-1,",") &&
+ if ( suw_edsrim(-1) && z(-1) &&
           pre_pr(1) &&
                q(2,"prl_pr") &&
                q(3,"suw_pr") && s(0,2) )
  { l[i]=is_vsyo; V[400]++; if(dbg){print "V400"}; continue };
- if ( suw_edsrim(-1) && sc(-1,",") &&
+ if ( suw_edsrim(-1) && z(-1) &&
           pre_pr(1) &&
                q(2,"suw_pr") && s(0,1) )
  { l[i]=is_vsyo; V[401]++; if(dbg){print "V401"}; continue };
@@ -1525,7 +1525,7 @@ mest_da(2) &&
  # наречия =============================================
 
  if ( qb(-7,-2,"mest_mnim") &&
-       w(-1,"то") && sc(-2,",") &&
+       w(-1,"то") && z(-2) &&
 nar_spos(1) && s(-1,0) && p(1) )
  { l[i]=is_vsje; V[402]++; if(dbg){print "V402"}; continue };
 
@@ -1630,12 +1630,12 @@ nar_kaq(2) && s(0,1) && p(2) )
  if ( w(-1,"чем даже") &&
           mest_mnim(1) && s(-1,0) )
  { l[i]=is_vsje; V[430]++; if(dbg){print "V430"}; continue };
- if ( mest_mn(-3) && sc(-3,",") &&
+ if ( mest_mn(-3) && z(-3) &&
             w(-2,"а но") &&
             w(-1,"не") && s(-2,-1) )
  { l[i]=is_vsje; V[431]++; if(dbg){print "V431"}; continue };
  if ( w(-1,"не") && s(-1) &&
-      w(1,"а но") && sc(0,",") &&
+      w(1,"а но") && z(0) &&
       q(2,"mest_mn prl_mnim") && s(1) )
  { l[i]=is_vsje; V[432]++; if(dbg){print "V432"}; continue };
  if ( mest_mnim(1) &&
@@ -1643,8 +1643,8 @@ nar_kaq(2) && s(0,1) && p(2) )
               w(3,"и") &&
               q(4,"gl_pnmn gl_nemn gl_pemn") && s(0,3) )
  { l[i]=is_vsje; V[433]++; if(dbg){print "V433"}; continue };
- if ( mest_mnim(-3) && sc(-3,",") &&
-       suw_mnim(-2) && sc(-2,",") &&
+ if ( mest_mnim(-3) && z(-3) &&
+       suw_mnim(-2) && z(-2) &&
               q(-1,"gl_pnmn gl_pemn gl_nemn") && s(-1) && (p(0)||pre_any(1)) )
  { l[i]=is_vsyo; V[434]++; if(dbg){print "V434"}; continue };
  if ( mest_im(-2) &&
@@ -1729,11 +1729,11 @@ nar_kaq(2) && s(0,1) && p(2) )
  if ( mest_mn(-1) &&
      nar_step(1) &&
   prl_kred_sr(2) &&
-      gl_pemn(3) && sc(3,",") && s(-1,2) &&
+      gl_pemn(3) && z(3) && s(-1,2) &&
            (w(4,"чтобы будто")||q(4,"mest_im nar_vopr")) )
  { l[i]=is_vsje; V[454]++; if(dbg){print "V454"}; continue };
  if ( mest_mn(-1) &&
-     nar_step(1) && sc(1,",") &&
+     nar_step(1) && z(1) &&
      nar_step(2) &&
       gl_pemn(3) && s(-1,0) && s(2) )
  { l[i]=is_vsje; V[455]++; if(dbg){print "V455"}; continue };
@@ -1936,7 +1936,7 @@ suw_edim(-1) &&
       mest_da(1) &&
       gl_nemn(2) && s(-1,1) && p(2))
  { l[i]=is_vsje; V[501]++; if(dbg){print "V501"}; continue };
- if ( q(1,"gl_pnmn gl_pemn gl_nemn") && sc(1,",") &&
+ if ( q(1,"gl_pnmn gl_pemn gl_nemn") && z(1) &&
       w(2,"кто никто") && s(0) )
  { l[i]=is_vsje; V[502]++; if(dbg){print "V502"}; continue };
  if ( q(-3,"suw_vi mest_vi") &&
@@ -2000,7 +2000,7 @@ suw_edim(-1) &&
  if ( pre_ro(1) && Qw_(-1,"gl_vzed gl_ed gl_ed") &&
            q(2,"mest_ro suw_ro prl_ro prq_ro") && s(0,1) )
  { l[i]=is_vsyo; V[517]++; if(dbg){print "V517"}; continue };
- if ( w(1,"кроме") && sc(0,",") &&
+ if ( w(1,"кроме") && z(0) &&
     cap(2) && s(1) )
  { l[i]=is_vsje; V[518]++; if(dbg){print "V518"}; continue };
 
@@ -2042,7 +2042,7 @@ suw_edim(-1) &&
  if ( deep(-1) &&
    gl_nemn(1) && s(-1,0) )
  { l[i]=is_vsje; V[528]++; if(dbg){print "V528"}; continue };
- if ( w(1,"включая") && sc(0,",") &&
+ if ( w(1,"включая") && z(0) &&
       q(2,"suw_vi") && s(1) )
  { l[i]=is_vsje; V[529]++; if(dbg){print "V529"}; continue };
  if ( deep(-1) &&
@@ -2052,7 +2052,7 @@ suw_edim(-1) &&
  { l[i]=is_vsyo; V[531]++; if(dbg){print "V531"}; continue };
  if ( gl_nemn(-1) &&
             q(1,"prl_mnim prq_mnim prl_krmn") &&
-         deep(2) && s(-1,0) && sc(1,",") )
+         deep(2) && s(-1,0) && z(1) )
  { l[i]=is_vsyo; V[532]++; if(dbg){print "V532"}; continue };
 
  # Все + ... + глагол ============================================
@@ -2130,42 +2130,42 @@ mest_da(-1) &&
 
 
  # всё то, что
- if ( w(1,"то") && sc(1,",") &&
+ if ( w(1,"то") && z(1) &&
           mest_edsr(2) )
  { l[i]=is_vsyo; V[551]++; if(dbg){print "V551"}; continue };
  # всё, что
- if ( sc(0,",") &&
+ if ( z(0) &&
           mest_edsr(1) && W(2,"есть") )
  { l[i]=is_vsyo; V[552]++; if(dbg){print "V552"}; continue };
- if ( gl_mn(1) && sc(1,",") &&
+ if ( gl_mn(1) && z(1) &&
           w(2,"что кто когда") && s(0) )
  { l[i]=is_vsje; V[553]++; if(dbg){print "V553"}; continue };
  # все те, кто
- if ( w(1,"те") && sc(1,",") &&
+ if ( w(1,"те") && z(1) &&
       q(1,"mest_edmu mest_edze") )
  { l[i]=is_vsje; V[554]++; if(dbg){print "V554"}; continue };
  # все, кто
- if ( sc(0,",") &&
-       q(1,"mest_edmu mest_edze") )
+ if ( z(0) &&
+      q(1,"mest_edmu mest_edze") )
  { l[i]=is_vsje; V[555]++; if(dbg){print "V555"}; continue };
  # учитывало всё, кроме
  if ( gl_ed(-1) && s(-1) &&
-         sc(0,",") &&
+          z(0) &&
           w(1,"кроме") )
  { l[i]=is_vsyo; V[556]++; if(dbg){print "V556"}; continue };
 
  # все, которые
- if ( sc(0,",") &&
-       q(1,"mest_da suw_da") )
+ if ( z(0) &&
+      q(1,"mest_da suw_da") )
  { l[i]=is_vsyo; V[557]++; if(dbg){print "V557"}; continue };
- if ( sc(0,",") &&
-       q(1,"mest_mn prq_mnim") && W(1,"мы вы") )
+ if ( z(0) &&
+      q(1,"mest_mn prq_mnim") && W(1,"мы вы") )
  { l[i]=is_vsje; V[558]++; if(dbg){print "V558"}; continue };
 
  # Ну всё,
  if ( w(-1,"ну") && s(-1) )
  { l[i]=is_vsyo; V[559]++; if(dbg){print "V559"}; continue };
- if ( qxw(-1,"ну","все") && sc(-1,",") && p(0) )
+ if ( qxw(-1,"ну","все") && z(-1) && p(0) )
  { l[i]=is_vsyo; V[560]++; if(dbg){print "V560"}; continue };
 
 
@@ -2194,11 +2194,11 @@ gl_edsr(2) && s(0,1) )
       w(2,"и") && s(-2,1) )
  { l[i]=is_vsyo; V[567]++; if(dbg){print "V567"}; continue };
  if ( q(-1,"gl_ed") &&
-      w(1,"так") && sc(1,",") &&
+      w(1,"так") && z(1) &&
       w(2,"что чтобы") && s(-1) && s(0) )
  { l[i]=is_vsyo; V[568]++; if(dbg){print "V568"}; continue };
- if ( sc(0,",") &&
- gl_vzed(-1) && s(-1) )
+ if ( z(0) &&
+gl_vzed(-1) && s(-1) )
  { l[i]=is_vsyo; V[569]++; if(dbg){print "V569"}; continue };
  if ( qast(1) &&
       qast(2) &&
@@ -2506,14 +2506,14 @@ gl_nemn(-1) &&
  # гл.мн + все + ...  ============================================
  # гл.мн + все + ... + доп.
  if ( q(-1,"gl_vzmn gl_nemn") &&
-     sc(0,",") &&
+      z(0) &&
       q(1,"nar_mest nar_kaq nar_vrem nar_spos mest_mn suw_edda") && s(-1) )
  { l[i]=is_vsje; V[638]++; if(dbg){print "V638"}; continue };
- if ( q(1,"gl_pemn") && sc(1,",") &&
+ if ( q(1,"gl_pemn") && z(1) &&
       w(2,"что") && s(0) )
  { l[i]=is_vsje; V[639]++; if(dbg){print "V639"}; continue };
  if ( q(-1,"gl_vzmn gl_nemn") && s(-1) &&
-     sc(0,",") )
+      z(0) )
  { l[i]=is_vsje; V[640]++; if(dbg){print "V640"}; continue };
 
 
@@ -2532,7 +2532,7 @@ gl_nemn(-1) &&
 
 
  # звательное ---------------------------
- if ( titul(1) && sc(0,",") && p(1) )
+ if ( titul(1) && z(0) && p(1) )
  { l[i]=is_vsyo; V[645]++; if(dbg){print "V645"}; continue };
 
  # вводные предложения ----------------------------------------------------
@@ -2570,12 +2570,12 @@ gl_nemn(-1) &&
 
 
  # соседние предложения, определеящий выбор омографа
- if ( nar_mest(1) && sc(1,",") && s(0) &&
+ if ( nar_mest(1) && z(1) && s(0) &&
          gl_mn(2) &&
              q(3,"mest_vi suw_vi") && s(2) )
  { l[i]=is_vsje; V[655]++; if(dbg){print "V655"}; continue };
  if ( q(-4,"gl_pemn gl_pnmn gl_nemn") &&
-         suw_mnvi(-3) && sc(-3,",") &&
+         suw_mnvi(-3) && z(-3) &&
     qxs(-1,"и","не") && p(0) )
  { l[i]=is_vsje; V[656]++; if(dbg){print "V656"}; continue };
  if ( qik_vi(-2) &&
@@ -2665,7 +2665,7 @@ prq_krmn(qfn+1) && s(0,qfn) )
       w(-2,"бы") && s(-3) && p(-2) &&
       w(-1,"как") && s(-1) && p(0) )
  { l[i]=is_vsje; V[678]++; if(dbg){print "V678"}; continue };
- if ( w(1,"и") && sc(0,",") &&
+ if ( w(1,"и") && z(0) &&
     qxs(2,"еще","больше") )
  { l[i]=is_vsyo; V[679]++; if(dbg){print "V679"}; continue };
 
