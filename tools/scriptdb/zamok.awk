@@ -1028,7 +1028,7 @@ sz_iili(-3) &&
 
     # _castle_prl:start
     cst1="быть ведь же казаться стать считаться являться";
-    if ( q(-1,"prl_im prl_kred_mu") && ba(-1,"_castle_prl") && s(-1) )
+    if ( q(-1,"prl_im prl_kred_mu") && ba(-1,"_castle_prl") && s(-1) && !(ba(-2,"_lock_pe") && s(-2)) )
     { l[i]=omo1; Z[201]++; if(dbg){print "Z201"}; continue };
     if ( q(-2,"prl_im prl_kred_mu") && ba(-2,"_castle_prl") &&
          q(-1,"prl_any prq_any mest_any qast") && s(-2,-1) )
@@ -2641,7 +2641,7 @@ sz_iili(-3) &&
 
     # escape для место:start
     cst1="место";
-    cst2="выбирать выбрать искать найти находиться отыскать подыскать поискать";
+    cst2="выбирать выбрать искать найти находиться отыскать подыскать поискать приглядеть присмотреть";
     if ( base(-4,cst2) &&
             q(-3,"nar_mest mest_da suw_da") &&
          base(-2,cst1) &&
@@ -2651,30 +2651,41 @@ sz_iili(-3) &&
          base(-2,cst1) &&
             w(-1,"под") && s(-3,-1) )
     { l[i]=omo1; Z[495]++; if(dbg){print "Z495"}; continue };
+    if ( base(-3,cst1) &&
+         base(-2,cst2) &&
+            w(-1,"под") && s(-3,-1) )
+    { l[i]=omo1; Z[496]++; if(dbg){print "Z496"}; continue };
     if ( base(-2,cst1) &&
             w(-1,"под") &&
            bf(1,3,cst2) && s(-2,bfn-1) )
-    { l[i]=omo1; Z[496]++; if(dbg){print "Z496"}; continue };
+    { l[i]=omo1; Z[497]++; if(dbg){print "Z497"}; continue };
 
     cst3="выбор поиск";
     if ( base(-4,cst3) &&
             q(-3,"prl_ro") &&
          base(-2,cst1) &&
             w(-1,"под") && s(-4,-1) )
-    { l[i]=omo1; Z[497]++; if(dbg){print "Z497"}; continue };
+    { l[i]=omo1; Z[498]++; if(dbg){print "Z498"}; continue };
+
+    cst3="уверенный";
+    if ( base(-4,cst3) &&
+            w(-3,"насчет о") &&
+         base(-2,cst1) &&
+            w(-1,"под") && s(-4,-1) )
+    { l[i]=omo1; Z[499]++; if(dbg){print "Z499"}; continue };
 
     cst4="отправить отправиться отправлять отправляться сложить";
     if ( base(-4,cst4) &&
             w(-3,"на") &&
          base(-2,cst1) &&
             w(-1,"под") && s(-4,-1) )
-    { l[i]=omo2; Z[498]++; if(dbg){print "Z498"}; continue };
+    { l[i]=omo2; Z[500]++; if(dbg){print "Z500"}; continue };
     if ( base(-2,cst4) &&
             w(-1,"под") &&
             w(1,"в") &&
             q(2,"prl_vi prq_vi mest_vi mest_3e") &&
          base(3,cst1) && s(-2,2) )
-    { l[i]=omo2; Z[499]++; if(dbg){print "Z499"}; continue };
+    { l[i]=omo2; Z[501]++; if(dbg){print "Z501"}; continue };
 
     cst4="выжечь выжигать";
     if ( base(-6,cst4) &&
@@ -2683,145 +2694,314 @@ sz_iili(-3) &&
             q(-3,"suw_tv") &&
          base(-2,cst1) &&
             w(-1,"под") && s(-6,-1) )
-    { l[i]=omo2; Z[500]++; if(dbg){print "Z500"}; continue };
+    { l[i]=omo2; Z[502]++; if(dbg){print "Z502"}; continue };
     # escape для место:end
 
     if ( sc(-2,"—") &&
           w(-1,"под") && s(-1) && (p(0)||q_w(1,"sz_iili pre_any")) )
-    { l[i]=omo2; Z[501]++; if(dbg){print "Z501"}; continue };
+    { l[i]=omo2; Z[503]++; if(dbg){print "Z503"}; continue };
     if ( w(-1,"под") &&
          q(1,"mest_vi mest_3e suw_odvi qis_vi isname") && s(-1,0) && (p(1)||q_w(2,"sz_iili pre_any")) )
-    { l[i]=omo2; Z[502]++; if(dbg){print "Z502"}; continue };
+    { l[i]=omo2; Z[504]++; if(dbg){print "Z504"}; continue };
     if ( q(-2,"mest_vi mest_3e suw_odvi qis_vi sz") &&
          w(-1,"под") &&
          s(-2,-1) && p(-3) && (p(0)||q_w(1,"sz_iili pre_any")) )
-    { l[i]=omo2; Z[503]++; if(dbg){print "Z503"}; continue };
-    if ( w(-3,"в на") && s(-3) &&
-         q(-2,"suw_vi") && z(-2) &&
+    { l[i]=omo2; Z[505]++; if(dbg){print "Z505"}; continue };
+    if ( q(-3,"pre_vi") && s(-3) &&
+         q(-2,"suw_vi isname") && z(-2) &&
          w(-1,"под") && s(-1) && (p(0)||q_w(1,"sz_iili pre_any")) )
-    { l[i]=omo2; Z[504]++; if(dbg){print "Z504"}; continue };
-    if ( w(-4,"в на") && s(-4,-3) &&
+    { l[i]=omo2; Z[506]++; if(dbg){print "Z506"}; continue };
+    if ( q(-4,"pre_vi") && s(-4,-3) &&
          q(-3,"prl_vi mest_vi mest_3e qast") &&
          q(-2,"suw_vi") && z(-2) &&
          w(-1,"под") && s(-1) && (p(0)||q_w(1,"sz_iili pre_any")) )
-    { l[i]=omo2; Z[505]++; if(dbg){print "Z505"}; continue };
-    if ( w(-4,"в на") &&
+    { l[i]=omo2; Z[507]++; if(dbg){print "Z507"}; continue };
+    if ( q(-4,"pre_vi") &&
          q(-3,"suw_vi") &&
    sz_iili(-2) &&
          w(-1,"под") && s(-4,-1) )
-    { l[i]=omo2; Z[506]++; if(dbg){print "Z506"}; continue };
+    { l[i]=omo2; Z[508]++; if(dbg){print "Z508"}; continue };
+
+
+    # _gl_i_pod_lock:start
+    if ( ba(-3,"_gl_i_pod_lock") && (s(-3)||z(-3)) &&
+        qxs(-1,"и","под") )
+    { l[i]=omo2; Z[509]++; if(dbg){print "Z509"}; continue };
+    if ( ba(-4,"_gl_i_pod_lock") && (s(-4)||z(-4)) &&
+          q(-3,"mest_vi mest_3e suw_vi isname") &&
+        qxs(-1,"и","под") )
+    { l[i]=omo2; Z[510]++; if(dbg){print "Z510"}; continue };
+    # _gl_i_pod_lock:start
 
     # _gl_pod_lock:start
-    if ( ba(-2,"_gl_pod_lock") &&
-          w(-1,"под") && s(-2,-1) )
-    { l[i]=omo2; Z[507]++; if(dbg){print "Z507"}; continue };
+    if ( ba(-2,"_gl_pod_lock") && (s(-2)||z(-2)) &&
+          w(-1,"под") && s(-1) )
+    { l[i]=omo2; Z[511]++; if(dbg){print "Z511"}; continue };
+    if ( narph_any(-2) && s(xwn-1) &&
+                ba(xwn-1,"_gl_pod_lock") &&
+                 w(-1,"под") && s(-1) )
+    { l[i]=omo2; Z[512]++; if(dbg){print "Z512"}; continue };
+    if ( narph_any(-2) && s(xwn-2,xwn-1) &&
+                ba(xwn-2,"_gl_pod_lock") &&
+                 q(xwn-1,"suw_vi mest_vi mest_3e isname") &&
+                 w(-1,"под") && s(-1) )
+    { l[i]=omo2; Z[513]++; if(dbg){print "Z513"}; continue };
     if ( ba(-4,"_gl_pod_lock") &&
-          q(-3,"prl_vi mest_vi mest_3e qik_vi qast") &&
-          q(-2,"suw_vi mest_vi mest_3e qis_vi qast") &&
+          q(-3,"prl_vi prq_vi mest_vi mest_3e qik_vi qis_vi qast") &&
+          q(-2,"suw_vi mest_vi mest_3e qis_vi qast isname") &&
           w(-1,"под") && s(-4,-1) )
-    { l[i]=omo2; Z[508]++; if(dbg){print "Z508"}; continue };
+    { l[i]=omo2; Z[514]++; if(dbg){print "Z514"}; continue };
     if ( ba(-5,"_gl_pod_lock") &&
-          q(-4,"prl_vi mest_vi mest_3e qik_vi qast") &&
+          q(-4,"prl_vi mest_vi mest_3e qik_vi qis_vi qast") &&
           q(-3,"prl_vi mest_vi mest_3e mest_im qast") &&
           q(-2,"suw_vi mest_vi mest_3e qast") &&
           w(-1,"под") && s(-5,-1) )
-    { l[i]=omo2; Z[509]++; if(dbg){print "Z509"}; continue };
+    { l[i]=omo2; Z[515]++; if(dbg){print "Z515"}; continue };
+    if ( ba(-5,"_gl_pod_lock") &&
+          q(-4,"suw_vi") &&
+          q(-3,"isname") &&
+          q(-2,"isname") &&
+          w(-1,"под") && s(-5,-1) )
+    { l[i]=omo2; Z[516]++; if(dbg){print "Z516"}; continue };
+    if ( ba(-4,"_gl_pod_lock") &&
+          q(-3,"suw_vi suw_edne") &&
+          q(-2,"isname suw_ro") &&
+          w(-1,"под") && s(-4,-1) )
+    { l[i]=omo2; Z[517]++; if(dbg){print "Z517"}; continue };
     if ( ba(-6,"_gl_pod_lock") &&
           q(-5,"prl_kred_sr nar_any") &&
-          q(-4,"prl_vi mest_vi mest_3e qik_vi qast") &&
+          q(-4,"prl_vi mest_vi mest_3e qik_vi qis_vi qast") &&
           q(-3,"prl_vi mest_vi mest_3e mest_im qast") &&
           q(-2,"suw_vi mest_vi mest_3e qast") &&
           w(-1,"под") && s(-6,-1) )
-    { l[i]=omo2; Z[510]++; if(dbg){print "Z510"}; continue };
+    { l[i]=omo2; Z[518]++; if(dbg){print "Z518"}; continue };
+    if ( ba(-5,"_gl_pod_lock") &&
+          q(-4,"prl_vi mest_vi mest_3e") &&
+          q(-3,"suw_vi isname") &&
+          q(-2,"suw_ro isname") &&
+          w(-1,"под") && s(-5,-1) )
+    { l[i]=omo2; Z[519]++; if(dbg){print "Z519"}; continue };
     if ( ba(-6,"_gl_pod_lock") &&
-          w(-5,"в") &&
+          q(-5,"prl_kred_sr nar_any") &&
+          q(-4,"prl_vi mest_vi mest_3e") &&
+          q(-3,"suw_vi isname") &&
+          q(-2,"suw_ro isname") &&
+          w(-1,"под") && s(-6,-1) )
+    { l[i]=omo2; Z[520]++; if(dbg){print "Z520"}; continue };
+    if ( ba(-6,"_gl_pod_lock") &&
+          q(-5,"pre_vi") &&
           q(-4,"prl_vi mest_vi mest_3e qast") &&
           q(-3,"prl_vi mest_vi mest_3e qast") &&
           q(-2,"suw_vi mest_vi mest_3e qast") &&
           w(-1,"под") && s(-6,-1) )
-    { l[i]=omo2; Z[511]++; if(dbg){print "Z511"}; continue };
-    if ( ba(-3,"_gl_pod_lock") &&
-          q(-2,"suw_vi mest_vi mest_3e qis_vi qast") &&
-          w(-1,"под") && s(-3,-1) )
-    { l[i]=omo2; Z[512]++; if(dbg){print "Z512"}; continue };
+    { l[i]=omo2; Z[521]++; if(dbg){print "Z521"}; continue };
+    if ( ba(-4,"_gl_pod_lock") &&
+          q(-3,"pre_vi") &&
+          q(-2,"suw_vi suw_pr mest_vi mest_3e qast isname") &&
+          w(-1,"под") && s(-4,-1) )
+    { l[i]=omo2; Z[522]++; if(dbg){print "Z522"}; continue };
+    if ( ba(-5,"_gl_pod_lock") &&
+          q(-4,"pre_vi") &&
+          q(-3,"prl_vi mest_vi mest_3e qast") &&
+          q(-2,"suw_vi mest_vi mest_3e qast") &&
+          w(-1,"под") && s(-5,-1) )
+    { l[i]=omo2; Z[523]++; if(dbg){print "Z523"}; continue };
+    if ( ba(-5,"_gl_pod_lock") &&
+          q(-4,"pre_vi") &&
+          q(-3,"qik_vi") &&
+          q(-2,"suw_ro") &&
+          w(-1,"под") && s(-5,-1) )
+    { l[i]=omo2; Z[524]++; if(dbg){print "Z524"}; continue };
+    if ( ba(-5,"_gl_pod_lock") &&
+          q(-4,"prl_vi mest_vi mest_3e suw_vi") &&
+          q(-3,"pre_vi") &&
+          q(-2,"suw_vi mest_vi mest_3e suw_pr isname") &&
+          w(-1,"под") && s(-5,-1) )
+    { l[i]=omo2; Z[525]++; if(dbg){print "Z525"}; continue };
+    if ( ba(-6,"_gl_pod_lock") &&
+          q(-5,"prl_vi prl_ro mest_vi mest_3e suw_vi isname") &&
+          q(-4,"pre_vi") &&
+          q(-3,"prl_vi mest_vi mest_3e qast") &&
+          q(-2,"suw_vi mest_vi mest_3e") &&
+          w(-1,"под") && s(-6,-1) )
+    { l[i]=omo2; Z[526]++; if(dbg){print "Z526"}; continue };
+    if ( ba(-6,"_gl_pod_lock") &&
+          q(-5,"prl_vi prl_ro mest_vi mest_3e suw_vi isname") &&
+          q(-4,"pre_pr") &&
+          q(-3,"prl_pr mest_pr mest_3e qast") &&
+          q(-2,"suw_pr mest_pr mest_3e") &&
+          w(-1,"под") && s(-6,-1) )
+    { l[i]=omo2; Z[527]++; if(dbg){print "Z527"}; continue };
+    if ( ba(-7,"_gl_pod_lock") &&
+          q(-6,"qast") &&
+          q(-5,"prl_vi prl_ro mest_vi mest_3e suw_vi isname") &&
+          q(-4,"pre_pr") &&
+          q(-3,"prl_pr mest_pr mest_3e qast") &&
+          q(-2,"suw_pr mest_pr mest_3e") &&
+          w(-1,"под") && s(-7,-1) )
+    { l[i]=omo2; Z[528]++; if(dbg){print "Z528"}; continue };
+    if ( ba(-7,"_gl_pod_lock") &&
+          q(-6,"prl_vi prl_ro mest_vi mest_3e suw_vi isname") &&
+          q(-5,"pre_vi") &&
+          q(-4,"prl_vi mest_vi mest_3e qast") &&
+          q(-3,"suw_vi mest_vi mest_3e suw_pr") &&
+          q(-2,"suw_ro") &&
+          w(-1,"под") && s(-7,-1) )
+    { l[i]=omo2; Z[529]++; if(dbg){print "Z529"}; continue };
+    if ( ba(-3,"_gl_pod_lock") && s(-3) &&
+          q(-2,"suw_vi mest_vi mest_3e qis_vi prl_ro prq_ro qast isname nar_any") &&
+          w(-1,"под") && (s(-2)||z(-2)) && s(-1) )
+    { l[i]=omo2; Z[530]++; if(dbg){print "Z530"}; continue };
+    if ( ba(-4,"_gl_pod_lock") &&
+          q(-3,"suw_vi mest_vi mest_3e prl_ro prq_ro isname") &&
+          q(-2,"nar_vrem nar_spos nar_mest nar_napr") &&
+          w(-1,"под") && s(-4,-1) )
+    { l[i]=omo2; Z[531]++; if(dbg){print "Z531"}; continue };
+    if ( ba(-5,"_gl_pod_lock") &&
+          q(-4,"suw_vi prl_vi isname") &&
+    sz_iili(-3) &&
+          q(-2,"suw_vi prl_vi isname") &&
+          w(-1,"под") && s(-5,-1) )
+    { l[i]=omo2; Z[532]++; if(dbg){print "Z532"}; continue };
     if ( ba(-4,"_gl_pod_lock") &&
      pre_ro(-3) &&
           q(-2,"suw_ro") &&
           w(-1,"под") && s(-4,-1) )
-    { l[i]=omo2; Z[513]++; if(dbg){print "Z513"}; continue };
+    { l[i]=omo2; Z[533]++; if(dbg){print "Z533"}; continue };
+    if ( ba(-4,"_gl_pod_lock") &&
+     pre_tv(-3) &&
+          q(-2,"suw_tv") &&
+          w(-1,"под") && s(-4,-1) )
+    { l[i]=omo2; Z[534]++; if(dbg){print "Z534"}; continue };
+    if ( preph_tv(-3) &&
+               ba(xwn-1,"_gl_pod_lock") &&
+                q(-2,"suw_tv") &&
+                w(-1,"под") && s(xwn-1,-1) )
+    { l[i]=omo2; Z[535]++; if(dbg){print "Z535"}; continue };
     if ( ba(-3,"_gl_pod_lock") &&
           w(-2,"под") &&
           q(-1,"prl_vi mest_vi mest_3e") && s(-3,-1) )
-    { l[i]=omo2; Z[514]++; if(dbg){print "Z514"}; continue };
+    { l[i]=omo2; Z[536]++; if(dbg){print "Z536"}; continue };
     if ( w(-1,"под") &&
-       bfa(1,3,"_gl_pod_lock") && s(-1,bfn-1) )
-    { l[i]=omo2; Z[515]++; if(dbg){print "Z515"}; continue };
+       bfa(1,5,"_gl_pod_lock") && s(-1,bfn-1) )
+    { l[i]=omo2; Z[537]++; if(dbg){print "Z537"}; continue };
     # _gl_pod_lock:end
 
     # _suw_pod_lock:start
     if ( ba(-2,"_suw_pod_lock") &&
           w(-1,"под") && s(-2,-1) )
-    { l[i]=omo2; Z[516]++; if(dbg){print "Z516"}; continue };
+    { l[i]=omo2; Z[538]++; if(dbg){print "Z538"}; continue };
     if ( ba(-4,"_suw_pod_lock") &&
           q(-3,"prl_vi mest_vi mest_3e qast") &&
           q(-2,"suw_vi mest_vi mest_3e qast") &&
           w(-1,"под") && s(-4,-1) )
-    { l[i]=omo2; Z[517]++; if(dbg){print "Z517"}; continue };
+    { l[i]=omo2; Z[539]++; if(dbg){print "Z539"}; continue };
     if ( ba(-3,"_suw_pod_lock") &&
           q(-2,"suw_vi mest_vi mest_3e qast") &&
           w(-1,"под") && s(-3,-1) )
-    { l[i]=omo2; Z[518]++; if(dbg){print "Z518"}; continue };
+    { l[i]=omo2; Z[540]++; if(dbg){print "Z540"}; continue };
     if ( ba(-4,"_suw_pod_lock") &&
      pre_ro(-3) &&
           q(-2,"suw_ro") &&
           w(-1,"под") && s(-4,-1) )
-    { l[i]=omo2; Z[519]++; if(dbg){print "Z519"}; continue };
+    { l[i]=omo2; Z[541]++; if(dbg){print "Z541"}; continue };
     if ( ba(-3,"_suw_pod_lock") &&
           w(-2,"под") &&
           q(-1,"prl_vi mest_vi mest_3e") && s(-3,-1) )
-    { l[i]=omo2; Z[520]++; if(dbg){print "Z520"}; continue };
+    { l[i]=omo2; Z[542]++; if(dbg){print "Z542"}; continue };
     if ( w(-1,"под") &&
        bfa(1,3,"_suw_pod_lock") && s(-1,bfn-1) )
-    { l[i]=omo2; Z[521]++; if(dbg){print "Z521"}; continue };
+    { l[i]=omo2; Z[543]++; if(dbg){print "Z543"}; continue };
     # _suw_pod_lock:end
 
-    cst="приидти прийти приходить";
-    if ( base(-2,cst) &&
-            w(-1,"под") && s(-2,-1) )
-    { l[i]=omo1; Z[522]++; if(dbg){print "Z522"}; continue };
-    if ( base(-3,cst) &&
-            w(-2,"под") &&
-            q(-1,"prl_vi mest_vi mest_3e") && s(-3,-1) )
-    { l[i]=omo1; Z[523]++; if(dbg){print "Z523"}; continue };
+    # _suw_pod_castle:start
+    if ( ba(-2,"_suw_pod_castle") &&
+          w(-1,"под") && s(-2,-1) )
+    { l[i]=omo1; Z[544]++; if(dbg){print "Z544"}; continue };
+    if ( ba(-4,"_suw_pod_castle") &&
+          q(-3,"prl_vi mest_vi mest_3e qast") &&
+          q(-2,"suw_vi mest_vi mest_3e qast") &&
+          w(-1,"под") && s(-4,-1) )
+    { l[i]=omo1; Z[545]++; if(dbg){print "Z545"}; continue };
+    if ( ba(-3,"_suw_pod_castle") &&
+          q(-2,"suw_vi mest_vi mest_3e qast") &&
+          w(-1,"под") && s(-3,-1) )
+    { l[i]=omo1; Z[546]++; if(dbg){print "Z546"}; continue };
+    if ( ba(-4,"_suw_pod_castle") &&
+     pre_ro(-3) &&
+          q(-2,"suw_ro") &&
+          w(-1,"под") && s(-4,-1) )
+    { l[i]=omo1; Z[547]++; if(dbg){print "Z547"}; continue };
+    if ( ba(-3,"_suw_pod_castle") &&
+          w(-2,"под") &&
+          q(-1,"prl_vi mest_vi mest_3e") && s(-3,-1) )
+    { l[i]=omo1; Z[548]++; if(dbg){print "Z548"}; continue };
     if ( w(-1,"под") &&
-        bf(1,3,cst) && s(-1,bfn-1) )
-    { l[i]=omo1; Z[524]++; if(dbg){print "Z524"}; continue };
-    if ( base(-4,cst) &&
-            q(-3,"pre_da") &&
-            q(-2,"mest_da suw_da") &&
-            w(-1,"под") && s(-4,-1) )
-    { l[i]=omo1; Z[525]++; if(dbg){print "Z525"}; continue };
-    if ( base(-6,cst) &&
-            q(-5,"suw_vi mest_vi mest_3e") &&
-            q(-4,"nar_any") &&
-            q(-3,"pre_da") &&
-            q(-2,"mest_da suw_da") &&
-            w(-1,"под") && s(-4,-1) )
-    { l[i]=omo1; Z[526]++; if(dbg){print "Z526"}; continue };
-    if ( base(-4,cst) &&
-            q(-3,"pre_tv") &&
-            q(-2,"mest_tv suw_tv") &&
-            w(-1,"под") && s(-4,-1) )
-    { l[i]=omo1; Z[527]++; if(dbg){print "Z527"}; continue };
+       bfa(1,3,"_suw_pod_castle") && s(-1,bfn-1) )
+    { l[i]=omo1; Z[549]++; if(dbg){print "Z549"}; continue };
+    # _suw_pod_castle:end
+
+    # _gl_pod_castle:start
+    if ( ba(-2,"_gl_pod_castle") &&
+          w(-1,"под") && s(-2,-1) )
+    { l[i]=omo1; Z[550]++; if(dbg){print "Z550"}; continue };
+    if ( ba(-3,"_gl_pod_castle") &&
+          w(-2,"под") &&
+          q(-1,"prl_vi mest_vi mest_3e") && s(-3,-1) )
+    { l[i]=omo1; Z[551]++; if(dbg){print "Z551"}; continue };
+    if ( w(-1,"под") &&
+       bfa(1,3,"_gl_pod_castle") && s(-1,bfn-1) )
+    { l[i]=omo1; Z[552]++; if(dbg){print "Z552"}; continue };
+    if ( ba(-4,"_gl_pod_castle") &&
+          q(-3,"pre_da") &&
+          q(-2,"mest_da suw_da") &&
+          w(-1,"под") && s(-4,-1) )
+    { l[i]=omo1; Z[553]++; if(dbg){print "Z553"}; continue };
+    if ( ba(-6,"_gl_pod_castle") &&
+          q(-5,"suw_vi mest_vi mest_3e") &&
+          q(-4,"nar_any") &&
+          q(-3,"pre_da") &&
+          q(-2,"mest_da suw_da") &&
+          w(-1,"под") && s(-4,-1) )
+    { l[i]=omo1; Z[554]++; if(dbg){print "Z554"}; continue };
+    if ( ba(-4,"_gl_pod_castle") &&
+          q(-3,"pre_tv") &&
+          q(-2,"mest_tv suw_tv") &&
+          w(-1,"под") && s(-4,-1) )
+    { l[i]=omo1; Z[555]++; if(dbg){print "Z555"}; continue };
+    # _gl_pod_castle:end
 
     if ( w(-3,"в во") &&
          q(-2,"suw_vi") &&
          w(-1,"под") && s(-3,-1) )
-    { l[i]=omo2; Z[528]++; if(dbg){print "Z528"}; continue };
+    { l[i]=omo2; Z[556]++; if(dbg){print "Z556"}; continue };
+    if ( w(-4,"в во") &&
+         q(-3,"suw_vi") &&
+         w(-2,"не") &&
+         w(-1,"под") && s(-4,-1) )
+    { l[i]=omo2; Z[557]++; if(dbg){print "Z557"}; continue };
     if ( w(-1,"под") &&
          w(1,"в во") &&
          q(2,"suw_vi") && s(-1,1) )
-    { l[i]=omo2; Z[529]++; if(dbg){print "Z529"}; continue };
+    { l[i]=omo2; Z[558]++; if(dbg){print "Z558"}; continue };
+
+    if ( w(-1,"под") && p(-2) &&
+         q(1,"prl_vi suw_vi mest_vi mest_3e") &&
+         q(2,"mest_vi suw_vi") && s(-1,1) && p(2) )
+    { l[i]=omo2; Z[559]++; if(dbg){print "Z559"}; continue };
+    if ( q(-3,"mest_vi prl_vi mest_3e") && p(-4) &&
+         q(-2,"suw_vi") &&
+         w(-1,"под") && s(-3,-1) && p(0) )
+    { l[i]=omo2; Z[560]++; if(dbg){print "Z560"}; continue };
+    if ( q(-2,"mest_vi suw_vi") && p(-3) &&
+         w(-1,"под") && s(-2,-1) && p(0) )
+    { l[i]=omo2; Z[561]++; if(dbg){print "Z561"}; continue };
+    if ( q(-5,"pre_vi") && p(-6) &&
+         q(-4,"suw_vi") &&
+         q(-3,"mest_vi mest_3e") &&
+   sz_iili(-2) &&
+         w(-1,"под") && s(-5,-1) )
+    { l[i]=omo2; Z[562]++; if(dbg){print "Z562"}; continue };
 
   }; # под замок
   # о замок
@@ -2829,45 +3009,45 @@ sz_iili(-3) &&
 
     if ( w(-1,"о") &&
          w(1,"чем что как") && s(-1) && (p(-2)||sc(-2,"[(«]")) && z(0) )
-    { l[i]=omo1; Z[530]++; if(dbg){print "Z530"}; continue };
+    { l[i]=omo1; Z[563]++; if(dbg){print "Z563"}; continue };
     cst="разбиваться удариться";
     if ( (qxs(-3,"ветер")||
           qxs(-3,"луч","света") ) &&
          base(-2,cst) &&
             w(-1,"о") && s(-2,-1) )
-    { l[i]=omo1; Z[531]++; if(dbg){print "Z531"}; continue };
+    { l[i]=omo1; Z[564]++; if(dbg){print "Z564"}; continue };
     if ( qxs(-1,"что","это","бьется","о") )
-    { l[i]=omo1; Z[532]++; if(dbg){print "Z532"}; continue };
+    { l[i]=omo1; Z[565]++; if(dbg){print "Z565"}; continue };
 
     if ( ba(-2,"_gl_o_lock") &&
           w(-1,"о") && s(-2,-1) )
-    { l[i]=omo2; Z[533]++; if(dbg){print "Z533"}; continue };
+    { l[i]=omo2; Z[566]++; if(dbg){print "Z566"}; continue };
     if ( w(-1,"о") &&
         ba(1,"_gl_o_lock") && s(-1,0) )
-    { l[i]=omo2; Z[534]++; if(dbg){print "Z534"}; continue };
+    { l[i]=omo2; Z[567]++; if(dbg){print "Z567"}; continue };
     if ( ba(-3,"_gl_o_lock") &&
           q(-2,"suw_vi suw_tv") &&
           w(-1,"о") && s(-3,-1) )
-    { l[i]=omo2; Z[535]++; if(dbg){print "Z535"}; continue };
+    { l[i]=omo2; Z[568]++; if(dbg){print "Z568"}; continue };
     if ( w(-1,"о") &&
          q(1,"prl_kred_sr") &&
    sz_iili(2) &&
          q(3,"prl_kred_sr") &&
         ba(4,"_gl_o_lock") && s(-1,3) )
-    { l[i]=omo2; Z[536]++; if(dbg){print "Z536"}; continue };
+    { l[i]=omo2; Z[569]++; if(dbg){print "Z569"}; continue };
     if ( ba(-2,"_suw_o_lock") &&
           w(-1,"о") && s(-2,-1) )
-    { l[i]=omo2; Z[537]++; if(dbg){print "Z537"}; continue };
+    { l[i]=omo2; Z[570]++; if(dbg){print "Z570"}; continue };
     if ( ba(-3,"_suw_o_lock") &&
           q(-2,"suw_ro suw_tv") &&
           w(-1,"о") && s(-3,-1) )
-    { l[i]=omo2; Z[538]++; if(dbg){print "Z538"}; continue };
+    { l[i]=omo2; Z[571]++; if(dbg){print "Z571"}; continue };
 
   }; # о замок
 
     if ( base(-2,"решить решение велеть приказать") &&
             w(-1,"демонтировать") && s(-2,-1) )
-    { l[i]=omo1; Z[539]++; if(dbg){print "Z539"}; continue };
+    { l[i]=omo1; Z[572]++; if(dbg){print "Z572"}; continue };
 
     cst2="владении власти распоряжении";
     if ( base(1,"быть находиться") &&
@@ -2875,121 +3055,121 @@ sz_iili(-3) &&
             q(3,"prl_pr prq_pr mest_pr mest_3e") &&
             q(4,"prl_pr prq_pr mest_pr mest_3e") &&
             w(5,cst2) && s(0,4) )
-    { l[i]=omo1; Z[540]++; if(dbg){print "Z540"}; continue };
+    { l[i]=omo1; Z[573]++; if(dbg){print "Z573"}; continue };
     if ( base(1,"быть находиться") &&
             w(2,"в во") &&
             q(3,"prl_pr prq_pr mest_pr mest_3e") &&
             w(4,cst2) && s(0,3) )
-    { l[i]=omo1; Z[541]++; if(dbg){print "Z541"}; continue };
+    { l[i]=omo1; Z[574]++; if(dbg){print "Z574"}; continue };
 
     cst1="перевесить";
     cst2="гору";
     if ( base(1,cst1) &&
             w(2,cst2) && s(0,1) )
-    { l[i]=omo1; Z[542]++; if(dbg){print "Z542"}; continue };
+    { l[i]=omo1; Z[575]++; if(dbg){print "Z575"}; continue };
 
     cst1="меняться";
     if ( base(1,cst1) && z(1) && s(0) &&
             w(2,"то тогда") &&
             q(3,"qik_vi mest_vi") &&
            ba(4,"_lock_parts") && s(2,3) )
-    { l[i]=omo2; Z[543]++; if(dbg){print "Z543"}; continue };
+    { l[i]=omo2; Z[576]++; if(dbg){print "Z576"}; continue };
 
     cst1="поменять сменить";
     cst2="владелец имя название хозяин";
     if ( bf(1,5,cst1) && Qf(1,bfn-1,"sz_iili pre_any") &&
          bf(bfn+1,bfn+3,cst2) && s(0,bfn-1) )
-    { l[i]=omo1; Z[544]++; if(dbg){print "Z544"}; continue };
+    { l[i]=omo1; Z[577]++; if(dbg){print "Z577"}; continue };
 
     cst1="вырезать вырубать вырубить высекать высечь";
     cst2="гора камень скала";
     if ( bf(1,5,cst1) && Qf(1,bfn-1,"sz_iili pre_any") &&
           w(bfn+1,"в из") &&
          bf(bfn+2,bfn+4,cst2) && s(0,bfn-1) )
-    { l[i]=omo1; Z[545]++; if(dbg){print "Z545"}; continue };
+    { l[i]=omo1; Z[578]++; if(dbg){print "Z578"}; continue };
 
     # брать взять
     cst1="брать взять";
     if ( base(-1,cst1) &&
             q(1,"nar_napr") && s(-1,0) )
-    { l[i]=omo2; Z[546]++; if(dbg){print "Z546"}; continue };
+    { l[i]=omo2; Z[579]++; if(dbg){print "Z579"}; continue };
     if ( base(1,cst1) &&
            ba(2,"_lock_parts") && s(0,1) )
-    { l[i]=omo2; Z[547]++; if(dbg){print "Z547"}; continue };
+    { l[i]=omo2; Z[580]++; if(dbg){print "Z580"}; continue };
     cst2="скрепить стиснуть";
     if ( base(-1,cst1) &&
            (w(1,"и да")||z(0)) &&
            bf(2,4,cst2) &&
             q(bfn+1,"mest_tv suw_tv") && s(0,bfn-1) )
-    { l[i]=omo2; Z[548]++; if(dbg){print "Z548"}; continue };
+    { l[i]=omo2; Z[581]++; if(dbg){print "Z581"}; continue };
     # _lock_bratj_i_gl
     if ( base(-1,cst1) &&
             w(1,"и да") &&
            ba(2,"_lock_bratj_i_gl") && s(-1,1) )
-    { l[i]=omo2; Z[549]++; if(dbg){print "Z549"}; continue };
+    { l[i]=omo2; Z[582]++; if(dbg){print "Z582"}; continue };
     if ( base(-2,cst1) &&
             q(-1,"prl_vi mest_vi mest_3e") &&
             w(1,"и да") &&
            ba(2,"_lock_bratj_i_gl") && s(-2,1) )
-    { l[i]=omo2; Z[550]++; if(dbg){print "Z550"}; continue };
+    { l[i]=omo2; Z[583]++; if(dbg){print "Z583"}; continue };
     if ( base(-3,cst1) &&
             q(-2,"prl_vi mest_vi mest_3e") &&
             q(-1,"prl_vi mest_vi mest_3e") &&
             w(1,"и да") &&
            ba(2,"_lock_bratj_i_gl") && s(-3,1) )
-    { l[i]=omo2; Z[551]++; if(dbg){print "Z551"}; continue };
+    { l[i]=omo2; Z[584]++; if(dbg){print "Z584"}; continue };
     if ( base(-3,cst1) &&
             q(-2,"prl_vi mest_vi mest_3e") &&
             q(-1,"prl_vi mest_vi mest_3e") &&
             w(1,"и да") &&
             q(2,"nar_vrem nar_spos") &&
            ba(3,"_lock_bratj_i_gl") && s(-3,1) )
-    { l[i]=omo2; Z[552]++; if(dbg){print "Z552"}; continue };
+    { l[i]=omo2; Z[585]++; if(dbg){print "Z585"}; continue };
     if ( base(-1,cst1) && vv(0,5) &&
             w(vvn+1,"и да") &&
            ba(vvn+2,"_lock_bratj_i_gl") && s(vvn+1) )
-    { l[i]=omo2; Z[553]++; if(dbg){print "Z553"}; continue };
+    { l[i]=omo2; Z[586]++; if(dbg){print "Z586"}; continue };
     if ( base(1,cst1) &&
             w(2,"и да") &&
            ba(3,"_lock_bratj_i_gl") && s(0,1) )
-    { l[i]=omo2; Z[554]++; if(dbg){print "Z554"}; continue };
+    { l[i]=omo2; Z[587]++; if(dbg){print "Z587"}; continue };
     if ( base(-1,cst1) &&
             w(1,"и да") &&
             q(2,"prl_kred_sr nar_spos") &&
            ba(3,"_lock_bratj_i_gl") && s(-1,2) )
-    { l[i]=omo2; Z[555]++; if(dbg){print "Z555"}; continue };
+    { l[i]=omo2; Z[588]++; if(dbg){print "Z588"}; continue };
     if ( base(-2,cst1) &&
             w(-1,"и да") &&
            ba(1,"_lock_bratj_i_gl") && s(-2,0) )
-    { l[i]=omo2; Z[556]++; if(dbg){print "Z556"}; continue };
+    { l[i]=omo2; Z[589]++; if(dbg){print "Z589"}; continue };
     if ( base(-1,cst1) && s(-1) &&
             z(0) &&
           bfa(1,4,"_lock_bratj_i_gl") && s(1,bfn-1) )
-    { l[i]=omo2; Z[557]++; if(dbg){print "Z557"}; continue };
+    { l[i]=omo2; Z[590]++; if(dbg){print "Z590"}; continue };
 
     if ( ba(-4,"_lock_parts") &&
        base(-3,cst1) &&
           w(-2,"и да") &&
           q(-1,"prl_vi mest_vi mest_3e prq_vi") &&
        base(1,"поставить") && s(-4,0) )
-    { l[i]=omo2; Z[558]++; if(dbg){print "Z558"}; continue };
+    { l[i]=omo2; Z[591]++; if(dbg){print "Z591"}; continue };
     if ( ba(-2,"_lock_parts") &&
           q(-1,"prl_vi mest_vi mest_3e") &&
           w(1,"не") &&
        base(2,cst1) && s(-2,1) )
-    { l[i]=omo2; Z[559]++; if(dbg){print "Z559"}; continue };
+    { l[i]=omo2; Z[592]++; if(dbg){print "Z592"}; continue };
     if ( ba(-5,"_lock_parts") &&
           w(-4,"в") &&
           q(-3,"suw_vi") &&
           w(-2,"и да") &&
        base(-1,cst1) && s(-5,-1) )
-    { l[i]=omo2; Z[560]++; if(dbg){print "Z560"}; continue };
+    { l[i]=omo2; Z[593]++; if(dbg){print "Z593"}; continue };
 
     if ( base(1,cst1) &&
             w(2,"у") &&
             q(3,"suw_ro mest_ro mest_3e") &&
          base(4,"кровь") && s(0,3) )
-    { l[i]=omo2; Z[561]++; if(dbg){print "Z561"}; continue };
+    { l[i]=omo2; Z[594]++; if(dbg){print "Z594"}; continue };
 
     cst2="отмычка";
     if ( base(-6,cst2) &&
@@ -2998,13 +3178,13 @@ sz_iili(-3) &&
          base(-3,cst1) &&
             q(-2,"prl_vi mest_vi mest_3e") &&
             q(-1,"prl_vi mest_vi mest_3e") && s(-6,-1) )
-    { l[i]=omo2; Z[562]++; if(dbg){print "Z562"}; continue };
+    { l[i]=omo2; Z[595]++; if(dbg){print "Z595"}; continue };
 
     if ( ba(-4,"_gl_dvizh") && s(-4) &&
           q(-3,"nar_napr nar_spos nar_vrem") && z(-3) &&
        base(-2,cst1) &&
           q(-1,"mest_vi prl_vi mest_vi mest_3e") && s(-2,-1) )
-    { l[i]=omo2; Z[563]++; if(dbg){print "Z563"}; continue };
+    { l[i]=omo2; Z[596]++; if(dbg){print "Z596"}; continue };
 
     cst2="сделать";
     cst3="шаг";
@@ -3012,63 +3192,63 @@ sz_iili(-3) &&
             w(1,"и да") &&
          base(2,cst2) &&
             w(3,cst3) && s(-1,2) )
-    { l[i]=omo2; Z[564]++; if(dbg){print "Z564"}; continue };
+    { l[i]=omo2; Z[597]++; if(dbg){print "Z597"}; continue };
 
     cst2="ладони ладонь лапу лапы руки руку";
     if ( base(-1,cst1) &&
           qxs(1,"в",cst2) && s(-1) )
-    { l[i]=omo2; Z[565]++; if(dbg){print "Z565"}; continue };
+    { l[i]=omo2; Z[598]++; if(dbg){print "Z598"}; continue };
     if ( base(-2,cst1) &&
             q(-1,"prl_vi prq_vi mest_vi mest_3e") &&
           qxs(1,"в",cst2) && s(-2,-1) )
-    { l[i]=omo2; Z[566]++; if(dbg){print "Z566"}; continue };
+    { l[i]=omo2; Z[599]++; if(dbg){print "Z599"}; continue };
     if ( (qxs(-1,"в",cst2)||
           qxs(-1,"в","правую левую свою свои обе",cst2)||
           qxs(-1,"на","мушку") ) &&
          base(xsn-1,cst1) && s(xsn-1) )
-    { l[i]=omo2; Z[567]++; if(dbg){print "Z567"}; continue };
+    { l[i]=omo2; Z[600]++; if(dbg){print "Z600"}; continue };
     if ( base(-1,cst1) &&
          (qxs(1,"в",cst2)||
           qxs(1,"в","правую левую свою свои обе",cst2) ) && s(-1) )
-    { l[i]=omo2; Z[568]++; if(dbg){print "Z568"}; continue };
+    { l[i]=omo2; Z[601]++; if(dbg){print "Z601"}; continue };
     cst2="лавки пола полки стола";
     if ( base(-3,cst1) &&
             w(-2,"с со") &&
             w(-1,cst2) && s(-3,-1) )
-    { l[i]=omo2; Z[569]++; if(dbg){print "Z569"}; continue };
+    { l[i]=omo2; Z[602]++; if(dbg){print "Z602"}; continue };
     cst2="рук";
     if ( base(-1,cst1) &&
             w(1,"у") &&
             q(2,"suw_ro mest_ro isname") &&
             w(3,"из") &&
             w(4,cst2) && s(-1,3) )
-    { l[i]=omo2; Z[570]++; if(dbg){print "Z570"}; continue };
+    { l[i]=omo2; Z[603]++; if(dbg){print "Z603"}; continue };
     cst2="ногтем пальцами руками рукой";
     if ( base(-1,cst1) &&
             w(1,cst2) && s(-1,0) )
-    { l[i]=omo2; Z[571]++; if(dbg){print "Z571"}; continue };
+    { l[i]=omo2; Z[604]++; if(dbg){print "Z604"}; continue };
     if ( base(-1,cst2) &&
             w(1,cst1) && s(-1,0) )
-    { l[i]=omo2; Z[572]++; if(dbg){print "Z572"}; continue };
+    { l[i]=omo2; Z[605]++; if(dbg){print "Z605"}; continue };
     if ( w(1,cst2) &&
       base(2,cst1) && s(0,1) )
-    { l[i]=omo2; Z[573]++; if(dbg){print "Z573"}; continue };
+    { l[i]=omo2; Z[606]++; if(dbg){print "Z606"}; continue };
     if ( base(-1,cst1) &&
             q(1,"prl_tv mest_tv mest_3e") &&
             w(2,cst2) && s(-1,1) )
-    { l[i]=omo2; Z[574]++; if(dbg){print "Z574"}; continue };
+    { l[i]=omo2; Z[607]++; if(dbg){print "Z607"}; continue };
 
     cst2="опять осторожно снова";
     if ( q(-3,"isname suw_odim mest_im") &&
          w(-2,cst2) &&
       base(-1,cst1) && s(-3,-1) )
-    { l[i]=omo2; Z[575]++; if(dbg){print "Z575"}; continue };
+    { l[i]=omo2; Z[608]++; if(dbg){print "Z608"}; continue };
     cst2="опять осторожно снова";
     if ( base(-1,cst1) &&
             w(1,"и да") &&
          base(2,"сказать") &&
             q(3,"suw_odda mest_da isname") && s(-1,2) )
-    { l[i]=omo2; Z[576]++; if(dbg){print "Z576"}; continue };
+    { l[i]=omo2; Z[609]++; if(dbg){print "Z609"}; continue };
     # брать взять
 
 
@@ -3078,7 +3258,7 @@ sz_iili(-3) &&
     if ( base(-2,cst1) &&
             q(-1,"prq_tv") && base(-1,cst2) &&
        isname(1) && s(-2,0) )
-    { l[i]=omo1; Z[577]++; if(dbg){print "Z577"}; continue };
+    { l[i]=omo1; Z[610]++; if(dbg){print "Z610"}; continue };
 
     cst="передавать передать получить принять";
     if ( ( qxs(-1,"в","дар подарок наследство собственность распоряжение")||
@@ -3086,231 +3266,231 @@ sz_iili(-3) &&
            qxs(-1,"в","своё свое свои","владение владения")||
            qxs(-1,"под","управление")||
            qxs(-1,"под","своё свое","управление") ) && bb(xsn-4,xsn-1,cst) && s(bbn,xsn-1) )
-    { l[i]=omo1; Z[578]++; if(dbg){print "Z578"}; continue };
+    { l[i]=omo1; Z[611]++; if(dbg){print "Z611"}; continue };
 
     if ( base(1,"ходить") &&
          (qxs(2,"на","ушах")||
             w(2,"ходуном") ) && s(0,1) )
-    { l[i]=omo1; Z[579]++; if(dbg){print "Z579"}; continue };
+    { l[i]=omo1; Z[612]++; if(dbg){print "Z612"}; continue };
     if ( bb(-3,-1,"знать") && s(bbn,-1) &&
         qxs(1,"как","ваши наши свои","пять","пальцев") )
-    { l[i]=omo1; Z[580]++; if(dbg){print "Z580"}; continue };
+    { l[i]=omo1; Z[613]++; if(dbg){print "Z613"}; continue };
 
     if ( base(-3,"открывать открываться") &&
             w(-2,"перед") &&
             q(-1,"suw_tv mest_tv") && s(-3,-1) )
-    { l[i]=omo1; Z[581]++; if(dbg){print "Z581"}; continue };
+    { l[i]=omo1; Z[614]++; if(dbg){print "Z614"}; continue };
 
     cst="потянуть тянуть";
     if ( w(1,"не") &&
       base(2,cst) && s(0,1) )
-    { l[i]=omo1; Z[582]++; if(dbg){print "Z582"}; continue };
+    { l[i]=omo1; Z[615]++; if(dbg){print "Z615"}; continue };
     cst1="башня время сила стена";
     if ( base(1,cst) &&
          base(2,cst1) && s(0,1) )
-    { l[i]=omo1; Z[583]++; if(dbg){print "Z583"}; continue };
+    { l[i]=omo1; Z[616]++; if(dbg){print "Z616"}; continue };
     if ( q(1,"suw_da mest_da") &&
          w(2,"не") &&
       base(3,cst) && s(0,2) )
-    { l[i]=omo1; Z[584]++; if(dbg){print "Z584"}; continue };
+    { l[i]=omo1; Z[617]++; if(dbg){print "Z617"}; continue };
     if ( base(1,cst) &&
             q(2,"suw_ro mest_ro mest_3e") &&
             w(3,"к") && s(0,2) )
-    { l[i]=omo1; Z[585]++; if(dbg){print "Z585"}; continue };
+    { l[i]=omo1; Z[618]++; if(dbg){print "Z618"}; continue };
     if ( bf(1,5,cst) && Qf(1,bfn-1,"sz_iili pre_any") &&
           w(bfn+1,"из") &&
           q(bfn+2,"suw_ro mest_ro mest_3e") && s(0,bfn+1) )
-    { l[i]=omo1; Z[586]++; if(dbg){print "Z586"}; continue };
+    { l[i]=omo1; Z[619]++; if(dbg){print "Z619"}; continue };
     if ( bf(1,3,cst) && Qf(1,bfn-1,"sz_iili pre_any") &&
           q(bfn+1,"suw_vi mest_vi mest_3e") &&
           q(bfn+2,"nar_any prl_kred_sr") && s(0,bfn+1) )
-    { l[i]=omo1; Z[587]++; if(dbg){print "Z587"}; continue };
+    { l[i]=omo1; Z[620]++; if(dbg){print "Z620"}; continue };
 
     cst="затягивать затягиваться затянуть затянуться";
     cst1="дым дымка паутина пелена туман";
     if ( base(1,cst) &&
          base(2,cst1) && s(0,1) )
-    { l[i]=omo1; Z[588]++; if(dbg){print "Z588"}; continue };
+    { l[i]=omo1; Z[621]++; if(dbg){print "Z621"}; continue };
 
     cst="освободить освобождать спасти";
     cst1="захват захватчик оккупант осада разрушение";
     if ( base(-1,cst) &&
             w(1,"от") &&
          base(2,cst1) && s(-1,1) )
-    { l[i]=omo1; Z[589]++; if(dbg){print "Z589"}; continue };
+    { l[i]=omo1; Z[622]++; if(dbg){print "Z622"}; continue };
     if ( base(-1,cst) &&
             w(1,"от") &&
             q(2,"prl_ro prq_ro") &&
          base(3,cst1) && s(-1,2) )
-    { l[i]=omo1; Z[590]++; if(dbg){print "Z590"}; continue };
+    { l[i]=omo1; Z[623]++; if(dbg){print "Z623"}; continue };
 
     cst="вырвать";
     if ( base(-1,cst) && s(-1) &&
         ( qxs(1,"из","цепких","лап рук")||
           qxs(1,"из","лап рук") ) )
-    { l[i]=omo1; Z[591]++; if(dbg){print "Z591"}; continue };
+    { l[i]=omo1; Z[624]++; if(dbg){print "Z624"}; continue };
     if ( base(-2,cst) &&
             q(-1,"prl_vi prq_vi mest_vi mest_3e") && s(-2,-1) &&
         ( qxs(1,"из","его ее её их ваших цепких","лап рук")||
           qxs(1,"из","лап рук") ) )
-    { l[i]=omo1; Z[592]++; if(dbg){print "Z592"}; continue };
+    { l[i]=omo1; Z[625]++; if(dbg){print "Z625"}; continue };
 
     cst="погружаться погрузиться";
     cst1="металл";
     if ( base(1,cst) &&
             w(2,"в во") &&
          base(3,cst1) && s(0,2) )
-    { l[i]=omo2; Z[593]++; if(dbg){print "Z593"}; continue };
+    { l[i]=omo2; Z[626]++; if(dbg){print "Z626"}; continue };
 
     cst="снести сносить";
     cst1="выстрелом молотом прикладом ударом";
     if ( base(-2,cst) &&
             w(-1,cst1) && s(-2,-1) )
-    { l[i]=omo2; Z[594]++; if(dbg){print "Z594"}; continue };
+    { l[i]=omo2; Z[627]++; if(dbg){print "Z627"}; continue };
 
 
     cst1="капитулировать сдаться";
     cst2="возня минута секунда";
     if ( base(-1,cst2) &&
          base(1,cst1) && s(-1,0) )
-    { l[i]=omo2; Z[595]++; if(dbg){print "Z595"}; continue };
+    { l[i]=omo2; Z[628]++; if(dbg){print "Z628"}; continue };
     if ( w(1,"через после") &&
         bf(2,5,cst2) &&
       base(bfn,cst1) && s(0,bfn) )
-    { l[i]=omo2; Z[596]++; if(dbg){print "Z596"}; continue };
+    { l[i]=omo2; Z[629]++; if(dbg){print "Z629"}; continue };
     if ( base(1,cst1) &&
             w(2,"через после") &&
            bf(3,6,cst2) && s(0,bfn-1) )
-    { l[i]=omo2; Z[597]++; if(dbg){print "Z597"}; continue };
+    { l[i]=omo2; Z[630]++; if(dbg){print "Z630"}; continue };
     if ( bf(1,3,"охватить охватывать") && s(0,bfn) &&
           w(bfn+1,"трубку трубу") && Qf(1,bfn-1,"sz_iili pre_any") )
-    { l[i]=omo2; Z[598]++; if(dbg){print "Z598"}; continue };
+    { l[i]=omo2; Z[631]++; if(dbg){print "Z631"}; continue };
 
     if ( vv(0,4) && !(bfa(1,vvn-1,"_castle_pe") || (bba(-4,-1,"_castle_pe") && s(bbn,-1))) &&
          ba(vvn+1,"_lock_pe") )
-    { l[i]=omo2; Z[599]++; if(dbg){print "Z599"}; continue };
+    { l[i]=omo2; Z[632]++; if(dbg){print "Z632"}; continue };
     if ( z(0) &&
          q(1,"prl_kred_sr") &&
          q(2,"mest_3e") &&
         ba(3,"_lock_pe") && s(1,2) )
-    { l[i]=omo2; Z[600]++; if(dbg){print "Z600"}; continue };
+    { l[i]=omo2; Z[633]++; if(dbg){print "Z633"}; continue };
 
     # _castle_pe:start
     if ( ba(-1,"_castle_pe") && s(-1) && Q(-1,"suw_any") )
-    { l[i]=omo1; Z[601]++; if(dbg){print "Z601"}; continue };
+    { l[i]=omo1; Z[634]++; if(dbg){print "Z634"}; continue };
     if ( ba(-1,"_castle_pe") && s(-1) && q(-1,"prq_any") )
-    { l[i]=omo1; Z[602]++; if(dbg){print "Z602"}; continue };
+    { l[i]=omo1; Z[635]++; if(dbg){print "Z635"}; continue };
     if ( ba(-3,"_castle_pe") && Q(-3,"suw_any") &&
           q(-2,"nar_mest") &&
           q(-1,"prl_vi prq_vi mest_vi mest_3e") && s(-3,-1) )
-    { l[i]=omo1; Z[603]++; if(dbg){print "Z603"}; continue };
+    { l[i]=omo1; Z[636]++; if(dbg){print "Z636"}; continue };
     if ( ba(-2,"_castle_pe") && Q(-2,"suw_any") &&
           q(-1,"nar_mest prl_vi prq_vi mest_vi mest_3e qast") && s(-2,-1) )
-    { l[i]=omo1; Z[604]++; if(dbg){print "Z604"}; continue };
+    { l[i]=omo1; Z[637]++; if(dbg){print "Z637"}; continue };
     if ( ba(-3,"_castle_pe") && s(-3) && Q(-3,"suw_any") &&
           q(-2,"prl_kred_sr") && se(-2,"-") &&
           q(-1,"prl_vi") && s(-1) )
-    { l[i]=omo1; Z[605]++; if(dbg){print "Z605"}; continue };
+    { l[i]=omo1; Z[638]++; if(dbg){print "Z638"}; continue };
     if ( ba(-2,"_castle_pe") && Q(-2,"suw_any") && !(ba(-3,"_lock_pe") && s(-3)) &&
           q(-1,"suw_tv mest_tv") && s(-2,-1) )
-    { l[i]=omo1; Z[606]++; if(dbg){print "Z606"}; continue };
+    { l[i]=omo1; Z[639]++; if(dbg){print "Z639"}; continue };
     if ( ba(-3,"_castle_pe") && Q(-3,"suw_any") && !(ba(-4,"_lock_pe") && s(-3)) &&
           q(-2,"nar_mest prl_tv prq_tv mest_vi mest_3e qast") &&
           q(-1,"suw_tv") && s(-3,-1) )
-    { l[i]=omo1; Z[607]++; if(dbg){print "Z607"}; continue };
+    { l[i]=omo1; Z[640]++; if(dbg){print "Z640"}; continue };
     if ( ba(-4,"_castle_pe") && Q(-4,"suw_any") && !(ba(-5,"_lock_pe") && s(-3)) &&
           q(-3,"nar_mest prl_tv prq_tv mest_vi mest_3e qast") &&
           q(-2,"nar_mest prl_tv prq_tv mest_vi mest_3e qast") &&
           q(-1,"suw_tv") && s(-3,-1) )
-    { l[i]=omo1; Z[608]++; if(dbg){print "Z608"}; continue };
+    { l[i]=omo1; Z[641]++; if(dbg){print "Z641"}; continue };
     if ( ba(-3,"_castle_pe") && Q(-3,"suw_any") &&
           q(-2,"nar_mest prl_vi prq_vi mest_vi mest_3e qast") &&
           q(-1,"nar_mest prl_vi prq_vi mest_vi qast") && s(-3,-1) &&
       !(bfa(1,3,"_lock_pe")) )
-    { l[i]=omo1; Z[609]++; if(dbg){print "Z609"}; continue };
+    { l[i]=omo1; Z[642]++; if(dbg){print "Z642"}; continue };
     if ( ba(-4,"_castle_pe") && Q(-4,"suw_any") &&
           q(-3,"nar_mest prl_vi prq_vi mest_vi mest_3e qast") &&
           q(-2,"nar_mest prl_vi prq_vi mest_vi mest_3e qast") &&
           q(-1,"nar_mest prl_vi prq_vi mest_vi qast") && s(-4,-1) )
-    { l[i]=omo1; Z[610]++; if(dbg){print "Z610"}; continue };
+    { l[i]=omo1; Z[643]++; if(dbg){print "Z643"}; continue };
 
 
     if ( bfa(1,3,"_castle_pe") && s(0,bfn-1) && Q(bfn,"suw_any") && Qf(1,bfn-1,"sz_iili pre_any") && !(bfa(1,bfn-1,"_lock_pe")) )
-    { l[i]=omo1; Z[611]++; if(dbg){print "Z611"}; continue };
+    { l[i]=omo1; Z[644]++; if(dbg){print "Z644"}; continue };
     if ( z(0) &&
          q(1,"otnsz_mu") &&
        bfa(2,4,"_castle_pe") && s(1,bfn-1) && Qf(2,bfn-1,"sz_iili pre_any") )
-    { l[i]=omo1; Z[612]++; if(dbg){print "Z612"}; continue };
+    { l[i]=omo1; Z[645]++; if(dbg){print "Z645"}; continue };
 
     if ( q(1,"narph_any") &&
        bfa(xwn+1,xwn+3,"_castle_pe") && s(0,bfn-1) && Q(bfn,"suw_any") && Qf(xwn+1,bfn-1,"sz_iili pre_any") )
-    { l[i]=omo1; Z[613]++; if(dbg){print "Z613"}; continue };
+    { l[i]=omo1; Z[646]++; if(dbg){print "Z646"}; continue };
 
     if ( q(1,"mest_im suw_im") && s(0) &&
        qxs(2,"так","и","не") &&
         ba(xsn+1,_castle_pe) && Q(xsn+1,"suw_any") && s(xsn+1) )
-    { l[i]=omo1; Z[614]++; if(dbg){print "Z614"}; continue };
+    { l[i]=omo1; Z[647]++; if(dbg){print "Z647"}; continue };
 
     if ( ba(-3,"_castle_pe") && Q(-3,"suw_any") &&
      pre_vi(-2) &&
           q(-1,"suw_vi") && s(-3,-1) )
-    { l[i]=omo1; Z[615]++; if(dbg){print "Z615"}; continue };
+    { l[i]=omo1; Z[648]++; if(dbg){print "Z648"}; continue };
     if ( ba(-3,"_castle_pe") && Q(-3,"suw_any") &&
      pre_ro(-2) &&
           q(-1,"suw_ro") && s(-3,-1) )
-    { l[i]=omo1; Z[616]++; if(dbg){print "Z616"}; continue };
+    { l[i]=omo1; Z[649]++; if(dbg){print "Z649"}; continue };
     if ( ba(-4,"_castle_pe") && Q(-4,"suw_any") &&
      pre_ro(-3) &&
           q(-2,"prl_ro prq_ro mest_ro mest_3e") &&
           q(-1,"suw_ro") && s(-4,-1) )
-    { l[i]=omo1; Z[617]++; if(dbg){print "Z617"}; continue };
+    { l[i]=omo1; Z[650]++; if(dbg){print "Z650"}; continue };
     if ( ba(-3,"_castle_pe") && Q(-3,"suw_any") &&
      pre_tv(-2) &&
           q(-1,"suw_tv") && s(-3,-1) )
-    { l[i]=omo1; Z[618]++; if(dbg){print "Z618"}; continue };
+    { l[i]=omo1; Z[651]++; if(dbg){print "Z651"}; continue };
     if ( ba(-4,"_castle_pe") && Q(-4,"suw_any") &&
      pre_tv(-3) &&
           q(-2,"suw_tv") &&
           q(-1,"prl_ro prq_ro mest_ro mest_3e") && s(-4,-1) )
-    { l[i]=omo1; Z[619]++; if(dbg){print "Z619"}; continue };
+    { l[i]=omo1; Z[652]++; if(dbg){print "Z652"}; continue };
     if ( ba(-5,"_castle_pe") && Q(-5,"suw_any") &&
           q(-4,"prl_kred_sr qast") &&
      pre_tv(-3) &&
           q(-2,"suw_tv") &&
           q(-1,"prl_ro prq_ro mest_ro mest_3e") && s(-5,-1) )
-    { l[i]=omo1; Z[620]++; if(dbg){print "Z620"}; continue };
+    { l[i]=omo1; Z[653]++; if(dbg){print "Z653"}; continue };
     if ( ba(-4,"_castle_pe") && Q(-4,"suw_any") &&
      pre_tv(-3) &&
           q(-2,"prl_tv prq_tv mest_tv mest_3e") &&
           q(-1,"suw_tv") && s(-4,-1) )
-    { l[i]=omo1; Z[621]++; if(dbg){print "Z621"}; continue };
+    { l[i]=omo1; Z[654]++; if(dbg){print "Z654"}; continue };
     if ( ba(-3,"_castle_pe") && Q(-3,"suw_any") &&
      pre_pr(-2) &&
           q(-1,"suw_pr") && s(-3,-1) )
-    { l[i]=omo1; Z[622]++; if(dbg){print "Z622"}; continue };
+    { l[i]=omo1; Z[655]++; if(dbg){print "Z655"}; continue };
     if ( ba(-4,"_castle_pe") && Q(-4,"suw_any") &&
      pre_pr(-3) &&
           q(-2,"prl_pr prq_pr mest_pr mest_3e") &&
           q(-1,"suw_pr") && s(-4,-1) )
-    { l[i]=omo1; Z[623]++; if(dbg){print "Z623"}; continue };
+    { l[i]=omo1; Z[656]++; if(dbg){print "Z656"}; continue };
     if ( ba(-4,"_castle_pe") && Q(-4,"suw_any") &&
      pre_pr(-3) &&
           q(-2,"suw_pr") &&
           q(-1,"prl_edvi prq_edvi mest_vi mest_3e") && s(-4,-1) )
-    { l[i]=omo1; Z[624]++; if(dbg){print "Z624"}; continue };
+    { l[i]=omo1; Z[657]++; if(dbg){print "Z657"}; continue };
     if ( ba(-5,"_castle_pe") && Q(-5,"suw_any") &&
      pre_pr(-4) &&
           q(-3,"prl_pr prq_pr mest_pr mest_3e") &&
           q(-2,"suw_pr") &&
           q(-1,"prl_edvi prq_edvi mest_vi mest_3e") && s(-5,-1) )
-    { l[i]=omo1; Z[625]++; if(dbg){print "Z625"}; continue };
+    { l[i]=omo1; Z[658]++; if(dbg){print "Z658"}; continue };
     if ( ba(-6,"_castle_pe") && Q(-6,"suw_any") &&
      pre_ro(-5) &&
           q(-4,"prl_ro prq_ro mest_ro") && Q(-1,"suw_any") &&
      pre_pr(-3) &&
           q(-2,"suw_pr") &&
           q(-1,"prl_edvi prq_edvi mest_vi mest_3e") && s(-6,-1) )
-    { l[i]=omo1; Z[626]++; if(dbg){print "Z626"}; continue };
+    { l[i]=omo1; Z[659]++; if(dbg){print "Z659"}; continue };
     if ( ba(-7,"_castle_pe") && Q(-7,"suw_any") &&
      pre_ro(-6) &&
           q(-5,"prl_ro prq_ro mest_ro") &&
@@ -3318,130 +3498,130 @@ sz_iili(-3) &&
           q(-3,"prl_pr prq_pr mest_pr mest_3e") &&
           q(-2,"suw_pr") &&
           q(-1,"prl_edvi prq_edvi mest_vi mest_3e") && s(-7,-1) )
-    { l[i]=omo1; Z[627]++; if(dbg){print "Z627"}; continue };
+    { l[i]=omo1; Z[660]++; if(dbg){print "Z660"}; continue };
     # _castle_pe:end ...
 
     # _lock_pe:start
     if ( ba(-1,"_lock_pe") && s(-1) )
-    { l[i]=omo2; Z[628]++; if(dbg){print "Z628"}; continue };
+    { l[i]=omo2; Z[661]++; if(dbg){print "Z661"}; continue };
     if ( ba(-2,"_lock_pe") &&
           q(-1,"suw_tv") && s(-2,-1) )
-    { l[i]=omo2; Z[629]++; if(dbg){print "Z629"}; continue };
+    { l[i]=omo2; Z[662]++; if(dbg){print "Z662"}; continue };
     if ( ba(-3,"_lock_pe") &&
           q(-2,"suw_tv") &&
           q(-1,"prl_vi prq_vi mest_vi mest_3e") && s(-3,-1) )
-    { l[i]=omo2; Z[630]++; if(dbg){print "Z630"}; continue };
+    { l[i]=omo2; Z[663]++; if(dbg){print "Z663"}; continue };
     if ( ba(-2,"_lock_pe") &&
           q(-1,"suw_im mest_im isname") && s(-2,-1) )
-    { l[i]=omo2; Z[631]++; if(dbg){print "Z631"}; continue };
+    { l[i]=omo2; Z[664]++; if(dbg){print "Z664"}; continue };
     if ( ba(-3,"_lock_pe") &&
           q(-2,"prl_vi prq_vi mest_vi mest_3e qast") &&
           q(-1,"prl_vi prq_vi mest_vi qast") && s(-3,-1) )
-    { l[i]=omo2; Z[632]++; if(dbg){print "Z632"}; continue };
+    { l[i]=omo2; Z[665]++; if(dbg){print "Z665"}; continue };
     if ( ba(-4,"_lock_pe") &&
           q(-3,"prl_vi prq_vi mest_vi mest_3e qast") &&
           q(-2,"prl_vi prq_vi mest_vi mest_3e qast") &&
           q(-1,"prl_vi prq_vi mest_vi qast") && s(-4,-1) )
-    { l[i]=omo2; Z[633]++; if(dbg){print "Z633"}; continue };
+    { l[i]=omo2; Z[666]++; if(dbg){print "Z666"}; continue };
     if ( ba(-5,"_lock_pe") &&
           q(-4,"nar_any prl_kred_sr") &&
           q(-3,"prl_vi prq_vi mest_vi mest_3e qast") &&
           q(-2,"prl_vi prq_vi mest_vi mest_3e qast") &&
           q(-1,"prl_vi prq_vi mest_vi qast") && s(-5,-1) )
-    { l[i]=omo2; Z[634]++; if(dbg){print "Z634"}; continue };
+    { l[i]=omo2; Z[667]++; if(dbg){print "Z667"}; continue };
     if ( ba(-2,"_lock_pe") &&
           q(-1,"prl_vi prq_vi mest_vi mest_3e qast nar_any prl_kred_sr") && s(-2,-1) )
-    { l[i]=omo2; Z[635]++; if(dbg){print "Z635"}; continue };
+    { l[i]=omo2; Z[668]++; if(dbg){print "Z668"}; continue };
     if ( ba(-3,"_lock_pe") &&
           q(-2,"prl_ro prq_ro mest_ro mest_3e qik_vi") &&
           q(-1,"suw_ro") && s(-3,-1) )
-    { l[i]=omo2; Z[636]++; if(dbg){print "Z636"}; continue };
+    { l[i]=omo2; Z[669]++; if(dbg){print "Z669"}; continue };
     if ( ba(-3,"_lock_pe") &&
           q(-2,"prl_tv prq_tv mest_tv") &&
           q(-1,"suw_tv") && s(-3,-1) )
-    { l[i]=omo2; Z[637]++; if(dbg){print "Z637"}; continue };
+    { l[i]=omo2; Z[670]++; if(dbg){print "Z670"}; continue };
     if ( ba(-3,"_lock_pe") &&
           q(-2,"prq_vi") &&
           q(-1,"suw_tv") && s(-3,-1) )
-    { l[i]=omo2; Z[638]++; if(dbg){print "Z638"}; continue };
+    { l[i]=omo2; Z[671]++; if(dbg){print "Z671"}; continue };
 
 
     if ( bfa(1,3,"_lock_pe") && s(0,bfn-1) && Qf(1,bfn-1,"sz_iili pre_any") )
-    { l[i]=omo2; Z[639]++; if(dbg){print "Z639"}; continue };
+    { l[i]=omo2; Z[672]++; if(dbg){print "Z672"}; continue };
     if ( qxs(-1,"еще","один") &&
            q(xsn-1,"gl_pein gl_peed gl_pemn gl_poed deep_pe") && s(xsn-1) &&
            w(1,"и да") &&
           ba(2,"_lock_pe") && s(0,1) )
-    { l[i]=omo2; Z[640]++; if(dbg){print "Z640"}; continue };
+    { l[i]=omo2; Z[673]++; if(dbg){print "Z673"}; continue };
     if ( pre_pr(1) &&
               q(2,"suw_pr") &&
               q(3,"suw_ro") &&
          pre_tv(4) &&
               q(5,"suw_tv") &&
              ba(6,"_lock_pe") && s(0,5) )
-    { l[i]=omo2; Z[641]++; if(dbg){print "Z641"}; continue };
+    { l[i]=omo2; Z[674]++; if(dbg){print "Z674"}; continue };
 
 
     if ( z(0) &&
          q(1,"otnsz_mu") &&
        bfa(2,4,"_lock_pe") && s(1,bfn-1) && Qf(2,bfn-1,"sz_iili pre_any") )
-    { l[i]=omo2; Z[642]++; if(dbg){print "Z642"}; continue };
+    { l[i]=omo2; Z[675]++; if(dbg){print "Z675"}; continue };
 
     if ( ba(-3,"_lock_pe") &&
      pre_vi(-2) &&
           q(-1,"suw_vi mest_vi") && s(-3,-1) )
-    { l[i]=omo2; Z[643]++; if(dbg){print "Z643"}; continue };
+    { l[i]=omo2; Z[676]++; if(dbg){print "Z676"}; continue };
     if ( ba(-4,"_lock_pe") &&
      pre_vi(-3) &&
           q(-2,"suw_vi mest_vi") &&
           q(-1,"prl_vi prq_vi mest_vi mest_3e") && s(-4,-1) )
-    { l[i]=omo2; Z[644]++; if(dbg){print "Z644"}; continue };
+    { l[i]=omo2; Z[677]++; if(dbg){print "Z677"}; continue };
     if ( ba(-4,"_lock_pe") &&
      pre_vi(-3) &&
           q(-2,"suw_vi") &&
           q(-1,"suw_ro") && s(-4,-1) )
-    { l[i]=omo2; Z[645]++; if(dbg){print "Z645"}; continue };
+    { l[i]=omo2; Z[678]++; if(dbg){print "Z678"}; continue };
     if ( ba(-4,"_lock_pe") &&
      pre_vi(-3) &&
           q(-2,"prl_vi prq_vi mest_vi mest_3e") &&
           q(-1,"suw_vi mest_vi") && s(-4,-1) )
-    { l[i]=omo2; Z[646]++; if(dbg){print "Z646"}; continue };
+    { l[i]=omo2; Z[679]++; if(dbg){print "Z679"}; continue };
     if ( ba(-4,"_lock_pe") &&
      pre_vi(-3) &&
           q(-2,"prl_vi prq_vi mest_vi mest_3e") &&
           q(-1,"suw_vi mest_vi") && s(-4,-1) )
-    { l[i]=omo2; Z[647]++; if(dbg){print "Z647"}; continue };
+    { l[i]=omo2; Z[680]++; if(dbg){print "Z680"}; continue };
     if ( ba(-3,"_lock_pe") &&
      pre_tv(-2) &&
           q(-1,"suw_tv mest_tv") && s(-3,-1) )
-    { l[i]=omo2; Z[648]++; if(dbg){print "Z648"}; continue };
+    { l[i]=omo2; Z[681]++; if(dbg){print "Z681"}; continue };
     if ( ba(-4,"_lock_pe") &&
      pre_tv(-3) &&
           q(-2,"prl_tv mest_tv mest_3e") &&
           q(-1,"suw_tv mest_tv") && s(-4,-1) )
-    { l[i]=omo2; Z[649]++; if(dbg){print "Z649"}; continue };
+    { l[i]=omo2; Z[682]++; if(dbg){print "Z682"}; continue };
     if ( ba(-3,"_lock_pe") &&
      pre_pr(-2) &&
           q(-1,"suw_pr mest_pr") && s(-3,-1) )
-    { l[i]=omo2; Z[650]++; if(dbg){print "Z650"}; continue };
+    { l[i]=omo2; Z[683]++; if(dbg){print "Z683"}; continue };
     # _lock_pe:end ...
 
     # _castle_prl_geo:start
     cst1="быть ведь же стать считаться являться";
     if ( prl_im(-1) &&
              ba(-1,"_castle_prl_geo") && s(-1)  )
-    { l[i]=omo1; Z[651]++; if(dbg){print "Z651"}; continue };
+    { l[i]=omo1; Z[684]++; if(dbg){print "Z684"}; continue };
     if ( prl_im(-2) &&
              ba(-2,"_castle_prl_geo") &&
               Q(-1,"suw_any") && s(-2,-1)  )
-    { l[i]=omo1; Z[652]++; if(dbg){print "Z652"}; continue };
+    { l[i]=omo1; Z[685]++; if(dbg){print "Z685"}; continue };
     if ( prl_im(1) &&
              ba(1,"_castle_prl_geo") && s(0) && !(prl_ro(1)))
-    { l[i]=omo1; Z[653]++; if(dbg){print "Z653"}; continue };
+    { l[i]=omo1; Z[686]++; if(dbg){print "Z686"}; continue };
     if ( prl_im(1) &&
            base(1,cst1) &&
             bfa(2,5,"_castle_prl_geo") && s(0,bfn-1) && Qf(2,bfn-1,"pre_any sz_iili")  )
-    { l[i]=omo1; Z[654]++; if(dbg){print "Z654"}; continue };
+    { l[i]=omo1; Z[687]++; if(dbg){print "Z687"}; continue };
     # _castle_prl_geo:start
 
 
@@ -3452,43 +3632,43 @@ sz_iili(-3) &&
  #
     # _castle_prl:start
     if ( ba(-1,"_castle_prl") && prl_ro(-1) && s(-1)  )
-    { l[i]=omo1; Z[655]++; if(dbg){print "Z655"}; continue };
+    { l[i]=omo1; Z[688]++; if(dbg){print "Z688"}; continue };
     if ( ba(-2,"_castle_prl") && prl_ro(-2) &&
           q(-1,"prl_any prq_any mest_any qast") && s(-2,-1)  )
-    { l[i]=omo1; Z[656]++; if(dbg){print "Z656"}; continue };
+    { l[i]=omo1; Z[689]++; if(dbg){print "Z689"}; continue };
     if ( ba(-3,"_castle_prl") && prl_ro(-3) &&
           q(-2,"prl_any prq_any mest_any qast") && W(-2,"как") &&
           q(-1,"prl_any prq_any mest_any qast") && s(-3,-1)  )
-    { l[i]=omo1; Z[657]++; if(dbg){print "Z657"}; continue };
+    { l[i]=omo1; Z[690]++; if(dbg){print "Z690"}; continue };
     if ( ba(1,"_castle_prl") && prl_ro(1) && s(0) )
-    { l[i]=omo1; Z[658]++; if(dbg){print "Z658"}; continue };
+    { l[i]=omo1; Z[691]++; if(dbg){print "Z691"}; continue };
     # _castle_prl:start
 
     # _lock_prl:start
     if ( ba(-1,"_lock_prl") && s(-1) && prl_ro(-1) )
-    { l[i]=omo2; Z[659]++; if(dbg){print "Z659"}; continue };
+    { l[i]=omo2; Z[692]++; if(dbg){print "Z692"}; continue };
     if ( ba(-2,"_lock_prl") && prl_ro(-2) &&
           Q(-1,"suw_any sz_iili") && s(-2,-1) )
-    { l[i]=omo2; Z[660]++; if(dbg){print "Z660"}; continue };
+    { l[i]=omo2; Z[693]++; if(dbg){print "Z693"}; continue };
     if ( ba(-3,"_lock_prl") && prl_ro(-3) &&
           q(-2,"prl_any prq_any mest_any qast") && W(-2,"как") &&
           q(-1,"prl_any prq_any mest_any qast") && s(-3,-1)  )
-    { l[i]=omo2; Z[661]++; if(dbg){print "Z661"}; continue };
+    { l[i]=omo2; Z[694]++; if(dbg){print "Z694"}; continue };
     if ( ba(1,"_lock_prl") && s(0) && prl_ro(1) && !(isname(1)) )
-    { l[i]=omo2; Z[662]++; if(dbg){print "Z662"}; continue };
+    { l[i]=omo2; Z[695]++; if(dbg){print "Z695"}; continue };
     # _lock_prl:end
 
     # _castle_prl_geo:start
     if ( prl_ro(-1) &&
              ba(-1,"_castle_prl_geo") && s(-1)  )
-    { l[i]=omo1; Z[663]++; if(dbg){print "Z663"}; continue };
+    { l[i]=omo1; Z[696]++; if(dbg){print "Z696"}; continue };
     if ( prl_ro(-2) &&
              ba(-2,"_castle_prl_geo") &&
               Q(-1,"suw_any") && s(-2,-1)  )
-    { l[i]=omo1; Z[664]++; if(dbg){print "Z664"}; continue };
+    { l[i]=omo1; Z[697]++; if(dbg){print "Z697"}; continue };
     if ( prl_ro(1) &&
              ba(1,"_castle_prl_geo") && s(0) && !(prl_ro(1)))
-    { l[i]=omo1; Z[665]++; if(dbg){print "Z665"}; continue };
+    { l[i]=omo1; Z[698]++; if(dbg){print "Z698"}; continue };
     # _castle_prl_geo:start
 
   }; # р.п. замка замков
@@ -3498,43 +3678,43 @@ sz_iili(-3) &&
  #
     # _castle_prl:start
     if ( ba(-1,"_castle_prl") && prl_da(-1) && s(-1)  )
-    { l[i]=omo1; Z[666]++; if(dbg){print "Z666"}; continue };
+    { l[i]=omo1; Z[699]++; if(dbg){print "Z699"}; continue };
     if ( ba(-2,"_castle_prl") && prl_da(-2) &&
           q(-1,"prl_any prq_any mest_any qast") && s(-2,-1)  )
-    { l[i]=omo1; Z[667]++; if(dbg){print "Z667"}; continue };
+    { l[i]=omo1; Z[700]++; if(dbg){print "Z700"}; continue };
     if ( ba(-3,"_castle_prl") && prl_da(-3) &&
           q(-2,"prl_any prq_any mest_any qast") && W(-2,"как") &&
           q(-1,"prl_any prq_any mest_any qast") && s(-3,-1)  )
-    { l[i]=omo1; Z[668]++; if(dbg){print "Z668"}; continue };
+    { l[i]=omo1; Z[701]++; if(dbg){print "Z701"}; continue };
     if ( ba(1,"_castle_prl") && prl_da(1) && s(0) )
-    { l[i]=omo1; Z[669]++; if(dbg){print "Z669"}; continue };
+    { l[i]=omo1; Z[702]++; if(dbg){print "Z702"}; continue };
     # _castle_prl:start
 
     # _lock_prl:start
     if ( ba(-1,"_lock_prl") && s(-1) && prl_da(-1) )
-    { l[i]=omo2; Z[670]++; if(dbg){print "Z670"}; continue };
+    { l[i]=omo2; Z[703]++; if(dbg){print "Z703"}; continue };
     if ( ba(-2,"_lock_prl") && prl_da(-2) &&
           Q(-1,"suw_any sz_iili") && s(-2,-1) )
-    { l[i]=omo2; Z[671]++; if(dbg){print "Z671"}; continue };
+    { l[i]=omo2; Z[704]++; if(dbg){print "Z704"}; continue };
     if ( ba(-3,"_lock_prl") && prl_da(-3) &&
           q(-2,"prl_any prq_any mest_any qast") && W(-2,"как") &&
           q(-1,"prl_any prq_any mest_any qast") && s(-3,-1)  )
-    { l[i]=omo2; Z[672]++; if(dbg){print "Z672"}; continue };
+    { l[i]=omo2; Z[705]++; if(dbg){print "Z705"}; continue };
     if ( ba(1,"_lock_prl") && s(0) && prl_da(1) && !(isname(1)) )
-    { l[i]=omo2; Z[673]++; if(dbg){print "Z673"}; continue };
+    { l[i]=omo2; Z[706]++; if(dbg){print "Z706"}; continue };
     # _lock_prl:end
 
     # _castle_prl_geo:start
     if ( prl_da(-1) &&
              ba(-1,"_castle_prl_geo") && s(-1)  )
-    { l[i]=omo1; Z[674]++; if(dbg){print "Z674"}; continue };
+    { l[i]=omo1; Z[707]++; if(dbg){print "Z707"}; continue };
     if ( prl_da(-2) &&
              ba(-2,"_castle_prl_geo") &&
               Q(-1,"suw_any") && s(-2,-1)  )
-    { l[i]=omo1; Z[675]++; if(dbg){print "Z675"}; continue };
+    { l[i]=omo1; Z[708]++; if(dbg){print "Z708"}; continue };
     if ( prl_da(1) &&
              ba(1,"_castle_prl_geo") && s(0) && !(prl_da(1)))
-    { l[i]=omo1; Z[676]++; if(dbg){print "Z676"}; continue };
+    { l[i]=omo1; Z[709]++; if(dbg){print "Z709"}; continue };
     # _castle_prl_geo:start
 
   }; # дат.п. замку замкам
@@ -3545,43 +3725,43 @@ sz_iili(-3) &&
  #
     # _castle_prl:start
     if ( ba(-1,"_castle_prl") && prl_tv(-1) && s(-1)  )
-    { l[i]=omo1; Z[677]++; if(dbg){print "Z677"}; continue };
+    { l[i]=omo1; Z[710]++; if(dbg){print "Z710"}; continue };
     if ( ba(-2,"_castle_prl") && prl_tv(-2) &&
           q(-1,"prl_any prq_any mest_any qast") && s(-2,-1)  )
-    { l[i]=omo1; Z[678]++; if(dbg){print "Z678"}; continue };
+    { l[i]=omo1; Z[711]++; if(dbg){print "Z711"}; continue };
     if ( ba(-3,"_castle_prl") && prl_tv(-3) &&
           q(-2,"prl_any prq_any mest_any qast") && W(-2,"как") &&
           q(-1,"prl_any prq_any mest_any qast") && s(-3,-1)  )
-    { l[i]=omo1; Z[679]++; if(dbg){print "Z679"}; continue };
+    { l[i]=omo1; Z[712]++; if(dbg){print "Z712"}; continue };
     if ( ba(1,"_castle_prl") && prl_tv(1) && s(0) )
-    { l[i]=omo1; Z[680]++; if(dbg){print "Z680"}; continue };
+    { l[i]=omo1; Z[713]++; if(dbg){print "Z713"}; continue };
     # _castle_prl:start
 
     # _lock_prl:start
     if ( ba(-1,"_lock_prl") && s(-1) && prl_tv(-1) )
-    { l[i]=omo2; Z[681]++; if(dbg){print "Z681"}; continue };
+    { l[i]=omo2; Z[714]++; if(dbg){print "Z714"}; continue };
     if ( ba(-2,"_lock_prl") && prl_tv(-2) &&
           Q(-1,"suw_any sz_iili") && s(-2,-1) )
-    { l[i]=omo2; Z[682]++; if(dbg){print "Z682"}; continue };
+    { l[i]=omo2; Z[715]++; if(dbg){print "Z715"}; continue };
     if ( ba(-3,"_lock_prl") && prl_tv(-3) &&
           q(-2,"prl_any prq_any mest_any qast") && W(-2,"как") &&
           q(-1,"prl_any prq_any mest_any qast") && s(-3,-1)  )
-    { l[i]=omo2; Z[683]++; if(dbg){print "Z683"}; continue };
+    { l[i]=omo2; Z[716]++; if(dbg){print "Z716"}; continue };
     if ( ba(1,"_lock_prl") && s(0) && prl_tv(1) && !(isname(1)) )
-    { l[i]=omo2; Z[684]++; if(dbg){print "Z684"}; continue };
+    { l[i]=omo2; Z[717]++; if(dbg){print "Z717"}; continue };
     # _lock_prl:end
 
     # _castle_prl_geo:start
     if ( prl_tv(-1) &&
              ba(-1,"_castle_prl_geo") && s(-1)  )
-    { l[i]=omo1; Z[685]++; if(dbg){print "Z685"}; continue };
+    { l[i]=omo1; Z[718]++; if(dbg){print "Z718"}; continue };
     if ( prl_tv(-2) &&
              ba(-2,"_castle_prl_geo") &&
               Q(-1,"suw_any") && s(-2,-1)  )
-    { l[i]=omo1; Z[686]++; if(dbg){print "Z686"}; continue };
+    { l[i]=omo1; Z[719]++; if(dbg){print "Z719"}; continue };
     if ( prl_tv(1) &&
              ba(1,"_castle_prl_geo") && s(0) && !(prl_tv(1)))
-    { l[i]=omo1; Z[687]++; if(dbg){print "Z687"}; continue };
+    { l[i]=omo1; Z[720]++; if(dbg){print "Z720"}; continue };
     # _castle_prl_geo:start
 
   }; # тв.п. замком замками
@@ -3591,43 +3771,43 @@ sz_iili(-3) &&
  #
     # _castle_prl:start
     if ( ba(-1,"_castle_prl") && prl_da(-1) && s(-1)  )
-    { l[i]=omo1; Z[688]++; if(dbg){print "Z688"}; continue };
+    { l[i]=omo1; Z[721]++; if(dbg){print "Z721"}; continue };
     if ( ba(-2,"_castle_prl") && prl_da(-2) &&
           q(-1,"prl_any prq_any mest_any qast") && s(-2,-1)  )
-    { l[i]=omo1; Z[689]++; if(dbg){print "Z689"}; continue };
+    { l[i]=omo1; Z[722]++; if(dbg){print "Z722"}; continue };
     if ( ba(-3,"_castle_prl") && prl_da(-3) &&
           q(-2,"prl_any prq_any mest_any qast") && W(-2,"как") &&
           q(-1,"prl_any prq_any mest_any qast") && s(-3,-1)  )
-    { l[i]=omo1; Z[690]++; if(dbg){print "Z690"}; continue };
+    { l[i]=omo1; Z[723]++; if(dbg){print "Z723"}; continue };
     if ( ba(1,"_castle_prl") && prl_da(1) && s(0) )
-    { l[i]=omo1; Z[691]++; if(dbg){print "Z691"}; continue };
+    { l[i]=omo1; Z[724]++; if(dbg){print "Z724"}; continue };
     # _castle_prl:start
 
     # _lock_prl:start
     if ( ba(-1,"_lock_prl") && s(-1) && prl_da(-1) )
-    { l[i]=omo2; Z[692]++; if(dbg){print "Z692"}; continue };
+    { l[i]=omo2; Z[725]++; if(dbg){print "Z725"}; continue };
     if ( ba(-2,"_lock_prl") && prl_da(-2) &&
           Q(-1,"suw_any sz_iili") && s(-2,-1) )
-    { l[i]=omo2; Z[693]++; if(dbg){print "Z693"}; continue };
+    { l[i]=omo2; Z[726]++; if(dbg){print "Z726"}; continue };
     if ( ba(-3,"_lock_prl") && prl_da(-3) &&
           q(-2,"prl_any prq_any mest_any qast") && W(-2,"как") &&
           q(-1,"prl_any prq_any mest_any qast") && s(-3,-1)  )
-    { l[i]=omo2; Z[694]++; if(dbg){print "Z694"}; continue };
+    { l[i]=omo2; Z[727]++; if(dbg){print "Z727"}; continue };
     if ( ba(1,"_lock_prl") && s(0) && prl_da(1) && !(isname(1)) )
-    { l[i]=omo2; Z[695]++; if(dbg){print "Z695"}; continue };
+    { l[i]=omo2; Z[728]++; if(dbg){print "Z728"}; continue };
     # _lock_prl:end
 
     # _castle_prl_geo:start
     if ( prl_da(-1) &&
              ba(-1,"_castle_prl_geo") && s(-1)  )
-    { l[i]=omo1; Z[696]++; if(dbg){print "Z696"}; continue };
+    { l[i]=omo1; Z[729]++; if(dbg){print "Z729"}; continue };
     if ( prl_da(-2) &&
              ba(-2,"_castle_prl_geo") &&
               Q(-1,"suw_any") && s(-2,-1)  )
-    { l[i]=omo1; Z[697]++; if(dbg){print "Z697"}; continue };
+    { l[i]=omo1; Z[730]++; if(dbg){print "Z730"}; continue };
     if ( prl_da(1) &&
              ba(1,"_castle_prl_geo") && s(0) && !(prl_da(1)))
-    { l[i]=omo1; Z[698]++; if(dbg){print "Z698"}; continue };
+    { l[i]=omo1; Z[731]++; if(dbg){print "Z731"}; continue };
     # _castle_prl_geo:start
 
   }; # пр.п. замке замках
@@ -3639,90 +3819,90 @@ sz_iili(-3) &&
  if ( qxs(-1,"как","и") &&
      base(xsn-1,cst) && sc(xsn-1,",") &&
        ba(1,"_castle_pe") && Q(1,"suw_any") )
- { l[i]=omo2; Z[699]++; if(dbg){print "Z699"}; continue };
+ { l[i]=omo2; Z[732]++; if(dbg){print "Z732"}; continue };
  if ( z(0) && q(1,"prq_any") && ba(1,"_castle_pe") && s(1) && Q(1,"suw_any") )
- { l[i]=omo1; Z[700]++; if(dbg){print "Z700"}; continue };
+ { l[i]=omo1; Z[733]++; if(dbg){print "Z733"}; continue };
  if ( z(0) &&
       q(1,"nar_spos prl_kred_sr") &&
       q(2,"prq_any") && ba(2,"_castle_pe") && s(1,2) && Q(-1,"suw_any") )
- { l[i]=omo1; Z[701]++; if(dbg){print "Z701"}; continue };
+ { l[i]=omo1; Z[734]++; if(dbg){print "Z734"}; continue };
  if ( z(0) && q(1,"prq_any") && ba(1,"_lock_pe") && s(1) )
- { l[i]=omo2; Z[702]++; if(dbg){print "Z702"}; continue };
+ { l[i]=omo2; Z[735]++; if(dbg){print "Z735"}; continue };
  if ( q(-1,"prq_any") && ba(-1,"_castle_pe") && s(-1) && Q(-1,"suw_any") )
- { l[i]=omo1; Z[703]++; if(dbg){print "Z703"}; continue };
+ { l[i]=omo1; Z[736]++; if(dbg){print "Z736"}; continue };
  if ( q(-1,"prq_any") && ba(-1,"_lock_pe") && s(-1) )
- { l[i]=omo2; Z[704]++; if(dbg){print "Z704"}; continue };
+ { l[i]=omo2; Z[737]++; if(dbg){print "Z737"}; continue };
  if ( q(-3,"prq_any") && ba(-3,"_castle_pe") && Q(-3,"suw_any") &&
  pre_ro(-2) &&
       q(-1,"suw_ro") && s(-3,-1) )
- { l[i]=omo1; Z[705]++; if(dbg){print "Z705"}; continue };
+ { l[i]=omo1; Z[738]++; if(dbg){print "Z738"}; continue };
  if ( q(-4,"prq_any") && ba(-4,"_castle_pe") && Q(-4,"suw_any") &&
  pre_ro(-3) &&
       q(-2,"prl_ro") &&
       q(-1,"suw_ro") && s(-4,-1) )
- { l[i]=omo1; Z[706]++; if(dbg){print "Z706"}; continue };
+ { l[i]=omo1; Z[739]++; if(dbg){print "Z739"}; continue };
  # _castle_pe:start
  # _lock_pe:end
 
  # _castle_suw_ro:start
  if ( wfa(1,4,"_castle_suw_ro") && s(0,wfn-1) && Qf(1,wfn-1,"pre_any sz_iili gl_ed gl_mn") && Ww_(-1,"под") )
- { l[i]=omo1; Z[707]++; if(dbg){print "Z707"}; continue };
+ { l[i]=omo1; Z[740]++; if(dbg){print "Z740"}; continue };
 
  if ( w(1,"для") &&
      wa(2,"_castle_suw_ro2") && s(0,1) )
- { l[i]=omo1; Z[708]++; if(dbg){print "Z708"}; continue };
+ { l[i]=omo1; Z[741]++; if(dbg){print "Z741"}; continue };
  if ( w(1,"для") &&
       q(2,"prl_ro prq_ro mest_ro mest_3e") &&
      wa(3,"_castle_suw_ro2") && s(0,2) && qsb(-10,-1,",") && !(base(qsn,"дверь люк")) )
- { l[i]=omo1; Z[709]++; if(dbg){print "Z709"}; continue };
+ { l[i]=omo1; Z[742]++; if(dbg){print "Z742"}; continue };
  if ( w(1,"для") &&
       q(2,"prl_ro prq_ro mest_ro mest_3e") &&
       q(3,"prl_ro prq_ro mest_ro mest_3e") &&
      wa(4,"_castle_suw_ro2") && s(0,3) )
- { l[i]=omo1; Z[710]++; if(dbg){print "Z710"}; continue };
+ { l[i]=omo1; Z[743]++; if(dbg){print "Z743"}; continue };
  # _castle_suw_ro:end
 
  # _lock_suw_ro:start
  if ( wfa(1,5,"_lock_suw_ro") && s(0,wfn-1) && Qf(1,wfn-1,"sz_iili pre_any gl_in deep gl_ed gl_mn gl_vzed gl_vzmn") && !(bb(-3,-1,"знать")) )
- { l[i]=omo2; Z[711]++; if(dbg){print "Z711"}; continue };
+ { l[i]=omo2; Z[744]++; if(dbg){print "Z744"}; continue };
  if ( w(1,"для от у") &&
      wa(2,"_lock_suw_ro") && s(0,1) )
- { l[i]=omo2; Z[712]++; if(dbg){print "Z712"}; continue };
+ { l[i]=omo2; Z[745]++; if(dbg){print "Z745"}; continue };
  if ( w(1,"для от у") &&
       q(2,"prl_ro prq_ro mest_ro mest_3e") &&
      wa(3,"_lock_suw_ro") && s(0,2) )
- { l[i]=omo2; Z[713]++; if(dbg){print "Z713"}; continue };
+ { l[i]=omo2; Z[746]++; if(dbg){print "Z746"}; continue };
  if ( w(1,"для от у") &&
       q(2,"prl_ro prq_ro mest_ro mest_3e") &&
       q(3,"prl_ro prq_ro mest_ro mest_3e") &&
      wa(4,"_lock_suw_ro") && s(0,3) )
- { l[i]=omo2; Z[714]++; if(dbg){print "Z714"}; continue };
+ { l[i]=omo2; Z[747]++; if(dbg){print "Z747"}; continue };
  # _lock_suw_ro:end
 
  # _castle_iz_suw_ro:start
  if ( w(1,"из") &&
     wfa(2,5,"_castle_iz_suw_ro") && s(0,wfn-1) && qif(2,wfn-1,"prl_ro prq_ro mest_ro mest_3e") )
- { l[i]=omo1; Z[715]++; if(dbg){print "Z715"}; continue };
+ { l[i]=omo1; Z[748]++; if(dbg){print "Z748"}; continue };
  if ( w(-3,"из") &&
       q(-2,"prl_edro prq_edro") &&
      wa(-1,"_castle_iz_suw_ro") && s(-3,-1) )
- { l[i]=omo1; Z[716]++; if(dbg){print "Z716"}; continue };
+ { l[i]=omo1; Z[749]++; if(dbg){print "Z749"}; continue };
  cst1="возвести возводить выкладывать выложить выстроить построить сложить";
  if ( (z(0)||s(0)) &&
     base(1,cst1) &&
        w(2,"из") &&
      wfa(3,6,"_castle_iz_suw_ro") && s(1,wfn-1) && qif(2,wfn-1,"prl_ro prq_ro mest_ro mest_3e") )
- { l[i]=omo1; Z[717]++; if(dbg){print "Z717"}; continue };
+ { l[i]=omo1; Z[750]++; if(dbg){print "Z750"}; continue };
  if ( wb(-5,-1,"из") && s(wbn,-1) && qib(wbn+1,-1,"prl_ro prq_ro mest_ro mest_3e") &&
     base(wbn-1,cst1) &&
      wba(wbn+1,-1,"_castle_iz_suw_ro") )
- { l[i]=omo1; Z[718]++; if(dbg){print "Z718"}; continue };
+ { l[i]=omo1; Z[751]++; if(dbg){print "Z751"}; continue };
  # _castle_iz_suw_ro:end
 
  # _lock_iz_suw_ro:start
  if ( w(1,"из") &&
     wfa(2,5,"_lock_iz_suw_ro") && s(0,wfn-1) && qif(2,wfn-1,"prl_ro prq_ro mest_ro mest_3e") )
- { l[i]=omo2; Z[719]++; if(dbg){print "Z719"}; continue };
+ { l[i]=omo2; Z[752]++; if(dbg){print "Z752"}; continue };
  # _lock_iz_suw_ro:end
 
  # от обработки предыдущего в строке:start
@@ -3730,28 +3910,28 @@ sz_iili(-3) &&
          w(-3,"не") &&
          q(-2,"gl_ed gl_mn gl_vzed gl_vzmn") && z(-2) &&
          w(-1,"а но и или") && s(0) )
- { l[i]=omo2; Z[720]++; if(dbg){print "Z720"}; continue };
+ { l[i]=omo2; Z[753]++; if(dbg){print "Z753"}; continue };
  # от обработки предыдущего в строке:end
 
  if ( isname(1) && s(0) )
- { l[i]=omo1; Z[721]++; if(dbg){print "Z721"}; continue };
+ { l[i]=omo1; Z[754]++; if(dbg){print "Z754"}; continue };
  if ( w(1,"де дю фон ди да дель ла ло ле лё") &&
  isname(2) && s(0,1) )
- { l[i]=omo1; Z[722]++; if(dbg){print "Z722"}; continue };
+ { l[i]=omo1; Z[755]++; if(dbg){print "Z755"}; continue };
  if ( (qxs(1,"де","ла")||
        qxs(1,"фон","дер")) &&
     isname(xsn+1) && s(xsn) )
- { l[i]=omo1; Z[723]++; if(dbg){print "Z723"}; continue };
+ { l[i]=omo1; Z[756]++; if(dbg){print "Z756"}; continue };
  if ( w(1,"д л") && sc(1,"[\x27’]") &&
  isname(2) && s(0) )
- { l[i]=omo1; Z[724]++; if(dbg){print "Z724"}; continue };
+ { l[i]=omo1; Z[757]++; if(dbg){print "Z757"}; continue };
  if ( q(1,"pre_vi pre_ro pre_pr") &&
  isname(2) && s(0,1) && !(bb(-4,-1,"ключ ключик")) )
- { l[i]=omo1; Z[725]++; if(dbg){print "Z725"}; continue };
+ { l[i]=omo1; Z[758]++; if(dbg){print "Z758"}; continue };
  if ( isname(-1) && ( (s(-2,-1) && sv(-2,")"))||(z(-2) && s(-1)) ) )
- { l[i]=omo1; Z[726]++; if(dbg){print "Z726"}; continue };
+ { l[i]=omo1; Z[759]++; if(dbg){print "Z759"}; continue };
  if ( isname(0) && s(-1) )
- { l[i]=omo1; Z[727]++; if(dbg){print "Z727"}; continue };
+ { l[i]=omo1; Z[760]++; if(dbg){print "Z760"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 
