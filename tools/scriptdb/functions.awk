@@ -3071,4 +3071,4 @@ function wordbf(n,   el, stopp, ret) { el=lc(n); #_#old#_#
 #  if(el in muc_mnro               ) { ret = ret "#" muc_mnro               [el]; };
 #  if(el in muc_mntv               ) { ret = ret "#" muc_mntv               [el]; };
 #  if(el in muc_mnvi               ) { ret = ret "#" muc_mnvi               [el]; };
-return ret }
+gsub(/ё/,"е",ret); return ret }
