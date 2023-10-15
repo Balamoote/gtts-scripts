@@ -40,7 +40,8 @@ d2u () { if [[ -e "$backup" ]]; then printf '\e[36m%s \e[33m%s\e[0m\n' "Найд
         else crlf=$(file "$book" | grep -o "CRLF"); if [[ -n $crlf ]]; then dos2unix "$book" &>/dev/null; fi; cp "$book" "$backup"; fi; }
 sedroll () { local lico=$(wc -l < "$1"); local i=0; local j=0; for i in $(seq 1 $inc $lico); do j=$(($i+$(($inc-1))));	sed -i -rf <(sed -n "$i,$j p" < "$1") "$2"; done; }
 
-printf '\e[32m%s \e[32;4;1m%s\e[0m\n' "Скрипт" "\"Ручные омографы\""
+cdata=$(date)
+printf '\e[32m%s \e[32;4;1m%s\e[0m \e[93m%s\e[0m\n' "Скрипт" "\"Ручные омографы\"" "$cdata"
 
 if [[ -s "$1" ]]; then book=$1; backup="$book".$suf; key="-xp"; printf '\e[33m%s \e[93m%s\e[0m\n' "Ключи не заданы, но книга указана. Используем ключ:" "-xp"
 elif [[ -e "$2" ]]; then printf '\e[36m%s \e[33m%s\e[0m\n' "Обрабатывается книга:" "$book"
