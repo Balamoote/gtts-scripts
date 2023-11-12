@@ -11,7 +11,7 @@
 # Последняя версия файла находится тут: https://github.com/Balamoote/gtts-scripts
 function sortchunk(chunk, sep,     ret, charr, chars, i, chnum)
 {        split(chunk, charr, sep); for ( i in charr ) { chars[charr[i]] = charr[i] }; chnum = asort(chars);
-         ret = chars[1]; for ( i = 2; i <= chnum; i++ ) { ret = ret sep chars[i] }; return ret };
+         ret = chars[1]; for ( i = 2; i <= chnum; i++ ) { ret = ret sep chars[i] }; return ret }
 function wrap(text,wr,pad,   qu, wy, nx) { pad = sprintf("%" pad "s","");
          while (text) { qu = match(text, / |$/); wy += qu
             if (wy > wr) { nx = nx " \\\n" pad; wy = qu-1 } else if (nx) nx = nx FS;
@@ -52,10 +52,10 @@ END {
    if (b ~ reg_ ) { b = b ";" };
    if (b ~ reg  ) {
 
-        match ( b, /cst[0-9]*=\x22/ );
+        match( b, /cst[0-9]*=\x22/ );
         sp = RSTART+RLENGTH
         fp = length(b) - 1
-        chunk = sortchunk(substr (b, sp, fp-sp), " ");
+        chunk = sortchunk(substr(b, sp, fp-sp), " ");
         chunk = wrap(chunk,LW,sp-1)
         
         book[i] = substr(b, 1, sp-1) chunk substr(b, fp);
