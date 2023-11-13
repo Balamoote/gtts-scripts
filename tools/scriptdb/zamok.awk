@@ -12,9 +12,9 @@ xgrp="x4707";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)         
 #cst1="ие ий им ими их ого ом ому";
 #if ( jme(-1,"ск",cst1) && isname(-1) )
 #{ print l[i-1] >> "_prl_a.txt"; Z[1]++; if(dbg){print "Z1"}; }; continue
- if ( w(-4,"в") && w(0,"замок") && qif(-3,-1,"prl_vi mest_vi mest_3e prq_vi qik_vi qis_vi") &&
-    bba(-9,-5,"_gl_v_castle_main") && s(bbn,-1) )
- { print book[b] >> "_v_zamok.txt"; Z[2]++; if(dbg){print "Z2"}; }; continue
+#if ( w(-4,"в") && w(0,"замок") && qif(-3,-1,"prl_vi mest_vi mest_3e prq_vi qik_vi qis_vi") &&
+#   bba(-9,-5,"_gl_v_castle_main") && s(bbn,-1) )
+#{ print book[b] >> "_v_zamok.txt"; Z[2]++; if(dbg){print "Z2"}; }; continue
 #{ getBFx(-2,-2,"_glo.txt"); Z[3]++; if(dbg){print "Z3"}; }; continue
 #if ( w(1,"между") &&
 #     q(2,"suw_tv") && s(0,1) && Q(2,"prl_tv")  )
