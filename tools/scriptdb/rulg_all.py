@@ -10,10 +10,10 @@
 # python -m spacy download ru_core_news_lg
 
 import sys
-import spacy
-import re
 from multiprocessing import Pool
 from pathlib import Path
+import spacy
+import re
 
 # Загрузить модель spaCy, при этом нужно выдать морфологическую информацию по омографам
 nlp = spacy.load('ru_core_news_lg', disable=['lemmatizer'])
@@ -61,4 +61,3 @@ if __name__ == '__main__':
         analyzed_lines = p.map(analyze_line, lines)
         for line in analyzed_lines:
             print(line, end='\n')
-

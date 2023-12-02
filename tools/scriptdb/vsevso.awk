@@ -2696,17 +2696,17 @@ prq_krmn(qfn+1) && s(0,qfn) )
 
  # Эскейпы для SpaCy
  if ( w(1,"новые новых") && s(0) )
- {             ; V[689]++; if(dbg){print "V689"}; continue };
+ {              V[689]++; if(dbg){print "V689"}; continue };
  if ( p(-1) && p(0) )
- {             ; V[690]++; if(dbg){print "V690"}; continue };
+ {              V[690]++; if(dbg){print "V690"}; continue };
  if ( p(-2) && p(0) )
- {             ; V[691]++; if(dbg){print "V691"}; continue };
+ {              V[691]++; if(dbg){print "V691"}; continue };
  if ( sc(-2,"[\x22«(']") && sc(0,"[\x22»)']") )
- {             ; V[692]++; if(dbg){print "V692"}; continue };
+ {              V[692]++; if(dbg){print "V692"}; continue };
  if ( qxs(-1,"а","где") && p(-3) && sc(0,"?") )
- {             ; V[693]++; if(dbg){print "V693"}; continue };
+ {              V[693]++; if(dbg){print "V693"}; continue };
  if ( qxs(1,"на","борту") && p(-1) && p(2) )
- {             ; V[694]++; if(dbg){print "V694"}; continue };
+ {              V[694]++; if(dbg){print "V694"}; continue };
 
 
  # SpaCy

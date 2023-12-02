@@ -3,10 +3,10 @@
 # Последняя версия файла тут: https://github.com/Balamoote/gtts-dic 
 
 Для работы необходимо иметь консоль linux с bash, grep, sed, gawk, dos2unix, uniq (обязательно)
-и, желательно, но не обязательно, iconv, vim, mc, perl
+и, желательно, но не обязательно, iconv, vim, mc, GNU parallel, spacy
 Для проверки наличия в системе всех нужных инструментов, дайте команду:
 
-	command -v bash grep sed gawk dos2unix uniq iconv md5sum vim
+	command -v bash grep sed gawk dos2unix uniq iconv mc md5sum vim parallel
 
 или запустите скрипт ./all-in-one.sh
 

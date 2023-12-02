@@ -19,6 +19,15 @@ backup="$book".$suf
 debug=0   # Если 1, то сделать отладку скриптов омографов: поиск искажений текста в "пастеризованных" версиях исходника и результата 
 nocaps=0  # Если 1, то капсов в "пастеризованых" не будет
 locdic=1
+do_parallel=0 # влючить GNU Parallel. ВНИМАНИЕ: Использует памяти в N раз больше, где N - кол-во задач
+   pblock=1M  # размер куска текста на 1 задачу: постфиксы K, M, G, T, P, k, m, g, t, p.
+   pjobs=100% # задать макс. кол-во задач. 100% = кол-ву процессоров. 4 = 4 задачи. Более 100% задвать обчыно нет смысла. Обратить внимание на кол-во оперативки!
+   pmem=1G    # мин. память, перед началом следующей задачи, если памяти менее 50% от значения, завершить самую свежую задачу.
+   pload=100% # макс загрузка отдельного процессора
+   pnice=10   # приоритет
+
+   paraopts_awk="--eta --bar --jobs=$pjobs --load=$pload --memfree $pmem --nice=$pnice --noswap --pipe-part --block=$pblock -k -a"
+   paraopts_sed="--jobs=$pjobs --load=$pload --memfree $pmem --nice=$pnice --noswap --pipe-part --block=$pblock -k -a"
 
 # Установка редактора: vim или neovim
 edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' scriptdb/settings.ini)
@@ -104,7 +113,7 @@ if [[ $clxx -eq "1" ]]; then
 	else printf '\e[1;31m%s \e[93m%s \e[1;31m%s\e[0m\n' "Выполнение скрипта" "./momo.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
 
 # Массив со списком обязательных файлов
-pack="momo.sh tts.txt scriptdb/mano-uc0.txt.gz scriptaux/mano-uc.pat.gz scriptdb/mano-lc0.txt.gz scriptaux/mano-lc.pat.gz scriptaux/ttspat.man.gz scriptaux/tts0.man.gz scriptdb/omo-index.sed scriptdb/deomo.awk"
+pack="scriptdb/automo.gz scriptdb/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk scriptdb/deomo.awk scriptdb/despacy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz scriptdb/main.awk scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.scy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/sort_opt.awk scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptdb/zamok.awk"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -120,6 +129,7 @@ d2u;
 
 sed "/<binary/Q" "$book" | sed -r "s/\xc2\xa0/ /g" > $bookwrkdir/text-book.txt
 sed -n '/<binary/,$p' "$book" > $bookwrkdir/binary-book.txt
+#booklico=$(wc -l < $bookwrkdir/binary-book.txt)
 
 # Замены однозначных
 mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
@@ -134,7 +144,7 @@ if [[ $spacy == "1" ]]; then
 # Создать копию текст книги и морфологией с помощью spacy << начало блока SpaCy
 
  if [[ -s $bookstadir/text-book.scy ]] && md5sum -c --status $bookstadir/text.scy.md5 >/dev/null 2>&1; then
-        printf '\e[36m%s \e[33m%s \e[32m%s\e[0m\n' "Файлы в" $bookstadir/text.scy.md5 "OK: файл с разметкой уже создан.";
+        printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Файлы в" $bookstadir/text.scy.md5 "OK: файл с разметкой уже создан.";
  else
     sed -r "s/[$unxc]+//g;
             s/[$unxs]/./g;
@@ -155,7 +165,7 @@ if [[ $locdic == "1" ]]; then
  # Список слов
  if [[ -s $bookstadir/bookwords.list ]] && md5sum -c --status $bookstadir/locdic.md5 >/dev/null 2>&1; then
 	locdicsize=$(cat $bookstadir/bookwords.list | wc -l)
-        printf '\e[36m%s \e[33m%s \e[32m%s \e[93m%s\e[0m\n' "Файлы в" $bookstadir/locdic.md5 "  OK: файлы локальных словарей уже созданы. Словоформ:" $locdicsize;
+        printf '\e[36m%s \e[33m%s \e[36m%s \e[93m%s\e[0m\n' "Файлы в" $bookstadir/locdic.md5 "OK: файлы локальных словарей уже созданы. Словоформ:" $locdicsize;
  else
  sed -r 's/^/ /g' $bookwrkdir/text-book.txt | grep -Eo "[$RUUC$rulc$unxc-]+" |\
      sed -r "s/[$unxc]+//g;
@@ -182,48 +192,95 @@ fi;
 # << Конец блока создания локальных словарей
 
 # Проверить наличие необработанных "все": если есть, применить все правила, иначе выключить пару "все/всё"
-yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt | wc -l)
+yops=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt | wc -l)
+
 if [[ ! $single -eq 1 ]]; then
-  if [[ ! $yop -eq 0 ]]; then
-     printf '\e[36m%s \e[93m%s \e[36m%s\e[0m … ' "Все (" $yop ") ==> Все́/Всё"
-	
-     awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f scriptdb/deomo.awk $bookwrkdir/text-book.txt \
-         > $bookwrkdir/text-book.awk.txt; mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+  if [[ ! $yops -eq 0 ]]; then
+     if [[ $do_parallel -eq 1 ]]; then
+       printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
+       parallel --env $paraopts_awk $bookwrkdir/text-book.txt \
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f scriptdb/main.awk > $bookwrkdir/text-book.awk.txt
+     else
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f scriptdb/main.awk $bookwrkdir/text-book.txt \
+           > $bookwrkdir/text-book.awk.txt
+     fi # do_parallel
 
-     yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
+     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+
+     yope=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
      mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
-     LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "обработано за" $duration "сек. Остаток:" $yop
-
+     LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Основная обработка:" $duration "сек. Остаток 'все':" $yope "из" $yops "."
   else
-     awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" \
-         -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+#_#_# vsez !_#_!)$/#\1/g' scriptdb/deomo.awk) \
-        $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt; mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
+     sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+#_#_# vsez !_#_!)$/#\1/g' scriptdb/main.awk > $bookstadir/main.awk
+
+     if [[ $do_parallel -eq 1 ]]; then
+       printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
+       parallel --env $paraopts_awk $bookwrkdir/text-book.txt \
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+     else
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk $bookwrkdir/text-book.txt \
+           > $bookwrkdir/text-book.awk.txt
+     fi # do_parallel
+
+     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
 
      mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
      printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
   fi # все
 else
+  # обработка только одного омографа
   if [[ $swrd -eq 1 ]]; then
-    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
+    sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
             s/^(.+#_#_# vsez !_#_!)$/#\1/g;
             s/^(.+#_#_# all_omos !_#_!)$/#\1/g;
-            s/^#([^"]+")dummy(".+#_#_# single_word !_#_!)$/\1'$somo'\2/g}' scriptdb/deomo.awk) $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+            s/^#([^"]+")dummy(".+#_#_# single_word !_#_!)$/\1'$somo'\2/g}' scriptdb/main.awk > $bookstadir/main.awk
+
+    if [[ $do_parallel -eq 1 ]]; then
+      printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
+      parallel --env $paraopts_awk $bookwrkdir/text-book.txt \
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+    else
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk $bookwrkdir/text-book.txt \
+          > $bookwrkdir/text-book.awk.txt
+    fi # do_parallel
+
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
-    printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
-  fi # 
+  fi #
+
+  # обработка только одной группы омографов
   if [[ $sgrp -eq 1 ]]; then
-    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
+    sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
             s/^(.+#_#_# vsez !_#_!)$/#\1/g;
             s/^(.+#_#_# all_omos !_#_!)$/#\1/g;
-            s/^#([^"]+")dummy(".+#_#_# single_group !_#_!)$/\1'$somo'\2/g}' scriptdb/deomo.awk) $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+            s/^#([^"]+")dummy(".+#_#_# single_group !_#_!)$/\1'$somo'\2/g}' scriptdb/main.awk > $bookstadir/main.awk
+
+    if [[ $do_parallel -eq 1 ]]; then
+      printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
+      parallel --env $paraopts_awk $bookwrkdir/text-book.txt \
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+    else
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk $bookwrkdir/text-book.txt \
+          > $bookwrkdir/text-book.awk.txt
+   fi # do_parallel
+
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
-    printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
+#   printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
   fi # 
   if [[ $vse -eq 1 ]]; then
-    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f <(sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
-            s/^(.+#_#_# all_omos !_#_!)$/#\1/g}' scriptdb/deomo.awk) $bookwrkdir/text-book.txt > $bookwrkdir/text-book.awk.txt
+    sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
+            s/^(.+#_#_# all_omos !_#_!)$/#\1/g}' scriptdb/main.awk > $bookstadir/main.awk
+
+    if [[ $do_parallel -eq 1 ]]; then
+      printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
+      parallel --env $paraopts_awk $bookwrkdir/text-book.txt \
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+    else
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk $bookwrkdir/text-book.txt \
+          > $bookwrkdir/text-book.awk.txt
+    fi # do_parallel
+
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
     printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
@@ -240,7 +297,13 @@ rexsed="scriptdb/omo-index.sed"
 #printf '\e[36m%s \e[93m%s %s%s%s\e[0m … ' "Омографов для sed-обработки:" $locomo "(" $statblock ")"
 
 #sedroll $bookwrkdir/book-index.sed $bookwrkdir/text-book.txt
- sedroll $rexsed $bookwrkdir/text-book.txt
+ 
+ if [[ $do_parallel -eq 1 ]]; then
+   parallel --env $paraopts_sed $bookwrkdir/text-book.txt sed -rf $rexsed > $bookwrkdir/text-book.sed.txt
+   mv $bookwrkdir/text-book.sed.txt $bookwrkdir/text-book.txt
+ else
+  sedroll $rexsed $bookwrkdir/text-book.txt
+ fi # do_parallel
 
 mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Постобработка sed:" $duration "сек"
@@ -275,7 +338,7 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Всего о
 
 # Формируем дискретные скрипты пословно
 printf '\e[32m%s ' "Идет поиск омографов … подождите."
-if [[ $preview -eq 1 ]]; then printf '\e[32m%s\n' "Превью текста включено."
+if [[ $preview -eq 1 ]]; then printf '\e[32m%s' "Превью текста включено."
 else printf '\e[36m%s\n' "Превью текста выключено."; fi
 twd=$(tput cols)
 

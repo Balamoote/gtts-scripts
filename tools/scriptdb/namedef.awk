@@ -2,8 +2,8 @@
 # Последняя версия файла тут: https://github.com/Balamoote/gtts-scripts
 @load "rwarray"
 
-function joinpat(array, seps, nuf,    ret, i, k) # Склеить строку обратно
-                { ret = seps [0]; for (i=1; i<= nuf; i++) {ret = ret array[i] seps[i]}; return ret }
+function joinpat(array, seps, nuf,    ret, i, k) { # Склеить строку обратно
+                ret = seps [0]; for (i=1; i<= nuf; i++) {ret = ret array[i] seps[i]}; return ret }
 
 BEGIN {
 

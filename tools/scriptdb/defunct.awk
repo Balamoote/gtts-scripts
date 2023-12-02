@@ -272,29 +272,29 @@ function sw_da_f(ret, stopp) { while (stopp == 0) {
  { ret=stopp=1; D[70]++; if(dbg){print "D70"}; continue };
  #
  if ( !(qb(-5,-1,"pre_any") && s(qbn,-1) ) &&
-         q(-1,"gl_pnin gl_pned gl_pnmn gl_popned gl_popnmn deep_pn") && bam(-1,"_gg_obj_da _gl_talk") && s(-1) )
+         q(-1,"gl_pnin gl_pned gl_pnmn gl_popned gl_popnmn deep_pn") && bam(-1,"_gl_obj_da _gl_talk") && s(-1) )
  { ret=stopp=1; D[71]++; if(dbg){print "D71"}; continue };
  if ( !(qb(-5,-1,"pre_any") && s(qbn,-1) ) && q(0,"suw_odedda suw_odmnda") &&
          q(-1,"gl_pnin gl_pned gl_pnmn gl_popned gl_popnmn deep_pn") && bam(-1,"_gl_give") && s(-1) )
  { ret=stopp=1; D[72]++; if(dbg){print "D72"}; continue };
- if ( q(-1,"gl_pein gl_peed gl_pemn gl_popeed gl_popemn deep_pe") && bam(-1,"_gg_obj_da _gl_give _gl_talk") && s(-1) )
+ if ( q(-1,"gl_pein gl_peed gl_pemn gl_popeed gl_popemn deep_pe") && bam(-1,"_gl_obj_da _gl_give _gl_talk") && s(-1) )
  { ret=stopp=1; D[73]++; if(dbg){print "D73"}; continue };
- if ( q(-1,"gl_nein gl_need gl_nemn gl_poneed gl_ponemn deep_ne") && bam(-1,"_gg_obj_da _gl_give _gl_talk") && s(-1) &&
+ if ( q(-1,"gl_nein gl_need gl_nemn gl_poneed gl_ponemn deep_ne") && bam(-1,"_gl_obj_da _gl_give _gl_talk") && s(-1) &&
       W(0,"смогу тому") )
  { ret=stopp=1; D[74]++; if(dbg){print "D74"}; continue };
- if ( q(1,"gl_pnin gl_pned gl_pnmn deep_pn") && bam(1,"_gg_obj_da _gl_give _gl_talk") && s(0) &&
+ if ( q(1,"gl_pnin gl_pned gl_pnmn deep_pn") && bam(1,"_gl_obj_da _gl_give _gl_talk") && s(0) &&
       W(0,"смогу тому") )
  { ret=stopp=1; D[75]++; if(dbg){print "D75"}; continue };
  if ( w(1,"не") &&
-      q(2,"gl_in gl_ed gl_mn deep") && bam(2,"_gg_obj_da _gl_give _gl_talk") && s(0,1) &&
+      q(2,"gl_in gl_ed gl_mn deep") && bam(2,"_gl_obj_da _gl_give _gl_talk") && s(0,1) &&
       W(0,"смогу") )
  { ret=stopp=1; D[76]++; if(dbg){print "D76"}; continue };
 #if ( w(1,"не") &&
-#      q(2,"gl_nein gl_need gl_nemn deep_ne") && bam(2,"_gg_obj_da _gl_give _gl_talk") && s(0,1) &&
+#      q(2,"gl_nein gl_need gl_nemn deep_ne") && bam(2,"_gl_obj_da _gl_give _gl_talk") && s(0,1) &&
 #      W(0,"смогу") )
 #{ ret=stopp=1; D[77]++; if(dbg){print "D77"}; continue };
 #if ( w(1,"не") &&
-#      q(2,"gl_pnin gl_pned gl_pnmn deep_pn") && bam(2,"_gg_obj_da _gl_give _gl_talk") && s(0,1) &&
+#      q(2,"gl_pnin gl_pned gl_pnmn deep_pn") && bam(2,"_gl_obj_da _gl_give _gl_talk") && s(0,1) &&
 #      W(0,"смогу") )
 #{ ret=stopp=1; D[78]++; if(dbg){print "D78"}; continue };
 
@@ -304,12 +304,12 @@ function sw_vi_f(ret, stopp) { while (stopp == 0) {
  if ( id(1,"usw4edvi") && s(0) )
  { ret=stopp=1; D[79]++; if(dbg){print "D79"}; continue };
  #
- if ( q(-1,"gl_in gl_ed gl_mn gl_poed deep") && ba(-1,"_gg_obj_vi") && s(-1) )
+ if ( q(-1,"gl_in gl_ed gl_mn gl_poed deep") && ba(-1,"_gl_obj_vi") && s(-1) )
  { ret=stopp=1; D[80]++; if(dbg){print "D80"}; continue };
- if ( q(-2,"gl_in gl_ed gl_mn gl_poed deep") && ba(-2,"_gg_obj_vi") &&
+ if ( q(-2,"gl_in gl_ed gl_mn gl_poed deep") && ba(-2,"_gl_obj_vi") &&
       q(-1,"mest_da") && s(-2,-1) )
  { ret=stopp=1; D[81]++; if(dbg){print "D81"}; continue };
- if ( q(-1,"gl_pnin gl_pned gl_pnmn gl_poed deep_pn") && ba(-1,"_gg_obj_vi") && s(-1) )
+ if ( q(-1,"gl_pnin gl_pned gl_pnmn gl_poed deep_pn") && ba(-1,"_gl_obj_vi") && s(-1) )
  { ret=stopp=1; D[82]++; if(dbg){print "D82"}; continue };
  if ( q(-2,"gl_in gl_ed gl_mn gl_poed gl_pomn deep") && bam(-2,"_gl_give _gl_talk") &&
       q(-1,"mest_da suw_da") && s(-2,-1) && W(-1,"своему твоему нашему моему") )
@@ -391,9 +391,9 @@ function sw_tv_f(ret, stopp) { while (stopp == 0) {
  if ( id(1,"usw4edtv") && s(0) )
  { ret=stopp=1; D[103]++; if(dbg){print "D103"}; continue };
  #
- if ( q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gg_obj_tv") && s(-1) )
+ if ( q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gl_obj_tv") && s(-1) )
  { ret=stopp=1; D[104]++; if(dbg){print "D104"}; continue };
- if ( q(1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(1,"_gg_obj_tv") && s(0) )
+ if ( q(1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(1,"_gl_obj_tv") && s(0) )
  { ret=stopp=1; D[105]++; if(dbg){print "D105"}; continue };
  if ( q(-2,"suw_im mest_im") &&
       q(-1,"gl_pein gl_peed gl_pemn deep_pe") && s(-2,-1) && Q(0,"nar_vrem") )
@@ -448,16 +448,16 @@ function sw_ro_f(ret, stopp) { while (stopp == 0) {
       !(q(1,"prl_mnim suw_mnim") && s(1)) )
  { ret=0; stopp=1; edro2mnvi=1; D[117]++; if(dbg){print "D117"}; continue };
 
- if ( w(-2,"не") && q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gg_no_nero") && s(-2,-1) )
+ if ( w(-2,"не") && q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gl_no_nero") && s(-2,-1) )
  { ret=0; stopp=1; edro2mnvi=1; D[118]++; if(dbg){print "D118"}; continue };
- if ( w(-2,"не") && q(-1,"gl_pein gl_peed gl_pemn deep_pe") && ba(-1,"_gg_no_nero") && s(-2,-1) )
+ if ( w(-2,"не") && q(-1,"gl_pein gl_peed gl_pemn deep_pe") && ba(-1,"_gl_no_nero") && s(-2,-1) )
  { ret=0; stopp=1; edro2mnvi=1; D[119]++; if(dbg){print "D119"}; continue };
- if ( w(-2,"не") && q(-1,"gl_nein gl_need gl_nemn gl_vzmn gl_vzed deep_ne") && ba(-1,"_gg_no_nero") && s(-2,-1) )
+ if ( w(-2,"не") && q(-1,"gl_nein gl_need gl_nemn gl_vzmn gl_vzed deep_ne") && ba(-1,"_gl_no_nero") && s(-2,-1) )
  { ret=0; stopp=1; edro2mnvi=1; D[120]++; if(dbg){print "D120"}; continue };
- if ( Qw_(-2,"pre_ro preph_ro") && !(w(-2,"не") && ba(-1,"_gg_yes_nero") && s(-2) ) &&
+ if ( Qw_(-2,"pre_ro preph_ro") && !(w(-2,"не") && ba(-1,"_gl_yes_nero") && s(-2) ) &&
         q(-1,"mest_pmnim mest_3e prl_mnim prl_mnvi prq_mnim prq_mnvi") && Q(-1,"mest_edim mest_edvi") && s(-1) )
  { ret=0; stopp=1; edro2mnvi=1; D[121]++; if(dbg){print "D121"}; continue };
- if ( Qw_(-3,"pre_ro preph_ro") && !(w(-3,"не") && ba(-2,"_gg_yes_nero") && s(-3) ) &&
+ if ( Qw_(-3,"pre_ro preph_ro") && !(w(-3,"не") && ba(-2,"_gl_yes_nero") && s(-3) ) &&
         q(-2,"mest_mnim mest_mnvi prl_mnim prl_mnvi prq_mnim prq_mnvi") && Q(-2,"mest_edim mest_edvi") && s(-2) && sc(-1,"-") )
  { ret=0; stopp=1; edro2mnvi=1; D[122]++; if(dbg){print "D122"}; continue };
 
@@ -481,7 +481,7 @@ sz_iili(-1) && s(-4,-1) )
            q(-1,"gl_in gl_ed gl_mn deep") && s(-3,-1) && p(0) )
  { ret=0; stopp=1; edro2mnim=1; D[127]++; if(dbg){print "D127"}; continue };
  if ( q(-2,"mest_ro suw_ro") &&
-      q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gg_obj_ro") && s(-2,-1) )
+      q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gl_obj_ro") && s(-2,-1) )
  { ret=0; stopp=1; edro2mnvi=1; D[128]++; if(dbg){print "D128"}; continue };
 
  if ( q(-3,"pre_tv preph_tv") &&
@@ -563,25 +563,25 @@ sz_iili(-1) &&
  if ( q(1,"mest_im suw_im") && s(0,1) &&
           narph_any(2) &&
       w(xwn+1,"не") &&
-      q(xwn+2,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && ba(xwn+2,"_gg_yes_nero") && s(xwn,xwn+1) )
+      q(xwn+2,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && ba(xwn+2,"_gl_yes_nero") && s(xwn,xwn+1) )
  { ret=stopp=1; D[146]++; if(dbg){print "D146"}; continue };
  if ( q(1,"mest_im suw_im") && s(0,1) &&
           narph_any(2) && vv(xwn,xwn+5) &&
       w(vvn+1,"не") &&
-      q(vvn+2,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && ba(vvn+2,"_gg_yes_nero") && s(vvn+1) )
+      q(vvn+2,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && ba(vvn+2,"_gl_yes_nero") && s(vvn+1) )
  { ret=stopp=1; D[147]++; if(dbg){print "D147"}; continue };
  if ( q(1,"mest_im suw_im") &&
       w(2,"не") &&
-      q(3,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && ba(3,"_gg_yes_nero") && s(0,2) )
+      q(3,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && ba(3,"_gl_yes_nero") && s(0,2) )
  { ret=stopp=1; D[148]++; if(dbg){print "D148"}; continue };
  if ( w(1,"не") &&
-      q(2,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && ba(2,"_gg_yes_nero") && s(0,1) )
+      q(2,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && ba(2,"_gl_yes_nero") && s(0,1) )
  { ret=stopp=1; D[149]++; if(dbg){print "D149"}; continue };
  if ( w(-2,"не") &&
-      q(-1,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && ba(-1,"_gg_yes_nero") && s(-2,-1) )
+      q(-1,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && ba(-1,"_gl_yes_nero") && s(-2,-1) )
  { ret=stopp=1; D[150]++; if(dbg){print "D150"}; continue };
  if ( w(-4,"не") &&
-      q(-3,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && ba(-3,"_gg_yes_nero") &&
+      q(-3,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin prq_any") && ba(-3,"_gl_yes_nero") &&
  pre_tv(-2) &&
       q(-1,"mest_tv suw_tv") && s(-4,-1) )
  { ret=stopp=1; D[151]++; if(dbg){print "D151"}; continue };
@@ -635,14 +635,14 @@ sz_iili(-3) &&
         q(2,"gl_peed gl_pemn gl_pein gl_pned gl_pnmn gl_pnin") && s(0,1) && p(2) )
  { ret=stopp=1; D[160]++; if(dbg){print "D160"}; continue };
 
- if ( q(-2,"gl_in gl_ed gl_mn gl_pomn deep") && ba(-2,"_gg_obj_ro") &&
+ if ( q(-2,"gl_in gl_ed gl_mn gl_pomn deep") && ba(-2,"_gl_obj_ro") &&
       q(-1,"nar_vrem prl_kred_sr mest_ro prl_ro") && s(-2,-1) && Q(0,"gl_in"))
  { ret=stopp=1; D[161]++; if(dbg){print "D161"}; continue };
- if ( q(-1,"gl_in gl_ed gl_mn gl_vzmn gl_pomn deep") && ba(-1,"_gg_obj_ro") && s(-1) )
+ if ( q(-1,"gl_in gl_ed gl_mn gl_vzmn gl_pomn deep") && ba(-1,"_gl_obj_ro") && s(-1) )
  { ret=stopp=1; D[162]++; if(dbg){print "D162"}; continue };
 
  if ( q(-3,"suw_im mest_im") &&
-      q(-2,"gl_in gl_ed gl_mn deep") && ba(-2,"_gg_obj_ro") &&
+      q(-2,"gl_in gl_ed gl_mn deep") && ba(-2,"_gl_obj_ro") &&
       q(-1,"mest_ro prl_edro prq_edro") && s(-3,-1) && Q(0,"gl_in") )
  { ret=stopp=1; D[163]++; if(dbg){print "D163"}; continue };
 
@@ -928,14 +928,14 @@ function sw_edro_f(ret,   stopp) { while (stopp == 0) {
        q(-1,"nar_napr") && s(-2,-1) )
  { ret=stopp=1; D[225]++; if(dbg){print "D225"}; continue };
 
- if ( prq_any(-2) && ba(-2,"_gg_obj_ro") &&
+ if ( prq_any(-2) && ba(-2,"_gl_obj_ro") &&
             q(-1,"prl_edro mest_ro muk_edro") && s(-2,-1) )
  { ret=stopp=1; D[226]++; if(dbg){print "D226"}; continue };
- if ( prq_any(-3) && ba(-3,"_gg_obj_ro") &&
+ if ( prq_any(-3) && ba(-3,"_gl_obj_ro") &&
             q(-2,"suw_ro") &&
       sz_iili(-1) && s(-3,-1) )
  { ret=stopp=1; D[227]++; if(dbg){print "D227"}; continue };
- if ( prq_any(-1) && ba(-1,"_gg_obj_ro") && s(-1) )
+ if ( prq_any(-1) && ba(-1,"_gl_obj_ro") && s(-1) )
  { ret=stopp=1; D[228]++; if(dbg){print "D228"}; continue };
 
  if ( suw_any(-2) && ba(-2,"_unit") &&
@@ -1067,19 +1067,19 @@ sz_iili(-2) &&
  { ret=stopp=1; D[253]++; if(dbg){print "D253"}; continue };
 
  if ( qb(-6,-3,"pre_ro") &&
-       q(-2,"gl_nemn") && ba(-2,"_gg_obj_tv") &&
+       q(-2,"gl_nemn") && ba(-2,"_gl_obj_tv") &&
        q(-1,"suw_tv mest_tv") && s(-3,-1) )
  { ret=0; stopp=1; edro2mnim=1; D[254]++; if(dbg){print "D254"}; continue };
  if ( q(-3,"suw_im mest_im mod_bz") &&
-      q(-2,"gl_nein gl_need gl_nemn gl_vzmn deep_ne") && ba(-2,"_gg_obj_tv") &&
+      q(-2,"gl_nein gl_need gl_nemn gl_vzmn deep_ne") && ba(-2,"_gl_obj_tv") &&
       q(-1,"suw_tv mest_tv") && s(-3,-1) )
  { ret=stopp=1; D[255]++; if(dbg){print "D255"}; continue };
 
- if ( suw_any(-3) && ba(-3,"_gg_obj_tv") && Q(-3,"gl_mn") &&
+ if ( suw_any(-3) && ba(-3,"_gl_obj_tv") && Q(-3,"gl_mn") &&
             q(-2,"prl_tv mest_tv") &&
             q(-1,"suw_tv") && s(-3,-1) )
  { ret=stopp=1; D[256]++; if(dbg){print "D256"}; continue };
- if ( suw_any(-2) && ba(-2,"_gg_obj_tv") && Q(-2,"gl_mn") &&
+ if ( suw_any(-2) && ba(-2,"_gl_obj_tv") && Q(-2,"gl_mn") &&
             q(-1,"suw_tv mest_tv") && s(-2,-1) )
  { ret=stopp=1; D[257]++; if(dbg){print "D257"}; continue };
  if ( (suw_any(-2)||w(-2,"был было была")) && Q(-2,"prl_mnim") &&
@@ -1548,7 +1548,7 @@ sz_iili(-2) &&
  { ret=stopp=1; D[358]++; if(dbg){print "D358"}; continue };
  if ( q(-3,"gl_nein gl_need gl_nemn gl_vzmn deep_ne gl_pnin gl_pned gl_pnmn deep_pn") &&
  pre_pr(-2) &&
-      q(-1,"suw_pr suw_edme mest_pr") && s(-3,-1) )
+      q(-1,"suw_pr suw_edme mest_pr") && s(-3,-1) && Q(-1,"mest_3e") )
  { ret=stopp=1; D[359]++; if(dbg){print "D359"}; continue };
  if ( q(-6,"gl_nein gl_need gl_nemn gl_vzmn deep_ne gl_pnin gl_pned gl_pnmn deep_pn") &&
  pre_pr(-5) &&
@@ -2300,9 +2300,9 @@ function sw_es_d_f(ret, stopp) { while (stopp == 0) {
  if ( sw_da_f() )
  { ret=stopp=1; D[540]++; if(dbg){print "D540", "sw_da_f"}; continue };
  #
- if ( q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gg_obj_da") && s(-1) )
+ if ( q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gl_obj_da") && s(-1) )
  { ret=stopp=1; D[541]++; if(dbg){print "D541"}; continue };
- if ( q(-1,"gl_pein gl_peed gl_pemn deep_pe") && ba(-1,"_gg_obj_da") && s(-1) )
+ if ( q(-1,"gl_pein gl_peed gl_pemn deep_pe") && ba(-1,"_gl_obj_da") && s(-1) )
  { ret=stopp=1; D[542]++; if(dbg){print "D542"}; continue };
  #_#_#
  if ( q(-3,"pre_da preph_da") &&
@@ -2373,10 +2373,10 @@ function sw_ez_i_f(ret, stopp) { while (stopp == 0) {
  if ( w(-1,"она") && gl_paedze(0) && s(0) )
  { ret=0; stopp=1; D[558]++; if(dbg){print "D558"}; continue };
  if ( q(-2,"mest_ro suw_ro") &&
-      q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gg_obj_ro") && s(-2,-1) )
+      q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gl_obj_ro") && s(-2,-1) )
  { ret=stopp=1; D[559]++; if(dbg){print "D559"}; continue };
  if ( q(-1,"mest_ro suw_ro") &&
-      q(1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(1,"_gg_obj_ro") && s(-1,0) )
+      q(1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(1,"_gl_obj_ro") && s(-1,0) )
  { ret=stopp=1; D[560]++; if(dbg){print "D560"}; continue };
 
  if ( q(-3,"mest_it") &&
@@ -2530,14 +2530,14 @@ function sw_ez_l_f(ret, stopp) { while (stopp == 0) {
  if ( W(0,"кости крови мели пыли шерсти") && q(0,"suw_edzeda") &&
  !( (wb(-5,-1,"в во на") && !(sq(wbn,-1,"[….:;!?]"))) || (wf(1,3,"в во на") && !(sq(0,wfn-1,"[….:;!?]")))) )
  { ret=0; stopp=1; loc2emd=1; D[598]++; if(dbg){print "D598"}; continue };
- if ( bam(-2,"_gg_no_locative _gl_dvizh _gl_make") &&
+ if ( bam(-2,"_gl_no_locative _gl_dvizh _gl_make") &&
         w(-1,"в во на") && s(-2,-1) )
  { ret=0; stopp=1; D[599]++; if(dbg){print "D599"}; continue };
  if ( ba(-2,"_gl_learn") &&
        w(-1,"на") && s(-2,-1) )
  { ret=0; stopp=1; D[600]++; if(dbg){print "D600"}; continue };
  #
- if ( !(ba(-4,"_gg_no_locative") && s(-4) ) &&
+ if ( !(ba(-4,"_gl_no_locative") && s(-4) ) &&
     pre_pr(-3) &&
   prq_edpr(-2) &&
          q(-1,"suw_tv") && s(-3,-1) )
@@ -2581,7 +2581,7 @@ function sw_ez_r_f(ret, stopp) { while (stopp == 0) {
  if ((qi_duoz(-2)||wc(-2,"[234][^0-9]*$")) &&
             q(-1,"prl_mnim prq_mnim mest_mnim") && s(-2,-1) && se(-2," ") )
  { ret=stopp=1; D[610]++; if(dbg){print "D610"}; continue };
- if ( q(-2,"gl_in gl_ed gl_mn gl_poed gl_pomn gl_povzmn deep") && ba(-2,"_gg_obj_ro") &&
+ if ( q(-2,"gl_in gl_ed gl_mn gl_poed gl_pomn gl_povzmn deep") && ba(-2,"_gl_obj_ro") &&
       q(-1,"prl_edzero prq_edzero") && s(-2,-1) )
  { ret=stopp=1; D[611]++; if(dbg){print "D611"}; continue };
  #
@@ -2678,7 +2678,7 @@ function sw_ez_t_f(ret, stopp) { while (stopp == 0) {
  if ( q(-2,pre_string) &&
       q(-1,"prl_edzetv prq_edzetv mest_tv") && s(-2,-1) )
  { ret=stopp=1; D[637]++; if(dbg){print "D637"}; continue };
- if ( q(-1,pre_string) && s(-1) && W(0,"какой") )
+ if ( q(-1,pre_string) && s(-1) && W(0,"какой") && Q_w(1,"suw_edzero suw_edzeda suw_edzepr") )
  { ret=stopp=1; D[638]++; if(dbg){print "D638"}; continue };
  #_#_#
 
@@ -3260,7 +3260,7 @@ function sw_mn_v_f(ret, stopp) { while (stopp == 0) {
  if ( edro2mnvi==1 )
  { ret=stopp=1; D[784]++; if(dbg){print "D784"}; continue };
 
- if ( q(-1,"gl_in gl_ed gl_mn deep gl_poed") && ba(-1,"_gg_obj_vi") && s(-1) )
+ if ( q(-1,"gl_in gl_ed gl_mn deep gl_poed") && ba(-1,"_gl_obj_vi") && s(-1) )
  { ret=stopp=1; D[785]++; if(dbg){print "D785"}; continue };
 
  if ( q(-3,"gl_in gl_ed gl_mn deep") && ba(-3,"_gl_learn") &&
@@ -3570,7 +3570,7 @@ sz_iili(-1) && s(-2,-1) && Q(0,"gl_paedze") )
       q(-1,"mest_vi") && s(-3,-1) )
  { ret=stopp=1; D[858]++; if(dbg){print "D858"}; continue };
  if ( q(-3,"gl_pein gl_peed gl_pemn deep_pe") && Q(-3,"gl_nein gl_pnin gl_need gl_nemn gl_vzmn gl_pned gl_pnmn deep_pn deep_ne") &&
- pre_tv(-2) && !(ba(-3,"_gg_yes_nero")) &&
+ pre_tv(-2) && !(ba(-3,"_gl_yes_nero")) &&
       q(-1,"suw_tv mest_tv") && s(-3,-1) )
  { ret=stopp=1; D[859]++; if(dbg){print "D859"}; continue };
 
@@ -3595,7 +3595,7 @@ sz_iili(-1) && s(-2,-1) && Q(0,"gl_paedze") )
 #        q(-1,"mest_vi") && s(skn,-1) )
 #{ ret=stopp=1; D[863]++; if(dbg){print "D863"}; continue };
 #if ( seek(-8,-3,"gl_pein gl_peed gl_pemn deep_pe","gl_need gl_nemn gl_vzmn gl_pned gl_pnmn deep_pn deep_ne suw_vi") &&
-#      pre_tv(-2) && !(ba(skn,"_gg_yes_nero")) &&
+#      pre_tv(-2) && !(ba(skn,"_gl_yes_nero")) &&
 #       q(-1,"suw_tv mest_tv") && s(skn,-1) )
 #{ ret=stopp=1; D[864]++; if(dbg){print "D864"}; continue };
 #if ( seek(-9,-4,"gl_pein gl_peed gl_pemn deep_pe","gl_need gl_nemn gl_vzmn gl_pned gl_pnmn deep_pn deep_ne suw_vi") &&
@@ -3619,11 +3619,11 @@ function sw_mn_r_f(ret, stopp) { while (stopp == 0) {
             q(-1,"prl_any") && se(-2,"-") && s(-1) )
  { ret=stopp=1; D[869]++; if(dbg){print "D869"}; continue };
  #
- if ( q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gg_no_nero") && s(-1) )
+ if ( q(-1,"gl_pnin gl_pned gl_pnmn deep_pn") && ba(-1,"_gl_no_nero") && s(-1) )
  { ret=0; stopp=1; D[870]++; if(dbg){print "D870"}; continue };
- if ( q(-1,"gl_pein gl_peed gl_pemn deep_pe") && ba(-1,"_gg_no_nero") && s(-1) )
+ if ( q(-1,"gl_pein gl_peed gl_pemn deep_pe") && ba(-1,"_gl_no_nero") && s(-1) )
  { ret=0; stopp=1; D[871]++; if(dbg){print "D871"}; continue };
- if ( q(-1,"gl_nein gl_need gl_nemn gl_vzmn gl_vzed deep_ne") && ba(-1,"_gg_no_nero") && s(-1) )
+ if ( q(-1,"gl_nein gl_need gl_nemn gl_vzmn gl_vzed deep_ne") && ba(-1,"_gl_no_nero") && s(-1) )
  { ret=0; stopp=1; D[872]++; if(dbg){print "D872"}; continue };
 
  if ( id(-2,"hsw4mnro") &&
@@ -3789,301 +3789,305 @@ function pl_em_i_f(ret, stopp) { while (stopp == 0) {
 break}; return ret }
 
 function pl_es_i_f(ret, stopp) { while (stopp == 0) {
+ cst="самое";
+ if ( w(-1,cst) &&
+      q(1,"suw_edsrim mest_edsrim") && s(-1,0) )
+ { ret=stopp=1; D[917]++; if(dbg){print "D917"}; continue };
  if ( q(-1,"pre_im") &&
            suw_edsrim(1) && s(-1,0) )
- { ret=stopp=1; D[917]++; if(dbg){print "D917"}; continue };
- if ( q(1,"prl_edsrim prq_edsrim") &&
-           suw_edsrim(2) && s(0,1) )
  { ret=stopp=1; D[918]++; if(dbg){print "D918"}; continue };
- if ( suw_edsrim(1) && s(0) )
+ if ( q(1,"prl_edsrim mest_edsrim prq_edsrim") &&
+           suw_edsrim(2) && s(0,1) )
  { ret=stopp=1; D[919]++; if(dbg){print "D919"}; continue };
+ if ( suw_edsrim(1) && s(0) )
+ { ret=stopp=1; D[920]++; if(dbg){print "D920"}; continue };
  if ( q(-2,"prl_edsrim") &&
       q(-1,"sz_iili") && s(-2,-1) )
- { ret=stopp=1; D[920]++; if(dbg){print "D920"}; continue };
+ { ret=stopp=1; D[921]++; if(dbg){print "D921"}; continue };
  if ( q(1,"sz_iili") &&
       q(2,"prl_edsrim") && s(0,1) )
- { ret=stopp=1; D[921]++; if(dbg){print "D921"}; continue };
+ { ret=stopp=1; D[922]++; if(dbg){print "D922"}; continue };
 break}; return ret }
 
 function pl_em_v_f(ret, stopp) { while (stopp == 0) {
  if ( q(-1,"pre_vi preph_vi") &&
            suw_edmuvi(1) && s(-1,0) )
- { ret=stopp=1; D[922]++; if(dbg){print "D922"}; continue };
- if ( suw_edmuvi(1) && s(0) )
  { ret=stopp=1; D[923]++; if(dbg){print "D923"}; continue };
+ if ( suw_edmuvi(1) && s(0) )
+ { ret=stopp=1; D[924]++; if(dbg){print "D924"}; continue };
 break}; return ret }
 
 function pl_es_v_f(ret, stopp) { while (stopp == 0) {
  if ( q(-1,"pre_vi preph_vi") &&
            suw_edsrvi(1) && s(-1,0) )
- { ret=stopp=1; D[924]++; if(dbg){print "D924"}; continue };
- if ( suw_edsrvi(1) && s(0) )
  { ret=stopp=1; D[925]++; if(dbg){print "D925"}; continue };
+ if ( suw_edsrvi(1) && s(0) )
+ { ret=stopp=1; D[926]++; if(dbg){print "D926"}; continue };
 break}; return ret }
 
 function pl_ez_i_f(ret, stopp) { while (stopp == 0) {
  if ( q(-1,"pre_im") &&
          suw_edim(1) && s(-1,0) )
- { ret=stopp=1; D[926]++; if(dbg){print "D926"}; continue };
- if ( suw_edim(1) && s(0) )
  { ret=stopp=1; D[927]++; if(dbg){print "D927"}; continue };
+ if ( suw_edim(1) && s(0) )
+ { ret=stopp=1; D[928]++; if(dbg){print "D928"}; continue };
 break}; return ret }
 
 function pl_ez_v_f(ret, stopp) { while (stopp == 0) {
  if ( q(-1,"pre_vi preph_vi") &&
          suw_edvi(1) && s(-1,0) )
- { ret=stopp=1; D[928]++; if(dbg){print "D928"}; continue };
- if ( suw_edvi(1) && s(0) )
  { ret=stopp=1; D[929]++; if(dbg){print "D929"}; continue };
+ if ( suw_edvi(1) && s(0) )
+ { ret=stopp=1; D[930]++; if(dbg){print "D930"}; continue };
 break}; return ret }
 
 function pl_ez_d_f(ret, stopp) { while (stopp == 0) {
  if ( q(-1,"pre_da preph_da") &&
          suw_edda(1) && s(-1,0) )
- { ret=stopp=1; D[930]++; if(dbg){print "D930"}; continue };
+ { ret=stopp=1; D[931]++; if(dbg){print "D931"}; continue };
 break}; return ret }
 
 function pl_ez_r_f(ret, stopp) { while (stopp == 0) {
  if ( q(-1,"pre_ro preph_ro") &&
            suw_edzero(1) && s(-1,0) )
- { ret=stopp=1; D[931]++; if(dbg){print "D931"}; continue };
+ { ret=stopp=1; D[932]++; if(dbg){print "D932"}; continue };
  if ( q(-1,"prl_edzero prq_edzero") &&
            suw_edzero(1) && s(-1,0) )
- { ret=stopp=1; D[932]++; if(dbg){print "D932"}; continue };
+ { ret=stopp=1; D[933]++; if(dbg){print "D933"}; continue };
 break}; return ret }
 
 function pl_ez_t_f(ret, stopp) { while (stopp == 0) {
  if ( q(-1,"pre_tv preph_tv") &&
          suw_edtv(1) && s(-1,0) )
- { ret=stopp=1; D[933]++; if(dbg){print "D933"}; continue };
+ { ret=stopp=1; D[934]++; if(dbg){print "D934"}; continue };
 break}; return ret }
 
 function pl_ez_p_f(ret, stopp) { while (stopp == 0) {
  if ( q(-1,"pre_pr") &&
          suw_edpr(1) && s(-1,0) )
- { ret=stopp=1; D[934]++; if(dbg){print "D934"}; continue };
+ { ret=stopp=1; D[935]++; if(dbg){print "D935"}; continue };
 break}; return ret }
 
 function pl_kr_em_f(ret, stopp) { while (stopp == 0) {
  cst="будет буду будь был весьма настолько он очень сильно слишком стал станет стань столь так ты чересчур я";
  if ( (w(-2,cst)||(suw_mnim(-2) && Q(-2,"suw_edro"))) &&
             prl_kred_sr(-1) && s(-2,-1) )
- { ret=stopp=1; D[935]++; if(dbg){print "D935"}; continue };
- if ( (w(-1,cst)||(suw_mnim(-1) && Q(-1,"suw_edro prl_mnim"))) && s(-1) )
  { ret=stopp=1; D[936]++; if(dbg){print "D936"}; continue };
+ if ( (w(-1,cst)||(suw_mnim(-1) && Q(-1,"suw_edro prl_mnim"))) && s(-1) )
+ { ret=stopp=1; D[937]++; if(dbg){print "D937"}; continue };
 
  if ( (w(-2,cst)||suw_edmuim(-2)) &&
             prl_kred_sr(-1) && s(-2,-1) && (p(0)||q(1,"gl_in pre_any")) )
- { ret=stopp=1; D[937]++; if(dbg){print "D937"}; continue };
- if ( (w(-1,cst)||suw_edmuim(-1)) && s(-1) && (p(0)||q(1,"gl_in pre_any")) )
  { ret=stopp=1; D[938]++; if(dbg){print "D938"}; continue };
- if ( w(-1,cst) && s(0) )
+ if ( (w(-1,cst)||suw_edmuim(-1)) && s(-1) && (p(0)||q(1,"gl_in pre_any")) )
  { ret=stopp=1; D[939]++; if(dbg){print "D939"}; continue };
- if ( w(1,"был будь стань") && s(0) )
+ if ( w(-1,cst) && s(0) )
  { ret=stopp=1; D[940]++; if(dbg){print "D940"}; continue };
+ if ( w(1,"был будь стань") && s(0) )
+ { ret=stopp=1; D[941]++; if(dbg){print "D941"}; continue };
  if ( w(1,"ли") &&
            suw_edmuim(2) && s(0,1) )
- { ret=stopp=1; D[941]++; if(dbg){print "D941"}; continue };
- if ( prl_kred_sr(-1) && s(-1) && Q(0,"gl_bum3") )
  { ret=stopp=1; D[942]++; if(dbg){print "D942"}; continue };
+ if ( prl_kred_sr(-1) && s(-1) && Q(0,"gl_bum3") )
+ { ret=stopp=1; D[943]++; if(dbg){print "D943"}; continue };
  if ( q(-1,"suw_im") &&
       q(1,"suw_tv suw_ro") && s(-1,0) )
- { ret=stopp=1; D[943]++; if(dbg){print "D943"}; continue };
+ { ret=stopp=1; D[944]++; if(dbg){print "D944"}; continue };
 break}; return ret }
 
 function pl_kr_es_f(ret, stopp) { while (stopp == 0) {
- cst="будет буду будь было весьма настолько оно очень сильно слишком стало станет стань столь так ты чересчур я";
+ cst="будет буду будь было весьма настолько оно очень самое сильно слишком стало станет стань столь так ты чересчур я";
  if ( (w(-2,cst)||(suw_mnim(-2) && Q(-2,"suw_edro"))) &&
             prl_kred_sr(-1) && s(-2,-1) )
- { ret=stopp=1; D[944]++; if(dbg){print "D944"}; continue };
- if ( (w(-1,cst)||(suw_mnim(-1) && Q(-1,"suw_edro prl_mnim"))) && s(-1) )
  { ret=stopp=1; D[945]++; if(dbg){print "D945"}; continue };
+ if ( (w(-1,cst)||(suw_mnim(-1) && Q(-1,"suw_edro prl_mnim"))) && s(-1) )
+ { ret=stopp=1; D[946]++; if(dbg){print "D946"}; continue };
 
  if ( (w(-2,cst)||suw_edmuim(-2)) &&
             prl_kred_sr(-1) && s(-2,-1) && (p(0)||q(1,"gl_in pre_any")) )
- { ret=stopp=1; D[946]++; if(dbg){print "D946"}; continue };
- if ( (w(-1,cst)||suw_edmuim(-1)) && s(-1) && (p(0)||q(1,"gl_in pre_any")) )
  { ret=stopp=1; D[947]++; if(dbg){print "D947"}; continue };
- if ( w(-1,cst) && s(0) )
+ if ( (w(-1,cst)||suw_edmuim(-1)) && s(-1) && (p(0)||q(1,"gl_in pre_any")) )
  { ret=stopp=1; D[948]++; if(dbg){print "D948"}; continue };
- if ( w(1,"был будь стань") && s(0) )
+ if ( w(-1,cst) && s(0) )
  { ret=stopp=1; D[949]++; if(dbg){print "D949"}; continue };
- if ( prl_kred_sr(-1) && s(-1) && Q(0,"gl_bum3") )
+ if ( w(1,"был будь стань") && s(0) )
  { ret=stopp=1; D[950]++; if(dbg){print "D950"}; continue };
+ if ( prl_kred_sr(-1) && s(-1) && Q(0,"gl_bum3") )
+ { ret=stopp=1; D[951]++; if(dbg){print "D951"}; continue };
 break}; return ret }
 
 function pl_kr_ez_f(ret, stopp) { while (stopp == 0) {
  cst="будет буду будь была весьма настолько она очень сильно слишком стала станет стань столь так ты чересчур я";
  if ( (w(-2,cst)||(suw_mnim(-2) && Q(-2,"suw_edro"))) &&
             prl_kred_sr(-1) && s(-2,-1) )
- { ret=stopp=1; D[951]++; if(dbg){print "D951"}; continue };
- if ( (w(-1,cst)||(suw_mnim(-1) && Q(-1,"suw_edro prl_mnim"))) && s(-1) )
  { ret=stopp=1; D[952]++; if(dbg){print "D952"}; continue };
+ if ( (w(-1,cst)||(suw_mnim(-1) && Q(-1,"suw_edro prl_mnim"))) && s(-1) )
+ { ret=stopp=1; D[953]++; if(dbg){print "D953"}; continue };
 
  if ( (w(-2,cst)||suw_edzeim(-2)) &&
             prl_kred_sr(-1) && s(-2,-1) )
- { ret=stopp=1; D[953]++; if(dbg){print "D953"}; continue };
+ { ret=stopp=1; D[954]++; if(dbg){print "D954"}; continue };
  if ( (w(-2,cst)||suw_edzeim(-1)) &&
        w(-1,"же не ведь все-таки таки и") && s(-2,-1) )
- { ret=stopp=1; D[954]++; if(dbg){print "D954"}; continue };
- if ( (w(-1,cst)||suw_edzeim(-1)) && s(-1) )
  { ret=stopp=1; D[955]++; if(dbg){print "D955"}; continue };
- if ( prl_kred_sr(-1) && s(-1))
+ if ( (w(-1,cst)||suw_edzeim(-1)) && s(-1) )
  { ret=stopp=1; D[956]++; if(dbg){print "D956"}; continue };
+ if ( prl_kred_sr(-1) && s(-1))
+ { ret=stopp=1; D[957]++; if(dbg){print "D957"}; continue };
  if ( qast(1) &&
 suw_edzeim(2) && s(0,1))
- { ret=stopp=1; D[957]++; if(dbg){print "D957"}; continue };
- if ( suw_edzeim(1) && s(0))
  { ret=stopp=1; D[958]++; if(dbg){print "D958"}; continue };
+ if ( suw_edzeim(1) && s(0))
+ { ret=stopp=1; D[959]++; if(dbg){print "D959"}; continue };
 break}; return ret }
 
 function pl_krmn_f(ret, stopp) { while (stopp == 0) {
  cst="будем будут будьте были весьма вы мы настолько они очень сильно слишком стали станем станут станьте столь чересчур";
  if ( (w(-2,cst)||(suw_mnim(-2) && Q(-2,"suw_edro"))) &&
             prl_kred_sr(-1) && s(-2,-1) )
- { ret=stopp=1; D[959]++; if(dbg){print "D959"}; continue };
- if ( (w(-1,cst)||(suw_mnim(-1) && Q(-1,"suw_edro prl_mnim"))) && s(-1) )
  { ret=stopp=1; D[960]++; if(dbg){print "D960"}; continue };
+ if ( (w(-1,cst)||(suw_mnim(-1) && Q(-1,"suw_edro prl_mnim"))) && s(-1) )
+ { ret=stopp=1; D[961]++; if(dbg){print "D961"}; continue };
 
  if ( q(-2,"mest_mnim suw_mnim") &&
       q(-1,"nar_spos nar_step prl_kred_sr") && s(-1) )
- { ret=stopp=1; D[961]++; if(dbg){print "D961"}; continue };
- if ( suw_mnim(-1) && s(-1) && p(-2) )
  { ret=stopp=1; D[962]++; if(dbg){print "D962"}; continue };
- if ( prl_kred_sr(-1) && s(-1))
+ if ( suw_mnim(-1) && s(-1) && p(-2) )
  { ret=stopp=1; D[963]++; if(dbg){print "D963"}; continue };
+ if ( prl_kred_sr(-1) && s(-1))
+ { ret=stopp=1; D[964]++; if(dbg){print "D964"}; continue };
 break}; return ret }
 
 function pq_kr_em_f(ret, stopp) { while (stopp == 0) {
  cst="буду будь был он стал стану ты я";
  if ( (w(-2,cst)||suw_edmuim(-2)) &&
             prl_kred_sr(-1) && s(-2,-1) && (p(0)||q(1,"gl_in pre_any")) )
- { ret=stopp=1; D[964]++; if(dbg){print "D964"}; continue };
- if ( (w(-1,cst)||suw_edmuim(-1)) && s(-1) && (p(0)||q(1,"gl_in pre_any")) )
  { ret=stopp=1; D[965]++; if(dbg){print "D965"}; continue };
- if ( w(-1,cst) && s(0) )
+ if ( (w(-1,cst)||suw_edmuim(-1)) && s(-1) && (p(0)||q(1,"gl_in pre_any")) )
  { ret=stopp=1; D[966]++; if(dbg){print "D966"}; continue };
- if ( w(1,"был будь") && s(0) )
+ if ( w(-1,cst) && s(0) )
  { ret=stopp=1; D[967]++; if(dbg){print "D967"}; continue };
- if ( prl_kred_sr(-1) && s(-1) && Q(0,"gl_bum3") )
+ if ( w(1,"был будь") && s(0) )
  { ret=stopp=1; D[968]++; if(dbg){print "D968"}; continue };
+ if ( prl_kred_sr(-1) && s(-1) && Q(0,"gl_bum3") )
+ { ret=stopp=1; D[969]++; if(dbg){print "D969"}; continue };
 break}; return ret }
 
 function pq_kr_ez_f(ret, stopp) { while (stopp == 0) {
  if ( (w(-2,"я ты она была стала")||suw_edzeim(-2)) &&
             prl_kred_sr(-1) && s(-2,-1) )
- { ret=stopp=1; D[969]++; if(dbg){print "D969"}; continue };
+ { ret=stopp=1; D[970]++; if(dbg){print "D970"}; continue };
  if ( (w(-2,"я ты она была стала")||suw_edzeim(-1)) &&
        w(-1,"же не ведь все-таки таки и") && s(-2,-1) )
- { ret=stopp=1; D[970]++; if(dbg){print "D970"}; continue };
- if ( (w(-1,"я ты она была стала")||suw_edzeim(-1)) && s(-1) )
  { ret=stopp=1; D[971]++; if(dbg){print "D971"}; continue };
- if ( prl_kred_sr(-1) && s(-1))
+ if ( (w(-1,"я ты она была стала")||suw_edzeim(-1)) && s(-1) )
  { ret=stopp=1; D[972]++; if(dbg){print "D972"}; continue };
+ if ( prl_kred_sr(-1) && s(-1))
+ { ret=stopp=1; D[973]++; if(dbg){print "D973"}; continue };
 break}; return ret }
 
 function pq_krmn_f(ret, stopp) { while (stopp == 0) {
  if ( q(-2,"mest_mnim suw_mnim") &&
       q(-1,"nar_spos nar_step prl_kred_sr") && s(-1) )
- { ret=stopp=1; D[973]++; if(dbg){print "D973"}; continue };
- if ( suw_mnim(-1) && s(-1) && p(-2) )
  { ret=stopp=1; D[974]++; if(dbg){print "D974"}; continue };
- if ( prl_kred_sr(-1) && s(-1))
+ if ( suw_mnim(-1) && s(-1) && p(-2) )
  { ret=stopp=1; D[975]++; if(dbg){print "D975"}; continue };
+ if ( prl_kred_sr(-1) && s(-1))
+ { ret=stopp=1; D[976]++; if(dbg){print "D976"}; continue };
 break}; return ret }
 
 function gl_inf_f(ret, stopp) { while (stopp == 0) {
  if ( q(-1,"mod_ed mod_mn mod_bz") && s(-1) )
- { ret=stopp=1; D[976]++; if(dbg){print "D976"}; continue };
+ { ret=stopp=1; D[977]++; if(dbg){print "D977"}; continue };
  #
  if ( !( q(-1,"pre_da pre_im pre_vi pre_ro pre_pr") && s(-1)) &&
          q(1,"suw_vi mest_vi") && s(0) )
- { ret=stopp=1; D[977]++; if(dbg){print "D977"}; continue };
+ { ret=stopp=1; D[978]++; if(dbg){print "D978"}; continue };
  #
  if ( !( q(-1,"pre_any") && s(-1)) &&
          q(1,"prl_vi prq_vi mest_vi pre_vi") &&
          q(2,"suw_vi mest_vi") && s(0,1) )
- { ret=stopp=1; D[978]++; if(dbg){print "D978"}; continue };
+ { ret=stopp=1; D[979]++; if(dbg){print "D979"}; continue };
  if ( Qw_(-1,"pre_any") &&
         q(1,"nar_step") &&
         q(2,"prl_vi prq_vi mest_vi pre_vi") &&
         q(3,"suw_vi mest_vi") && s(0,2) )
- { ret=stopp=1; D[979]++; if(dbg){print "D979"}; continue };
+ { ret=stopp=1; D[980]++; if(dbg){print "D980"}; continue };
  if ( q(-2,"suw_im") &&
       q(-1,"mest_da suw_da") && s(-2,-1) )
- { ret=stopp=1; D[980]++; if(dbg){print "D980"}; continue };
+ { ret=stopp=1; D[981]++; if(dbg){print "D981"}; continue };
 break}; return ret }
 
 function gl_poed_f(ret, stopp) { while (stopp == 0) {
 
  if ( p(-1) && q(0,"gl_popeed gl_popned") && W(0,"реки") &&
       q(1,"mest_vi suw_vi") && s(0) )
- { ret=stopp=1; D[981]++; if(dbg){print "D981"}; continue };
- if ( p(-2) && w(-1,"не") && s(-1) && p(0) )
  { ret=stopp=1; D[982]++; if(dbg){print "D982"}; continue };
+ if ( p(-2) && w(-1,"не") && s(-1) && p(0) )
+ { ret=stopp=1; D[983]++; if(dbg){print "D983"}; continue };
  if ( q(-3,"gl_poed") &&
       w(-2,"и") &&
       w(-1,"не") && s(-3,-1) )
- { ret=stopp=1; D[983]++; if(dbg){print "D983"}; continue };
+ { ret=stopp=1; D[984]++; if(dbg){print "D984"}; continue };
  if ( p(-1) &&
       q(1,"suw_im") && sc(1,"!") )
- { ret=stopp=1; D[984]++; if(dbg){print "D984"}; continue };
+ { ret=stopp=1; D[985]++; if(dbg){print "D985"}; continue };
  if ( p(-1) && gl_popeed(0) && Q(0,"gl_nemn") &&
  pre_vi(1) &&
       q(2,"suw_vi") &&
       q(3,"suw_vi") && s(0,2))
- { ret=stopp=1; D[985]++; if(dbg){print "D985"}; continue };
+ { ret=stopp=1; D[986]++; if(dbg){print "D986"}; continue };
 break}; return ret }
 
 function gl_paedmu_f(ret, stopp) { while (stopp == 0) {
  if ( (w(-2,"я ты он")||suw_edmuim(-2)) &&
        q(-1,"nar_spos prl_kred_sr") && Q(-2,"prl_edmuim") && s(-2,-1) )
- { ret=stopp=1; D[986]++; if(dbg){print "D986"}; continue };
+ { ret=stopp=1; D[987]++; if(dbg){print "D987"}; continue };
  if ( (w(-3,"я ты он")||suw_edmuim(-2)) &&
        q(-2,"nar_spos nar_vrem prl_kred_sr") &&
        q(-1,"nar_spos nar_vrem prl_kred_sr") && Q(-2,"prl_edmuim") && s(-2,-1) )
- { ret=stopp=1; D[987]++; if(dbg){print "D987"}; continue };
+ { ret=stopp=1; D[988]++; if(dbg){print "D988"}; continue };
  #
  if ( (w(1,"я ты он")||suw_edmuim(1)) &&
        q(2,"prl_kred_sr gl_in") && Q(2,"prl_edmuim") && s(0,1) )
- { ret=stopp=1; D[988]++; if(dbg){print "D988"}; continue };
- #
- if ( (w(1,"я ты он")||q(1,"suw_edmuim prl_kred_sr")) && Q(1,"prl_edmuim") && s(0) )
  { ret=stopp=1; D[989]++; if(dbg){print "D989"}; continue };
  #
- if ( (w(-1,"я ты он")||q(-1,"suw_edmuim prl_kred_sr gl_in")) && Q(-1,"prl_edmuim") && s(-1) )
+ if ( (w(1,"я ты он")||q(1,"suw_edmuim prl_kred_sr")) && Q(1,"prl_edmuim") && s(0) )
  { ret=stopp=1; D[990]++; if(dbg){print "D990"}; continue };
+ #
+ if ( (w(-1,"я ты он")||q(-1,"suw_edmuim prl_kred_sr gl_in")) && Q(-1,"prl_edmuim") && s(-1) )
+ { ret=stopp=1; D[991]++; if(dbg){print "D991"}; continue };
 break}; return ret }
 
 function gl_paedsr_f(ret, stopp) { while (stopp == 0) {
  if ( q(-2,"mest_it suw_edsrim") &&
       q(-1,"nar_spos prl_kred_sr") && s(-2,-1) )
- { ret=stopp=1; D[991]++; if(dbg){print "D991"}; continue };
+ { ret=stopp=1; D[992]++; if(dbg){print "D992"}; continue };
  if ( q(-1,"mest_it suw_edsrim") &&
       q(1,"nar_spos prl_kred_sr") && s(-1,0) && Q_w(2,"gl_in") )
- { ret=stopp=1; D[992]++; if(dbg){print "D992"}; continue };
+ { ret=stopp=1; D[993]++; if(dbg){print "D993"}; continue };
  #
  if ( q(1,"mest_it suw_edsrim") &&
       q(2,"prl_kred_sr gl_in") && s(0,1) )
- { ret=stopp=1; D[993]++; if(dbg){print "D993"}; continue };
- if ( q(1,"prl_kred_sr") && p(-1) && p(1) )
  { ret=stopp=1; D[994]++; if(dbg){print "D994"}; continue };
- #
- if ( q(1,"mest_it suw_edsrim") && s(0) )
+ if ( q(1,"prl_kred_sr") && p(-1) && p(1) )
  { ret=stopp=1; D[995]++; if(dbg){print "D995"}; continue };
  #
- if ( q(-1,"suw_edsrim mest_it prl_kred_sr gl_in") && s(-1) )
+ if ( q(1,"mest_it suw_edsrim") && s(0) )
  { ret=stopp=1; D[996]++; if(dbg){print "D996"}; continue };
+ #
+ if ( q(-1,"suw_edsrim mest_it prl_kred_sr gl_in") && s(-1) )
+ { ret=stopp=1; D[997]++; if(dbg){print "D997"}; continue };
  if ( qb(-6,-2,"gl_paedsr") &&
  sz_iili(-1) && s(-1) )
- { ret=stopp=1; D[997]++; if(dbg){print "D997"}; continue };
+ { ret=stopp=1; D[998]++; if(dbg){print "D998"}; continue };
 break}; return ret }
 
 function gl_pamn_f(ret, stopp) { while (stopp == 0) {
  #
  if ( (suw_mnim(-2)||w(-2,"мы вы они")) &&
     prl_kred_sr(-1) && s(-2,-1) )
- { ret=stopp=1; D[998]++; if(dbg){print "D998"}; continue };
+ { ret=stopp=1; D[999]++; if(dbg){print "D999"}; continue };
  if ( gl_nemn(0) &&
             q(-5,"pre_vi preph_vi") &&
             q(-4,"prl_vi prq_vi") &&
@@ -4092,32 +4096,32 @@ function gl_pamn_f(ret, stopp) { while (stopp == 0) {
             q(-1,"suw_tv") &&
             q(1,"prl_im") &&
             q(2,"suw_im") && s(-5,1) )
- { ret=stopp=1; D[999]++; if(dbg){print "D999"}; continue };
+ { ret=stopp=1; D[1000]++; if(dbg){print "D1000"}; continue };
  #
  if ( (suw_mnim(-1)||w(-1,"мы вы они")) && s(-1) )
- { ret=stopp=1; D[1000]++; if(dbg){print "D1000"}; continue };
+ { ret=stopp=1; D[1001]++; if(dbg){print "D1001"}; continue };
 break}; return ret }
 
 function gl_pomn_f(ret, stopp) { while (stopp == 0) {
  #
  if ( mn2e2pomn )
- { ret=stopp=1; D[1001]++; if(dbg){print "D1001"}; continue };
- if ( p(-1) && p(0) && W(0,"шутите гоните"))
  { ret=stopp=1; D[1002]++; if(dbg){print "D1002"}; continue };
- if ( w(1,"же") && s(0) && p(-1) && p(1) )
+ if ( p(-1) && p(0) && W(0,"шутите гоните"))
  { ret=stopp=1; D[1003]++; if(dbg){print "D1003"}; continue };
- if ( q(1,"mest_3e") && s(0) && p(-1) && p(1) )
+ if ( w(1,"же") && s(0) && p(-1) && p(1) )
  { ret=stopp=1; D[1004]++; if(dbg){print "D1004"}; continue };
+ if ( q(1,"mest_3e") && s(0) && p(-1) && p(1) )
+ { ret=stopp=1; D[1005]++; if(dbg){print "D1005"}; continue };
  #
  if ( q(-4,"gl_poed gl_pomn gl_povzmn") &&
       w(-3,"что") &&
       q(-2,"gl_ed gl_nemn gl_vzmn gl_pemn gl_pnmn") &&
       w(-1,"и") && s(-4,-1) )
- { ret=stopp=1; D[1005]++; if(dbg){print "D1005"}; continue };
+ { ret=stopp=1; D[1006]++; if(dbg){print "D1006"}; continue };
  #
  if ( w(-2,"так") &&
       w(-1,"что вот") && s(-2,-1) )
- { ret=stopp=1; D[1006]++; if(dbg){print "D1006"}; continue };
+ { ret=stopp=1; D[1007]++; if(dbg){print "D1007"}; continue };
 break}; return ret }
 
 function gl_ed1e_f(ret, stopp) { while (stopp == 0) {
@@ -4126,23 +4130,23 @@ function gl_ed1e_f(ret, stopp) { while (stopp == 0) {
    qast(-2) &&
       q(-1,"prl_kred_sr nar_mest nar_spos") &&
       q(1,"suw_vi pre_any") && s(-3,0) )
- { ret=stopp=1; D[1007]++; if(dbg){print "D1007"}; continue };
+ { ret=stopp=1; D[1008]++; if(dbg){print "D1008"}; continue };
  if ( w(-2,"я") &&
       q(-1,"prl_kred_sr nar_mest nar_spos") &&
       q(1,"suw_vi pre_any") && s(-2,0) )
- { ret=stopp=1; D[1008]++; if(dbg){print "D1008"}; continue };
+ { ret=stopp=1; D[1009]++; if(dbg){print "D1009"}; continue };
  if ( w(-1,"я") &&
       q(1,"prl_kred_sr nar_mest nar_spos") &&
       q(2,"suw_vi pre_any") && s(-1,1) )
- { ret=stopp=1; D[1009]++; if(dbg){print "D1009"}; continue };
+ { ret=stopp=1; D[1010]++; if(dbg){print "D1010"}; continue };
  if ( w(-1,"я") &&
       q(1,"suw_vi nar_napr nar_spos gl_in pre_any") && s(-1,0) )
- { ret=stopp=1; D[1010]++; if(dbg){print "D1010"}; continue };
+ { ret=stopp=1; D[1011]++; if(dbg){print "D1011"}; continue };
  if ( w(-2,"я") &&
    qast(-1) && s(-2,-1) )
- { ret=stopp=1; D[1011]++; if(dbg){print "D1011"}; continue };
- if ( w(-1,"я") && s(-1) )
  { ret=stopp=1; D[1012]++; if(dbg){print "D1012"}; continue };
+ if ( w(-1,"я") && s(-1) )
+ { ret=stopp=1; D[1013]++; if(dbg){print "D1013"}; continue };
 break}; return ret }
 
 function gl_ed3e_f(ret, stopp) { while (stopp == 0) {
@@ -4150,95 +4154,95 @@ function gl_ed3e_f(ret, stopp) { while (stopp == 0) {
  if ( (w(-2,"он она оно")||q(-2,"suw_edim mest_it")) &&
        q(-1,"prl_kred_sr nar_mest nar_spos") &&
        q(1,"suw_vi pre_any") && s(-2,0) )
- { ret=stopp=1; D[1013]++; if(dbg){print "D1013"}; continue };
+ { ret=stopp=1; D[1014]++; if(dbg){print "D1014"}; continue };
  if ( (w(-2,"он она оно")||q(-2,"suw_edim mest_it")) &&
        q(1,"prl_kred_sr nar_mest nar_spos") &&
        q(2,"suw_vi pre_any") && s(-1,1) )
- { ret=stopp=1; D[1014]++; if(dbg){print "D1014"}; continue };
+ { ret=stopp=1; D[1015]++; if(dbg){print "D1015"}; continue };
  if ( (w(-2,"он она оно")||q(-2,"suw_edim mest_it")) &&
        q(1,"suw_vi nar_napr nar_spos gl_in pre_any") && s(-1,0) )
- { ret=stopp=1; D[1015]++; if(dbg){print "D1015"}; continue };
- if ( (w(-2,"он она оно")||q(-2,"suw_edim mest_it")) && s(-1) )
  { ret=stopp=1; D[1016]++; if(dbg){print "D1016"}; continue };
+ if ( (w(-2,"он она оно")||q(-2,"suw_edim mest_it")) && s(-1) )
+ { ret=stopp=1; D[1017]++; if(dbg){print "D1017"}; continue };
 break}; return ret }
 
 function gl_paedze_f(ret, stopp) { while (stopp == 0) {
  #
  if ( wb(-5,-1,"я ты вы она") && s(wbn,-1) )
- { ret=stopp=1; D[1017]++; if(dbg){print "D1017"}; continue };
+ { ret=stopp=1; D[1018]++; if(dbg){print "D1018"}; continue };
  #
  if ( qb(-5,-1,"suw_edzeim") && s(qbn,-1) )
- { ret=stopp=1; D[1018]++; if(dbg){print "D1018"}; continue };
+ { ret=stopp=1; D[1019]++; if(dbg){print "D1019"}; continue };
  if ( suw_edzeim(-3) && s(-3) &&
            gl_ed(-2) && z(-2) &&
                w(-1,"что как") && s(-1) )
- { ret=stopp=1; D[1019]++; if(dbg){print "D1019"}; continue };
+ { ret=stopp=1; D[1020]++; if(dbg){print "D1020"}; continue };
 break}; return ret }
 
 function gl_mn1e_f(ret, stopp) { while (stopp == 0) {
  #
  if ( wb(-5,-1,"мы если когда коли куда") && s(wbn,-1) )
- { ret=stopp=1; D[1020]++; if(dbg){print "D1020"}; continue };
+ { ret=stopp=1; D[1021]++; if(dbg){print "D1021"}; continue };
  #
  if ( p(-1) && p(0) )
- { ret=stopp=1; D[1021]++; if(dbg){print "D1021"}; continue };
+ { ret=stopp=1; D[1022]++; if(dbg){print "D1022"}; continue };
 break}; return ret }
 
 function gl_mn3e_f(ret, stopp) { while (stopp == 0) {
  #
  if ( (q(-1,"suw_mnim muk_mnim otnsz_mnim")||w(-1,"они")) && s(wbn,-1) )
- { ret=stopp=1; D[1022]++; if(dbg){print "D1022"}; continue };
+ { ret=stopp=1; D[1023]++; if(dbg){print "D1023"}; continue };
  #
  if ( p(-1) && p(0) )
- { ret=stopp=1; D[1023]++; if(dbg){print "D1023"}; continue };
+ { ret=stopp=1; D[1024]++; if(dbg){print "D1024"}; continue };
 break}; return ret }
 
 function gl_mn2e_f(ret, stopp) { while (stopp == 0) {
  #
  if ( qxs(-1,"так","что вот") )
- { ret=0; stopp=1; mn2e2pomn=1; D[1024]++; if(dbg){print "D1024"}; continue };
+ { ret=0; stopp=1; mn2e2pomn=1; D[1025]++; if(dbg){print "D1025"}; continue };
  if ( w(-2,"а да") &&
       w(-1,"вы") && s(-2,-1) && Q_w(1,"mest_da suw_da") &&
       W(0,"шутите гоните"))
- { ret=0; stopp=1; mn2e2pomn=1; D[1025]++; if(dbg){print "D1025"}; continue };
+ { ret=0; stopp=1; mn2e2pomn=1; D[1026]++; if(dbg){print "D1026"}; continue };
  if ( w(-2,"вы") &&
       w(-1,"только лучше") && s(-2,-1) )
- { ret=0; stopp=1; mn2e2pomn=1; D[1026]++; if(dbg){print "D1026"}; continue };
+ { ret=0; stopp=1; mn2e2pomn=1; D[1027]++; if(dbg){print "D1027"}; continue };
  if ( w(-3,"вы") &&
       q(-2,"mest_vi suw_vi") &&
       w(-1,"не") && s(-3,-1) && p(0,"?") )
- { ret=0; stopp=1; mn2e2pomn=1; D[1027]++; if(dbg){print "D1027"}; continue };
+ { ret=0; stopp=1; mn2e2pomn=1; D[1028]++; if(dbg){print "D1028"}; continue };
 
  #
  if ( wb(-5,-1,"будто где если зачем когда коли которого которую которые который которых куда насколько небось откуда пока почему пошто сколько что") &&
       (q(wbn-1,"sz qast")||p(wbn-1)||sc(wbn-1,"[pv]")) && s(wbn,-1) )
- { ret=stopp=1; D[1028]++; if(dbg){print "D1028"}; continue };
+ { ret=stopp=1; D[1029]++; if(dbg){print "D1029"}; continue };
  #
  if ( wb(-5,-2,"как") &&
        w(wbn-1,"бы долго же") && s(wbn,-1) )
- { ret=stopp=1; D[1029]++; if(dbg){print "D1029"}; continue };
+ { ret=stopp=1; D[1030]++; if(dbg){print "D1030"}; continue };
  #
  if ( wb(-5,-1,"вы") && s(wbn,-1) )
- { ret=stopp=1; D[1030]++; if(dbg){print "D1030"}; continue };
- if ( vvb(-5,-1) &&
-        w(vvn,"вы") && Ww_(vvn-1,"а") )
  { ret=stopp=1; D[1031]++; if(dbg){print "D1031"}; continue };
  if ( vvb(-5,-1) &&
-       wb(vvn-5,vvn,"вы") && s(wbn,vvn-1) )
+        w(vvn,"вы") && Ww_(vvn-1,"а") )
  { ret=stopp=1; D[1032]++; if(dbg){print "D1032"}; continue };
+ if ( vvb(-5,-1) &&
+       wb(vvn-5,vvn,"вы") && s(wbn,vvn-1) )
+ { ret=stopp=1; D[1033]++; if(dbg){print "D1033"}; continue };
  #
  if ( sc(0,"?") )
- { ret=stopp=1; D[1033]++; if(dbg){print "D1033"}; continue };
+ { ret=stopp=1; D[1034]++; if(dbg){print "D1034"}; continue };
  #
  if ( z(0) &&
       q(1,"mod_mn") &&
       w(2,"не") &&
       q(3,"gl_in") && s(1,2) )
- { ret=stopp=1; D[1034]++; if(dbg){print "D1034"}; continue };
+ { ret=stopp=1; D[1035]++; if(dbg){print "D1035"}; continue };
 #if ( z(0) &&
 #      w(1,"не") &&
 #       q(2,"gl_povzmn") && s(1) )
-#{ ret=stopp=1; D[1035]++; if(dbg){print "D1035"}; continue };
+#{ ret=stopp=1; D[1036]++; if(dbg){print "D1036"}; continue };
 break}; return ret }
 
 function nar_spos_f(ret, stopp) { while (stopp == 0) {
@@ -4246,17 +4250,17 @@ function nar_spos_f(ret, stopp) { while (stopp == 0) {
  if ( p(-1) &&
       q(1,"gl_mn gl_vzmn") &&
       q(2,"mest_mnim suw_mnim") && s(0,1) )
- { ret=stopp=1; D[1036]++; if(dbg){print "D1036"}; continue };
+ { ret=stopp=1; D[1037]++; if(dbg){print "D1037"}; continue };
  #
  if ( p(-2) &&
       q(-1,"gl_mn gl_vzmn") &&
       q(1,"mest_mnim suw_mnim") && s(-1,0) )
- { ret=stopp=1; D[1037]++; if(dbg){print "D1037"}; continue };
+ { ret=stopp=1; D[1038]++; if(dbg){print "D1038"}; continue };
  #
  if ( p(-3) &&
       q(-2,"gl_mn gl_vzmn") &&
       q(-1,"mest_mnim suw_mnim") && s(-2,-1) )
- { ret=stopp=1; D[1038]++; if(dbg){print "D1038"}; continue };
+ { ret=stopp=1; D[1039]++; if(dbg){print "D1039"}; continue };
 
 break}; return ret }
 

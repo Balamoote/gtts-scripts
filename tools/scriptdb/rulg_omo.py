@@ -11,10 +11,10 @@
 
 import sys
 import gzip
-import spacy
-import re
 from multiprocessing import Pool
 from pathlib import Path
+import re
+import spacy
 
 # Загрузить модель spaCy, при этом нужно выдать морфологическую информацию по омографам
 nlp = spacy.load('ru_core_news_lg', disable=['lemmatizer'])
@@ -39,7 +39,7 @@ def analyze_line(line):
     if words:
         analyzed_sentences = []
         for sent in re.split("(?<=[.!?…;])\s+", line):
-            sent_text = sent.lstrip() + ' ' 
+            sent_text = sent.lstrip() + ' '
             if not sent_text:
                 continue
             sentence_contains_word = False
@@ -73,5 +73,3 @@ if __name__ == '__main__':
         analyzed_lines = p.map(analyze_line, lines)
         for line in analyzed_lines:
             print(line, end='\n')
-
-

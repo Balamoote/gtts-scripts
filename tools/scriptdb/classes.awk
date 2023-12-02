@@ -1470,6 +1470,7 @@ BEGIN {
 
         if ($2~ /^мест_(сущ|прл)_ед_муж$/           ){  mst_ed_mu         [$1]=$3; continue };
         if ($2~ /^мест_(сущ|прл)_ед_жен$/           ){  mst_ed_ze         [$1]=$3; continue };
+        if ($2~ /^мест_прл_ед_ср$/                  ){  mst_ed_sr         [$1]=$3; continue };
 
         if ($2~ /^мест_(сущ|прл)_им$/               ){  mst_im            [$1]=$3; continue };
         if ($2~ /^мест_(сущ|прл)_вин$/              ){  mst_vi            [$1]=$3; continue };
@@ -1477,10 +1478,6 @@ BEGIN {
         if ($2~ /^мест_(сущ|прл)_пр$/               ){  mst_pr            [$1]=$3; continue };
         if ($2~ /^мест_(сущ|прл)_род$/              ){  mst_ro            [$1]=$3; continue };
         if ($2~ /^мест_(сущ|прл)_тв$/               ){  mst_tv            [$1]=$3; continue };
-        if ($2~ /^мест_прл_мн$/                     ){  mst_mn            [$1]=$3; continue };
-
-        if ($2~ /^мест_сущ$/                        ){  mst_suw           [$1]=$3; continue };
-        if ($2~ /^мест_прл_ед_ср$/                  ){  mst_ed_sr         [$1]=$3; continue };
     };
     if($2~  /^предл_/ ){
         if ($2~ /^предл_вин$/                       ){  pred_vi           [$1]=$3; continue };
@@ -1657,7 +1654,57 @@ BEGIN {
         if($2~  /_мн_тв$/                           ){  otm_mntv          [$1]=$3; continue };
         if($2~  /_мн_пр$/                           ){  otm_mnpr          [$1]=$3; continue };
     };
-   } close(cmd);
+    if($2~  /^mop_/ ){
+        if ($2~ /^mop_мест_(сущ|прл)_ед_муж_вин$/       ){  msto_ed_mu_vi      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_муж_вин_неод$/  ){  msto_ed_mu_im      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_муж_вин_одуш$/  ){  msto_ed_mu_ro      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_муж_дат$/       ){  msto_ed_mu_da      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_муж_им$/        ){  msto_ed_mu_im      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_муж_пр$/        ){  msto_ed_mu_pr      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_муж_род$/       ){  msto_ed_mu_ro      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_муж_тв$/        ){  msto_ed_mu_tv      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_жен_вин$/       ){  msto_ed_ze_vi      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_жен_дат$/       ){  msto_ed_ze_da      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_жен_им$/        ){  msto_ed_ze_im      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_жен_пр$/        ){  msto_ed_ze_pr      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_жен_род$/       ){  msto_ed_ze_ro      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_жен_тв$/        ){  msto_ed_ze_tv      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_ср_вин$/        ){  msto_ed_sr_vi      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_ср_дат$/        ){  msto_ed_sr_da      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_ср_им$/         ){  msto_ed_sr_im      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_ср_пр$/         ){  msto_ed_sr_pr      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_ср_род$/        ){  msto_ed_sr_ro      [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_ср_тв$/         ){  msto_ed_sr_tv      [$1]=$3; continue };
+
+        if ($2~ /^mop_мест_(сущ|прл)_мн_вин_неод$/      ){  msto_mn_im         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_мн_вин_одуш$/      ){  msto_mn_ro         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_мн_вин$/           ){  msto_mn_vi         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_мн_дат$/           ){  msto_mn_da         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_мн_им$/            ){  msto_mn_im         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_мн_пр$/            ){  msto_mn_pr         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_мн_род$/           ){  msto_mn_ro         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_мн_тв$/            ){  msto_mn_tv         [$1]=$3; continue };
+
+        if ($2~ /^mop_мест_(сущ|прл)_ед_вин$/           ){  msto_ed_vi         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_им$/            ){  msto_ed_im         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_дат$/           ){  msto_ed_da         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_пр$/            ){  msto_ed_pr         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_род$/           ){  msto_ed_ro         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_тв$/            ){  msto_ed_tv         [$1]=$3; continue };
+
+        if ($2~ /^mop_мест_(сущ|прл)_ед_муж$/           ){  msto_ed_mu         [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_ед_жен$/           ){  msto_ed_ze         [$1]=$3; continue };
+        if ($2~ /^mop_мест_прл_ед_ср$/                  ){  msto_ed_sr         [$1]=$3; continue };
+
+        if ($2~ /^mop_мест_(сущ|прл)_им$/               ){  msto_im            [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_вин$/              ){  msto_vi            [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_дат$/              ){  msto_da            [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_пр$/               ){  msto_pr            [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_род$/              ){  msto_ro            [$1]=$3; continue };
+        if ($2~ /^mop_мест_(сущ|прл)_тв$/               ){  msto_tv            [$1]=$3; continue };
+
+     };
+    } close(cmd);
 
  # Список классов омографов с описательными тэгами. Неочевидные кодировки в позиции падежа: z=партитив, l=локатив, q=счетная форма
    cmd = "zcat " indb "class.list.gz";

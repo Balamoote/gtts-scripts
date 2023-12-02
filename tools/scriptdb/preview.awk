@@ -7,11 +7,11 @@
 #   preview = печатать или нет превью: 1 или не 1
 #   termcor = величина корректировки ширины терминала: любое целое число
 #   editor = используемый редактор: vim или neovim
-function finduni(string,  tmp) # Функция определения кол-ва комбинирующих символов в подстроке
-{ tmp = gsub(/[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]/, "", string); return tmp }
+function finduni(string,  tmp) { # Функция определения кол-ва комбинирующих символов в подстроке
+         tmp = gsub(/[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]/, "", string); return tmp }
 
-function readfile(file,  tmp, save_rs) # Функция чтения файла в скаляр
-{ save_rs = RS; RS = "^$"; getline tmp < file; close(file); RS = save_rs; return tmp }
+function readfile(file,  tmp, save_rs) { # Функция чтения файла в скаляр
+         save_rs = RS; RS = "^$"; getline tmp < file; close(file); RS = save_rs; return tmp }
 
 BEGIN {
     # Выставить длину левой подстроки до поискового слова (lookback) и отступ справа (rightpad), остальное выставляется само в зависимости от ширина терминала и длины слова
@@ -40,27 +40,27 @@ BEGIN {
 
     omoqty = split(readfile(omoluclst), omlst, "\n"); delete omlst[omoqty];
     for (i in omlst) { #b1
-        le = split (omlst[i], arr, " ");
+        le = split(omlst[i], arr, " ");
         omos[arr[1]]; lcm = tolower(arr[1]); oml = length(lcm); ompad = sprintf("%" oml+5 "s", "" );
-	headr = sprintf ( "%s\n%s%s\n", "#!/bin/bash", ompad, "var=$1; case \"$var\" in");
+	headr = sprintf( "%s\n%s%s\n", "#!/bin/bash", ompad, "var=$1; case \"$var\" in");
         sedpart = ""; vimpart = ""; lexxpart = ""; riphead = ""; vpat = arr[2];
         for (s = 2; s <= le; s++ ) { #b2 Сборка опций для sed
-            sedline = ompad sprintf ( "%s%s%s%s%s%s%s%s%s%s%s %s\n", "sed -ri \"$2 s/(", unxn, ")\\b", arr[1], "\\b(", unxn, ")/\\1", arr[s], "\\2/g", "\" ../", obook, ";;" );
-            sedhead = sprintf ( "%s%s %s %s %s %s%s%s %s %s\n", s-1, ")#", arr[s], "<=", arr[1], ": ./", arr[1], ".sh", s-1, "[номер строки]" );
+            sedline = ompad sprintf( "%s%s%s%s%s%s%s%s%s%s%s %s\n", "sed -ri \"$2 s/(", unxn, ")\\b", arr[1], "\\b(", unxn, ")/\\1", arr[s], "\\2/g", "\" ../", obook, ";;" );
+            sedhead = sprintf( "%s%s %s %s %s %s%s%s %s %s\n", s-1, ")#", arr[s], "<=", arr[1], ": ./", arr[1], ".sh", s-1, "[номер строки]" );
             sedpart = sedpart sedhead sedline }; #b2
             # Сборка заголовка для ./stripper.sh
-            ripline = ompad sprintf ( "%s %s %s %s %s", "cd .. && ./stripper.sh", obook, "-w", arr[1], ";;"  );
-            riphead = sprintf ( "%s %s %s %s %s\n%s\n", "0)#", arr[1], "<=", arr[1], "очистить слово от служебных и ударения!", ripline );
+            ripline = ompad sprintf( "%s %s %s %s %s", "cd .. && ./stripper.sh", obook, "-w", arr[1], ";;"  );
+            riphead = sprintf( "%s %s %s %s %s\n%s\n", "0)#", arr[1], "<=", arr[1], "очистить слово от служебных и ударения!", ripline );
             # Сборка заголовка для vim/neovim, переменная editor задаётся в scriptdb/settings.ini
         for (v = 3; v <= le; v++) { vpat = vpat "/" arr[v] };
-            vimline = sprintf ( "   %s %s%s%s%s%s%s%s%s%s%s\n", editor, "-c \"set hls | %SubstituteChoice /", unxn, "\\zs\\<", arr[1], "\\>\\ze", unxn, "/", vpat, "/gc\" ../", obook );
-            vimhead = sprintf ( "%s %s%s%s%s%s%" totallen "s\n", "*)# Изменить вручную в", editor, ": ./", arr[1], ".sh\n", vimline, ";; esac; exit 0" );
+            vimline = sprintf( "   %s %s%s%s%s%s%s%s%s%s%s\n", editor, "-c \"set hls | %SubstituteChoice /", unxn, "\\zs\\<", arr[1], "\\>\\ze", unxn, "/", vpat, "/gc\" ../", obook );
+            vimhead = sprintf( "%s %s%s%s%s%s%" totallen "s\n", "*)# Изменить вручную в", editor, ": ./", arr[1], ".sh\n", vimline, ";; esac; exit 0" );
 
 
     for ( x in omolexx ) { lx = length(x);
         if ( substr(x, lx, 1 ) == "=" ) {
-            if ( oml == lx-1 ) { if ( substr(lcm, 1, lx-1) == substr (x, 1, lx-1) ) { lexxpart = sprintf("%s %s", "Шаблон в lexx:", omolexx[x]) } } }
-            else { if ( oml >= lx ) { if (substr (lcm, 1, lx) == x)	{  lexxpart = sprintf("%s %s", "Шаблон в lexx:", omolexx[x]) } } };
+            if ( oml == lx-1 ) { if ( substr(lcm, 1, lx-1) == substr(x, 1, lx-1) ) { lexxpart = sprintf("%s %s", "Шаблон в lexx:", omolexx[x]) } } }
+            else { if ( oml >= lx ) { if (substr(lcm, 1, lx) == x)	{  lexxpart = sprintf("%s %s", "Шаблон в lexx:", omolexx[x]) } } };
                 };  
             if ( lexxpart == "" ) { lexxpart = sprintf("%s", "Шаблон в lexx: нет" ) };
 
@@ -104,7 +104,7 @@ for ( wrd in omos ) { #e2
             cline = book[b];                                 # Текущая строка
             clen  = length ( book[b] )                       # Длина текущей строки
 
-            while ( word = match ( cline, wrd ) ) { 	     #e4 while ... match wrd всё ещё в строке
+            while ( word = match( cline, wrd ) ) { 	     #e4 while ... match wrd всё ещё в строке
                 wend = RSTART + RLENGTH                      # адрес начала правой подстроки
                 best = substr(book[b], RSTART - 1, 1);       # адрес до поискового слова
                 afst = substr(book[b], wend, 1)              # адерс после поискового слова
@@ -118,17 +118,17 @@ for ( wrd in omos ) { #e2
                    if ( RSTART > lookback + 1 ) {           #e7.1 if rstart ... левая подстока слева не дотягивается до 1
                        lan = RSTART - lookback; llen = lookback;
                        do {
-                           lzlen0 = finduni(substr (book[b], lan, llen));
+                           lzlen0 = finduni(substr(book[b], lan, llen));
                            delta  = lzlen0 - lzlen;
                            lan   -= delta;
-                           dzq    = finduni(substr (book[b], lan, delta));
+                           dzq    = finduni(substr(book[b], lan, delta));
 
                            if ( dzq > 0 ) { lan -= dzq; delta += dzq;
 				   if ( substr(book[b], lan, 1) ~ unxy) { lan -= 1; delta += 1 }; };
 
                            if ( lan >= 1 ) { llen += delta; lpad = "";   }
                            else { llen = RSTART - 1;
-                                  lpad = sprintf ( "%" 1 - lan "s", "" ) };
+                                  lpad = sprintf( "%" 1 - lan "s", "" ) };
 
                            lzlen  = finduni(substr(book[b], lan, llen));
 
@@ -160,20 +160,20 @@ for ( wrd in omos ) { #e2
                                rzlen  = finduni(substr( book[b], wend, rlen));
                            } while ( rzlen != rzlen0 );	#e8
 
-                     rstring = substr ( book[b], wend, rlen );
+                     rstring = substr( book[b], wend, rlen );
 
                      ennum=ennum+1;
-                     prevar[ennum]=sprintf ("%" lnumwidt "s|%s%s%s", b, lstring, wrd, rstring);
+                     prevar[ennum]=sprintf("%" lnumwidt "s|%s%s%s", b, lstring, wrd, rstring);
                    } #e5 if afst
-                   cline = substr ( cline, 1, RSTART - 1) replstring substr(cline, wend)
+                   cline = substr( cline, 1, RSTART - 1) replstring substr(cline, wend)
                 } #e4 while ... match wrd in current line
             } #e3 main prog
 
             # Формируем блок текста превью для печати
-            headline = sprintf("%s%s %s %s\n", substr(nummark, 1, lnumwidt), substr(dotmark, 1, lookback), substr(wrdmark, 1, wlen), substr(dotmark, 1, lookfwrd - 1)) ;
-            prevblock = sprintf ("%s %s\n", "Всего найдено:", ennum) headline;
+            headline  = sprintf("%s%s %s %s\n", substr(nummark, 1, lnumwidt), substr(dotmark, 1, lookback), substr(wrdmark, 1, wlen), substr(dotmark, 1, lookfwrd - 1)) ;
+            prevblock = sprintf("%s %s\n", "Всего найдено:", ennum) headline;
 
-            for (j in prevar) { prevblock = prevblock sprintf ("%s\n", prevar[j]) };
+            for (j in prevar) { prevblock = prevblock sprintf("%s\n", prevar[j]) };
 
             # Обнуление цикла
             totnum = totnum + ennum; wrdnum = ennum; ennum=0; delete prevar;
