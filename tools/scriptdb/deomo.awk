@@ -5479,7 +5479,7 @@ xgrp="x2242";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)         
       name_im_sy(3) && s(0,2) )
  { l[i]=omo2; R[1090]++; if(dbg){print "R1090"}; continue };
  #
- if ( name_ro_sy(1) && s(0) )
+ if ( q(1,"name_vi_sy name_ro_sy") && s(0) )
  { l[i]=omo1; R[1091]++; if(dbg){print "R1091"}; continue };
 
  #
