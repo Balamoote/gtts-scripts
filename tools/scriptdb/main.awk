@@ -38,6 +38,9 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
    vvpat   = "[,—]"
    hysnip  = regword "[-]" regword
 
+   if ( spacy_on == "1" ) { # Загрузить копию текста, предварительно обработанного SpaCy
+   cmd = "cat " bkscydir "text-book.scy 2>/dev/null"; while ((cmd|getline) > 0) { scy++; bscy[scy]=$0; } close(cmd); };
+
    savefs = FS;
    FS = fsword;
 } {

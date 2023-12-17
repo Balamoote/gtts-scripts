@@ -20,14 +20,14 @@ debug=0   # Если 1, то сделать отладку скриптов ом
 nocaps=0  # Если 1, то капсов в "пастеризованых" не будет
 locdic=1
 do_parallel=1 # влючить GNU Parallel. ВНИМАНИЕ: Использует памяти в N раз больше, где N - кол-во задач
-   pblock=-1  # размер куска текста на 1 задачу: постфиксы K, M, G, T, P, k, m, g, t, p.
+   pblock=-1  # размер куска текста на 1 задачу: постфиксы K, M, G, T, P, k, m, g, t, p. "-1" = авто
    pjobs=100% # задать макс. кол-во задач. 100% = кол-ву процессоров. 4 = 4 задачи. Более 100% задвать обчыно нет смысла. Обратить внимание на кол-во оперативки!
    pmem=1G    # мин. память, перед началом следующей задачи, если памяти менее 50% от значения, завершить самую свежую задачу.
    pload=100% # макс загрузка отдельного процессора
    pnice=10   # приоритет
 
-   paraopts_awk="--eta --bar --jobs=$pjobs --load=$pload --memfree $pmem --nice=$pnice --noswap --pipe-part --block=$pblock -k -a"
-   paraopts_sed="--jobs=$pjobs --load=$pload --memfree $pmem --nice=$pnice --noswap --pipe-part --block=$pblock -k -a"
+   paraopts_awk="--eta --bar --jobs=$pjobs --load=$pload --block=$pblock --memfree $pmem --nice=$pnice --noswap --pipe-part -ka"
+   paraopts_sed="--jobs=$pjobs --load=$pload --memfree $pmem --block=$pblock --nice=$pnice --noswap --pipe-part -ka"
 
 # Установка редактора: vim или neovim
 edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' scriptdb/settings.ini)
@@ -151,7 +151,7 @@ if [[ $spacy == "1" && $do_parallel == "0" ]]; then
             s/([$RUUC])([$RUUC]+)/\1\L\2/g;
             s/<[-a-zA-Z_/.,;:#?! ]+>//g" $bookwrkdir/text-book.txt | \
     python3 scriptdb/rulg_omo.py scriptdb/omo_list.scy.gz > $bookstadir/text-book.scy
-#   python3 scriptdb/rulg_all.py scriptdb/omo_list.scy > $bookstadir/text-book.scy
+    #python3 scriptdb/rulg_all.py scriptdb/omo_list.scy > $bookstadir/text-book.scy
 
     md5sum $bookstadir/text-book.scy $bookwrkdir/text-book.txt scriptdb/rulg_omo.py scriptdb/rulg_all.py > $bookstadir/text.scy.md5
     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
@@ -199,7 +199,8 @@ if [[ ! $single -eq 1 ]]; then
      if [[ $do_parallel -eq 1 ]]; then
        printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
        parallel --env $paraopts_awk $bookwrkdir/text-book.txt \
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f scriptdb/main.awk > $bookwrkdir/text-book.awk.txt
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f scriptdb/main.awk \
+           > $bookwrkdir/text-book.awk.txt
      else
        awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f scriptdb/main.awk $bookwrkdir/text-book.txt \
            > $bookwrkdir/text-book.awk.txt

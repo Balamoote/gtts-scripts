@@ -1447,7 +1447,7 @@ sz_iili(-2) &&
  if ( Qw_(-1,"pre_any") &&
        wf(1,5,"стало станет осталось останется остается хватало хватит хватило хватает") && s(0,wfn-1) )
  { ret=stopp=1; D[336]++; if(dbg){print "D336"}; continue };
- if ( Qw_(-1,"pre_any") && qsf(1,5,vvpat) && s(0,qsn-1) && vv(qsn,qsn+7) &&
+ if ( Qw_(-1,"pre_any") && qsf(1,5,vvpat) && s(0,sfn-1) && vv(sfn,sfn+7) &&
        wf(vvn+1,vvn+6,"стало станет осталось останется остается хватало хватит хватило хватает") && s(vvn+1,wfn-1) )
  { ret=stopp=1; D[337]++; if(dbg){print "D337"}; continue };
 
@@ -3121,11 +3121,11 @@ sz_iili(-2) &&
 
  # поисковые
  if ( qsf(0,4,vvpat) &&
-       vv(qsn,qsn+7) &&
+       vv(sfn,sfn+7) &&
      seek(vvn+1,vvn+6,"gl_vzmn gl_nemn mod_mn","mest_mnim suw_mnim") && s(vvn+1,skn-1) && Qw_(-1,"suw_mnim") )
  { ret=stopp=1; D[747]++; if(dbg){print "D747"}; continue };
  if ( qsf(0,4,vvpat) &&
-       vv(qsn,qsn+7) &&
+       vv(sfn,sfn+7) &&
         q(vvn+1,"gl_vzmn gl_nemn mod_mn") && Qw_(-1,"suw_mnim") )
  { ret=stopp=1; D[748]++; if(dbg){print "D748"}; continue };
  if ( vvb(-7,-1) &&

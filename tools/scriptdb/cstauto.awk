@@ -66,7 +66,7 @@ BEGIN {
     cst="ты вы";                                                                                        stoar(cst,mstc_im2," ");
     cst="он она оно они оне";                                                                           stoar(cst,mstc_im3," ");
 
-    cst="да и или иль";                                                                                 stoar(cst,soyz_iili," ");
+    cst="да и или иль либо";                                                                            stoar(cst,soyz_iili," ");
 
     cst="б бы";                                                                                         stoar(cst,qst_by," ");
     cst="давайте давай пускай пусть";                                                                   stoar(cst,qst_po," ");
