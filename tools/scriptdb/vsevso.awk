@@ -392,7 +392,7 @@ mest_it(-1) && z(-2) && s(-1) && p(0) )
         w(1,"что") )
  { l[i]=is_vsyo; V[96]++; if(dbg){print "V96"}; continue };
  if ( qxs(-1,"как","и") && sc(xsn-1,",") &&
-     base(xsn-1,"быть стать") &&
+       bw(xsn-1,"быть стать") &&
         q(xsn-2,"suw_noedim suw_nomnim") && s(xsn-2) )
  { l[i]=is_vsyo; V[97]++; if(dbg){print "V97"}; continue };
  if ( qxs(-1,"как","и") && sc(xsn-1,",") &&

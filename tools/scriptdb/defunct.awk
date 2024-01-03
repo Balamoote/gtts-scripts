@@ -43,7 +43,7 @@ function sw_im_f(ret, stopp) { while (stopp == 0) {
 
  if ( w(-3,"у") &&
       q(-2,"mest_ro suw_ro") &&
-   base(-1,"быть") && s(-3,-1) )
+     bw(-1,"быть") && s(-3,-1) )
  { ret=stopp=1; D[10]++; if(dbg){print "D10"}; continue };
  if ( q(-2,"mest_it") &&
       q(-1,"mest_im") && s(-2,-1) )
@@ -358,7 +358,7 @@ function sw_vi_f(ret, stopp) { while (stopp == 0) {
 
  if ( qxs(-1,"в","виду") &&
         q(xsn-2,"mest_im suw_im") &&
-     base(xsn-1,"иметь") && s(xsn-2) )
+       bw(xsn-1,"иметь") && s(xsn-2) )
  { ret=stopp=1; D[97]++; if(dbg){print "D97"}; continue };
 
 
@@ -376,7 +376,7 @@ function sw_vi_f(ret, stopp) { while (stopp == 0) {
 
  if ( qxs(-1,"в","виду") &&
         q(xsn-2,"mest_im suw_im") &&
-     base(xsn-1,"иметь") && s(xsn-2) )
+       bw(xsn-1,"иметь") && s(xsn-2) )
  { ret=stopp=1; D[101]++; if(dbg){print "D101"}; continue };
 
 
@@ -962,7 +962,7 @@ function sw_edro_f(ret,   stopp) { while (stopp == 0) {
  { ret=stopp=1; D[234]++; if(dbg){print "D234"}; continue };
  if ( qxs(-3,"сколько","у") &&
         q(-2,"mest_ro suw_ro") &&
-     base(-1,"быть") && s(-2,-1) )
+       bw(-1,"быть") && s(-2,-1) )
  { ret=stopp=1; D[235]++; if(dbg){print "D235"}; continue };
  if ( qxs(-2,"сколько где","у") &&
         q(-1,"mest_ro suw_ro") &&
@@ -2850,19 +2850,19 @@ sz_iili(-1) &&
 
  if ( q(1,"suw_ro") &&
       z(1) &&
-      q(2,"otnsz_mn prq_mnvi mest_mnvi") && s(0) )
+      q(2,"otsz_mn prq_mnvi mest_mnvi") && s(0) )
  { ret=stopp=1; D[679]++; if(dbg){print "D679"}; continue };
  if ( q(1,"suw_ro") &&
       z(1) &&
       q(2,"prl_kred_sr") &&
-      q(3,"otnsz_mn prq_mnvi") && s(0) && s(2) )
+      q(3,"otsz_mn prq_mnvi") && s(0) && s(2) )
  { ret=stopp=1; D[680]++; if(dbg){print "D680"}; continue };
  if ( z(0) &&
       q(1,"prl_kred_sr pre_ro") &&
-      q(2,"otnsz_mn prq_mnvi") && s(1) )
+      q(2,"otsz_mn prq_mnvi") && s(1) )
  { ret=stopp=1; D[681]++; if(dbg){print "D681"}; continue };
  if ( z(0) &&
-      q(1,"otnsz_mn prq_mnvi") )
+      q(1,"otsz_mn prq_mnvi") )
  { ret=stopp=1; D[682]++; if(dbg){print "D682"}; continue };
  if ( z(0) && Q(-1,"suw_mnim") &&
      (w(1,"чуть едва еле только лишь слегка")||q(1,"nar_vrem")) &&
@@ -3464,7 +3464,7 @@ sz_iili(-2) &&
 
  if ( qxs(-1,"в","виду") &&
         q(xsn-2,"mest_im suw_im") &&
-     base(xsn-1,"иметь") && s(xsn-2) )
+       bw(xsn-1,"иметь") && s(xsn-2) )
  { ret=stopp=1; D[832]++; if(dbg){print "D832"}; continue };
 
  #_#_#
@@ -3632,7 +3632,7 @@ function sw_mn_r_f(ret, stopp) { while (stopp == 0) {
  if ( id(-1,"hsw4mnro") && s(-1) )
  { ret=stopp=1; D[874]++; if(dbg){print "D874"}; continue };
 
- if ( base(-1,"пара") && s(-1) )
+ if ( bw(-1,"пара") && s(-1) )
  { ret=stopp=1; D[875]++; if(dbg){print "D875"}; continue };
  if ( w(-2,"сколько") &&
       q(-1,"mest_da suw_da") && s(-2,-1) )
@@ -3760,7 +3760,7 @@ function pl_srav_f(ret, stopp) { while (stopp == 0) {
  { ret=stopp=1; D[908]++; if(dbg){print "D908"}; continue };
  if ( q(-1,"nar_step") && s(-1) && p(0))
  { ret=stopp=1; D[909]++; if(dbg){print "D909"}; continue };
- if ( base(-1,"быть стать становиться оказаться") && s(-1) && p(0))
+ if ( bw(-1,"быть стать становиться оказаться") && s(-1) && p(0))
  { ret=stopp=1; D[910]++; if(dbg){print "D910"}; continue };
 break}; return ret }
 
@@ -4190,7 +4190,7 @@ break}; return ret }
 
 function gl_mn3e_f(ret, stopp) { while (stopp == 0) {
  #
- if ( (q(-1,"suw_mnim muk_mnim otnsz_mnim")||w(-1,"они")) && s(wbn,-1) )
+ if ( (q(-1,"suw_mnim muk_mnim otsz_mnim")||w(-1,"они")) && s(wbn,-1) )
  { ret=stopp=1; D[1023]++; if(dbg){print "D1023"}; continue };
  #
  if ( p(-1) && p(0) )

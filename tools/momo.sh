@@ -49,6 +49,15 @@ d2u () { if [[ -e "$backup" ]]; then printf '\e[36m%s \e[33m%s\e[0m\n' "Найд
         else crlf=$(file "$book" | grep -o "CRLF"); if [[ -n $crlf ]]; then dos2unix "$book" &>/dev/null; fi; cp "$book" "$backup"; fi; }
 sedroll () { local lico=$(wc -l < "$1"); local i=0; local j=0; for i in $(seq 1 $inc $lico); do j=$(($i+$(($inc-1))));	sed -i -rf <(sed -n "$i,$j p" < "$1") "$2"; done; }
 
+
+ms2sec () { awk -vms=$duration 'BEGIN {
+                   D=int(ms/86400); Dr=ms%86400; if(D) { D=D " д " } else { D="" };
+                   H=int(Dr/3600);  Hr=Dr%3600;  if(H) { Hs=sprintf("%d", H) ":" } else { Hs="" };
+                   M=int(Hr/60);    Mr=Hr%60;    if(M) { if(H) {Ms=sprintf("%02d", M) ":"} else {Ms=sprintf("%d", M) ":" } } else { Ms="" };
+                   if(M>=1) {S=sprintf("%05.2f %s", Mr, ".") } else { S=sprintf("%.2f %s", Mr, "сек.") };
+#                  if(!M) {S=S " сек."} else { S=S " ."};
+                   durhum=D Hs Ms S; printf("%s", durhum) }'; }
+
 cdata=$(date)
 printf '\e[32m%s \e[32;4;1m%s\e[0m \e[93m%s\e[0m\n' "Скрипт" "\"Ручные омографы\"" "$cdata"
 
@@ -132,7 +141,7 @@ sed -n '/<binary/,$p' "$book" > $bookwrkdir/binary-book.txt
 #booklico=$(wc -l < $bookwrkdir/binary-book.txt)
 
 # Замены однозначных
-mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
+mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
 if [[ $fixomo == "1" ]]; then
 
 if [[ $spacy == "1" ]] || [[ $locdic == "1" ]]; then
@@ -154,8 +163,8 @@ if [[ $spacy == "1" && $do_parallel == "0" ]]; then
     #python3 scriptdb/rulg_all.py scriptdb/omo_list.scy > $bookstadir/text-book.scy
 
     md5sum $bookstadir/text-book.scy $bookwrkdir/text-book.txt scriptdb/rulg_omo.py scriptdb/rulg_all.py > $bookstadir/text.scy.md5
-    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
-    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк с омографами:" $duration "сек."; fi
+    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
+    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк с омографами:" $durhum ; fi
 fi;
 # << Конец блока SpaCy
 
@@ -186,8 +195,8 @@ if [[ $locdic == "1" ]]; then
     md5sum $bookstadir/bookwords.list $bookwrkdir/text-book.txt scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz scriptdb/dic_suw.gz \
            $bookstadir/dic_gl.gz $bookstadir/dic_prl.gz $bookstadir/dic_prq.gz $bookstadir/dic_rest.gz $bookstadir/dic_suw.gz > $bookstadir/locdic.md5
 
-    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
-    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s\e[0m\n' "Подготовка локальных словарей из словоформ в книге:" $duration "сек. Словоформ:" $locdicsize; fi
+    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
+    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s\e[0m\n' "Подготовка локальных словарей из словоформ в книге:" $durhum " Словоформ:" $locdicsize; fi
 fi;
 # << Конец блока создания локальных словарей
 
@@ -209,8 +218,8 @@ if [[ ! $single -eq 1 ]]; then
      mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
 
      yope=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
-     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
-     LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Основная обработка:" $duration "сек. Остаток 'все':" $yope "из" $yops "."
+     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
+     LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s \e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Основная обработка:" $durhum "Остаток 'все':" $yope "из" $yops "."
   else
      sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+#_#_# vsez !_#_!)$/#\1/g' scriptdb/main.awk > $bookstadir/main.awk
 
@@ -225,7 +234,7 @@ if [[ ! $single -eq 1 ]]; then
 
      mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
 
-     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
+     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
      printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
   fi # все
 else
@@ -246,7 +255,7 @@ else
     fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
-    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
+    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
   fi #
 
   # обработка только одной группы омографов
@@ -266,7 +275,7 @@ else
    fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
-    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
+    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
 #   printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
   fi # 
   if [[ $vse -eq 1 ]]; then
@@ -283,7 +292,7 @@ else
     fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
-    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
+    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
     printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
   fi # 
 fi
@@ -306,8 +315,8 @@ rexsed="scriptdb/omo-index.sed"
   sedroll $rexsed $bookwrkdir/text-book.txt
  fi # do_parallel
 
-mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Постобработка sed:" $duration "сек"
+mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Постобработка sed:" $durhum 
 
 fi # fixomo?
 
@@ -334,8 +343,8 @@ sed -r "
        s/\\\xcc\\\xb0/\xcc\xb0/g
        " $bookwrkdir/mano-luc.txt > $bookwrkdir/omo-luc.lst
 
-mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_time0 | bc ); mo_prev=$mo_cur
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Всего обработка омографов заняла:" $duration "сек"
+mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_time0 | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Всего обработка омографов заняла:" $durhum 
 
 # Формируем дискретные скрипты пословно
 printf '\e[32m%s ' "Идет поиск омографов … подождите."
@@ -353,8 +362,8 @@ totnum=$(cat $bookwrkdir/totnum)
 
 printf '\e[36m%s \e[093m%s \e[36m%s \e[093m%s \e[0m' "Создано дискретных скриптов:" $(ls -l $bookwrkdir/*.sh | wc -l) "Всего остаток омографов:" $totnum
 
-mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Время:" $duration "сек"
+mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Время:" $durhum 
 
 chmod +x $bookwrkdir/*.sh
 # Собираем книгу и удаляем временные файлы
@@ -419,9 +428,9 @@ if [[ debug -eq 1 ]]; then
 	fi
 fi # dbgchk 0
 
-mo_proc=$(date +%s.%N); tot_dur=$( echo $mo_proc - $mo_time0 | bc )
+mo_proc=$(date +%s.%N); duration=$( echo $mo_proc - $mo_time0 | bc ); durhum=$(ms2sec);
 
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Общее время работы скрипта:" $tot_dur "сек"
+LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Общее время работы скрипта:" $durhum 
 if [[ ! $noomo -eq 1 ]]; then printf '\e[36m%s \e[33m%s \e[36m%s \e[33m%s\e[0m\n' "Дискретные скрипты в" "mano-$book" "обрабатывают файл:" "$obook" ; fi
 printf '\e[32;4;1m%s\e[0m \e[36m%s \e[33m%s \e[36m%s \e[36m%s \e[33m%s\e[0m\n' "\"Ручные омографы:\"" "Файл" "$book" "обработан." "Бэкап:" "$backup"
 
