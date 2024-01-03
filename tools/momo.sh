@@ -196,7 +196,7 @@ if [[ $locdic == "1" ]]; then
            $bookstadir/dic_gl.gz $bookstadir/dic_prl.gz $bookstadir/dic_prq.gz $bookstadir/dic_rest.gz $bookstadir/dic_suw.gz > $bookstadir/locdic.md5
 
     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
-    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s\e[0m\n' "Подготовка локальных словарей из словоформ в книге:" $durhum " Словоформ:" $locdicsize; fi
+    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s \e[36m%s \e[93m%s\e[0m\n' "Подготовка локальных словарей из словоформ в книге:" $durhum "Словоформ:" $locdicsize; fi
 fi;
 # << Конец блока создания локальных словарей
 
