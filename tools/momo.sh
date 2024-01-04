@@ -136,8 +136,8 @@ d2u;
 # Конвертация в UTF-8, если нужно
 #$edi -c "set nobomb | set fenc=utf8 | x" "$book"
 
-sed "/<binary/Q" "$book" | sed -r "s/\xc2\xa0/ /g" > $bookwrkdir/text-book.txt
-sed -n '/<binary/,$p' "$book" > $bookwrkdir/binary-book.txt
+sed -r  "/^\s*<binary/Q" "$book" | sed -r "s/\xc2\xa0/ /g" > $bookwrkdir/text-book.txt
+sed -rn '/^\s*<binary/,$p' "$book" > $bookwrkdir/binary-book.txt
 #booklico=$(wc -l < $bookwrkdir/binary-book.txt)
 
 # Замены однозначных
@@ -149,7 +149,7 @@ if [[ $spacy == "1" ]] || [[ $locdic == "1" ]]; then
  if [[ ! -d $bookstadir ]]; then mkdir $bookstadir
  else printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория статических файлов для текущей книги" $bookstadir "существует."; fi; fi
 
-if [[ $spacy == "1" && $do_parallel == "0" ]]; then
+if [[ $spacy == "1" ]]; then
 # Создать копию текст книги и морфологией с помощью spacy << начало блока SpaCy
 
  if [[ -s $bookstadir/text-book.scy ]] && md5sum -c --status $bookstadir/text.scy.md5 >/dev/null 2>&1; then
@@ -167,6 +167,14 @@ if [[ $spacy == "1" && $do_parallel == "0" ]]; then
     LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк с омографами:" $durhum ; fi
 fi;
 # << Конец блока SpaCy
+
+# 
+ if [[ -s $bookstadir/text-book.scy ]]; then
+    awk '{if (FNR==NR) { a[FNR]=$0 } else { b[FNR]=$0 } }; END { for(i in a) print a[i] "<@##@##@>" b[i] }' \
+    $bookwrkdir/text-book.txt $bookstadir/text-book.scy > $bookwrkdir/text-book.bas
+ else
+   cp -fu $bookwrkdir/text-book.txt $bookwrkdir/text-book.bas
+ fi;
 
 if [[ $locdic == "1" ]]; then
 # Создать локальные для книги локальные словари для уменьшения используемой памяти << locdic
@@ -207,12 +215,12 @@ if [[ ! $single -eq 1 ]]; then
   if [[ ! $yops -eq 0 ]]; then
      if [[ $do_parallel -eq 1 ]]; then
        printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-       parallel --env $paraopts_awk $bookwrkdir/text-book.txt \
+       parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
        awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f scriptdb/main.awk \
            > $bookwrkdir/text-book.awk.txt
      else
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f scriptdb/main.awk $bookwrkdir/text-book.txt \
-           > $bookwrkdir/text-book.awk.txt
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f scriptdb/main.awk \
+         $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
      fi # do_parallel
 
      mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -225,10 +233,10 @@ if [[ ! $single -eq 1 ]]; then
 
      if [[ $do_parallel -eq 1 ]]; then
        printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-       parallel --env $paraopts_awk $bookwrkdir/text-book.txt \
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+       parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
      else
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk $bookwrkdir/text-book.txt \
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk $bookwrkdir/text-book.bas \
            > $bookwrkdir/text-book.awk.txt
      fi # do_parallel
 
@@ -247,10 +255,10 @@ else
 
     if [[ $do_parallel -eq 1 ]]; then
       printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-      parallel --env $paraopts_awk $bookwrkdir/text-book.txt \
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+      parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk $bookwrkdir/text-book.txt \
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk $bookwrkdir/text-book.bas \
           > $bookwrkdir/text-book.awk.txt
     fi # do_parallel
 
@@ -267,10 +275,10 @@ else
 
     if [[ $do_parallel -eq 1 ]]; then
       printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-      parallel --env $paraopts_awk $bookwrkdir/text-book.txt \
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+      parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk $bookwrkdir/text-book.txt \
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk $bookwrkdir/text-book.bas \
           > $bookwrkdir/text-book.awk.txt
    fi # do_parallel
 
@@ -284,10 +292,10 @@ else
 
     if [[ $do_parallel -eq 1 ]]; then
       printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-      parallel --env $paraopts_awk $bookwrkdir/text-book.txt \
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+      parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -f $bookstadir/main.awk $bookwrkdir/text-book.txt \
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk $bookwrkdir/text-book.bas \
           > $bookwrkdir/text-book.awk.txt
     fi # do_parallel
 

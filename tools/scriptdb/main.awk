@@ -38,13 +38,17 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
    vvpat   = "[,—]"
    hysnip  = regword "[-]" regword
 
-   if ( spacy_on == "1" ) { # Загрузить копию текста, предварительно обработанного SpaCy
-   cmd = "cat " bkscydir "text-book.scy 2>/dev/null"; while ((cmd|getline) > 0) { scy++; bscy[scy]=$0; } close(cmd); };
+#  if ( spacy_on == "1" ) { # Загрузить копию текста, предварительно обработанного SpaCy
+#  cmd = "cat " bkscydir "text-book.scy 2>/dev/null"; while ((cmd|getline) > 0) { scy++; bscy[scy]=$0; } close(cmd); };
 
    savefs = FS;
    FS = fsword;
 } {
-    num++; book[num] = $0;
+    num++;
+    split($0,currline,"<@##@##@>");
+    if ( spacy_on == "1" ) { bscy[num] = currline[2] };
+    $0 = currline[1];
+    book[num] = $0;
 
     for (i=1; i<=NF; i++) { ci=tolower($i);
  # Сканируем текст на омографы. Для сканирования 1 омографа: ./momo.sh -si book.fb2 замок
