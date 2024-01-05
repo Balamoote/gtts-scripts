@@ -23,18 +23,18 @@ function hyphback(hystring,  hyw) {                 # Склеить слова 
                 hystring = gensub(/unxyp/,"","g",tolower(hystring));
                   if (hystring ~ hysnip) { for (i=1; i<=nf-1; i++) { if ( se(0,"-") ) { hyw = lc(0) sep[i] lc(1); if ( hyw in dichyph )
                 { l[i] = l[i] sep[i] l[i+1]; delete sep[i]; delete l[i+1]; nf=arrpack(i+1, l); arrpack(i, sep) }; }; }; };}
-function hyphbscy(hystring,  hyw) {                 # Склеить слова с дефисом, присутствующие в словаре
+function hyphbphy(hystring,  hyw) {                 # Склеить слова с дефисом, присутствующие в словаре
                 hystring = gensub(/<#@_[^@]+@#>/,"","g",tolower(hystring));
                   if (hystring ~ hysnip) { for (i=1; i<=nf-1; i++) {
-                  if ( sepscy[i] == "-" ) { hyw = tolower(lscy[i]) "-" tolower(lscy[i+1]); if ( hyw in dichyph )
-                  { lscy[i] = lscy[i] sepscy[i] lscy[i+1]; delete sepscy[i]; delete lscy[i+1]; nfscy=arrpack(i+1, lscy); arrpack(i, sepscy) }; };
-                  if ( sepscy[i] ~ /-<#@_[^@]+@#>|<#@_[^@]+@#>-/ ) { hyw = tolower(lscy[i]) "-" tolower(lscy[i+1]); if ( hyw in dichyph )
-                  { lscy[i] = lscy[i] "-" lscy[i+1]; sepscy[i+1] = sepscy[i] sepscy[i+1]; delete sepscy[i]; delete lscy[i+1]; nfscy=arrpack(i+1, lscy); arrpack(i, sepscy) }; };
+                  if ( sepphy[i] == "-" ) { hyw = tolower(lphy[i]) "-" tolower(lphy[i+1]); if ( hyw in dichyph )
+                  { lphy[i] = lphy[i] sepphy[i] lphy[i+1]; delete sepphy[i]; delete lphy[i+1]; nfphy=arrpack(i+1, lphy); arrpack(i, sepphy) }; };
+                  if ( sepphy[i] ~ /-<#@_[^@]+@#>|<#@_[^@]+@#>-/ ) { hyw = tolower(lphy[i]) "-" tolower(lphy[i+1]); if ( hyw in dichyph )
+                  { lphy[i] = lphy[i] "-" lphy[i+1]; sepphy[i+1] = sepphy[i] sepphy[i+1]; delete sepphy[i]; delete lphy[i+1]; nfphy=arrpack(i+1, lphy); arrpack(i, sepphy) }; };
                  };};}
 function splitline(instring,    ret) {              # Разбить строку на слова
                 ret=patsplit(instring,l,patword,sep); return ret }
-function splitlinescy(instring,    ret) {             # Разбить строку на слова
-                ret=patsplit(instring,lscy,patword,sepscy); return ret }
+function splitlinephy(instring,    ret) {             # Разбить строку на слова
+                ret=patsplit(instring,lphy,patword,sepphy); return ret }
 function regwpart(word, part,    ret) {             # Получить заменяемую часть слова в нужном регистре
                 ret=substr(word,index(tolower(word),part),length(part)); return ret }
 function getwpos(word,    n) {                      # Получить адрес слова в строке, Без учёта регистра
@@ -47,9 +47,9 @@ function omakevars(xklass) {                        # определить пе�
                 iwrd=tolower(wrd);winfo=oms[xklass]["info"][iwrd];wln=split(omap[xklass][wrd],omlin," ");
                 omo1=oms[xklass][xclass[xklass][1]][wrd];omo2=oms[xklass][xclass[xklass][2]][wrd];omo3=oms[xklass][xclass[xklass][3]][wrd] }
 function makebookvars() {                           # разбить строку, но склеить словарные слова с дефисом
-                b=strtonum(omlin[y]);nf=splitline(book[b]);splitlinescy(bscy[b]);hyphback(book[b]);hyphbscy(bscy[b]);regwpos(wrd); }
+                b=strtonum(omlin[y]);nf=splitline(book[b]);splitlinephy(bphy[b]);hyphback(book[b]);hyphbphy(bphy[b]);regwpos(wrd); }
 function makebookvars_nohyphback() {                # разбить строку, но словарные слова с дефисом не склеивать
-                b=strtonum(omlin[y]);nf=splitline(book[b]);splitlinescy(bscy[b]);regwpos(wrd); }
+                b=strtonum(omlin[y]);nf=splitline(book[b]);splitlinephy(bphy[b]);regwpos(wrd); }
 function makewposvars() {                           # определить переменные внутри цикла для слова в позиции i
                 i=strtonum(i); prex=edro2mnim=edro2mnvi=nizm=mn2e2pomn=loc2emd=loc2ezd=NORULE=tn=hyn=qyn=wyn="" }
 

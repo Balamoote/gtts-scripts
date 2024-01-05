@@ -19,6 +19,9 @@ backup="$book".$suf
 debug=0   # Если 1, то сделать отладку скриптов омографов: поиск искажений текста в "пастеризованных" версиях исходника и результата 
 nocaps=0  # Если 1, то капсов в "пастеризованых" не будет
 locdic=1
+morphy_is=1   # 1 = SpaCy; 2 = Natasha
+morphy_yo=0   # 1 = скрипт vsevso.awk использует только данные SpaCy или Natasha; 0 = только "подбирает хвосты"
+morphy_do=0   # 1 = некоторые скрипты могут использовать только данные SpaCy или Natasha; 0 = только "подбирает хвосты" (не сделано)
 do_parallel=1 # влючить GNU Parallel. ВНИМАНИЕ: Использует памяти в N раз больше, где N - кол-во задач
    pblock=-1  # размер куска текста на 1 задачу: постфиксы K, M, G, T, P, k, m, g, t, p. "-1" = авто
    pjobs=100% # задать макс. кол-во задач. 100% = кол-ву процессоров. 4 = 4 задачи. Более 100% задвать обчыно нет смысла. Обратить внимание на кол-во оперативки!
@@ -77,33 +80,33 @@ case $key in
 		if [[ -d "mano-$book" ]]; then rm -rf "mano-$book"; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; exit 1
 		else printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директории" $bookwrkdir "не существует. Используйте другой ключ."; exit 1; fi ;;
 	-x) # Однозначние омографы+дискретные скрипты; существующую директорию mano- не удалять
-		fixomo=1; preview=0; spacy=0; progs=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы и дискретные скрипты." ;;
+		fixomo=1; preview=0; morphy=0; progs=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы и дискретные скрипты." ;;
 	-p) # Превью текста и дискретные скрипты; существующую директорию mano- не удалять
-		fixomo=0; preview=1; spacy=0; progs=0; printf '\e[36m%s\e[0m\n' "Превью текста и дискретные скрипты." ;;
+		fixomo=0; preview=1; morphy=0; progs=0; printf '\e[36m%s\e[0m\n' "Превью текста и дискретные скрипты." ;;
 	-px | -xp | -g) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- не удалять
-		fixomo=1; preview=1; spacy=0; progs=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы, превью и дискретные скрипты." ;;
-	-fpx | -fxp | -fg | -gg ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; +Spacy (!!!)
-		fixomo=1; preview=1; spacy=1; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
-	-fpxo | -fxpo | -fgo | -ggo ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; +Spacy (!!!) + список в слов консоль
-		fixomo=1; preview=1; spacy=1; progs=1; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
-	-fpc | -ggc ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
-		fixomo=1; preview=1; spacy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
-	-fps | -sw ) # один омограф, превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
-		fixomo=1; preview=1; spacy=0; progs=0; swrd=1; single=1
+		fixomo=1; preview=1; morphy=0; progs=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы, превью и дискретные скрипты." ;;
+	-fpx | -fxp | -fg | -gg ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; +morphy (!!!)
+		fixomo=1; preview=1; morphy=1; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+	-fpxo | -fxpo | -fgo | -ggo ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; +morphy (!!!) + список в слов консоль
+		fixomo=1; preview=1; morphy=1; progs=1; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+	-fpc | -ggc ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; без morphy (!!!)
+		fixomo=1; preview=1; morphy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+	-fps | -sw ) # один омограф, превью и дискретные скрипты; существующую директорию mano- удалить; без morphy (!!!)
+		fixomo=1; preview=1; morphy=0; progs=0; swrd=1; single=1
 		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельный омограф не задан."; exit 1; fi; 
 		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
-	-fpg | -sg ) # группа омографов, превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
-		fixomo=1; preview=1; spacy=0; progs=0; sgrp=1; single=1
+	-fpg | -sg ) # группа омографов, превью и дискретные скрипты; существующую директорию mano- удалить; без morphy (!!!)
+		fixomo=1; preview=1; morphy=0; progs=0; sgrp=1; single=1
 		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельная группа омографов не задана."; exit 1; fi; 
 		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
-	-fpe | -se ) # омограф = "все", превью и дискретные скрипты; существующую директорию mano- удалить; без Spacy (!!!)
-		fixomo=1; preview=1; spacy=0; progs=0; vse=1; single=1
+	-fpe | -se ) # омограф = "все", превью и дискретные скрипты; существующую директорию mano- удалить; без morphy (!!!)
+		fixomo=1; preview=1; morphy=1; progs=0; vse=1; single=1
 		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельный омограф не задан."; exit 1; fi; 
 		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-xf | -fx) # Превью текста и дискретные скрипты; существующую директорию mano- удалить
-		fixomo=1; preview=0; spacy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=1; preview=0; morphy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-fp | -pf) # Однозначные омографы Не делать, дискретные скрипты; существующую директорию mano- удалить
-		fixomo=0; preview=1; spacy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=0; preview=1; morphy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	*) # Нечто другое
 		printf '\e[32m%s \e[93m%s \e[32m%s \e[93m%s\e[0m\n' "Задайте ключ или книгу. Например:" "./momo.sh -xp book.fb2" "или" "./momo.fb2 book.fb2"; exit 0 ;;
 esac
@@ -122,7 +125,7 @@ if [[ $clxx -eq "1" ]]; then
 	else printf '\e[1;31m%s \e[93m%s \e[1;31m%s\e[0m\n' "Выполнение скрипта" "./momo.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
 
 # Массив со списком обязательных файлов
-pack="scriptdb/automo.gz scriptdb/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk scriptdb/deomo.awk scriptdb/despacy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz scriptdb/main.awk scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.scy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/sort_opt.awk scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptdb/zamok.awk"
+pack="scriptdb/automo.gz scriptdb/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz scriptdb/main.awk scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/sort_opt.awk scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptdb/zamok.awk"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -144,36 +147,64 @@ sed -rn '/^\s*<binary/,$p' "$book" > $bookwrkdir/binary-book.txt
 mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
 if [[ $fixomo == "1" ]]; then
 
-if [[ $spacy == "1" ]] || [[ $locdic == "1" ]]; then
+if [[ $morphy == "1" ]] || [[ $locdic == "1" ]]; then
 # Создать директорию статических файлов для текущей книги
  if [[ ! -d $bookstadir ]]; then mkdir $bookstadir
  else printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория статических файлов для текущей книги" $bookstadir "существует."; fi; fi
 
-if [[ $spacy == "1" ]]; then
-# Создать копию текст книги и морфологией с помощью spacy << начало блока SpaCy
+if [[ $morphy == "1" ]]; then
+# Создать копию текст книги и морфологией с помощью morphy << начало блока morphy
 
- if [[ -s $bookstadir/text-book.scy ]] && md5sum -c --status $bookstadir/text.scy.md5 >/dev/null 2>&1; then
-        printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Файлы в" $bookstadir/text.scy.md5 "OK: файл с разметкой уже создан.";
- else
-    sed -r "s/[$unxc]+//g;
-            s/[$unxs]/./g;
-            s/([$RUUC])([$RUUC]+)/\1\L\2/g;
-            s/<[-a-zA-Z_/.,;:#?! ]+>//g" $bookwrkdir/text-book.txt | \
-    python3 scriptdb/rulg_omo.py scriptdb/omo_list.scy.gz > $bookstadir/text-book.scy
-    #python3 scriptdb/rulg_all.py scriptdb/omo_list.scy > $bookstadir/text-book.scy
+   if [[ $morphy_is == "1" ]]; then
 
-    md5sum $bookstadir/text-book.scy $bookwrkdir/text-book.txt scriptdb/rulg_omo.py scriptdb/rulg_all.py > $bookstadir/text.scy.md5
-    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
-    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк с омографами:" $durhum ; fi
+     if [[ -s $bookstadir/text-book.scy ]] && md5sum -c --status $bookstadir/text.phy.md5 >/dev/null 2>&1; then
+            printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Файлы в" $bookstadir/text.phy.md5 "OK: файл с разметкой SpaCy уже создан.";
+     else
+        sed -r "s/[$unxc]+//g;
+                s/[$unxs]/./g;
+                s/([$RUUC])([$RUUC]+)/\1\L\2/g;
+                s/<[-a-zA-Z_/.,;:#?! ]+>//g" $bookwrkdir/text-book.txt | \
+        python3 scriptdb/rulg_omo.py scriptdb/omo_list.phy.gz > $bookstadir/text-book.scy
+        #python3 scriptdb/rulg_all.py scriptdb/omo_list.phy > $bookstadir/text-book.scy
+    
+        md5sum $bookstadir/text-book.scy $bookwrkdir/text-book.txt scriptdb/rulg_omo.py scriptdb/rulg_all.py > $bookstadir/text.phy.md5
+        mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
+        LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк по SpaCy:" $durhum ; fi
+  fi;
+  if [[ $morphy_is == "2" ]]; then
+
+     if [[ -s $bookstadir/text-book.nat ]] && md5sum -c --status $bookstadir/text.phy.md5 >/dev/null 2>&1; then
+            printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Файлы в" $bookstadir/text.phy.md5 "OK: файл с разметкой Natasha уже создан.";
+     else
+        sed -r "s/[$unxc]+//g;
+                s/[$unxs]/./g;
+                s/([$RUUC])([$RUUC]+)/\1\L\2/g;
+                s/<[-a-zA-Z_/.,;:#?! ]+>//g" $bookwrkdir/text-book.txt | \
+        python3 scriptdb/natru_omo.py scriptdb/omo_list.phy.gz > $bookstadir/text-book.nat
+    
+        md5sum $bookstadir/text-book.nat $bookwrkdir/text-book.txt scriptdb/natru_omo.py > $bookstadir/text.phy.md5
+        mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
+        LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк по Natasha:" $durhum ; fi
+  fi;
 fi;
-# << Конец блока SpaCy
+# << Конец блока morphy
 
 # 
- if [[ -s $bookstadir/text-book.scy ]]; then
-    awk '{if (FNR==NR) { a[FNR]=$0 } else { b[FNR]=$0 } }; END { for(i in a) print a[i] "<@##@##@>" b[i] }' \
-    $bookwrkdir/text-book.txt $bookstadir/text-book.scy > $bookwrkdir/text-book.bas
- else
-   cp -fu $bookwrkdir/text-book.txt $bookwrkdir/text-book.bas
+ if [[ $morphy_is == "1" ]]; then
+   if [[ -s $bookstadir/text-book.scy ]]; then
+       awk '{if (FNR==NR) { a[FNR]=$0 } else { b[FNR]=$0 } }; END { for(i in a) print a[i] "<@##@##@>" b[i] }' \
+       $bookwrkdir/text-book.txt $bookstadir/text-book.scy > $bookwrkdir/text-book.bas
+   else
+       cp -fu $bookwrkdir/text-book.txt $bookwrkdir/text-book.bas
+   fi;
+ fi;
+ if [[ $morphy_is == "2" ]]; then
+   if [[ -s $bookstadir/text-book.scy ]]; then
+       awk '{if (FNR==NR) { a[FNR]=$0 } else { b[FNR]=$0 } }; END { for(i in a) print a[i] "<@##@##@>" b[i] }' \
+       $bookwrkdir/text-book.txt $bookstadir/text-book.nat > $bookwrkdir/text-book.bas
+   else
+       cp -fu $bookwrkdir/text-book.txt $bookwrkdir/text-book.bas
+   fi;
  fi;
 
 if [[ $locdic == "1" ]]; then
@@ -216,11 +247,11 @@ if [[ ! $single -eq 1 ]]; then
      if [[ $do_parallel -eq 1 ]]; then
        printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
        parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f scriptdb/main.awk \
-           > $bookwrkdir/text-book.awk.txt
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+           -f scriptdb/main.awk > $bookwrkdir/text-book.awk.txt
      else
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f scriptdb/main.awk \
-         $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+         -f scriptdb/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
      fi # do_parallel
 
      mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -234,10 +265,11 @@ if [[ ! $single -eq 1 ]]; then
      if [[ $do_parallel -eq 1 ]]; then
        printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
        parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+           -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
      else
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk $bookwrkdir/text-book.bas \
-           > $bookwrkdir/text-book.awk.txt
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+           -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
      fi # do_parallel
 
      mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -256,10 +288,11 @@ else
     if [[ $do_parallel -eq 1 ]]; then
       printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
       parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+          -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk $bookwrkdir/text-book.bas \
-          > $bookwrkdir/text-book.awk.txt
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+          -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
     fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -276,10 +309,11 @@ else
     if [[ $do_parallel -eq 1 ]]; then
       printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
       parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+          -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk $bookwrkdir/text-book.bas \
-          > $bookwrkdir/text-book.awk.txt
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+          -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
    fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -293,15 +327,18 @@ else
     if [[ $do_parallel -eq 1 ]]; then
       printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
       parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+          -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkscydir="$bookstadir/" -vlocdic="$bookstadir/" -vspacy_on="$spacy" -f $bookstadir/main.awk $bookwrkdir/text-book.bas \
-          > $bookwrkdir/text-book.awk.txt
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+        -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
     fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
-    printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
+     yope=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt| wc -l)
+     LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s \e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Основная обработка:" $durhum "Остаток 'все':" $yope "из" $yops "."
+#   printf '\e[36m%s\e[0m\n' "Необработанных 'все' не найдено."
   fi # 
 fi
 

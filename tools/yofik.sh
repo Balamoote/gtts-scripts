@@ -115,18 +115,18 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предва�
 
 yo_time2=$(date +%s.%N); duration=$( echo $yo_time2 - $yo_time1 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация однозначных случаев заняла:" $duration "сек"
- # выключить все сканирующие строки, кроме "все"
- awk -vindb="scriptdb/" -vinax="scriptaux/" -f <(sed -r "/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^/#/g; s/^#(.+)(#_#_# vsez !_#_!)$/\1\2/g" scriptdb/deomo.awk) \
-    $tmpdir/text-book.txt > $tmpdir/text-book.awk.txt
- mv $tmpdir/text-book.awk.txt $tmpdir/text-book.txt
+## выключить все сканирующие строки, кроме "все"
+#awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -f <(sed -r "/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^/#/g; s/^#(.+)(#_#_# vsez !_#_!)$/\1\2/g" scriptdb/main.awk) \
+#   $tmpdir/text-book.txt > $tmpdir/text-book.awk.txt
+#mv $tmpdir/text-book.awk.txt $tmpdir/text-book.txt
 
 yo_time3=$(date +%s.%N); duration=$( echo $yo_time3 - $yo_time2 | bc )
-LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация омографов заняла:" $duration "сек"
+#LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация омографов заняла:" $duration "сек"
 
 # Проверить наличие необработанных "все" и подключить пару "все/всё"
 yop=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $tmpdir/text-book.txt| wc -l)
 if [[ ! $yop -eq 0 ]]; then
-	printf '\e[36m%s \e[93m%s\e[36m%s\e[0m\n' "Остаток Все́/Всё:" $yop "."; fi
+	printf '\e[36m%s \e[93m%s\e[36m%s\e[0m\n' "Остаток Все́/Всё:" $yop ". Для дальнейшей обработки использовать ./momo.sh"; fi
 
 
 # Возвращаем графику назад

@@ -35,11 +35,12 @@ with gzip.open(omo_list_path, 'rt') as f:
     omo_list = {word.strip() for word in f}
 
 def analyze_line(line):
-    words = set(word.lower() for word in re.split('[^а-яёА-ЯЁ]+', line) if word.lower() in omo_list)
+    words = set(word.lower() for word in re.split('[^а-яёА-ЯЁ]+', line) if word.lower() in omo_list )
     if words:
         analyzed_sentences = []
-        for sent in re.split("(?<=[.!?…;])\s+", line):
-            sent_text = sent.lstrip() + ' '
+        for sent in re.split(r"(?<=[.!?…;])\s+", line):
+#           sent_text = sent.lstrip() + ' '
+            sent_text = sent + ' '
             if not sent_text:
                 continue
             sentence_contains_word = False
@@ -63,7 +64,7 @@ def analyze_line(line):
                 analyzed_sentences.append(analyzed_sent)
             else:
                 analyzed_sentences.append(sent_text)
-        return ' '.join(analyzed_sentences)
+        return ''.join(analyzed_sentences)
     else:
         return line
 
