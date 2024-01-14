@@ -29,7 +29,7 @@ lines = file_contents.split('\n')
 if len(sys.argv) > 1:
     omo_list_path = Path(sys.argv[1])
 else:
-    omo_list_path = Path("omo_list.scy.gz")
+    omo_list_path = Path("omo_list.phy.gz")
 
 with gzip.open(omo_list_path, 'rt') as f:
     omo_list = {word.strip() for word in f}
