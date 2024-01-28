@@ -36,7 +36,7 @@ case "$1" in
 esac; fi
 
 # Массив со списком обязательных файлов
-pack="scriptdb/automo.gz scriptdb//beautify.awk scriptdb//class.list.gz scriptdb//classes.awk scriptdb//cstauto.awk scriptdb//cstring.awk scriptdb//defunct.awk scriptdb//deomo.awk scriptdb//despacy.awk scriptdb//dic_cust.gz scriptdb//dic_gl.gz scriptdb//dic_prl.gz scriptdb//dic_prq.gz scriptdb//dic_rest.gz scriptdb//dic_suw.gz scriptdb//exclusion.pat.gz scriptdb//fb2 scriptdb//functions.awk scriptdb//gw_caplists.awk scriptdb//hclean.sh scriptdb//ist.gz scriptdb//main.awk scriptdb//mano-lc0.txt.gz scriptdb//mano-uc0.txt.gz scriptdb//namebase0.txt.gz scriptdb//namedef.awk scriptdb//nameoverride.txt.gz scriptdb//nomo.txt.gz scriptdb//omo-index.sed scriptdb//omo_list.scy.gz scriptdb//omoid.me scriptdb//omoid_auto.gz scriptdb//omoid_flat.gz scriptdb//omoid_ini.gz scriptdb//omoid_pa_ini.gz scriptdb//omopick.awk scriptdb//preview.awk scriptdb//rulg_all.py scriptdb//rulg_omo.py scriptdb//settings.ini scriptdb//sort_opt.awk scriptdb//vsevso.awk scriptdb//wordbase0.gz scriptdb//yodef.awk scriptdb//yodef0.txt.gz scriptdb//yodef1.txt.gz scriptdb//yolc.txt scriptdb//yomo-lc0.txt.gz scriptdb//yomo-uc0.txt.gz scriptdb//zamok.awk"
+pack="scriptdb//automo.gz scriptdb//beautify.awk scriptdb//class.list.gz scriptdb//classes.awk scriptdb//cstauto.awk scriptdb//cstring.awk scriptdb//defunct.awk scriptdb//deomo.awk scriptdb//despacy.awk scriptdb//dic_cust.gz scriptdb//dic_gl.gz scriptdb//dic_prl.gz scriptdb//dic_prq.gz scriptdb//dic_rest.gz scriptdb//dic_suw.gz scriptdb//exclusion.pat.gz scriptdb//fb2 scriptdb//functions.awk scriptdb//gw_caplists.awk scriptdb//hclean.sh scriptdb//ist.gz scriptdb//main.awk scriptdb//mano-lc0.txt.gz scriptdb//mano-uc0.txt.gz scriptdb//namebase0.txt.gz scriptdb//namedef.awk scriptdb//nameoverride.txt.gz scriptdb//nomo.txt.gz scriptdb//omo-index.sed scriptdb//omo_list.scy.gz scriptdb//omoid.me scriptdb//omoid_auto.gz scriptdb//omoid_flat.gz scriptdb//omoid_ini.gz scriptdb//omoid_pa_ini.gz scriptdb//omopick.awk scriptdb//preview.awk scriptdb//rulg_all.py scriptdb//rulg_omo.py scriptdb//settings.ini scriptdb//sort_opt.awk scriptdb//vsevso.awk scriptdb//wordbase0.gz scriptdb//yodef.awk scriptdb//yodef0.txt.gz scriptdb//yodef1.txt.gz scriptdb//yolc.txt scriptdb//yomo-lc0.txt.gz scriptdb//yomo-uc0.txt.gz scriptdb//zamok.awk"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -52,11 +52,11 @@ if [[ -s _err-msg.md5 ]]; then
 		rm scriptaux/zlexxdb.md5 _err-msg.md5; printf '\e[31;5;1m%s\e[0m \e[33m%s \e[31;5;1m%s\e[0m\n' "Исправьте ошибки в" "tts.txt" "!"; exit 1; fi
 	else
 	    [[ -s _err-msg.md5        ]] && rm _err-msg.md5
-		[[ -s _lost.txt           ]] && rm _lost.txt
-		[[ -s _2x-left.txt        ]] && rm _2x-left.txt
-		[[ -s _2x-right-quick.txt ]] && rm _2x-right-quick.txt
-		[[ -s _2x-right-full.txt  ]] && rm _2x-right-full.txt
-		[[ -s _pat-error.txt      ]] && rm _pat-error.txt
+	    [[ -s _lost.txt           ]] && rm _lost.txt
+	    [[ -s _2x-left.txt        ]] && rm _2x-left.txt
+	    [[ -s _2x-right-quick.txt ]] && rm _2x-right-quick.txt
+	    [[ -s _2x-right-full.txt  ]] && rm _2x-right-full.txt
+	    [[ -s _pat-error.txt      ]] && rm _pat-error.txt
 	fi
 
 # Проверка по md5: zlexxdb.md5 zaomo.md5 zjofik.md5 zndb.md5 zwdb.md5 . Назначаем "1", если ОК, и "0"", если нужно пересоздать.

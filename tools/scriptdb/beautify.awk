@@ -65,7 +65,7 @@ END {
     # Блок выравнивания условий внутри if-конструкции
     b = book[i]; 
     if (b ~ ifreg && iffy == "" && bracket == "" && b !~ "{.*$") { match(b,ifreg); bracket = RSTART+RLENGTH-1; iffy = 1; continue };
-    if (b ~ /^\s*{/ ) { bracket=iffy=pad=RSTART=RLENGTH=""; continue };
+    if (b ~ /{/ ) { bracket=iffy=pad=RSTART=RLENGTH=""; continue };
 
     if ( iffy == 1 && b !~ /^\s*{/ ) {
        if ( bracket ) { 

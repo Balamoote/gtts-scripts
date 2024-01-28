@@ -22,15 +22,17 @@ locdic=1
 morphy_is=1   # 1 = SpaCy; 2 = Natasha
 morphy_yo=0   # 1 = скрипт vsevso.awk использует только данные SpaCy или Natasha; 0 = только "подбирает хвосты"
 morphy_do=0   # 1 = некоторые скрипты могут использовать только данные SpaCy или Natasha; 0 = только "подбирает хвосты" (не сделано)
+
 do_parallel=1 # влючить GNU Parallel. ВНИМАНИЕ: Использует памяти в N раз больше, где N - кол-во задач
    pblock=-1  # размер куска текста на 1 задачу: постфиксы K, M, G, T, P, k, m, g, t, p. "-1" = авто
    pjobs=100% # задать макс. кол-во задач. 100% = кол-ву процессоров. 4 = 4 задачи. Более 100% задвать обчыно нет смысла. Обратить внимание на кол-во оперативки!
    pmem=1G    # мин. память, перед началом следующей задачи, если памяти менее 50% от значения, завершить самую свежую задачу.
    pload=100% # макс загрузка отдельного процессора
-   pnice=0   # приоритет
+   pnice=0    # приоритет
 
    paraopts_awk="--eta --bar --jobs=$pjobs --load=$pload --block=$pblock --memfree $pmem --nice=$pnice --noswap --pipe-part -ka"
    paraopts_sed="--jobs=$pjobs --load=$pload --memfree $pmem --block=$pblock --nice=$pnice --noswap --pipe-part -ka"
+   awkopts_main="-vindb=\"scriptdb/\" -vinax=\"scriptaux/\" -vbkphydir=\"$bookstadir/\" -vlocdic=\"$bookstadir/\" -vmorphy_on=\"$morphy\" -vmorphy_yo=\"$morphy_yo\""
 
 # Установка редактора: vim или neovim
 edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' scriptdb/settings.ini)
@@ -96,7 +98,7 @@ case $key in
 		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельный омограф не задан."; exit 1; fi; 
 		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-fpg | -sg ) # группа омографов, превью и дискретные скрипты; существующую директорию mano- удалить; без morphy (!!!)
-		fixomo=1; preview=1; morphy=0; progs=0; sgrp=1; single=1
+		fixomo=1; preview=0; morphy=0; progs=0; sgrp=1; single=1
 		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельная группа омографов не задана."; exit 1; fi; 
 		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
 	-fpe | -se ) # омограф = "все", превью и дискретные скрипты; существующую директорию mano- удалить; без morphy (!!!)
@@ -245,13 +247,10 @@ yops=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt | wc -l)
 if [[ ! $single -eq 1 ]]; then
   if [[ ! $yops -eq 0 ]]; then
      if [[ $do_parallel -eq 1 ]]; then
-       printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-       parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-           -f scriptdb/main.awk > $bookwrkdir/text-book.awk.txt
+       printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
+       parallel --env $paraopts_awk $bookwrkdir/text-book.bas awk $awkopts_main -f scriptdb/main.awk > $bookwrkdir/text-book.awk.txt
      else
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-         -f scriptdb/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+       awk $awkopts_main -f scriptdb/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
      fi # do_parallel
 
      mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -263,13 +262,10 @@ if [[ ! $single -eq 1 ]]; then
      sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+#_#_# vsez !_#_!)$/#\1/g' scriptdb/main.awk > $bookstadir/main.awk
 
      if [[ $do_parallel -eq 1 ]]; then
-       printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-       parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-           -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+       printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
+       parallel --env $paraopts_awk $bookwrkdir/text-book.bas awk $awkopts_main -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
      else
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-           -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+       awk $awkopts_main -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
      fi # do_parallel
 
      mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -286,13 +282,10 @@ else
             s/^#([^"]+")dummy(".+#_#_# single_word !_#_!)$/\1'$somo'\2/g}' scriptdb/main.awk > $bookstadir/main.awk
 
     if [[ $do_parallel -eq 1 ]]; then
-      printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-      parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-          -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+      printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
+      parallel --env $paraopts_awk $bookwrkdir/text-book.bas awk $awkopts_main -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-          -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+      awk $awkopts_main -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
     fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -307,13 +300,10 @@ else
             s/^#([^"]+")dummy(".+#_#_# single_group !_#_!)$/\1'$somo'\2/g}' scriptdb/main.awk > $bookstadir/main.awk
 
     if [[ $do_parallel -eq 1 ]]; then
-      printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-      parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-          -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+      printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
+      parallel --env $paraopts_awk $bookwrkdir/text-book.bas awk $awkopts_main -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-          -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+      awk $awkopts_main -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
    fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -325,13 +315,10 @@ else
             s/^(.+#_#_# all_omos !_#_!)$/#\1/g}' scriptdb/main.awk > $bookstadir/main.awk
 
     if [[ $do_parallel -eq 1 ]]; then
-      printf '\e[32m%s \e[36m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-      parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-          -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+      printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
+      parallel --env $paraopts_awk $bookwrkdir/text-book.bas awk $awkopts_main -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-        -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+      awk $awkopts_main -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
     fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -394,7 +381,6 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Всего об
 # Формируем дискретные скрипты пословно
 printf '\e[32m%s ' "Идет поиск омографов … подождите."
 if [[ $preview -eq 1 ]]; then printf '\e[32m%s' "Превью текста включено."
-else printf '\e[36m%s\n' "Превью текста выключено."; fi
 twd=$(tput cols)
 
 zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\
@@ -411,6 +397,7 @@ mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_c
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Время:" $durhum 
 
 chmod +x $bookwrkdir/*.sh
+else printf '\e[36m%s\n' "Превью текста выключено."; fi
 # Собираем книгу и удаляем временные файлы
 cat $bookwrkdir/text-book.txt $bookwrkdir/binary-book.txt > "$book"
 #rm $bookwrkdir/*.txt $bookwrkdir/*.pat $bookwrkdir/*.sed

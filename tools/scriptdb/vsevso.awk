@@ -175,7 +175,7 @@ gl_pnmn(3) && s(0,2) )
             prl_kred_sr(xsn+1) && s(xsn) )
  { l[i]=is_vsyo; V[38]++; if(dbg){print "V38"}; continue };
 
- if ( phf(1,"потому что") && s(0) && z(1) )
+ if ( w(1,"потому") && w(2,"что") && s(0) && z(1) )
  { l[i]=is_vsyo; V[39]++; if(dbg){print "V39"}; continue };
  if ( qxd(1,"тип топ") && s(0) )
  { l[i]=is_vsyo; V[40]++; if(dbg){print "V40"}; continue };
