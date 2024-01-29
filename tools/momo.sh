@@ -32,7 +32,6 @@ do_parallel=1 # влючить GNU Parallel. ВНИМАНИЕ: Использу�
 
    paraopts_awk="--eta --bar --jobs=$pjobs --load=$pload --block=$pblock --memfree $pmem --nice=$pnice --noswap --pipe-part -ka"
    paraopts_sed="--jobs=$pjobs --load=$pload --memfree $pmem --block=$pblock --nice=$pnice --noswap --pipe-part -ka"
-   awkopts_main="-vindb=\"scriptdb/\" -vinax=\"scriptaux/\" -vbkphydir=\"$bookstadir/\" -vlocdic=\"$bookstadir/\" -vmorphy_on=\"$morphy\" -vmorphy_yo=\"$morphy_yo\""
 
 # Установка редактора: vim или neovim
 edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' scriptdb/settings.ini)
@@ -248,9 +247,12 @@ if [[ ! $single -eq 1 ]]; then
   if [[ ! $yops -eq 0 ]]; then
      if [[ $do_parallel -eq 1 ]]; then
        printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-       parallel --env $paraopts_awk $bookwrkdir/text-book.bas awk $awkopts_main -f scriptdb/main.awk > $bookwrkdir/text-book.awk.txt
+       parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+           -f scriptdb/main.awk > $bookwrkdir/text-book.awk.txt
      else
-       awk $awkopts_main -f scriptdb/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+         -f scriptdb/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
      fi # do_parallel
 
      mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -263,9 +265,12 @@ if [[ ! $single -eq 1 ]]; then
 
      if [[ $do_parallel -eq 1 ]]; then
        printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-       parallel --env $paraopts_awk $bookwrkdir/text-book.bas awk $awkopts_main -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+       parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+           -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
      else
-       awk $awkopts_main -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+           -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
      fi # do_parallel
 
      mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -283,9 +288,12 @@ else
 
     if [[ $do_parallel -eq 1 ]]; then
       printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-      parallel --env $paraopts_awk $bookwrkdir/text-book.bas awk $awkopts_main -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+      parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+          -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk $awkopts_main -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+          -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
     fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -301,9 +309,12 @@ else
 
     if [[ $do_parallel -eq 1 ]]; then
       printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-      parallel --env $paraopts_awk $bookwrkdir/text-book.bas awk $awkopts_main -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+      parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+          -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk $awkopts_main -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+          -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
    fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -316,9 +327,12 @@ else
 
     if [[ $do_parallel -eq 1 ]]; then
       printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
-      parallel --env $paraopts_awk $bookwrkdir/text-book.bas awk $awkopts_main -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
+      parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+          -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk $awkopts_main -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+        -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
     fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt

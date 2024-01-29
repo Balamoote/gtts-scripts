@@ -7796,15 +7796,16 @@ xgrp="x4777";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)         
 
 for (i in book) { print book[i] }
 
-#dbg = 1
-#dbgstat = 1;
-#cmd = "rm _stat.txt _yo.txt _vsez.txt"
-#if (dbgstat==1) {system(cmd); for (i=1; i<=1630; i++) { printf ("%s%s %s %s\n", "R", i, "=", r[i]) >> "_stat.txt"};
-#for (i in prevyo) {print i, prevyo[i] >> "_yo.txt"}
-#for (i in vsez) { print i, vsez[i] >> "_vsez.txt" }
-#                }
-#
-# for (var in SYMTAB) { if (var ~ /^[a-zA-Z_]/) print var };
+#DO_DEBUG()
 
   }
 ###_END_###
+
+function DO_DEBUG(   k,cmd) {
+#dbg = 1
+#dbgstat = 1;
+#cmd = "if [ -s _Z_stat.txt ]; then rm _Z_stat.txt; fi"
+#system(cmd);
+ Zl=1155; for (k=1;k<=Zl;k++) { if(Z[k]) {printf ("%s%s %s %s\n", "Z", k, "=", Z[k]) >> "_Z_stat.txt"} else {printf ("%s%s %s %s\n", "Z", k, "=", "empty") >> "_Z_stat.txt"}};
+#if (dbgstat==1) {system(cmd); for (k=1; k<=1160; k++) { printf ("%s%s %s %s\n", "Z", k, "=", Z[k]) >> "_Z_stat.txt"};};
+  }
