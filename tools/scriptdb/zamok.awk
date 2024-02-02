@@ -1488,6 +1488,7 @@ sz_iili(1) &&
        { l[i]=omo2; Z[269]++; if(dbg){print "Z269"}; continue };
 
        cst1="быть ведь же казаться стать считаться там тут являться";
+       wf_n=1;
        if ( bw(1,cst1) ) { wf_n=1;
           if ( bfa(2,5,"_lock_prl") ) { bf_n=bfn;
             if ( vgl(Y["n+_castle_pe"],2,bf_n-1) || vex(Y["tn_ok_vi"]) )
@@ -4777,6 +4778,7 @@ function TN_na_zamok_f(    ret, tn, stopp) { stopp=v2s(Y["TN_na_zamok_f"]);
 
 
     };
+    bb_n="";
     if ( bw(1,cst) ) { bb_n=1;
 
        if ( bw(tn-1,cst1) && s(tn-1) &&
