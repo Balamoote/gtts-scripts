@@ -21,8 +21,8 @@
 
 BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
 
-   #dbg = 0
-   #dbgstat = 0
+  #dbg = 0
+   dbgstat = 0 # имя дебажного массива установить при вызове функции DO_DEBUG() в deomo.awk
 
    unxy    = "[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
    unxyp   = "[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]+"

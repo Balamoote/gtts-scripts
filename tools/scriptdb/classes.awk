@@ -1079,6 +1079,7 @@ BEGIN {
          if ($2 ~ /_прош_ед_ср$/                ) {split($3,itmz,"#"); for (j in itmz) { if (itmz[j] && itmz[j] in md_gl) { md_bz[$1]=$3 };};};
          if ($2 ~ /_ед/ && $2 !~ /_прош_ед_ср$/ ) {split($3,itmz,"#"); for (j in itmz) { if (itmz[j] && itmz[j] in md_gl) { md_ed[$1]=$3 };};};
          if ($2 ~ /_мн/                         ) {split($3,itmz,"#"); for (j in itmz) { if (itmz[j] && itmz[j] in md_gl) { md_mn[$1]=$3 };};};
+         if ($2 ~ /^дееп_/                      ) {split($3,itmz,"#"); for (j in itmz) { if (itmz[j] && itmz[j] in md_gl) { md_dp[$1]=$3 };};};
 
       if($2~  /^гл_несов_непер_/ ){
 

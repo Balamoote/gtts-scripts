@@ -7796,16 +7796,14 @@ xgrp="x4777";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)         
 
 for (i in book) { print book[i] }
 
-#DO_DEBUG()
+if ( dbgstat ) { DO_DEBUG(Z,"Z") };
 
   }
 ###_END_###
 
-function DO_DEBUG(   k,cmd) {
-#dbg = 1
-#dbgstat = 1;
-#cmd = "if [ -s _Z_stat.txt ]; then rm _Z_stat.txt; fi"
-#system(cmd);
- Zl=1155; for (k=1;k<=Zl;k++) { if(Z[k]) {printf ("%s%s %s %s\n", "Z", k, "=", Z[k]) >> "_Z_stat.txt"} else {printf ("%s%s %s %s\n", "Z", k, "=", "empty") >> "_Z_stat.txt"}};
-#if (dbgstat==1) {system(cmd); for (k=1; k<=1160; k++) { printf ("%s%s %s %s\n", "Z", k, "=", Z[k]) >> "_Z_stat.txt"};};
+function DO_DEBUG(array,a_prefix,   outfile, k,cmd) {
+#cmd = "if [ -s _Z_stat.txt ]; then rm _Z_stat.txt; fi"; system(cmd);
+ outfile = "_" a_prefix ".txt"
+ for (k in array) { if ( array[k] ) {printf ("%s%s %s %s\n", a_prefix, k, "=", array[k]) >> outfile } };
+#                                    else {printf ("%s%s %s %s\n", a_prefix, k, "=", "empty")  >> outfile } };
   }

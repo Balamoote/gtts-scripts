@@ -6,7 +6,7 @@
 # 1) vim-ingo-library, брать тут https://github.com/inkarkat/vim-ingo-library
 # 2) vim-PatternsOnText, брать тут https://github.com/inkarkat/vim-PatternsOnText
 #set -e
-# Ключи запуска: -f, -x, -p или их комбинация. Например: ./momo.sh -xp book.fb2 или ./momo.fb2 book.fb2
+# Ключи запуска: -f, -x, -p или их комбинация. Например: ./momo.sh -xp book.fb2 или ./momo.fb2 book.fb2 или ./momo.fb2 -gg book.fb2
 export LC_COLLATE=C
 mo_time0=$(date +%s.%N); mo_prev=$mo_time0
 key="$1"
@@ -23,15 +23,16 @@ morphy_is=1   # 1 = SpaCy; 2 = Natasha
 morphy_yo=0   # 1 = скрипт vsevso.awk использует только данные SpaCy или Natasha; 0 = только "подбирает хвосты"
 morphy_do=0   # 1 = некоторые скрипты могут использовать только данные SpaCy или Natasha; 0 = только "подбирает хвосты" (не сделано)
 
-do_parallel=1 # влючить GNU Parallel. ВНИМАНИЕ: Использует памяти в N раз больше, где N - кол-во задач
-   pblock=-1  # размер куска текста на 1 задачу: постфиксы K, M, G, T, P, k, m, g, t, p. "-1" = авто
-   pjobs=100% # задать макс. кол-во задач. 100% = кол-ву процессоров. 4 = 4 задачи. Более 100% задвать обчыно нет смысла. Обратить внимание на кол-во оперативки!
-   pmem=1G    # мин. память, перед началом следующей задачи, если памяти менее 50% от значения, завершить самую свежую задачу.
-   pload=100% # макс загрузка отдельного процессора
-   pnice=0    # приоритет
+do_parallel=1     # включить GNU Parallel. ВНИМАНИЕ: подобрать параметры по реальной производительности
+   pblock_a=500K  # awk: размер куска текста на 1 задачу: постфиксы K, M, G, T, P, k, m, g, t, p. "-1" = авто
+   pblock_s=-1    # sed: размер куска текста на 1 задачу: постфиксы K, M, G, T, P, k, m, g, t, p. "-1" = авто
+   pjobs=8        # задать макс. кол-во задач. 100% = кол-ву потоков (threads). 4 = 4 задачи. Подсказка: $ parallel --number-of-cores
+   pload=200%     # макс загрузка отдельного процессора: вывод $ parallel --number-of-threads делённый на $ parallel --number-of-cores : 16/8 = 2 * 100% = 200%
+   pmem=1G        # мин. память, перед началом следующей задачи, если памяти менее 50% от значения, завершить самую свежую задачу.
+   pnice=0        # приоритет
 
-   paraopts_awk="--eta --bar --jobs=$pjobs --load=$pload --block=$pblock --memfree $pmem --nice=$pnice --noswap --pipe-part -ka"
-   paraopts_sed="--jobs=$pjobs --load=$pload --memfree $pmem --block=$pblock --nice=$pnice --noswap --pipe-part -ka"
+   paraopts_awk="--jobs=$pjobs --load=$pload --block=$pblock_a --memfree $pmem --nice=$pnice --noswap --eta --bar --pipe-part -ka"
+   paraopts_sed="--jobs=$pjobs --load=$pload --block=$pblock_s --memfree $pmem --nice=$pnice --noswap --pipe-part -ka"
 
 # Установка редактора: vim или neovim
 edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' scriptdb/settings.ini)
