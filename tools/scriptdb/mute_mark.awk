@@ -1,4 +1,6 @@
 # взять вывод statrep.awk и отметить несработавшие правила Z R V и т.д.
+# использовать с результатом работы скрипта ../statrep.awk
+# Пример: awk -f mute_mark.awk zamok.awk > zamok_1.awk , после чего искать по #mute -- это не сработавшие правила
 BEGIN {
    cmd = "cat _z.txt";
    while ((cmd|getline) > 0) {

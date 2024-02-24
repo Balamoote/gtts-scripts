@@ -87,6 +87,41 @@ case $key in
 
         exit 1; ;;
 
+    -spell_flat ) # все слова словарей без ё и ударений
+               zcat dic_*.gz | awk '{print $1}' > ru.txt
+               zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=']//g; s/ё/е/g; s/ /\r/g" >> ru.txt
+               zcat yodef0.txt.gz yodef1.txt.gz |sed -r "s/[_']//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
+               cat yolc.txt | sed -r "s/_//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
+               sed -r "s/\\\xcc\\\x81//g
+                       s/\\\xcc\\\xa0//g
+	                     s/\\\xcc\\\xa3//g
+	                     s/\\\xcc\\\xa4//g
+	                     s/\\\xcc\\\xad//g
+	                     s/\\\xcc\\\xb0//g
+                      " ru.txt |  sort -u > ruflat.txt
+               rm ru.txt
+               printf "Список ruflat.txt: без ударений, ё, служебных символов. В vim: mkspell! ru ruflat.txt\n"
+       exit 1; ;;
+
+    -spell_all ) # все слова словарей с именами, ё, ударенийми и служебными символами
+               zcat dic_*.gz | awk '{print $1}' > ru.txt
+               zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
+               zcat mano-uc0.txt.gz yomo-uc0.txt.gz nomo.txt.gz |sed -r "s/[_=]//g; s/\b(.)/\l\1/g; s/ /\n/g" >> ru.txt
+               zcat yodef0.txt.gz yodef1.txt.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
+               zcat namebase0.txt.gz nameoverride.txt.gz |sed -r "s/[_g]//g; s/=/\n/g;" >> ru.txt
+               zcat stray.gz >> ru.txt
+               cat yolc.txt |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
+               sed -r "s/([аеёиоуыэюя])'/\1\xcc\x81/g
+	                     s/\\\xcc\\\xa0/\xcc\xa0/g
+	                     s/\\\xcc\\\xa3/\xcc\xa3/g
+	                     s/\\\xcc\\\xa4/\xcc\xa4/g
+	                     s/\\\xcc\\\xad/\xcc\xad/g
+	                     s/\\\xcc\\\xb0/\xcc\xb0/g
+                      " ru.txt |  sort -u > ruall.txt
+               rm ru.txt
+               printf "Список ruall.txt: с ударениями в омографах, ё, служебными символами! В vim: mkspell! ru ruall.txt\n"
+       exit 1; ;;
+
     * ) exit 0; ;;
 
 

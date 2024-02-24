@@ -46,8 +46,7 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
     num++;
     split($0,currline,"<@##@##@>");
     if ( morphy_on == "1" ) { bphy[num] = currline[2] };
-    $0 = currline[1];
-    book[num] = $0;
+    $0 = book[num] = currline[1];
 
     for (i=1; i<=NF; i++) { ci=tolower($i);
  # Сканируем текст на омографы. Для сканирования 1 омографа: ./momo.sh -si book.fb2 замок

@@ -25,7 +25,15 @@ BEGIN {
 
    if (redix == 0 && gawk52 == 1) { readall(namecache) } else {
 
-   cmd = "zcat " indb "namebase0.txt.gz " indb "nameoverride.txt.gz | sed -r 's/([аеёиоуыэюя])\\x27/\\1\\xcc\\x81/gI; s/\\\\xcc\\\\xa0/\\xcc\\xa0/g; s/\\\\xcc\\\\xa3/\\xcc\\xa3/g; s/\\\\xcc\\\\xa4/\\xcc\\xa4/g; s/\\\\xcc\\\\xad/\\xcc\\xad/g; s/\\\\xcc\\\\xb0/\\xcc\\xb0/g; s/^_(.)(.+)=(.)(.+)=g$/\\u\\1\\2 \\u\\3\\4/g'";
+   cmd = "zcat " indb "namebase0.txt.gz " indb "nameoverride.txt.gz | \
+          sed -r 's/([аеёиоуыэюя])\\x27/\\1\\xcc\\x81/gI;\
+          s/^_(.)(.+)=(\\\\xcc\\\\x[ab][034d])(.)(.+)=g$/\\u\\1\\2 \\3\\u\\4\\5/g;\
+          s/\\\\xcc\\\\xa0/\\xcc\\xa0/g;\
+          s/\\\\xcc\\\\xa3/\\xcc\\xa3/g;\
+          s/\\\\xcc\\\\xa4/\\xcc\\xa4/g;\
+          s/\\\\xcc\\\\xad/\\xcc\\xad/g;\
+          s/\\\\xcc\\\\xb0/\\xcc\\xb0/g;\
+          s/^_(.)(.+)=(.)(.+)=g$/\\u\\1\\2 \\u\\3\\4/g;'";
    while ((cmd|getline) > 0) {
 
          namedef[$1]=$2;

@@ -1872,7 +1872,7 @@ nar_kaq(2) && s(0,1) && p(2) )
               q(1,"gl_pemn gl_nemn gl_pnmn gl_vzmn") &&
               w(2,"и") &&
               q(3,"gl_pemn gl_nemn gl_pnmn gl_vzmn") && s(0,2) )
- { l[i]=is_vsyo; V[488]++; if(dbg){print "V488"}; continue };
+ { l[i]=is_vsje; V[488]++; if(dbg){print "V488"}; continue };
  if ( w(1,"и") &&
       q(2,"gl_pemn gl_nemn gl_pnmn gl_vzmn") &&
       w(3,"и") &&

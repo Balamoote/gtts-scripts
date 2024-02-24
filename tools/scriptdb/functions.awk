@@ -5,7 +5,7 @@ function readfile(file,  tmp, save_rs) {            # Функция чтени�
                 save_rs = RS; RS = "^$"; getline tmp < file; close(file); RS = save_rs; return tmp }
 function joinpat(array, seps, nuf,    ret, i, k) {  # Склеить строку обратно
                 ret = seps[0]; for (i=1; i<= nuf; i++) {ret = ret array[i] seps[i]}; return ret }
-function pusha(arr, arrto,    k) {                  # добывать массив выдать 1-й символ строки-сеператора
+function pusha(arr, arrto,    k) {                  # добавить массив в целевой массив
                 for (k in arr) {arrto[k]}; }
 function abs(n) { # модуль числа
                 n = n+0; if(n<0) n= -1*n; return n }
@@ -273,12 +273,16 @@ function W_w(n, wl,    itmz, ret) {                 # НЕнахождение �
                 stotar(wl, itmz, "[ |]"); if (lc(n) in itmz && s(n-1)) {ret=0} else {ret=1}; return ret }
 function wb(n,m, wl,    itmz, k, ret) {             # поиск на n шагов назад слова из списка
                 ret=wbn=TW=""; if(n>m)n=m; stotar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if(lc(k) in itmz) {ret=1;wbn=TW=k;break};}; return ret }
+function wb2(n,m, wl,    itmz, k, ret) {             # поиск на n шагов назад слова из списка
+                ret=wbn2=TW=""; if(n>m)n=m; stotar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if(lc(k) in itmz) {ret=1;wbn2=TW=k;break};}; return ret }
 function wba(n,m, wl,    k, ret) {                  # поиск на n шагов назад слова из списка, но список в массиве omarr[wl] FLAT
                 ret=wbn=TA=""; if(n>m)n=m; for (k=m; k>=n; k--) { if(lc(k) in omarr[wl]) {ret=1;wbn=TA=k;break};}; return ret }
 function wb_raw(n,m, wl,    itmz, k, ret) {         # поиск на n шагов назад НЕОЧИЩЕННОГО слова из списка
                 ret=wbn=""; if(n>m)n=m; stotar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if (tolower(l[i+k]) in itmz) {ret=1; wbn=k; break};}; return ret }
 function wf(n,m, wl,    itmz, k, ret) {             # поиск на n шагов вперёд наличия слова в массиве
                 ret=wfn=""; if(n>m)m=n; stotar(wl, itmz, "[ |]"); for (k=n; k<=m; k++) { if (lc(k) in itmz) {ret=1; wfn=TN=k; break};}; return ret }
+function wf2(n,m, wl,    itmz, k, ret) {             # поиск на n шагов вперёд наличия слова в массиве
+                ret=wfn2=""; if(n>m)m=n; stotar(wl, itmz, "[ |]"); for (k=n; k<=m; k++) { if (lc(k) in itmz) {ret=1; wfn2=TN=k; break};}; return ret }
 function wfa(n,m, wl,    k, ret) {                  # поиск на n шагов вперёд наличия слова из массивов FLAT
                 ret=wfn=""; if(n>m)m=n; for (k=n; k<=m; k++) { if (lc(k) in omarr[wl]) {ret=1; wfn=TN=k; break};}; return ret }
 function exf(n, wl,    itmz, itmz1, k, lk, ret) {   # точная фраза как строка от адреса вправо, последний пробел не проверяется
@@ -331,14 +335,14 @@ function qxw(n,a0,b0,c0,d0,e0,      a_,b_,c_,d_,e_,sw,ret) { # фраза от �
                       case "3": if( s(n-2,n-1) && w(n-2,a0) && w(n-1,b0) && w(n  ,c0)                           ) {xwn=n-(sw-1);ret=1} else {ret=0}; break
                       case "4": if( s(n-3,n-1) && w(n-3,a0) && w(n-2,b0) && w(n-1,c0) && w(n  ,d0)              ) {xwn=n-(sw-1);ret=1} else {ret=0}; break
                       case "5": if( s(n-4,n-1) && w(n-4,a0) && w(n-3,b0) && w(n-2,c0) && w(n-1,d0) && w(n  ,e0) ) {xwn=n-(sw-1);ret=1} else {ret=0}; break
-                      default: ret=xsn=""; break }
+                      default: ret=xwn=""; break }
                   } else { switch (sw) {
                       case "1": if( s(n      ) && w(n  ,a0)                                                     ) {xwn=n+(sw-1);ret=1} else {ret=0}; break
                       case "2": if( s(n  ,n  ) && w(n  ,a0) && w(n+1,b0)                                        ) {xwn=n+(sw-1);ret=1} else {ret=0}; break
                       case "3": if( s(n  ,n+1) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)                           ) {xwn=n+(sw-1);ret=1} else {ret=0}; break
                       case "4": if( s(n  ,n+2) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+3,d0)              ) {xwn=n+(sw-1);ret=1} else {ret=0}; break
                       case "5": if( s(n  ,n+3) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+3,d0) && w(n+4,e0) ) {xwn=n+(sw-1);ret=1} else {ret=0}; break
-                      default: ret=xsn=""; break };}; return ret}
+                      default: ret=xwn=""; break };}; return ret}
 function qaw(n,a0,b0,c0,d0,e0,      a_,b_,c_,d_,e_,sw,ret) { # фраза от адреса .>_>_>, составленная из 1-5 переменных элементов, пр
                 if(a0) a_=1; if(b0) b_=1; if(c0) c_=1; if(d0) d_=1; if(e0) e_=1; sw=a_+b_+c_+d_+e_; awn=""
                       switch (sw) {
@@ -347,7 +351,7 @@ function qaw(n,a0,b0,c0,d0,e0,      a_,b_,c_,d_,e_,sw,ret) { # фраза от �
                       case "3": if( s(n  ,n+1) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)                           ) {awn=n+(sw-1);ret=1} else {ret=0}; break
                       case "4": if( s(n  ,n+2) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+3,d0)              ) {awn=n+(sw-1);ret=1} else {ret=0}; break
                       case "5": if( s(n  ,n+3) && w(n  ,a0) && w(n+1,b0) && w(n+2,c0) && w(n+3,d0) && w(n+4,e0) ) {awn=n+(sw-1);ret=1} else {ret=0}; break
-                      default: ret=xsn=""; break }; return ret}
+                      default: ret=awn=""; break }; return ret}
 function qxd(n,a0,b0,c0,      a_,b_,c_,sw,ret) { # фраза от адреса <-<-<.>->->, составленная из 1-5 переменных элементов, проверка дефисов, xdn=адрес первого слова
                 if(a0) a_=1; if(b0) b_=1; if(c0) c_=1; sw=a_+b_+c_; xdn=""
                   if (n < 0) { switch (sw) {
@@ -2224,7 +2228,7 @@ function narph_vrem(n,  wd,                                                     
                           qxw(n,"то","и","дело")||
                           qxw(n,"с","утра дня вечера ночи") )                                                                                   {ret=1} else {ret=0}; return ret }
 function narph_napr(n,  wd,                                                                                                                     ret) {
-                     if ( qxw(n,"во","все","стороны")||
+                     if ( qxw(n,"в во","все разные","стороны")||
                           qxw(n,"со","всех","направлений сторон")||
                           qxw(n,"как","можно","ближе выше дальше ниже")||
                           qxw(n,"в","сторону")||
@@ -2237,25 +2241,33 @@ function narph_kaq(n,   wd,                                                     
                           qxw(n,"по","крайней меньшей","мере")||
                           qxw(n,"по","большому","счёту счету счету")||
                           qxw(n,"первым","делом")||
+                          qxw(n,"с","натяжкой")||
+                          qxw(n,"с","горем","пополам")||
                           qxw(n,"не","нужно обязательно")  )                                                                                    {ret=1} else {ret=0}; return ret }
 function narph_spos(n,  wd,                                                                                                                     ret) {
                      if ( qxw(n,"близко","к","сердцу")||
                           qxw(n,"в","общем","и","целом")||
-                          qxw(n,"в","прах")||
+                          qxw(n,"в","клочья прах спешке щепки")||
+                          qxw(n,"в","дикой лютой страшной","спешке")||
                           qxw(n,"в","самом","деле")||
                           qxw(n,"в","целости","и","сохранности")||
                           qxw(n,"во","весь","опор")||
                           qxw(n,"друг","другу дружке")||
+                          qxw(n,"друг","напротив","друга")||
                           qxw(n,"друг","с","другом дружкой")||
                           qxw(n,"и","так")||
                           qxw(n,"и","так","и","сяк")||
                           qxw(n,"на","веру")||
                           qxw(n,"на","всех","парах")||
+                          qxw(n,"на","скорую","руку")||
                           qxw(n,"по","пятам очереди незнанию")||
                           qxw(n,"при","этом")||
                           qxw(n,"при","этом")||
-                          qxw(n,"с","ходу тобой собой ней ним ними вами нами мясом корнем")||
+                          qxw(n,"рука","об","руку")||
+                          qxw(n,"с","ходу тобой собой ней ним ними вами нами мясом корнем грохотом треском помпой")||
                           qxw(n,"со","мной")||
+                          qxw(n,"со","всей","дури силы мочи")||
+                          qxw(n,"со","всех","ног сил")||
                           qxw(n,"так","и","сяк")||
                           qxw(n,"так","или","иначе") )                                                                                          {ret=1} else {ret=0}; return ret }
 
