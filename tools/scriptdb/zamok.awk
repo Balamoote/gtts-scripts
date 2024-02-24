@@ -3643,7 +3643,7 @@ sz_iili(1) &&
  if ( ba(-2,"_lock_na_suw") && se(-2," — ") &&
        w(-1,"на") && s(-1) )
  { l[i]=omo2; Z[610]++; if(dbg){print "Z610"}; continue };
-print "here"
+
  if ( w(1,"на") &&
     bfa(2,5,"_lock_na_suw") && s(0,bfn-1) &&
     qir(2,bfn-1,"prl_vi prl_pr mest_vi mest_pr prq_vi prq_pr") )
