@@ -915,6 +915,7 @@ BEGIN {
         if ($2~ /^прл_прев_мн_тв$/                             ){  pl_pv_mn_tv       [$1]=$3; continue };
       };
         if ($2~ /^прл_неизм$/                                  ){  pl_neiz           [$1]=$3; continue };
+#       if ($2~ /^прл_аффикс$/                                 ){  pl_affix          [$1]=$3; continue };
     }; # чтение prl-dic
    close(cmd);
    cmd = "zcat " locdic "dic_suw.gz";
@@ -1705,6 +1706,9 @@ BEGIN {
         if ($2~ /^mop_мест_(сущ|прл)_тв$/                      ){  msto_tv            [$1]=$3; continue };
 
      };
+
+        if ($2~ /^прл_аффикс$/                                 ){  pl_affix           [$1]=$3; continue };
+
     } close(cmd);
 
  # Список классов омографов с описательными тэгами. Неочевидные кодировки в позиции падежа: z=партитив, l=локатив, q=счетная форма
@@ -1821,11 +1825,35 @@ BEGIN {
   if (gawk52 == 1) { writeall(classcache) };
 
   if (locdic ~ "^scriptdb\x2f$") {
-  cmd = "md5sum " indb "classes.awk " inax "classes.bin " indb "dic_cust.gz " indb "dic_gl.gz " indb "dic_prl.gz " indb "dic_prq.gz " indb "dic_rest.gz " \
-         indb "dic_suw.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_auto.gz " indb "omoid_flat.gz " indb "ist.gz " indb "cstauto.awk " "> " inax "classes.md5"
+     cmd = "md5sum " indb "classes.awk " \
+                     inax "classes.bin " \
+                     indb "dic_cust.gz " \
+                     indb "dic_gl.gz " \
+                     indb "dic_prl.gz " \
+                     indb "dic_prq.gz " \
+                     indb "dic_rest.gz " \
+                     indb "dic_suw.gz " \
+                     indb "automo.gz " \
+                     indb "class.list.gz " \
+                     indb "omoid_auto.gz " \
+                     indb "omoid_flat.gz " \
+                     indb "ist.gz "\
+                     indb "cstauto.awk " "> " inax "classes.md5"
   } else {
-  cmd = "md5sum " indb "classes.awk " locdic "classes.bin " indb "dic_cust.gz " locdic "dic_gl.gz " locdic "dic_prl.gz " locdic "dic_prq.gz " locdic "dic_rest.gz " \
-         locdic "dic_suw.gz " indb "automo.gz " indb "class.list.gz " indb "omoid_auto.gz " indb "omoid_flat.gz " indb "ist.gz " indb "cstauto.awk " "> " locdic "classes.md5"
+     cmd = "md5sum " indb "classes.awk " \
+                     locdic "classes.bin " \
+                     indb "dic_cust.gz " \
+                     locdic "dic_gl.gz " \
+                     locdic "dic_prl.gz " \
+                     locdic "dic_prq.gz " \
+                     locdic "dic_rest.gz " \
+                     locdic "dic_suw.gz " \
+                     indb "automo.gz " \
+                     indb "class.list.gz " \
+                     indb "omoid_auto.gz " \
+                     indb "omoid_flat.gz " \
+                     indb "ist.gz " \
+                     indb "cstauto.awk " "> " locdic "classes.md5"
   }
   system(cmd); close(cmd)
    } #gnuawk

@@ -8,14 +8,19 @@ key="$1"
 
 # Функции
 
-grp2namebase () { grep "g$" "$1" | grep "'" | grep -v \" | gzip; }
+grp2namebase () { grep "g$" "$1" | grep "'" | grep -v \" | sed -r "s/''/'/g" | gzip; }
 
-grp2override () { grep "g$" "$1" | grep "'" | sed -r "s/^_.+=(.+)'(.*)=g$/_\1\2=\1'\2=g/g; s/(_[^=]*[аяеэиыоёуюь])[ьъ]/\1/g" | gzip; }
+grp2override () { grep "g$" "$1" | grep "'" |\
+                  sed -r "s/''/'/g
+                          s/^_.+=(.+)'(.*)=g$/_\1\2=\1'\2=g/g
+                          s/(_[^=]*[аяеэиыоёуюь])[ьъ]/\1/g" | gzip; }
 
-grp2lexx ()  { grep -v "^_" "$1" | grep "'" | grep -v "[=g]$"; }
+grp2lexx ()  { grep -v "^_" "$1" | grep "'" | grep -v "[=g]$" | sed -r "s/''/'/g"; }
 
-grp2process  () { sed -r "s/([^_]=[^=]*[аяеэиыоёуюь'])ь/\1\\\xcc\\\xa3/g; s/([^_]=[^=]*[аяеэиыоёуюь'])ъ/\1\\\xcc\\\xa4/g;
-    s/ъ=g/\\\xcc\\\xa4=g/g" <(zcat "$1") | sort -u | gzip > "$1.tmp"; mv -f "$1.tmp" "$1"; } 
+grp2process  () { sed -r "s/''/'/g
+                          s/([^_]=[^=]*[аяеэиыоёуюь'])ь/\1\\\xcc\\\xa3/g
+                          s/([^_]=[^=]*[аяеэиыоёуюь'])ъ/\1\\\xcc\\\xa4/g
+                          s/ъ=g/\\\xcc\\\xa4=g/g" <(zcat "$1") | sort -u | gzip > "$1.tmp"; mv -f "$1.tmp" "$1"; } 
 
 # Если в файлах 00-02 строка имеет: (1) "_" в начале строки, (2) "'" (ударение), (3) "g" в конце строки (00 по умолчанию её НЕ имеет), то записать строку в namebase0
 grp2namebase 00_wrd_newdic_nl_*.list >> scriptdb/namebase0.txt.gz

@@ -214,6 +214,8 @@ function w3x(n,wl,    w1,w2,w3,j,k, ret) {                  # словосоче
                w1=lc(n); w2=lc(n+1); w3=lc(n+2); if(w1 in omarr[wl] && w2 in omarr[wl][w1] && w3 in omarr[wl][w1][w2]) {ret=1} else {ret=0}; return ret }
 function bw(n,wl,    k, ret) {                      # имеет ли слово(n) базовую форму из списка wl из массивов BASE
                 stotar(wl,wls," ");stotar(wordbf(n),itmz,"#");for(k in itmz){if(k in wls){ret=1;break}else{ret=0};}; return ret }
+function mwba(n,m,wl,  w1,  k, ret) {                  # match сочетание частной формы(m) слова и "базовой формы"(n) из пары в массиве wl: w_b
+               w1=lc(n); if (w1 in omarr[wl]) {stotar(wordbf(m),itmz,"#");for(k in itmz){if(k in omarr[wl][w1]){ret=1;break}else{ret=0};};}; return ret }
 function bf(n,m,wl,   j,k, ret) {                   # нахождение ВПЕРЁД базовых форм wl в диапазоне n-m из массивов BASE
                bfn=ret="";if(n>m)m=n;stotar(wl,wls," ");for(j=n;j<=m;j++){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in wls){ret=1;bfn=j;break};};}; return ret }
 function bb(n,m,wl,   j,k, ret) {                   # нахождение НАЗАД базовых форм wl в диапазоне n-m из массивов BASE
@@ -669,6 +671,7 @@ function prl_kred(n,      wd,ret) { if(!(wd))wd=lc(n); if (wd in pl_kred_mu||wd 
 function prl_krmn(n,      wd,ret) { if(!(wd))wd=lc(n); if (wd in pl_krmn)                                                                       {ret=1} else {ret=0}; return ret}
 function prl_srav(n,      wd,ret) { if(!(wd))wd=lc(n); if (wd in pl_srv)                                                                        {ret=1} else {ret=0}; return ret}
 function prl_neiz(n,      wd,ret) { if(!(wd))wd=lc(n); if (wd in pl_neiz)                                                                       {ret=1} else {ret=0}; return ret}
+function prl_affix(n,     wd,ret) { if(!(wd))wd=lc(n); if (wd in pl_affix)                                                                      {ret=1} else {ret=0}; return ret}
 function prl_edmuim(n,    wd,ret) { if(!(wd))wd=lc(n); if (wd in pl_edmu_im||wd in pl_pv_edmu_im)                                               {ret=1} else {ret=0}; return ret}
 function prl_edmuvi(n,    wd,ret) { if(!(wd))wd=lc(n); if (wd in pl_edmu_im||wd in pl_pv_edmu_im||wd in pl_edmu_ro||wd in pl_pv_edmu_ro)        {ret=1} else {ret=0}; return ret}
 function prl_edmuro(n,    wd,ret) { if(!(wd))wd=lc(n); if (wd in pl_edmu_ro||wd in pl_pv_edmu_ro)                                               {ret=1} else {ret=0}; return ret}
@@ -2257,7 +2260,7 @@ function narph_spos(n,  wd,                                                     
                           qxw(n,"друг","с","другом дружкой")||
                           qxw(n,"и","так")||
                           qxw(n,"и","так","и","сяк")||
-                          qxw(n,"на","веру")||
+                          qxw(n,"на","веру весу руках горбу")||
                           qxw(n,"на","всех","парах")||
                           qxw(n,"на","скорую","руку")||
                           qxw(n,"по","пятам очереди незнанию")||
@@ -2288,10 +2291,13 @@ function qast_hy(n,     wd,ret) { if(!(wd))wd=lc(n); if (wd in qst_hy)          
 
 function qast_any(n,                                                                                                                            wd,ret) { if(!(wd))wd=lc(n);
                      if (wd in qst_by||wd in qst_cn||wd in qst_po||wd in qst_ne||wd in qst_dt||wd in qst_us||wd in qst_lm||wd in qst_hy)        {ret=1} else {ret=0}; return ret}
+function qast_sg(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
+                     if (wd in qst_by||wd in qst_cn||wd in qst_po||wd in qst_ne||wd in qst_dt||wd in qst_us||wd in qst_lm)                      {ret=1} else {ret=0}; return ret}
 
 function mqast(n,                                                                                                                               ret) {
                      if ( qxw(n,"вряд едва навряд","ли")||
                           qxw(n,"вот даже ну","и")||
+                          qxw(n,"всего едва только","лишь")||
                           qxw(n,"а","вон вот")||
                           qxw(n,"как","раз")||
                           qxw(n,"вовсе далеко отнюдь совсем","не") )                                                                            {ret=1} else {ret=0}; return ret }

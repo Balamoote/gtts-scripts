@@ -1183,10 +1183,10 @@ sz_iili(-1) && s(-3,-1) )
         q(-2,"gl_pnin gl_pned gl_pnmn deep_pn") && Q(-2,"suw_edim") &&
         q(-1,"suw_da mest_da") && suw_mnvi(0) && Q(0,"gl_in ipa_any") && s(-2,-1) )
  { ret=0; edro2mnvi=1; stopp=1; D[281]++; if(dbg){print "D281"}; continue };
- if ( swc_edtv(-1) &&
-           !(w(xsn-2,"не") && s(xsn-2)) &&
-             q(xsn-1,"gl_pnin gl_pned gl_pnmn deep_pn") &&
-      suw_mnvi(0) && s(xsn-1,-1) )
+ if ( narph_spos(-1) &&
+             !(w(xsn-2,"не") && s(xsn-2)) &&
+               q(xsn-1,"gl_pnin gl_pned gl_pnmn deep_pn") &&
+        suw_mnvi(0) && s(xsn-1,-1) )
  { ret=0; edro2mnvi=1; stopp=1; D[282]++; if(dbg){print "D282"}; continue };
  if ( q(-4,"prl_mnim prq_mnim") &&
  pre_ro(-3) &&

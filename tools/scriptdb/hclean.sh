@@ -2,9 +2,21 @@
 
 # key:
 # -ord    перенумеровать все правила во всех рабочих скриптах и отсортировать строки
-# -omoid  сгенеригорать базы omoid_auto.gz из omoid_ini.gz и omoid_pa_ini.gz
+# -omoid  сгенерировать базы omoid_auto.gz из omoid_ini.gz и omoid_pa_ini.gz
 
 key="$1"
+# Установка редактора: vim или neovim
+edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' settings.ini)
+
+# Переменные алфавита и служебных
+RUUC=АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ
+rulc=абвгдеёжзийклмнопрстуфхцчшщъыьэюя
+RVUC=АЕЁИОУЫЭЮЯ
+rvlc=аеёиоуыэюя
+unxc=$(printf "\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0")
+unxa=$(printf "\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0")
+unxs=$(printf "\xe2\x80\xa4\xe2\x80\xa7")
+
 
 case $key in
     -ord )
@@ -99,27 +111,38 @@ case $key in
 	                     s/\\\xcc\\\xad//g
 	                     s/\\\xcc\\\xb0//g
                       " ru.txt |  sort -u > ruflat.txt
-               rm ru.txt
+               $edi -c "mkspell! ru ruall.txt" +qall
+               rm ru.txt ruall.txt
+               mv -fv ru.utf-8.spl ~/.config/nvim/spell/ru.utf-8.spl
                printf "Список ruflat.txt: без ударений, ё, служебных символов. В vim: mkspell! ru ruflat.txt\n"
        exit 1; ;;
 
-    -spell_all ) # все слова словарей с именами, ё, ударенийми и служебными символами
+    -spell_all ) # все слова словарей с именами, ё, ударениями и служебными символами
                zcat dic_*.gz | awk '{print $1}' > ru.txt
                zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
                zcat mano-uc0.txt.gz yomo-uc0.txt.gz nomo.txt.gz |sed -r "s/[_=]//g; s/\b(.)/\l\1/g; s/ /\n/g" >> ru.txt
                zcat yodef0.txt.gz yodef1.txt.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
-               zcat namebase0.txt.gz nameoverride.txt.gz |sed -r "s/[_g]//g; s/=/\n/g;" >> ru.txt
+               zcat namebase0.txt.gz nameoverride.txt.gz |\
+                    sed -r "s/(=\\\\xcc\\\\x[ab][034d])([$rulc])/\1\u\2/g
+                            s/([_=])([$rulc])/\1\u\2/g
+                            s/[_g]//g
+                            s/=/\n/g" >> ru.txt
                zcat stray.gz >> ru.txt
                cat yolc.txt |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
-               sed -r "s/([аеёиоуыэюя])'/\1\xcc\x81/g
+               sed -r "s/([$RVUC$rvlc])'/\1\xcc\x81/g
 	                     s/\\\xcc\\\xa0/\xcc\xa0/g
 	                     s/\\\xcc\\\xa3/\xcc\xa3/g
 	                     s/\\\xcc\\\xa4/\xcc\xa4/g
 	                     s/\\\xcc\\\xad/\xcc\xad/g
 	                     s/\\\xcc\\\xb0/\xcc\xb0/g
                       " ru.txt |  sort -u > ruall.txt
-               rm ru.txt
-               printf "Список ruall.txt: с ударениями в омографах, ё, служебными символами! В vim: mkspell! ru ruall.txt\n"
+               grep "[$unxa]" ruall.txt | sed -r "s/([$RVUC$rvlc])'/\1\xcc\x81/g; s/[$unxa]//g" | sort -u > ru.txt
+               cat ru.txt >> ruall.txt
+               $edi -c "mkspell! ru ruall.txt" +qall
+               rm ru.txt ruall.txt
+               mv -fv ru.utf-8.spl ~/.config/nvim/spell/ru.utf-8.spl
+#              printf "Список ruall.txt: с ударениями в омографах, ё, служебными символами! В vim: mkspell! ru ruall.txt\n"
+               printf "Установлен файл ~/.config/nvim/spell/ru.utf-8.spl с ударениями в омографах, ё, служебными символами!\n"
        exit 1; ;;
 
     * ) exit 0; ;;
