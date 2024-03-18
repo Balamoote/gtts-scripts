@@ -1,6 +1,6 @@
 #!/bin/bash
 
-S1=$(echo "$1" | sed -r "s/ё/е/g")
+S1=$(echo "$1" | sed -r "s/ё/е/g; s/\*/.*/g")
 if [[ $S1 != $1 ]]; then printf "%s\n" $S1; fi
 
 dicword="^"$S1"\b"

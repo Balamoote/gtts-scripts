@@ -16,9 +16,9 @@ BEGIN {	sedfile = tmpdir"/book-index.sed"
     if ( gsub( muniq, "", wrd) == 0 ) { bookwords[wrd]++ };
 
 } END { RS = save_rs;
-mu       = "#_MULTI_#"; bookwords[mu]="";		    # добавление мультислова
-startsed = sprintf("%s%s", "### ", rexrules[2]) ; 	    # заголовок
-endsed   = sprintf("%s%s", "### ", rexrules[rexlen-1]) ;   # завершающие
+mu       = "#_MULTI_#"; bookwords[mu]="";		             # добавление мультислова
+startsed = sprintf("%s%s", "### ", rexrules[2]) ; 	     # заголовок
+endsed   = sprintf("%s%s", "### ", rexrules[rexlen-1]) ; # завершающие
 
 delete rexrules[1]; delete rexrules[2]; delete rexrules[rexlen]; delete rexrules[rexlen-1]
 

@@ -1,12 +1,18 @@
 #!/bin/bash
 
+# Служебная утилита
 # key:
-# -ord    перенумеровать все правила во всех рабочих скриптах и отсортировать строки
-# -omoid  сгенерировать базы omoid_auto.gz из omoid_ini.gz и omoid_pa_ini.gz
+# -ord        перенумеровать все правила во всех рабочих скриптах и отсортировать строки
+# -omoid      сгенерировать базы omoid_auto.gz из omoid_ini.gz и omoid_pa_ini.gz
+# -spell_flat все слова словарей без ё и ударений
+# -spell_all  все слова словарей с именами, ё, ударениями и служебными символами
+# -ddic       поиск в dic_*.gz дублей с разной основой (предотвратить затирание в памяти первой формы)
 
 key="$1"
 # Установка редактора: vim или neovim
 edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' settings.ini)
+vimspelldir="$HOME/.config/nvim/spell"
+cdata=$(date)
 
 # Переменные алфавита и служебных
 RUUC=АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ
@@ -19,7 +25,7 @@ unxs=$(printf "\xe2\x80\xa4\xe2\x80\xa7")
 
 
 case $key in
-    -ord )
+    -ord ) # перенумеровать все правила во всех рабочих скриптах и отсортировать строки
        awk '{    reg = "(^.* )[drvDRVZ](\\[)[0-9]+(\\]\\+\\+; if\\(dbg\\){print \x22)[DRV][0-9]+(\x22.*)$"
              if ($0 ~ reg) {
                  rule++
@@ -62,7 +68,7 @@ case $key in
                          sort -u | gzip > omoid_flat_ord.gz; mv omoid_flat_ord.gz omoid_flat.gz
        exit 1; ;;
 
-    -omoid )
+    -omoid ) # сгенерировать базы omoid_auto.gz из omoid_ini.gz и omoid_pa_ini.gz
 
        awk 'BEGIN {
                cmd = "zcat omoid_ini.gz";
@@ -118,7 +124,7 @@ case $key in
        exit 1; ;;
 
     -spell_all ) # все слова словарей с именами, ё, ударениями и служебными символами
-               zcat dic_*.gz | awk '{print $1}' > ru.txt
+      zcat dic_*.gz | awk '{printf("%s\n", $1)}' | sort -u > ru.txt
                zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
                zcat mano-uc0.txt.gz yomo-uc0.txt.gz nomo.txt.gz |sed -r "s/[_=]//g; s/\b(.)/\l\1/g; s/ /\n/g" >> ru.txt
                zcat yodef0.txt.gz yodef1.txt.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
@@ -127,7 +133,7 @@ case $key in
                             s/([_=])([$rulc])/\1\u\2/g
                             s/[_g]//g
                             s/=/\n/g" >> ru.txt
-               zcat stray.gz >> ru.txt
+               zcat stray.gz names_raw.gz >> ru.txt # stray = некондиция; names_raw = имена дез ударений. Только для спеллинга.
                cat yolc.txt |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
                sed -r "s/([$RVUC$rvlc])'/\1\xcc\x81/g
 	                     s/\\\xcc\\\xa0/\xcc\xa0/g
@@ -140,9 +146,14 @@ case $key in
                cat ru.txt >> ruall.txt
                $edi -c "mkspell! ru ruall.txt" +qall
                rm ru.txt ruall.txt
-               mv -fv ru.utf-8.spl ~/.config/nvim/spell/ru.utf-8.spl
+               mv -fv ru.utf-8.spl $vimspelldir/ru.utf-8.spl
 #              printf "Список ruall.txt: с ударениями в омографах, ё, служебными символами! В vim: mkspell! ru ruall.txt\n"
-               printf "Установлен файл ~/.config/nvim/spell/ru.utf-8.spl с ударениями в омографах, ё, служебными символами!\n"
+               printf "\e[32m%s \e[36m%s \e[33m%s%s \e[36m%s\e[m\n" \
+                 "$cdata" 'Установлен файл' $vimspelldir "/ru.utf-8.spl" 'с ударениями в омографах, ё, служебными символами.'
+       exit 1; ;;
+
+    -ddic ) # поиск в dic_*.gz будлей с разной основой (предотвратить затирание в памяти первой формы)
+      zcat dic_*.gz | awk '{ if ( f1 == $1 && f2 == $2 ) printf("\033[91m%s\n\033[0m", $0); f1=$1; f2=$2 }' ;
        exit 1; ;;
 
     * ) exit 0; ;;
