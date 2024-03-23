@@ -124,7 +124,7 @@ case $key in
        exit 1; ;;
 
     -spell_all ) # все слова словарей с именами, ё, ударениями и служебными символами
-      zcat dic_*.gz | awk '{printf("%s\n", $1)}' | sort -u > ru.txt
+      zcat dic_*.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u > ru.txt
                zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
                zcat mano-uc0.txt.gz yomo-uc0.txt.gz nomo.txt.gz |sed -r "s/[_=]//g; s/\b(.)/\l\1/g; s/ /\n/g" >> ru.txt
                zcat yodef0.txt.gz yodef1.txt.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
