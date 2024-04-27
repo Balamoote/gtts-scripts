@@ -229,7 +229,7 @@ gl_pnmn(3) && s(0,2) )
  if ( w(-1,"и") && s(-1) && p(0,",") )
  { l[i]=is_vsyo; V[54]++; if(dbg){print "V54"}; continue };
  if ( w(-1,"и") && s(-1) &&
-      w(1,"что") && sc(0,0,",") )
+      w(1,"что") && sc(0,",") )
  { l[i]=is_vsyo; V[55]++; if(dbg){print "V55"}; continue };
 
  # Это
@@ -249,7 +249,7 @@ gl_pnmn(3) && s(0,2) )
           qxs(2,"не","в","счет") ) && s(0) )
  { l[i]=is_vsyo; V[58]++; if(dbg){print "V58"}; continue };
  if ( mest_it(-1) &&
-          qxs(1,"не","по","душе" ) && s(-1) )
+          qxs(1,"не","по","душе") && s(-1) )
  { l[i]=is_vsyo; V[59]++; if(dbg){print "V59"}; continue };
  if ( mest_it(1) && s(0) &&
           qxs(2,"и","в","самом","деле") &&
@@ -535,7 +535,7 @@ mest_ro(-1) &&
               w(3,"кого") && s(1,2) )
  { l[i]=is_vsje; V[131]++; if(dbg){print "V131"}; continue };
  if ( q(1,"pre_ro pre_vi") && z(0) &&
-      w(2,"кого" ) && s(1) )
+      w(2,"кого") && s(1) )
  { l[i]=is_vsje; V[132]++; if(dbg){print "V132"}; continue };
  if ( pre_vi(1) &&
            q(2,"suw_vi") &&
@@ -675,7 +675,7 @@ mest_vi(2) &&
  { l[i]=is_vsje; V[167]++; if(dbg){print "V167"}; continue };
 
 
- # глаголы к группам из cstring.awk, функции qm(n,"класс","_марка")
+ # глаголы к группам из cstring.awk, функции qm (n,"класс","_марка")
  if ( qxs(1,"в","один","голос") &&
        qm(xsn+1,"gl_mn","_ge_vsje") && s(xsn) )
  { l[i]=is_vsje; V[168]++; if(dbg){print "V168"}; continue };
@@ -1139,7 +1139,7 @@ prl_kred_sr(2) && s(-1,1) )
 nar_kaq(2) &&
       q(3,"prq_edim prq_kred") && s(0,2) )
  { l[i]=is_vsyo; V[293]++; if(dbg){print "V293"}; continue };
- if ( (prq_mnim(1) && w(1,"щие$")) && Q(1,"suw_mnim") && s(0) && p(1,",") )
+ if ( (prq_mnim(1) && wc(1,"щие$")) && Q(1,"suw_mnim") && s(0) && p(1,",") )
  { l[i]=is_vsyo; V[294]++; if(dbg){print "V294"}; continue };
  if ( q(-1,"prq_ro") &&
  pre_pr(1) && s(-1,0) )
@@ -1905,7 +1905,7 @@ nar_kaq(2) && s(0,1) && p(2) )
        q(qfn+1,"suw_vi") && s(0,qfn) )
  { l[i]=is_vsje; V[495]++; if(dbg){print "V495"}; continue };
  if ( q(-3,"gl_ed gl_mn") && ba(-3,"_gl_realize") &&
-    qxs(-1,"далеко","не") && (p(0)||sc(0,"[\x22)»']")) )
+    qxs(-1,"далеко","не") && (p(0)||sc(0,"[\x22\x29»']")) )
  { l[i]=is_vsyo; V[496]++; if(dbg){print "V496"}; continue };
 
  # глаголы изменения состояния субъекта izs
@@ -2011,7 +2011,7 @@ suw_edim(-1) &&
            w(3,"так слишком") &&
  prl_kred_sr(4) && s(0,3) )
  { l[i]=is_vsyo; V[520]++; if(dbg){print "V520"}; continue };
- if ( pre_ro(1) && Qw_(-1,"gl_vzed gl_ed gl_ed") &&
+ if ( pre_ro(1) && Qw_(-1,"gl_vzed gl_ed") &&
            q(2,"mest_ro suw_ro prl_ro prq_ro") && s(0,1) )
  { l[i]=is_vsyo; V[521]++; if(dbg){print "V521"}; continue };
  if ( w(1,"кроме") && z(0) &&
@@ -2717,7 +2717,7 @@ prq_krmn(qfn+1) && s(0,qfn) )
  {              V[695]++; if(dbg){print "V695"}; continue };
  if ( p(-2) && p(0) )
  {              V[696]++; if(dbg){print "V696"}; continue };
- if ( sc(-2,"[\x22«(']") && sc(0,"[\x22»)']") )
+ if ( sc(-2,"[\x22«(']") && sc(0,"[\x22»\x29']") )
  {              V[697]++; if(dbg){print "V697"}; continue };
  if ( qxs(-1,"а","где") && p(-3) && sc(0,"?") )
  {              V[698]++; if(dbg){print "V698"}; continue };

@@ -49,7 +49,9 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
     $0 = book[num] = currline[1];
 
     for (i=1; i<=NF; i++) { ci=tolower($i);
- # Сканируем текст на омографы. Для сканирования 1 омографа: ./momo.sh -si book.fb2 замок
+ # Сканируем текст на омографы.
+ #   Для сканирования 1 омографа:       ./momo.sh -sw book.fb2 замок
+ #   Для сканирования группы омографов: ./momo.sh -sg book.fb2 x4707
 #_#_#txtmppra
         if($i in vse  && num!=o000    ) {vseT [ci]           = vseT [ci]           num " "; o000     = num}; # "все" (но не вСЕ,вСе,всЕ)   #_#_# vsez !_#_!
         if($i in almo && num!=o001[$i]) {omap [almo[$i]][$i] = omap [almo[$i]][$i] num " "; o001[$i] = num}; # омографы кроме "все"        #_#_# all_omos !_#_!

@@ -625,7 +625,7 @@ sz_iili(-3) &&
       q(1,"mest_tv suw_tv") && s(-2,0) )
  { ret=stopp=1; D[158]++; if(dbg){print "D158"}; continue };
 
- if ( q(-2,"gl_need gl_nemn gl_nein gl_need gl_pned gl_pnmn gl_pnin deep_ne deep_pn prq_pn") &&
+ if ( q(-2,"gl_need gl_nemn gl_nein gl_pned gl_pnmn gl_pnin deep_ne deep_pn prq_pn") &&
       q(-1,"mest_da suw_da") &&
       q(1,"gl_in") && s(-2,0) )
  { ret=stopp=1; D[159]++; if(dbg){print "D159"}; continue };
@@ -825,7 +825,7 @@ sz_iili(-1) &&
            sz_iili(-1) && s(-2,-1) )
  { ret=stopp=1; D[202]++; if(dbg){print "D202"}; continue };
  if ( p(-1) && (p(0)||(q(1,"qast") && s(0) && p(1))) &&
-     qb(-4,-1,"ist_suw_ro") && qq(qbn,0) )
+ qb_ist(-4,-1,"ist_suw_ro") && qq(qbn,0) )
  { ret=stopp=1; D[203]++; if(dbg){print "D203"}; continue };
 
  if ( pre_vi(-3) &&
@@ -899,7 +899,7 @@ sz_iili(-1) &&
  { ret=stopp=1; D[218]++; if(dbg){print "D218"}; continue };
  if ( q(-2,"pre_ro preph_ro") &&
       q(-1,"suw_ro") &&
-      q(1,"gl_nein gl_need gl_nemn gl_vzmn gl_vzmn") &&
+      q(1,"gl_nein gl_need gl_nemn gl_vzmn") &&
       q(2,"mest_im prl_im") &&
       q(3,"suw_im") && s(-3,-1) )
  { ret=stopp=1; D[219]++; if(dbg){print "D219"}; continue };
@@ -971,7 +971,7 @@ function sw_edro_f(ret,   stopp) { while ( !stopp ) {
  { ret=stopp=1; D[236]++; if(dbg){print "D236"}; continue };
 
  if ( qxs(-1,"не","может","быть")||
-      qxs(-1,"может","не","быть хватить оказаться" ) )
+      qxs(-1,"может","не","быть хватить оказаться") )
  { ret=stopp=1; D[237]++; if(dbg){print "D237"}; continue };
 
  if ( q(-3,"gl_need gl_nemn gl_vzmn deep_ne gl_pned gl_pnmn deep_pn") && p(-4) &&
@@ -1469,10 +1469,10 @@ sz_iili(-2) &&
  if ( (q(-1,"prl_srav nar_srav")||w(-1,cst)) && s(-1) && !(gl_in(1) && s(0)) )
  { ret=stopp=1; D[342]++; if(dbg){print "D342"}; continue };
 
- if ( q(-2,"gl_pnin gl_pnin gl_pned gl_pnmn deep_pn") && Q(-2,"gl_poed gl_pomn") &&
+ if ( q(-2,"gl_pnin gl_pned gl_pnmn deep_pn") && Q(-2,"gl_poed gl_pomn") &&
       q(-1,"suw_da mest_da") && suw_mnim(0) && Q(0,"gl_in") && s(-2,-1) && (p(0)||((sz_iili(1)||pre_any(1)) && s(0))) )
  { ret=stopp=1; D[343]++; if(dbg){print "D343"}; continue };
- if ( q(-2,"gl_nein gl_nein gl_need gl_nemn gl_vzmn deep_ne") && Q(-2,"gl_poed gl_pomn") &&
+ if ( q(-2,"gl_nein gl_need gl_nemn gl_vzmn deep_ne") && Q(-2,"gl_poed gl_pomn") &&
       q(-1,"suw_da mest_da") && suw_mnim(0) && Q(0,"gl_in") && s(-2,-1) && (p(0)||((sz_iili(1)||pre_any(1)) && s(0))) )
  { ret=stopp=1; D[344]++; if(dbg){print "D344"}; continue };
 
@@ -1740,7 +1740,7 @@ mest_ro(-1) && s(-5,-1) )
 
 if ( p(-2) &&
         suw_any(-1) && s(-1) && sQ(-1,-1,"-") &&
-     Q(-1,"sz qast pre_any prl_any prq_any mest_ed mest_mn gl_ed gl_pemn gl_pnmn gl_nemn nar_vrem narph_any gl_poed" ) )
+     Q(-1,"sz qast pre_any prl_any prq_any mest_ed mest_mn gl_ed gl_pemn gl_pnmn gl_nemn nar_vrem narph_any gl_poed") )
  { ret=stopp=1; D[394]++; if(dbg){print "D394"}; continue };
  if ( Qw_(-3,"pre_any") &&
   suw_any(-2) && mest_3e(-1) && s(-2,-1) && (p(0)||Q_w(1,"sz_iili pre_any")) &&
@@ -2238,7 +2238,7 @@ function sw_es_r_f(ret, stopp) { while ( !stopp ) {
  { ret=stopp=1; D[522]++; if(dbg){print "D522"}; continue };
  if ( w(-3,"не") &&
       q(-2,"gl_ed gl_in gl_poed") &&
-      q(-1,"prl_edsrro prl_edsrro mest_ro") && s(-3,-1) )
+      q(-1,"prl_edsrro prq_edsrro mest_ro") && s(-3,-1) )
  { ret=stopp=1; D[523]++; if(dbg){print "D523"}; continue };
  if ( w(-3,"какого") &&
    qast(-2) &&
@@ -2486,7 +2486,7 @@ function sw_em_l_f(ret, stopp) { while ( !stopp ) {
  if ( W(0,"берегу бреду гною хмелю") && q(0,"suw_edmuda") &&
  !( (wb(-5,-1,"в во на") && !(sq(wbn,-1,"[….:;!?]"))) || (wf(1,3,"в во на") && !(sq(0,wfn-1,"[….:;!?]")))) )
  { ret=0; stopp=1; loc2emd=1; D[588]++; if(dbg){print "D588"}; continue };
-#if ( id(-1,"hsw4loc") && s(-1) )
+#if ( id (-1,"hsw4loc") && s(-1) )
 #{ ret=stopp=1; D[589]++; if(dbg){print "D589"}; continue };
 
  #
@@ -2576,7 +2576,7 @@ break}; return ret }
 function sw_ez_r_f(ret, stopp) { while ( !stopp ) {
  #
  if ( (w(-2,"нет")||qi_duoz(-2)||wc(-2,"[234][^0-9]*$")) &&
-       q(-1,"prl_edzero prl_edzero prq_edzero prq_edzero mest_ro muk_edzero") && W(-1,"него нее них") && s(-2,-1) )
+       q(-1,"prl_edzero prq_edzero mest_ro muk_edzero") && W(-1,"него нее них") && s(-2,-1) )
  { ret=stopp=1; D[609]++; if(dbg){print "D609"}; continue };
  if ((qi_duoz(-2)||wc(-2,"[234][^0-9]*$")) &&
             q(-1,"prl_mnim prq_mnim mest_mnim") && s(-2,-1) && se(-2," ") )

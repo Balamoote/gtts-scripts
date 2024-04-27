@@ -57,6 +57,9 @@ case $key in
        awk -f beautify.awk cstring.awk > cstring.awk_ord; mv cstring.awk_ord cstring.awk;
        awk -f beautify.awk cstauto.awk > cstauto.awk_ord; mv cstauto.awk_ord cstauto.awk;
        awk -f beautify.awk classes.awk > classes.awk_ord; mv classes.awk_ord classes.awk;
+       awk -f beautify.awk parser.awk > parser.awk_ord; mv parser.awk_ord parser.awk;
+       awk -f parser.awk deomo.awk defunct.awk vsevso.awk yodef.awk zamok.awk;
+
        zcat omoid_ini.gz | awk '{delete chars; ret="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
                                 ret = $1 " " $2; for(j=1;j<=chnum;j++){ret=ret " " chars[j]}; print ret }' |\
                          sort -u | gzip > omoid_ini_ord.gz; mv omoid_ini_ord.gz omoid_ini.gz
@@ -133,7 +136,7 @@ case $key in
                             s/([_=])([$rulc])/\1\u\2/g
                             s/[_g]//g
                             s/=/\n/g" >> ru.txt
-               zcat stray.gz names_raw.gz >> ru.txt # stray = некондиция; names_raw = имена дез ударений. Только для спеллинга.
+               zcat stray.gz names_raw.gz >> ru.txt # stray = некондиция; names_raw = имена без ударений. Только для спеллинга.
                cat yolc.txt |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
                sed -r "s/([$RVUC$rvlc])'/\1\xcc\x81/g
 	                     s/\\\xcc\\\xa0/\xcc\xa0/g
@@ -152,7 +155,7 @@ case $key in
                  "$cdata" 'Установлен файл' $vimspelldir "/ru.utf-8.spl" 'с ударениями в омографах, ё, служебными символами.'
        exit 1; ;;
 
-    -ddic ) # поиск в dic_*.gz будлей с разной основой (предотвратить затирание в памяти первой формы)
+    -ddic ) # поиск в dic_*.gz дублей с разной основой (предотвратить затирание в памяти первой формы)
       zcat dic_*.gz | awk '{ if ( f1 == $1 && f2 == $2 ) printf("\033[91m%s\n\033[0m", $0); f1=$1; f2=$2 }' ;
        exit 1; ;;
 
