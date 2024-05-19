@@ -51,8 +51,9 @@ funcs["getBFf"]=n "," m ",.+"                                                #ge
 funcs["getBFx"]=n "," m ",.+"                                                #getBFx(n,m,file,   sw,kw, k,j, ret)
 # функции обработки сепараторов
 funcs["p"]=n "(,\"([…,.:;!?—]|(\\[[…,.:;!?—]+\\]))\")?"                      #p(n,wl,    ret)
-funcs["s"]=n "(," m ")?"                                                     #s(n, m,    k,sw,ret)
-funcs["s1"]=n ",\".\""                                                       #s1(n,wl,    ret)
+funcs["s"]=n "((," m ")|((," m ")?,\"\\[?[…,.:;!?—]+\\]?\"))?"                        #s(n,m,sym,    pkt,el,k,sw,ret)
+funcs["sL"]=n ",\"\\[?.\\]?\""                                               #sL(n,wl,    ret)
+funcs["sR"]=n ",\"\\[?.\\]?\""                                               #sR(n,wl,    ret)
 funcs["z"]=n                                                                 #z(n,    el, ret)
 funcs["zs"]=n                                                                #zs(n,  el, ret)
 funcs["dz"]=n                                                                #ds(n,  el, ret)

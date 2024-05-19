@@ -26,7 +26,7 @@ case $key in
         sed_pre="scriptdb/fb2/06_gc_pre.sed"
         sed_main="scriptdb/fb2/06_gc_main.sed"
         sed_post="scriptdb/fb2/06_gc_post.sed"
-    	sed_latcyr="scriptdb/fb2/06_latcyr.sed"
+        sed_latcyr="scriptdb/fb2/06_latcyr.sed"
         awk_cleaner="scriptdb/fb2/cleaner.awk"
         awk_indent="scriptdb/fb2/indent.awk"
         backup="$book".$suf
@@ -47,19 +47,21 @@ case $key in
 	if grep -q -m 1 "[CILMVX]" $suf-"$book"/text-book.txt; then latcyr=1
         while [ $latcyr != "0" ]
         do sed -ri "s=Х([CILMVX])=X\1=g
-                s=([CILMVX])Х=\1X=g
-                s=І([CILMVX])=I\1=g
-                s=([CILMVX])І=\1I=g
-                s=С([CILMVX])=C\1=g
-                s=([CILMVX])С=\1C=g
-                s=ХХ=XX=g
-                s=ІІ=II=g
-                " $suf-"$book"/text-book.txt
+                    s=([CILMVX])Х=\1X=g
+                    s=І([CILMVX])=I\1=g
+                    s=([CILMVX])І=\1I=g
+                    s=С([CILMVX])=C\1=g
+                    s=([CILMVX])С=\1C=g
+                    s=М([CILMVX])=M\1=g
+                    s=([CILMVX])М=\1M=g
+                    s=ХХ=XX=g
+                    s=ІІ=II=g
+                    " $suf-"$book"/text-book.txt
 
-            latcyr=$(grep -e "[ХІС][CILMVX]" -e "[CILMVX][ХІС]" -e "ХХ" -e "ІІ" $suf-"$book"/text-book.txt | wc -l)
+            latcyr=$(grep -e "[ХІСМ][CILMVX]" -e "[CILMVX][ХІС]" -e "ХХ" -e "ІІ" $suf-"$book"/text-book.txt | wc -l)
         done; fi
 
-	# Кирилица в латинице: искать до упора
+	# Кириллица в латинице: искать до упора
     if grep -q -m 1 "[аА-ԯЀЁЂЃЄЅІЇЈЉ]" $suf-"$book"/text-book.txt; then mdchk0="foo"
 	    until [ "$mdchk0" == "$mdchk1" ]; do
             mdchk0=$(md5sum $suf-"$book"/text-book.txt | awk '{print $1}')
@@ -73,7 +75,7 @@ case $key in
 	# Валидация и раскраска отчёта
 	xmllint --nonet --noout --schema "scriptdb/fb2/schema/FictionBook.xsd" "$book" 2>&1 | \
             sed -r "s=\{http://www\.gribuser\.ru/xml/fictionbook/2\.0\}==gI
-		    s=^.*\svalidates$=`printf "\e[32m&\e[0m"`=g
+	                  s=^.*\svalidates$=`printf "\e[32m&\e[0m"`=g
                     s=^.*\sfails to validate.*$=`printf "\e[31m&\e[0m"`=g
                     s=^.*\sSchemas validity error.*$=`printf "\e[93m&\e[0m"`=g
                     s=^.*\sparser error.*$=`printf "\e[93m&\e[0m"`=g
@@ -88,7 +90,7 @@ case $key in
         export LC_ALL=ru_RU.UTF-8
         suf=01 
         sed_links_uni="scriptdb/fb2/01_links_uni.sed"
-    	awk_links_n="scriptdb/fb2/links-n.awk"
+        awk_links_n="scriptdb/fb2/links-n.awk"
         backup="$book".$suf
 
         d2u;

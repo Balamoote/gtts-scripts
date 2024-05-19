@@ -9,8 +9,13 @@ function pusha(arr, arrto,    k) {                  # добавить масс�
                 for (k in arr) {arrto[k]}; }
 function abs(n) { # модуль числа
                 n = n+0; if(n<0) n= -1*n; return n }
+function Zag(str) { # Записать строку с заглавной буквы
+                str = toupper(substr(str,1,1)) substr(str,2); return str }
 function stoar(string, arrto, sepr,    k) {         # добавить в массив arrto элементы строки string
                 split(string, artmp, sepr); for (k in artmp) {if(artmp[k]) {arrto[artmp[k]]}; };}
+function tuptoar(string, arrto,    al, k) { # добавить в массив arrto элементы строки string типа 'слово=слово' с вариантами слово, Слово, СЛОВО
+                split(string, artmp, "[ =]"); al=length(artmp); for (k=1; k<=al; k=k+2) {if(artmp[k]) {
+                arrto[artmp[k]]=artmp[k+1]; arrto[toupper(artmp[k])]=toupper(artmp[k+1]); arrto[Zag(artmp[k])]=Zag(artmp[k+1]) }; };}
 function stotar(string, arrto, sepr,    k) {        # добавить во ВРЕМЕННЫЙ массив arrto элементы строки string
                 delete arrto;split(string, artmp, sepr); for (k in artmp) {if(artmp[k]) {arrto[artmp[k]]}; };}
 function sto2xw(string, arrto,   j,k) {             # добавить в массив arrto элементы строки для 2-х связанных слов w1:w2 arrto[w1][w2]
@@ -22,19 +27,27 @@ function stoid(string1, string2,wid,    k,j) {      # добавить в omoid[
 function atoid(string, arr,wid,    k,j) {           # добавить в omoid[омограф из массива][омоид из строки][функция]
                 split(string, arr1," "); for (k in arr1) {for(j in arr){omoid[j][arr1[k]][wid]};};}
 function sanit(string, sepin, sepout,   j,k,ret) {  # строку с разделителями отсортировать и удалить повторения
-               delete sant; split(string,artmp,sepin); for(k in artmp){if(artmp[k]){sant[artmp[k]]}; }; for(j in sant) {if(ret) {ret = ret sepout j}else{ret=j} }; return ret}
-function hyphback(hystring,  hyw) {                 # Склеить слова с дефисом, присутствующие в словаре
-                hystring = gensub(/unxyp/,"","g",tolower(hystring));
-                  if (hystring ~ hysnip) { for (i=1; i<=nf-1; i++) { if ( se(0,"-") ) { hyw = lc(0) sep[i] lc(1); if ( hyw in dichyph )
-                { l[i] = l[i] sep[i] l[i+1]; delete sep[i]; delete l[i+1]; nf=arrpack(i+1, l); arrpack(i, sep) }; }; }; };}
-function hyphbphy(hystring,  hyw) {                 # Склеить слова с дефисом, присутствующие в словаре
+                delete sant; split(string,artmp,sepin); for(k in artmp){if(artmp[k]){sant[artmp[k]]}; }; for(j in sant) {if(ret) {ret = ret sepout j}else{ret=j} }; return ret}
+function hyphback(hystring,     l0,l1,l2,sw,hyw) {    # Склеить слова с дефисом, присутствующие в словаре
+                hystring = gensub(/unxyp/,"","g",tolower(hystring)); if (hystring ~ hysnip) { for (i=1; i<=nf-1; i++) {sw=""; if( sc(0,"-") ){ sw++; if( sc(1,"-") ) sw++ };
+                  switch (sw) {
+                  case "1": l0=lc(0); l1=lc(1); if (l0 != iwrd && l1 != iwrd) { hyw = l0 "-" l1; if (hyw in dichyph) { l[i] = l[i] sep[i] l[i+1];
+                            delete sep[i]; delete l[i+1]; nf=arrpack(i+1,l); arrpack(i, sep) };}; break
+                  case "2": l0=lc(0); l1=lc(1); l2=lc(2); if (l0 != iwrd && l1 != iwrdi && l2 != iwrd) { hyw = l0 "-" l1 "-" l2; if (hyw in dichyph) {
+                            l[i] = l[i] sep[i] l[i+1] sep[i+1] l[i+2]; delete sep[i]; delete l[i+1]; nf=arrpack(i+1, l); arrpack(i, sep);
+                            delete sep[i]; delete l[i+1]; nf=arrpack(i+1,l); arrpack(i, sep) };}; break
+                  default: break }; }; }; }
+function hyphbphy(hystring,    l0,l1,l2,sw,hyw) {      # Склеить слова с дефисом, присутствующие в словаре
                 hystring = gensub(/<#@_[^@]+@#>/,"","g",tolower(hystring));
                   if (hystring ~ hysnip) { for (i=1; i<=nf-1; i++) {
-                  if ( sepphy[i] == "-" ) { hyw = tolower(lphy[i]) "-" tolower(lphy[i+1]); if ( hyw in dichyph )
-                  { lphy[i] = lphy[i] sepphy[i] lphy[i+1]; delete sepphy[i]; delete lphy[i+1]; nfphy=arrpack(i+1, lphy); arrpack(i, sepphy) }; };
-                  if ( sepphy[i] ~ /-<#@_[^@]+@#>|<#@_[^@]+@#>-/ ) { hyw = tolower(lphy[i]) "-" tolower(lphy[i+1]); if ( hyw in dichyph )
-                  { lphy[i] = lphy[i] "-" lphy[i+1]; sepphy[i+1] = sepphy[i] sepphy[i+1]; delete sepphy[i]; delete lphy[i+1]; nfphy=arrpack(i+1, lphy); arrpack(i, sepphy) }; };
-                 };};}
+                  if ( sepphy[i] == "-" && sepphy[i+1] != "-")  { l0=tolower(lphy[i]); l1=tolower(lphy[i+1]); if (l0 != iwrd && l1 != iwrd) { hyw = l0 "-" l1;
+                    if ( hyw in dichyph ) { lphy[i] = lphy[i] sepphy[i] lphy[i+1]; delete sepphy[i]; delete lphy[i+1]; nfphy=arrpack(i+1, lphy); arrpack(i, sepphy) };};};
+                  if ( sepphy[i] == "-" && sepphy[i+1] == "-" ) { l0=tolower(lphy[i]); l1=tolower(lphy[i+1]); l2=tolower(lphy[i+2]);
+                    if (l0 != iwrd && l1 != iwrd && l2 != iwrd) { hyw = l0 "-" l1 "-" l2; if ( hyw in dichyph ) { lphy[i] = lphy[i] sepphy[i] lphy[i+1] sepphy[i+1] lphy[i+2];
+                    delete sepphy[i]; delete lphy[i+1]; nfphy=arrpack(i+1, lphy); arrpack(i, sepphy); nfphy=arrpack(i+1, lphy); arrpack(i, sepphy) };};};
+                  if ( sepphy[i] ~ /(-<#@_[^@]+@#>)|(<#@_[^@]+@#>-)/ ) {l0=tolower(lphy[i]); l1=tolower(lphy[i+1]); if (l0 != iwrd && l1 != iwrd) { hyw = l0 "-" l1;
+                  if ( hyw in dichyph ) { lphy[i] = lphy[i] "-" lphy[i+1]; sepphy[i+1] = sepphy[i] sepphy[i+1]; delete sepphy[i]; delete lphy[i+1];
+                  nfphy=arrpack(i+1, lphy); arrpack(i, sepphy) }; };};   };};}
 function splitline(instring,    ret) {              # Разбить строку на слова
                 ret=patsplit(instring,l,patword,sep); return ret }
 function splitlinephy(instring,    ret) {             # Разбить строку на слова
@@ -56,7 +69,8 @@ function makebookvars_nohyphback() {                # разбить строк�
                 b=strtonum(omlin[y]);nf=splitline(book[b]);splitlinephy(bphy[b]);regwpos(wrd); }
 function makewposvars() {                           # определить переменные внутри цикла для слова в позиции i
                 i=strtonum(i); prex=edro2mnim=edro2mnvi=nizm=mn2e2pomn=loc2emd=loc2ezd=NORULE=tn=hyn=qyn=wyn="" }
-
+function DO_DEBUG(array,a_prefix,   outfile, k,cmd) {
+                outfile = "_" a_prefix ".txt"; for (k in array) { if ( array[k] ) {printf ("%s%s %s %s\n", a_prefix, k, "=", array[k]) >> outfile }; }; }
 # функции обработки слов: сбор слов для записи в отдельный файл
 function getBF(n,file,   itmz, k) {                      # выдать базовую форму слова по адресу n и записать ее в file, омограф при этом в файл не пишется
                 stotar(wordbf(n),itmz,"#"); for(k in itmz) { print k >> file };}
@@ -73,18 +87,20 @@ function getBFx(n,m,file,   sw,kw, k,j, ret) {      # выдать базовы�
                              for(k= 1;k<=m;k++){if(l[i+k]){kw=sanit(wordbf(k),"#","\x2f");if(kw=="")kw=l[i+k];ret=ret sep[i+k-1] kw } else {break};};ret=ret sep[i+k]; break
                    default: ret=iwrd; break }; print ret >> file }
 # функции обработки сепараторов
-function p(n,sym,    ret) {                          # разделитель содержит препинания, кроме указанных wl?
-                if(length(sym)) {if( (sep[i+n]~/([…,.:;!?—]|<\/?[pv]>|<\/?subtitle>)/ || ( i+n<0 || i+n>nf ) ) && sep[i+n] !~ sym ) {ret=1} else {ret=0}}
-                  else           {if( (sep[i+n]~/([…,.:;!?—]|<\/?[pv]>|<\/?subtitle>)/ || ( i+n<0 || i+n>nf ) )                   ) {ret=1} else {ret=0}}; return ret}
-function s(n, m,    k,sw,ret)  {                    # разделители в диапазоне НЕ содержат препинаний? = пробел (не видит дефис)
-                if (m==""||n==m) {sw=1} else { if (n<m) {sw=2} else {sw=3} }; 
+function p(n,sym,    pkt,el,ret) {                  # разделитель содержит препинания, кроме указанных wl?
+                pkt="[…,.:;!?—]"; if (sym) { gsub(sym,"",pkt) }; el = pkt "|(<\\/?[pv]>)|(<\\/?subtitle>)";
+                if ( ( sep[i+n] ~ el ) || ( i+n < 0 ) || ( i+n > nf ) ) {ret=1} else {ret=0}; return ret}
+function s(n,m,sym,    pkt,el,k,sw,ret)  {          # разделители в диапазоне НЕ содержат препинаний? = пробел (не видит дефис), sym = разрешённые препинания
+                pkt="[…,.:;!?—]"; if (m ~ pkt) {sym=m; m=n}; if (m==""||n==m) {sw=1} else {if (n<m) {sw=2};};
+                if (sym) { gsub(sym,"",pkt) }; el = pkt "|(<\\/?[pv]>)|(<\\/?subtitle>)";
                 switch (sw) {
-                  case "1": if (sep[i+n] ~ /([…,.:;!?—]|<\/?[pv]>|<\/?subtitle>)/ ) {ret=0} else {ret=1}; break
-                  case "2": for (k=n; k<=m; k++) { if (sep[i+k] ~ /([…,.:;!?—]|<\/?[pv]>|<\/?subtitle>)/ ) {ret=0; break} else {ret=1};}; break
-                  case "3": ret=1; break
+                  case "1": if ( sep[i+n] ~ el ) {ret=0} else {ret=1}; break
+                  case "2": for (k=n; k<=m; k++) { if ( sep[i+k] ~ el ) {ret=0; break} else {ret=1};}; break
                   default: ret=1; break}; return ret }
-function s1(n,sym,    ret) {                         # 1-й символ строки-сепаратора равен sym
+function sL(n,sym,    ret) {                         # 1-й символ строки-сепаратора равен sym (Leftmost)
                 if( substr(sep[i+n],1,1) == sym ) {ret=1} else {ret=0}; return ret }
+function sR(n,sym,    ret) {                         # последний символ строки-сепаратора равен sym (Rightmost)
+                if( substr(sep[i+n],length(sep[i+n]),1) == sym ) {ret=1} else {ret=0}; return ret }
 function z(n,    el, ret) {                         # разделитель содержит запятую ","
                 el = sep[i+n]; if (el ~ /,/)    {ret=1} else {ret=0}; return ret }
 function zs(n,  el, ret) {                          # разделитель содержит [ ,—]
@@ -169,8 +185,6 @@ function seek(n,m, isclass, notclass,    k, ret) {  # поиск на n шаго
                 ret=skn="";                         # SLOW?
                 if (n < 0){if(n>m)n=m;for(k=m;k>=n;k--){if( q(k,isclass )){ret=1; skn=k; break} else {if( q(k,notclass )&& k>=n &&k<m ){ret=0; break};};};}
                 else      {if(n>m)m=n;for(k=n;k<=m;k++){if( q(k,isclass )){ret=1; skn=k; break} else {if( q(k,notclass) && k>=n &&k<m ){ret=0; break};};};}; return ret}
-#               if (n < 0){for(k=m;k>=n;k--){if(q(k,isclass)){ret=1;skn=k;if(q(k,notclass)&&k>skn&&k<m){ret=0;break};break}else{if(q(k,notclass)&&k>n&&k<m){ret=0;break};};};}
-#               else      {for(k=n;k<=m;k++){if(q(k,isclass)){ret=1;skn=k;if(q(k,notclass)&&k<skn&&k<m){ret=0;break};break}else{if(q(k,notclass)&&k>n&&k<m){ret=0;break};};};return ret}
 function qf(n,m, isclass,    k, ret) {              # поиск на n шагов вперёд наличия слова в классе
                 ret=qfn=""; if(n>m)m=n; for (k=n; k<=m; k++) { if ( q(k,isclass) ) {ret=1; qfn=k; break}; }; return ret }
 function qir(n,m, isclass,    k, ret) {            # в промежутке ТОЛЬКО слова из класса или ничего, в заданном промежутке: при n>=m = true
@@ -195,16 +209,12 @@ function Qb(n,m, isclass,    k, ret) {              # поиск на n шаго
                 ret=1; for (k=m; k>=n; k--)   { if ( q(k,isclass) && s(k,m) ) {ret=0; break}; }; return ret }
 function Qf(n,m, isclass,    k, ret) {              # поиск на n шагов вперёд отсутствия слова в классе
                 ret=1; for (k=n; k<=m; k++)   { if ( q(k,isclass) && s(n,k-1) ) {ret=0; break}; }; return ret }
-#function Qif(n,m, isclass,    k, ret) {             # поиск на n шагов вперёд отсутствия слова в классе
-#                ret=1; for (k= 1; k<=n; k++)  { if ( @isclass(k) ) {ret=0; break}; }; return ret }
 function Qb_(n, array,    k, ret) {                 # поиск на n шагов назад отсутствия слова в БАЗОВОМ массиве
                 ret=1; for (k=-1; k>=n; k--)   { if (lc(k) in array) {ret=0; break}; }; return ret }
 function Qf_(n, array,    k, ret) {                 # поиск на n шагов вперёд отсутствия слова в БАЗОВОМ массиве
                 ret=1; for (k= 1; k<=n; k++)   { if (lc(k) in array) {ret=0; break}; }; return ret }
 function Q_(n, array,    ret) {                     # слово НЕ в БАЗОВОМ массиве?
                 if (lc(n) in array) {ret=0} else {ret=1}; return ret }
-#function isname(n,    wd, el, en, es, ret) {            # Слово с Заглавной буквы?
-#                el = "^" RUUC_ rulc "$"; en=gensub(unxyp,"","g",l[i+n]); if ( en ~ el ) {ret=1} else {ret=0}; return ret }
 function isname(n,    wd, el, en, es, ret) {            # Слово с Заглавной буквы?
                 el = "^" RUUC_ rulc "$"; en=gensub(unxyp,"","g",l[i+n]); es="^\\s+" LAUC_ lalc; if( en ~ el || sep[i+n-1] ~ es ) {ret=1} else {ret=0}; return ret }
 function isacro(n,    wd, el, en, ret) {            # Слово - АКРОНИМ?
@@ -373,6 +383,15 @@ function qxd(n,a0,b0,c0,      a_,b_,c_,sw,ret) { # фраза от адреса 
                       case "3": if( se(n  ,"-") && se(n+1,"-") && w(n  ,a0) && w(n+1,b0) && w(n+2,c0)           ) {xdn=n+(sw-1);ret=1} else {ret=0}; break
                       default: ret=xdn=""; break };}; return ret}
 
+function rodeq_sw_pl(n,m,      sw,ret) { # определить род сущевительного по адресу n, сравнить его с родом прилагательного или местоимения по адресу m
+                if(suw_mu(n)) sw="mu"; if(suw_ze(n)) sw="ze"; if(suw_sr(n)) sw="sr"; if(suw_mn(n)) sw="mn";
+                  switch (sw) {
+                      case "mu": if( prl_mu(m)||muk_mu(m)                                                       ) {rdn="mu";ret=1} else {ret=0}; break
+                      case "ze": if( prl_ze(m)||muk_ze(m)                                                       ) {rdn="ze";ret=1} else {ret=0}; break
+                      case "sr": if( prl_sr(m)||muk_sr(m)                                                       ) {rdn="sr";ret=1} else {ret=0}; break
+                      case "mn": if( prl_mn(m)||muk_mn(m)                                                       ) {rdn="";ret=1} else {ret=0}; break
+                      default: ret=rdn=""; break }; return ret}
+
 # логические функции проверки переменных -- для лучшей читаемости. Только, если переменная не равна "" (0)
 function v2s(var,         ret) { if (typeof(var)=="untyped") {ret=""} else {ret=var}; return ret } # если переменная не инициализирована, создать ее перед проверкой (для > 5.2)
 function vge(var,  val,   ret) { if (v2s(var) >= val)                  {ret=1} else {ret=0};  return ret } # переменная больше или равна
@@ -442,6 +461,12 @@ function muk_ed(n,                                                              
                       if (wd in muc_edmuim||wd in muc_edzeim||wd in muc_edsrim||wd in muc_edmuvi||wd in muc_edzevi||wd in muc_edsrvi||          
                           wd in muc_edmuda||wd in muc_edzeda||wd in muc_edsrda||wd in muc_edmuro||wd in muc_edzero||wd in muc_edsrro||          
                           wd in muc_edmutv||wd in muc_edzetv||wd in muc_edsrtv||wd in muc_edmupr||wd in muc_edzepr||wd in muc_edsrpr)           {ret=1} else {ret=0}; return ret}
+function muk_mu(n,                                                                                                                              wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in muc_edmuim||wd in muc_edmuvi||wd in muc_edmuda||wd in muc_edmuro||wd in muc_edmutv||wd in muc_edmupr)           {ret=1} else {ret=0}; return ret}
+function muk_ze(n,                                                                                                                              wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in muc_edzeim||wd in muc_edzevi||wd in muc_edzeda||wd in muc_edzero||wd in muc_edzetv||wd in muc_edzepr)           {ret=1} else {ret=0}; return ret}
+function muk_sr(n,                                                                                                                              wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in muc_edsrim||wd in muc_edsrvi||wd in muc_edsrda||wd in muc_edsrro||wd in muc_edsrtv||wd in muc_edsrpr)           {ret=1} else {ret=0}; return ret}
 function muk_mn(n,                                                                                                                              wd,ret) { if(!(wd))wd=lc(n);
                       if (wd in muc_mnim||wd in muc_mnvi||wd in muc_mnda||wd in muc_mnro||wd in muc_mntv||wd in muc_mnpr)                       {ret=1} else {ret=0}; return ret}
                                                                                                                                                 
@@ -753,9 +778,18 @@ function prl_edze(n,                                                            
 function prl_edsr(n,                                                                                                                            wd,ret) { if(!(wd))wd=lc(n);
                       if (wd in pl_edsr_im||wd in pl_pv_edsr_im||wd in pl_edsr_ro||wd in pl_pv_edsr_ro||wd in pl_edsr_da||wd in pl_pv_edsr_da||
                           wd in pl_edsr_tv||wd in pl_pv_edsr_tv||wd in pl_edsr_pr||wd in pl_pv_edsr_pr)                                         {ret=1} else {ret=0}; return ret}
-function prl_mn(n,                                                                                                                              wd,ret) { if(!(wd))wd=lc(n);
+function prl_mu(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in pl_edmu_im||wd in pl_pv_edmu_im||wd in pl_edmu_da||wd in pl_edmu_ro||wd in pl_pv_edmu_ro||wd in pl_pv_edmu_da||
+                          wd in pl_edmu_tv||wd in pl_pv_edmu_tv||wd in pl_edmu_pr||wd in pl_pv_edmu_pr||wd in pl_pv_edmu_tv)                   {ret=1} else {ret=0}; return ret}
+function prl_ze(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in pl_edze_im||wd in pl_edze_vi||wd in pl_pv_edze_vi||wd in pl_edze_dr||wd in pl_pv_edze_dr||
+                          wd in pl_pv_edze_im||wd in pl_edze_tv||wd in pl_pv_edze_tv||wd in pl_pv_edze_tv)                                     {ret=1} else {ret=0}; return ret}
+function prl_sr(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in pl_edsr_im||wd in pl_pv_edsr_im||wd in pl_edsr_ro||wd in pl_pv_edsr_ro||wd in pl_edsr_da||wd in pl_pv_edsr_da||
+                          wd in pl_edsr_tv||wd in pl_pv_edsr_tv||wd in pl_edsr_pr||wd in pl_pv_edsr_pr||wd in pl_pv_edsr_tv)                  {ret=1} else {ret=0}; return ret}
+function prl_mn(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
                       if (wd in pl_mn_im||wd in pl_pv_mn_im||wd in pl_mn_ro||wd in pl_pv_mn_ro||wd in pl_mn_da||wd in pl_pv_mn_da||
-                          wd in pl_mn_tv||wd in pl_pv_mn_tv||wd in pl_pv_mn_pr||wd in pl_pv_edmu_tv||wd in pl_pv_edsr_tv||wd in pl_pv_edze_tv)  {ret=1} else {ret=0}; return ret}
+                          wd in pl_mn_tv||wd in pl_pv_mn_tv||wd in pl_pv_mn_pr)                                                               {ret=1} else {ret=0}; return ret}
 function prl_any(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
                       if (wd in pl_edmu_im||wd in pl_edsr_im||wd in pl_edze_im||wd in pl_pv_edmu_im||wd in pl_pv_edsr_im||wd in pl_edmu_da||
                           wd in pl_edze_vi||wd in pl_pv_edze_vi||wd in pl_edmu_ro||wd in pl_pv_edmu_ro|| wd in pl_edsr_ro||wd in pl_edze_dr||
@@ -1954,6 +1988,31 @@ function suw_ed(n,                                                              
                           wd in swo_edsr_da||wd in swo_edsr_im||wd in swo_edsr_pr||wd in swo_edsr_ro||wd in swo_edsr_tv||wd in swo_edsr_vi||
                           wd in swo_edze_da||wd in swo_edze_im||wd in swo_edze_ne||wd in swo_edze_pr||wd in swo_edze_ro||wd in swo_edze_tv||
                           wd in swo_edze_vi||wd in swo_edze_zv)                                                                                 {ret=1} else {ret=0}; return ret}
+function suw_mu(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in sw_edmu_da||wd in sw_edmu_im||wd in sw_edmu_ne||wd in sw_edmu_pr||wd in sw_edmu_ro||wd in sw_edmu_tv||
+                          wd in sw_edmu_vi||wd in swn_edmu_da||wd in swn_edmu_im||wd in swn_edmu_me||wd in swn_edmu_ne||wd in swn_edmu_pr||
+                          wd in swn_edmu_pt||wd in swn_edmu_ro||wd in swn_edmu_sq||wd in swn_edmu_tv||wd in swo_edmu_da||wd in swo_edmu_im||
+                          wd in swo_edmu_ne||wd in swo_edmu_pr||wd in swo_edmu_ro||wd in swo_edmu_tv||wd in swo_edmu_vi||wd in swo_edmu_zv)    {ret=1} else {ret=0}; return ret}
+function suw_ze(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in sw_edze_da||wd in sw_edze_im||wd in sw_edze_pr||wd in sw_edze_ro||wd in sw_edze_tv||wd in sw_edze_vi||
+                          wd in swn_edze_da||wd in swn_edze_im||wd in swn_edze_me||wd in swn_edze_ne||wd in swn_edze_pr||wd in swn_edze_ro||
+                          wd in swn_edze_tv||wd in swn_edze_vi||wd in swo_edze_da||wd in swo_edze_im||wd in swo_edze_ne||wd in swo_edze_pr||
+                          wd in swo_edze_ro||wd in swo_edze_tv||wd in swo_edze_vi||wd in swo_edze_zv)                                          {ret=1} else {ret=0}; return ret}
+function suw_sr(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in sw_edsr_da||wd in sw_edsr_im||wd in sw_edsr_pr||wd in sw_edsr_ro||wd in sw_edsr_tv||wd in sw_edsr_vi||
+                          wd in swn_edsr_da||wd in swn_edsr_im||wd in swn_edsr_ne||wd in swn_edsr_pr||wd in swn_edsr_ro||wd in swn_edsr_tv||
+                          wd in swn_edsr_vi||wd in swo_edsr_da||wd in swo_edsr_im||wd in swo_edsr_pr||wd in swo_edsr_ro||wd in swo_edsr_tv||
+                          wd in swo_edsr_vi)                                                                                                   {ret=1} else {ret=0}; return ret}
+function suw_ob(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in sw_edob_da||wd in sw_edob_im||wd in sw_edob_ne||wd in sw_edob_pr||wd in sw_edob_ro||wd in sw_edob_tv||
+                          wd in sw_edob_vi||wd in swn_edob_da||wd in swn_edob_im||wd in swn_edob_ne||wd in swn_edob_pr||wd in swn_edob_ro||
+                          wd in swn_edob_tv||wd in swn_edob_vi||wd in swo_edob_da||wd in swo_edob_im||wd in swo_edob_ne||wd in swo_edob_pr||
+                          wd in swo_edob_ro||wd in swo_edob_tv||wd in swo_edob_vi)                                                             {ret=1} else {ret=0}; return ret}
+function suw_mn(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
+                      if (wd in sw_mn_da||wd in sw_mn_im||wd in sw_mn_ne||wd in sw_mn_pr||wd in sw_mn_ro||wd in sw_mn_tv||wd in sw_mn_vi||
+                          wd in swn_mn_da||wd in swn_mn_im||wd in swn_mn_ne||wd in swn_mn_pr||wd in swn_mn_ro||wd in swn_mn_sq||
+                          wd in swn_mn_tv||wd in swo_mn_da||wd in swo_mn_im||wd in swo_mn_ne||wd in swo_mn_pr||wd in swo_mn_ro||
+                          wd in swo_mn_sq||wd in swo_mn_tv)                                                                                    {ret=1} else {ret=0}; return ret}
 function suw_any(n,                                                                                                                             wd,ret) { if(!(wd))wd=lc(n);
                       if (wd in sw_edmu_da||wd in sw_edmu_im||wd in sw_edmu_ne||wd in sw_edmu_pr||wd in sw_edmu_ro||wd in sw_edmu_tv||
                           wd in sw_edmu_vi||wd in sw_edob_da||wd in sw_edob_im||wd in sw_edob_ne||wd in sw_edob_pr||wd in sw_edob_ro||

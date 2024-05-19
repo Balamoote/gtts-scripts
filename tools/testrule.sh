@@ -4,9 +4,9 @@ IN="$@"
 
  echo $IN| sed -r "s/[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]+//g; s/^.*$/<p>\0<\/p>/g" |\
      awk -vindb=scriptdb/ -vinax=scriptaux/ -vlocdic=scriptdb/ -ddebug.txt -vdbg=1 -f scriptdb/main.awk |\
-     sed "s/.\xcc\x81/`printf "\e[32m&\e[0m"`/g"
+     sed -r "s/.\xcc\x81/`printf "\e[32m&\e[0m"`/g"
 
-#time awk -vindb=../../scriptdb/ -vinax=../../scriptaux/ -vdbg=1 -f <(sed -r 's=(scriptdb/)=../../\1=g' ../../scriptdb/yodef.awk) 
-#time awk -f deomo.awk $in > $out 
-
+#echo $IN| sed -r "s/[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]+//g; s/^.*$/<p>\0<\/p>/g" |\
+#    awk -vindb=scriptdb/ -vinax=scriptaux/ -ddebug.txt -f scriptdb/yodef.awk |\
+#    sed -r "s/(.\xcc\x81)|[ёЁ]/`printf "\e[32m&\e[0m"`/g"
 

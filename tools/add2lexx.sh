@@ -13,7 +13,7 @@ if [[ -s "$w2l" ]]; then
     printf '\e[36m%s \e[0;93m%s\e[0m\n' "В файл tts.txt добавлено строк:" "$(wc -l $w2l)"
     rm $w2l
 else
-    printf '\e[36m%s \e[33m%s \e[36m%s \e[93m%s\e0[m\n' "Файл" $w2l "не найден. Запустите" "./addnames.sh"
+    printf '\e[36m%s \e[33m%s \e[36m%s \e[93m%s\e[0m\n' "Файл" $w2l "не найден. Запустите" "./addnames.sh"
     exit
 fi
 
