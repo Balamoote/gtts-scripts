@@ -3224,6 +3224,11 @@ sz_iili(3) &&
  pre_ro(1) &&
       q(2,"suw_ro") && p(2) )
  { ret=stopp=1; D[774]++; if(dbg){print "D774"}; continue };
+ if ( q(1,"prl_mnim prl_mntv") && sc(0,"—") && p(1) )
+ { ret=stopp=1; D[775]++; if(dbg){print "D775"}; continue };
+ if ( q(1,"prl_kred_sr") && se(1,"-") &&
+      q(2,"prl_mnim prl_mntv") && sc(0,"—") && p(2) )
+ { ret=stopp=1; D[775]++; if(dbg){print "D775"}; continue };
  if ( p(-1,",") && p(0,",") && W(0,"воды") )
  { ret=stopp=1; D[775]++; if(dbg){print "D775"}; continue };
 
