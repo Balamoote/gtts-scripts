@@ -110,6 +110,7 @@ case $key in
 
     -spell_flat ) # все слова словарей без ё и ударений
                zcat dic_*.gz | awk '{print $1}' > ru.txt
+               zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
                zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=']//g; s/ё/е/g; s/ /\r/g" >> ru.txt
                zcat yodef0.txt.gz yodef1.txt.gz |sed -r "s/[_']//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
                cat yolc.txt | sed -r "s/_//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
@@ -127,7 +128,8 @@ case $key in
        exit 1; ;;
 
     -spell_all ) # все слова словарей с именами, ё, ударениями и служебными символами
-      zcat dic_*.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u > ru.txt
+               zcat dic_*.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u > ru.txt
+               zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
                zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
                zcat mano-uc0.txt.gz yomo-uc0.txt.gz nomo.txt.gz |sed -r "s/[_=]//g; s/\b(.)/\l\1/g; s/ /\n/g" >> ru.txt
                zcat yodef0.txt.gz yodef1.txt.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
@@ -156,8 +158,14 @@ case $key in
        exit 1; ;;
 
     -ddic ) # поиск в dic_*.gz дублей с разной основой (предотвратить затирание в памяти первой формы)
-      zcat dic_*.gz | awk '{ if ( f1 == $1 && f2 == $2 )  {printf("\033[91m%s\n\033[0m", $0); fnd=1}; f1=$1; f2=$2; }
+               zcat dic_*.gz | awk '{ if ( f1 == $1 && f2 == $2 )  {printf("\033[91m%s\n\033[0m", $0); fnd=1}; f1=$1; f2=$2; }
                            END { if(!fnd) printf("\033[32m%s\n\033[0m", "Дублей с разной основой не надено.")}' ;
+       exit 1; ;;
+
+    -pat4oc ) # создать полный список всех словоформ для фильтрации списка слов opencorpora
+              zcat dic_*.gz | awk '{ print "_" $1 "=" }' | sort -u > _stock.pat
+              zcat dik_*.gz | awk '{ $1=tolower($1); gsub("ё","е",$1); print "_" $1 "=" }' | sort -u >> _stock.pat
+              sort -u -o _stock.pat _stock.pat
        exit 1; ;;
 
     * ) exit 0; ;;
