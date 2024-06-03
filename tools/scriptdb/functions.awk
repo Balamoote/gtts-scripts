@@ -236,14 +236,20 @@ function mwwa(n,m,wl,  itmz,w1,k, ret) {               # match сочетани�
                w1=lc(n); if (w1 in omarr[wl]) {stotar(lc(m),itmz,"#");for(k in itmz){if(k in omarr[wl][w1]){ret=1;break}else{ret=0};};}; return ret }
 function bf(n,m,wl,   itmz,j,k, ret) {                   # нахождение ВПЕРЁД базовых форм wl в диапазоне n-m из массивов BASE
                bfn=ret="";if(n>m)m=n;stotar(wl,wls," ");for(j=n;j<=m;j++){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in wls){ret=1;bfn=j;break};};}; return ret }
+function bf_(n,m,wl,   itmz,j,k, ret) {                   # нахождение ВПЕРЁД базовых форм wl в диапазоне n-m из массивов BASE
+               bf2=ret="";if(n>m)m=n;stotar(wl,wls," ");for(j=n;j<=m;j++){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in wls){ret=1;bf2=j;break};};}; return ret }
 function bb(n,m,wl,   itmz,j,k, ret) {                   # нахождение НАЗАД базовых форм wl в диапазоне n-m из массивов BASE
                bbn=ret="";if(n>m)n=m;stotar(wl,wls," ");for(j=m;j>=n;j--){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in wls){ret=1;bbn=j;break};};}; return ret }
+function bb_(n,m,wl,   itmz,j,k, ret) {                   # нахождение НАЗАД базовых форм wl в диапазоне n-m из массивов BASE
+               bb2=ret="";if(n>m)n=m;stotar(wl,wls," ");for(j=m;j>=n;j--){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in wls){ret=1;bb2=j;break};};}; return ret }
 function bam(n,wl,    itmz1,k, ret) {                     # принадлежность слова в n к одному из omarr массивов (wl = _идентификаторов_групп_слов) -- несколько функций ba
                 split(wl,itmz1," ");for(k in itmz1){if(ba(n,itmz1[k]) ){ret=1;break}else{ret=0};}; return ret }
 function ba(n,wl,     itmz,k, ret) {                     # имеет ли слово(n) базовую форму из массива omarr[wl] из массивов BASE
                ret="";stotar(wordbf(n),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;break};}; return ret }
 function bfa(n,m,wl,   itmz,j,k, ret) {                  # нахождение ВПЕРЁД базовых форм из массива omarr[wl] в диапазоне n-m из массивов BASE
                bfn=ret="";if(n>m)m=n;for(j=n;j<=m;j++){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;bfn=j;break};};}; return ret }
+function bfa2(n,m,wl,   itmz,j,k, ret) {                  # нахождение ВПЕРЁД базовых форм из массива omarr[wl] в диапазоне n-m из массивов BASE
+               bf2=ret="";if(n>m)m=n;for(j=n;j<=m;j++){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;bf2=j;break};};}; return ret }
 function bba(n,m,wl,     itmz,k, ret) {                   # нахождение НАЗАД базовых форм из массива omarr[wl] в диапазоне n-m -- только 1 строка-идентификатор! из массивов BASE
                bbn=ret="";if(n>m)n=m;for(j=m;j>=n;j--){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;bbn=j;break};};}; return ret }
 function bba2(n,m,wl,    itmz,k, ret) {                   # нахождение НАЗАД базовых форм из массива omarr[wl] в диапазоне n-m = bba - для возможности использовать 2 раза
@@ -688,7 +694,7 @@ function preph_tv(n,                                                            
                           qxw(n,"в","бытность") ||
                           qxw(n,"вкупе одновременно","с со") ||
                           qxw(n,"во","главе","с со") ||
-                          qxw(n,"вслед","за") ||
+                          qxw(n,"вслед следом","за") ||
                           qxw(n,"по","аналогии согласованию сравнению","с со") ||
                           qxw(n,"о","бок","с со") ||
                           qxw(n,"вдогонку вслед далеко следом","за") ||
@@ -2341,6 +2347,7 @@ function narph_spos(n,  wd,                                                     
                           qxw(n,"на","всех","парах")||
                           qxw(n,"на","скорую","руку")||
                           qxw(n,"по","пятам очереди незнанию")||
+                          qxw(n,"под","руку")||
                           qxw(n,"при","этом")||
                           qxw(n,"при","этом")||
                           qxw(n,"рука","об","руку")||
@@ -2376,6 +2383,7 @@ function mqast(n,                                                               
                           qxw(n,"вот даже ну","и")||
                           qxw(n,"всего едва только","лишь")||
                           qxw(n,"а","вон вот")||
+                          qxw(n,"так","и")||
                           qxw(n,"как","раз")||
                           qxw(n,"вовсе далеко отнюдь совсем","не") )                                                                            {ret=1} else {ret=0}; return ret }
 

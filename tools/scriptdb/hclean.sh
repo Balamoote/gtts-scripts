@@ -162,10 +162,10 @@ case $key in
                            END { if(!fnd) printf("\033[32m%s\n\033[0m", "Дублей с разной основой не надено.")}' ;
        exit 1; ;;
 
-    -pat4oc ) # создать полный список всех словоформ для фильтрации списка слов opencorpora
-              zcat dic_*.gz | awk '{ print "_" $1 "=" }' | sort -u > _stock.pat
-              zcat dik_*.gz | awk '{ $1=tolower($1); gsub("ё","е",$1); print "_" $1 "=" }' | sort -u >> _stock.pat
-              sort -u -o _stock.pat _stock.pat
+    -pat4oc ) # создать полный список всех словоформ для фильтрации словаря opencorpora
+              zcat dic_*.gz | awk '{ print "_" $1 "=" }' | sort -u | gzip > _stock.patt.gz
+              zcat dik_*.gz | awk '{ $1=tolower($1); gsub("ё","е",$1); print "_" $1 "=" }' | sort -u | gzip >> _stock.patt.gz
+              zcat _stock.patt.gz | sort -u | gzip > _stock.pat.gz; rm _stock.patt.gz
        exit 1; ;;
 
     * ) exit 0; ;;

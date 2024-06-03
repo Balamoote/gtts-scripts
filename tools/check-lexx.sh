@@ -36,7 +36,14 @@ case "$1" in
 esac; fi
 
 # Массив со списком обязательных файлов
-pack="scriptdb/automo.gz scriptdb/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz scriptdb/main.awk scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/sort_opt.awk scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptdb/zamok.awk"
+pack="scriptdb/automo.gz scriptdb/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk \
+      scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz \
+      scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz \
+      scriptdb/main.awk scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz \
+      scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
+      scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/sort_opt.awk \
+      scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt scriptdb/yomo-lc0.txt.gz \
+      scriptdb/yomo-uc0.txt.gz scriptdb/zamok.awk scriptdb/dik_prop.gz"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -197,23 +204,23 @@ elif [[ -s _err-msg.md5 ]]; then rm _err-msg.md5; fi;
 if [[ $wdb -eq 1 ]]; then
 	printf '\e[36m%s \e[32m%s ' "WDB:" "старый" 
 else
-   #zcat scriptdb/wordbase0.gz | sed -r "s/([^_]=).+$/\1/g; s/^.+-.+\n//g" | gzip > scriptaux/wdb0.gz
+  #zcat scriptdb/wordbase0.gz | sed -r "s/([^_]=).+$/\1/g; s/^.+-.+\n//g" | gzip > scriptaux/wdb0.gz
 	printf '\e[36m%s \e[93m%s ' "WDB:" "новый" 
 	md5sum scriptdb/wordbase0.gz > scriptaux/zwdb.md5; fi
 
 if [[ $lexxdb -eq 1 ]]; then
 	printf '\e[36m%s \e[32m%s ' "GW:" "старые"
 else
-        # Служебный список поисковых строк из базы lexx
-        zgrep -Pv "_.+=$" scriptaux/tts.pat.gz | gzip > scriptaux/tts-dq.pat.gz
-        zgrep -P "_.+=$"  scriptaux/tts.pat.gz | gzip > scriptaux/tts-si.pat.gz
-        sed -r 's/^\" /_/g; s/^([^_r"]+)/_\1/g; s/^\"//g' tts.txt | gzip > scriptaux/tts0.txt.gz
-        ## паттерны известных и исключений в lexx
-        cat scriptaux/tts.pat.gz scriptdb/exclusion.pat.gz > scriptaux/lexx.pat.gz
-       	printf '%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' X1Ъ X0Ъ X3Ъ X4Ъ X5Ъ X6Ъ X8Ъ X7Ъ ъъъ ЪЪЪ | gzip -c >> scriptaux/lexx.pat.gz
+  # Служебный список поисковых строк из базы lexx
+  zgrep -Pv "_.+=$" scriptaux/tts.pat.gz | gzip > scriptaux/tts-dq.pat.gz
+  zgrep -P "_.+=$"  scriptaux/tts.pat.gz | gzip > scriptaux/tts-si.pat.gz
+  sed -r 's/^\" /_/g; s/^([^_r"]+)/_\1/g; s/^\"//g' tts.txt | gzip > scriptaux/tts0.txt.gz
+  ## паттерны известных и исключений в lexx
+  cat scriptaux/tts.pat.gz scriptdb/exclusion.pat.gz > scriptaux/lexx.pat.gz
+  printf '%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n' X1Ъ X0Ъ X3Ъ X4Ъ X5Ъ X6Ъ X8Ъ X7Ъ ъъъ ЪЪЪ | gzip -c >> scriptaux/lexx.pat.gz
 
 	md5sum tts.txt scriptdb/exclusion.pat.gz scriptaux/tts.pat.gz scriptaux/tts-dq.pat.gz scriptaux/tts-si.pat.gz \
-		scriptaux/tts0.txt.gz scriptaux/lexx.pat.gz scriptaux/_tts-noq.txt.gz scriptaux/_4awk-dq-rules.txt.gz > scriptaux/zlexxdb.md5
+         scriptaux/tts0.txt.gz scriptaux/lexx.pat.gz scriptaux/_tts-noq.txt.gz scriptaux/_4awk-dq-rules.txt.gz > scriptaux/zlexxdb.md5
 	printf '\e[36m%s \e[93m%s ' "GW:" "новые"
 fi
 
@@ -227,9 +234,9 @@ else
 	zcat scriptaux/namebase0.pat.gz scriptaux/override.pat.gz scriptaux/nomo.pat.gz | sort -u | gzip > scriptaux/names-all.pat.gz
 	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/nomo.pat.gz    | sort -u | gzip > scriptaux/ttspat.nam.gz
 	zgrep -Ff  <(zcat scriptaux/ttspat.nam.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.nam.gz
-        md5sum tts.txt scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptaux/namebase0.pat.gz \
-		scriptaux/override.pat.gz scriptaux/nomo.pat.gz scriptaux/names-all.pat.gz scriptaux/ttspat.nam.gz scriptaux/tts0.nam.gz > scriptaux/zndb.md5
-       	printf '\e[36m%s \e[93m%s ' "NDB:" "новые"
+  md5sum tts.txt scriptdb/namebase0.txt.gz scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptaux/namebase0.pat.gz \
+	       scriptaux/override.pat.gz scriptaux/nomo.pat.gz scriptaux/names-all.pat.gz scriptaux/ttspat.nam.gz scriptaux/tts0.nam.gz > scriptaux/zndb.md5
+  printf '\e[36m%s \e[93m%s ' "NDB:" "новые"
 fi
 
 # Выполняем проверку вспомогательных файлов из ./momo.sh
@@ -246,9 +253,9 @@ else
 	rm scriptaux/ttspat.mant.gz
 	zgrep -Ff <(zcat scriptaux/ttspat.man.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.man.gz
 
-       	printf '\e[36m%s \e[93m%s ' "MOM:" "новые"
-	md5sum tts.txt scriptdb/mano-uc0.txt.gz scriptaux/mano-uc.pat.gz scriptdb/mano-lc0.txt.gz scriptaux/mano-lc.pat.gz scriptaux/ttspat.man.gz \
-	       scriptaux/tts0.man.gz scriptdb/omo-index.sed > scriptaux/zaomo.md5
+  printf '\e[36m%s \e[93m%s ' "MOM:" "новые"
+  md5sum tts.txt scriptdb/mano-uc0.txt.gz scriptaux/mano-uc.pat.gz scriptdb/mano-lc0.txt.gz scriptaux/mano-lc.pat.gz scriptaux/ttspat.man.gz \
+         scriptaux/tts0.man.gz scriptdb/omo-index.sed > scriptaux/zaomo.md5
 fi
 
 # Выполняем проверку вспомогательных файлов из ./yofik.sh
@@ -265,13 +272,14 @@ else
 	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/yomo-lc0.pat.gz > scriptaux/ttspat.yoyt
 	sed -r 's/_(.)/_\l\1/' <(zcat scriptaux/yomo-uc0.pat.gz) | grep -Fof <(zcat scriptaux/tts.pat.gz) >> scriptaux/ttspat.yoyt
 	grep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/yolc.pat >> scriptaux/ttspat.yoyt
-    sort -u scriptaux/ttspat.yoyt | gzip > scriptaux/ttspat.yoy.gz
+  sort -u scriptaux/ttspat.yoyt | gzip > scriptaux/ttspat.yoy.gz
 	rm scriptaux/ttspat.yoyt
 	zgrep -Ff <(zcat scriptaux/ttspat.yoy.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.yoy.gz
-       	printf '\e[36m%s \e[93m%s ' "YOF:" "новые"
+
+  printf '\e[36m%s \e[93m%s ' "YOF:" "новые"
 	md5sum tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc0.txt.gz scriptaux/yomo-lc0.pat.gz \
-           scriptdb/yodef.awk scriptdb/yomo-uc0.txt.gz scriptaux/yomo-uc0.pat.gz scriptaux/tts.pat.gz scriptaux/tts0.txt.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz \
-           scriptdb/yolc.txt scriptaux/yolc.pat > scriptaux/zjofik.md5
+         scriptdb/yodef.awk scriptdb/yomo-uc0.txt.gz scriptaux/yomo-uc0.pat.gz scriptaux/tts.pat.gz scriptaux/tts0.txt.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz \
+         scriptdb/yolc.txt scriptaux/yolc.pat > scriptaux/zjofik.md5
 fi
 
 printf '\e[32;4;1m%s\e[0m\n' "Всё ОК!"
