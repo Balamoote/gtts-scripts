@@ -18,7 +18,6 @@
 @include "scriptdb/vsevso.awk"
 @include "scriptdb/zamok.awk"
 @include "scriptdb/deomo.awk"
-@include "scriptdb/pointesque.awk"
 
 
 BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
