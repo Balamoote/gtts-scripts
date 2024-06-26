@@ -1,14 +1,14 @@
 function rawstuff(    stn,len,ph,lk,wrda,sepa,j,hystring,l0,l1,l2,sw,hyw) {
       nem++; stn=index($0,"#")+3; len=length($0); ph=substr($0,stn,len-stn); lk=patsplit(ph,wrda,patword,sepa);
-#     hystring = gensub(/unxyp/,"","g",tolower(ph)); if (hystring ~ hysnip) { for (j=1; j<=lk-1; j++) {sw=""; if( sepa[j] ~ "-") { sw++; if( sepa[j+1] ~ "-") sw++ };
-#     switch (sw) {
-#     case "1": l0=tolower(wrda[j]); l1=tolower(wrda[j+1]); if (l0 != iwrd && l1 != iwrd) { hyw = l0 "-" l1;
-#               if (hyw in dichyph) { wrda[j] = wrda[j] sepa[j] wrda[j+1]; delete sepa[j]; delete wrda[j+1]; lk=arrpack(j+1,wrda); arrpack(j, sepa) };}; break
-#     case "2": l0=tolower(wrda[j]); l1=tolower(wrda[j+1]); l2=tolower(wrda[j+2]); if (l0 != iwrd && l1 != iwrd && l2 != iwrd) { hyw = l0 "-" l1 "-" l2;
-#               if (hyw in dichyph) { l[j] = wrda[j] sepa[j] wrda[j+1] sepa[j+1] wrda[j+2]; delete sep[j]; delete wrda[j+1]; lk=arrpack(j+1, wrda); arrpack(j, sepa);
-#               delete sepa[j]; delete wrda[j+1]; lk=arrpack(j+1,wrda); arrpack(j, sepa) };}; break
-#     default: break }; }; };
-#     for(j=1; j<=lk; j++) {eWRD[nem][j-$4]=wrda[j]}; eOMO[wrda[$4]][nem]=$2;
+      hystring = tolower(ph); if (hystring ~ hysnip) { for (j=1; j<=lk-1; j++) {sw=""; if( sepa[j] ~ "-") { sw++; if( sepa[j+1] ~ "-") sw++ };
+      switch (sw) {
+      case "1": l0=tolower(wrda[j]); l1=tolower(wrda[j+1]); if (l0 != iwrd && l1 != iwrd) { hyw = l0 "-" l1;
+                if (hyw in dichyph) { wrda[j] = wrda[j] sepa[j] wrda[j+1]; delete sepa[j]; delete wrda[j+1]; lk=arrpack(j+1,wrda); arrpack(j, sepa) };}; break
+      case "2": l0=tolower(wrda[j]); l1=tolower(wrda[j+1]); l2=tolower(wrda[j+2]); if (l0 != iwrd && l1 != iwrd && l2 != iwrd) { hyw = l0 "-" l1 "-" l2;
+                if (hyw in dichyph) { wrda[j] = wrda[j] sepa[j] wrda[j+1] sepa[j+1] wrda[j+2]; delete sepa[j]; delete wrda[j+1]; lk=arrpack(j+1, wrda); arrpack(j, sepa);
+                delete sepa[j]; delete wrda[j+1]; lk=arrpack(j+1,wrda); arrpack(j, sepa) };}; break
+      default: break }; }; };
+      for(j=1; j<=lk; j++) {eWRD[nem][j-$4]=wrda[j]}; eOMO[wrda[$4]][nem]=$2;
       switch ($3) {
         case "se": for(j=1; j< lk; j++) {eSEP[nem][j-$4]=sepa[j]}; break
         case "Se": for(j=0; j< lk; j++) {eSEP[nem][j-$4]=sepa[j]}; break
