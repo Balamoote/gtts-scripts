@@ -54,10 +54,10 @@ case $key in
                  $0 = rega[1] "Z" rega[2] rule rega[3] "Z" rule rega[4]
                  print $0 } else { print $0 };
             }' zamok.awk | awk -f beautify.awk > zamok.awk_ord; mv zamok.awk_ord zamok.awk;
-       awk -f beautify.awk cstring.awk > cstring.awk_ord; mv cstring.awk_ord cstring.awk;
-       awk -f beautify.awk cstauto.awk > cstauto.awk_ord; mv cstauto.awk_ord cstauto.awk;
-       awk -f beautify.awk classes.awk > classes.awk_ord; mv classes.awk_ord classes.awk;
-       awk -f beautify.awk parser.awk > parser.awk_ord; mv parser.awk_ord parser.awk;
+       awk -f beautify.awk cstring.awk > cstring.awk_ord      ; mv cstring.awk_ord cstring.awk;
+       awk -f beautify.awk cstauto.awk > cstauto.awk_ord      ; mv cstauto.awk_ord cstauto.awk;
+       awk -f beautify.awk classes.awk > classes.awk_ord      ; mv classes.awk_ord classes.awk;
+       awk -f beautify.awk parser.awk  > parser.awk_ord       ; mv parser.awk_ord  parser.awk;
        awk -f parser.awk deomo.awk defunct.awk vsevso.awk yodef.awk zamok.awk;
 
        zcat omoid_ini.gz | awk '{delete chars; ret="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);

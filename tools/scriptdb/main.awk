@@ -18,27 +18,13 @@
 @include "scriptdb/vsevso.awk"
 @include "scriptdb/zamok.awk"
 @include "scriptdb/deomo.awk"
+@include "scriptdb/pointesque.awk"
+
 
 BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
 
   #dbg = 0
    dbgstat = 0 # имя дебажного массива установить при вызове функции DO_DEBUG() в deomo.awk
-
-   unxy    = "[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
-   unxyp   = "[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]+"
-   unxn    = "[^\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
-   RUUC    = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]+"
-   RUUC_   = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]"
-   rulc    = "[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]+"
-   rulc_   = "[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]"
-   LAUC_   = "[A-ZÀÁÂÃÄÅĀĂÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝ]"
-   lalc    = "[a-zàáâãäåāăæçèéêëìíîïðñòóôõöøùúûüýß]+"
-   patword = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb00-9]+"
-   regword = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
-   fsword  = "[^АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
-   capword = "^[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]+$"
-   vvpat   = "[,—]"
-   hysnip  = regword "[-]" regword
 
    savefs = FS;
    FS = fsword;
