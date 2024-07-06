@@ -39,13 +39,13 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
  #   Для сканирования 1 омографа:       ./momo.sh -sw book.fb2 замок
  #   Для сканирования группы омографов: ./momo.sh -sg book.fb2 x4707
 #_#_#txtmppra
-#   if (num in eSCAN) { for (i=1; i<=NF; i++) { if($i in eOMO && num!=o03[$i]) {omap["x0300"][$i] = omap["x0300"][$i] num " "; o03[$i] = num};};}; #_#_# escomo !_#_!
 
     for (i=1; i<=NF; i++) {                                                                                                                #_#_# foricycle !_#_!
-        if($i in vse  && num!=o01    ) {vseT [tolower($i)]  = vseT [tolower($i)]  num " "; o01     = num}; # "все" (но не вСЕ,вСе,всЕ)     #_#_# vsez !_#_!
-        if($i in almo && num!=o02[$i]) {omap [almo[$i]][$i] = omap [almo[$i]][$i] num " "; o02[$i] = num}; # омографы кроме "все"          #_#_# all_omos !_#_!
-#       if(tolower($i)=="dummy"&& num!=o01[$i]) {omap [almo[$i]][$i] = omap [almo[$i]][$i] num " "; o01[$i] = num}; # отдельное слово      #_#_# single_word !_#_!
-#       if(almo[$i]   =="dummy"&& num!=o01[$i]) {omap [almo[$i]][$i] = omap [almo[$i]][$i] num " "; o01[$i] = num}; # отдельная группа     #_#_# single_group !_#_!
+        if($i in vse  && num!=o01    ) {vseT [tolower($i)]  = vseT [tolower($i)]  num " "; o01     = num}; # "все" (но не вСЕ,вСе,всЕ)   #_#_# vsez !_#_!
+        if($i in almo && num!=o02[$i]) {omap [almo[$i]][$i] = omap [almo[$i]][$i] num " "; o02[$i] = num}; # омографы кроме "все"        #_#_# all_omos !_#_!
+        if($i in eOMO && num!=o03[$i]) {omap["x0300"][$i]   = omap["x0300"][$i]   num " "; o03[$i] = num};                               #_#_# escomo !_#_!
+#       if(tolower($i)=="dummy"&& num!=o01[$i]) {omap [almo[$i]][$i] = omap [almo[$i]][$i] num " "; o01[$i] = num}; # отдельное слово    #_#_# single_word !_#_!
+#       if(almo[$i]   =="dummy"&& num!=o01[$i]) {omap [almo[$i]][$i] = omap [almo[$i]][$i] num " "; o01[$i] = num}; # отдельная группа   #_#_# single_group !_#_!
   };                                                                                                                                       #_#_# foricycle !_#_!
 #_#_#txtmpprb
 }

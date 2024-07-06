@@ -16,6 +16,10 @@ bookwrkdir=mano-"$book"
 bookstadir=mano-"$book".stat
 suf=man
 backup="$book".$suf
+
+#repper="grep -Fnf"
+repper="rg -Fnf"
+
 debug=0   # Если 1, то сделать отладку скриптов омографов: поиск искажений текста в "пастеризованных" версиях исходника и результата 
 nocaps=0  # Если 1, то капсов в "пастеризованных" не будет
 locdic=1
@@ -192,22 +196,22 @@ fi;
 # << Конец блока morphy
 
 # 
- if [[ $morphy_is == "1" ]]; then
-   if [[ -s $bookstadir/text-book.scy ]]; then
+case $morphy_is in
+
+  1) if [[ -s $bookstadir/text-book.scy ]]; then
        awk '{if (FNR==NR) { a[FNR]=$0 } else { b[FNR]=$0 } }; END { for(i in a) print a[i] "<@##@##@>" b[i] }' \
        $bookwrkdir/text-book.txt $bookstadir/text-book.scy > $bookwrkdir/text-book.bas
-   else
+     else
        cp -fu $bookwrkdir/text-book.txt $bookwrkdir/text-book.bas
-   fi;
- fi;
- if [[ $morphy_is == "2" ]]; then
-   if [[ -s $bookstadir/text-book.scy ]]; then
+     fi; ;;
+  2) if [[ -s $bookstadir/text-book.scy ]]; then
        awk '{if (FNR==NR) { a[FNR]=$0 } else { b[FNR]=$0 } }; END { for(i in a) print a[i] "<@##@##@>" b[i] }' \
        $bookwrkdir/text-book.txt $bookstadir/text-book.nat > $bookwrkdir/text-book.bas
-   else
+     else
        cp -fu $bookwrkdir/text-book.txt $bookwrkdir/text-book.bas
-   fi;
- fi;
+     fi; ;;
+   *)  cp -fu $bookwrkdir/text-book.txt $bookwrkdir/text-book.bas ;;
+esac
 
 if [[ $locdic == "1" ]]; then
 # Создать локальные для книги локальные словари для уменьшения используемой памяти << locdic
@@ -241,6 +245,26 @@ if [[ $locdic == "1" ]]; then
 fi;
 # << Конец блока создания локальных словарей
 
+# Обработка некондиционных фраз из scriptdb/rawstuff.gz
+# Получить номера строк файла, где найдены эскейпы
+ eSCAN=$($repper <(zcat scriptdb/rawstuff.gz | sed -r 's/^.[^#]+# \"(.+)\"$/\1/g') $bookwrkdir/text-book.bas|\
+        awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
+
+  if [[ -n $eSCAN ]]; then
+    sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
+            s/^#(.+#_#_# escomo !_#_!)$/\1/g;
+            s/^(.+#_#_# foricycle !_#_!)$/#\1/g;
+            s/^(.+#_#_# vsez !_#_!)$/#\1/g;
+            s/^(.+#_#_# all_omos !_#_!)$/#\1/g}' scriptdb/main.awk > $bookstadir/main_esc.awk
+
+    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+        -vescan="$eSCAN" -f $bookstadir/main_esc.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+
+    mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.bas
+    mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
+    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Обработка словаря исключений:" $durhum
+  fi # 
+
 # Проверить наличие необработанных "все": если есть, применить все правила, иначе выключить пару "все/всё"
 yops=$(grep -io "[^$unxc]\bвсе\b[^$unxc]" $bookwrkdir/text-book.txt | wc -l)
 
@@ -253,7 +277,7 @@ if [[ ! $single -eq 1 ]]; then
            -f scriptdb/main.awk > $bookwrkdir/text-book.awk.txt
      else
        awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-         -f scriptdb/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+           -f scriptdb/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
      fi # do_parallel
 
      mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -333,7 +357,7 @@ else
           -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-        -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+          -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
     fi # do_parallel
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
