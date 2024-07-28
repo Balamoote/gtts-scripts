@@ -258,7 +258,7 @@ fi;
             s/^(.+#_#_# all_omos !_#_!)$/#\1/g}' scriptdb/main.awk > $bookstadir/main_esc.awk
 
     awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-        -vescan="$eSCAN" -f $bookstadir/main_esc.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+        -vescan="$eSCAN" -vnoredix=1 -f $bookstadir/main_esc.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.bas
     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);

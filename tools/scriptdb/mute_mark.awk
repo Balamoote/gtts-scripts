@@ -5,7 +5,9 @@ BEGIN {
    cmd = "cat _z.txt";
    while ((cmd|getline) > 0) {
 
-      if ($3 == "empty"  ) { em[substr($1,2)] };
+         em[substr($1,2)] = $3
+
+#     if ($3 == "empty"  ) { em[substr($1,2)] };
  
   }}
 
@@ -16,9 +18,8 @@ BEGIN {
     targ = gensub(/^.*Z\[([0-9]+)\]\+\+;.*$/,"\\1","g",$0)
 
     if ( targ in em ) {
-      print $0, "#mute"
-      } else {
-      print $0
-    }
+      if ( em[targ] == "empty" ) { print $0, "#mute" }
+      else { print $0, "#hit_" em[targ] };
+    } else { print $0 };
 
     }

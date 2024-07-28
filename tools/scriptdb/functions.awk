@@ -87,18 +87,34 @@ function makebookvars() {                           # разбить строк�
 function makebookvars_nohyphback() {                # разбить строку, но словарные слова с дефисом не склеивать
                 b=strtonum(omlin[y]);nf=splitline(book[b]);splitlinephy(bphy[b]);regwpos(wrd); }
 function makewposvars() {                           # определить переменные внутри цикла для слова в позиции i
-                i=strtonum(i); prex=edro2mnim=edro2mnvi=nizm=mn2e2pomn=loc2emd=loc2ezd=NORULE=tn=hyn=qyn=wyn="" }
+                i=strtonum(i); prex=edro2mnim=edro2mnvi=nizm=mn2e2pomn=loc2emd=loc2ezd=NORULE=tn=hyn=qyn=wyn=do_tn="" }
 function DO_DEBUG(array,a_prefix,   outfile, k,cmd) {
                 outfile = "_" a_prefix ".txt"; for (k in array) { if ( array[k] ) {printf ("%s%s %s %s\n", a_prefix, k, "=", array[k]) >> outfile }; }; }
+function rfix(n,m) {             # ограничить диапазон размерами строки
+                if( n+i < 1 ) n = 1-i; if ( m+i < nf ) m = nf-i-1 }
+
+# x0300
 function rawstuff(    stn,len,ph,phr,lk,wrda,sepa,j,hystring,l0,l1,l2,sw,hyw,omn) { # Функция чтения файла rawstuff.gz с некондицией
       nem++; stn=index($0,"#")+3; len=length($0); ph=substr($0,stn,len-stn); phr=cLs(ph); lk=patsplit(phr,wrda,patword,sepa);
       for(j=1; j<=lk; j++) {eWRD[nem][j-$4]=wrda[j]}; eOMO[wrda[$4]][nem]=oms[$1][xclass[$1][substr($2,4,1)]][wrda[$4]];
+      # для строки: s = ignore start sep; e = ignore end sep; S,E = do NOT ignore s/e seps; L = last char of 1st sep; R = 1st char of last sep
       switch ($3) {
         case "se": for(j=1; j< lk; j++) {eSEP[nem][j-$4]=sepa[j]}; break
         case "Se": for(j=0; j< lk; j++) {eSEP[nem][j-$4]=sepa[j]}; break
         case "sE": for(j=1; j<=lk; j++) {eSEP[nem][j-$4]=sepa[j]}; break
         case "SE": for(j=0; j<=lk; j++) {eSEP[nem][j-$4]=sepa[j]}; break
+        case "Le": for(j=1; j< lk; j++) {eSEP[nem][j-$4]=sepa[j]}; eSPL[nem][-$4]=substr(sepa[0],length(sepa[0])); break
+        case "sR": for(j=1; j< lk; j++) {eSEP[nem][j-$4]=sepa[j]}; eSPR[nem][lk-$4]=substr(sepa[lk],1,1); break
+        case "LE": for(j=1; j<=lk; j++) {eSEP[nem][j-$4]=sepa[j]}; eSPL[nem][-$4]=substr(sepa[0],length(sepa[0])); break
+        case "SR": for(j=0; j< lk; j++) {eSEP[nem][j-$4]=sepa[j]}; eSPR[nem][lk-$4]=substr(sepa[lk],1,1); break
+        case "LR": for(j=1; j< lk; j++) {eSEP[nem][j-$4]=sepa[j]}; eSPL[nem][-$4]=substr(sepa[0],length(sepa[0])); eSPR[nem][lk-$4]=substr(sepa[lk],1,1); break
         default: break } }
+function esca(    j,k,f,el,sk,sl, ret) {   # точная фраза как строка из файла pointesque.gz -- выставляет омограф сама, только найденные ранее строки b и текущий омограф
+        if ( b in eSCAN && length(eOMO[wrd]) ) { for (j in eOMO[wrd]) {ret=1; for (k in eWRD[j]) { el = cL(k); if ( el != eWRD[j][k] ) { ret=0; break};};
+        if (ret) { for (f in eSPL[j]) { sk=gensub(unxy,"","g",sep[i+f]); sl=substr(sk,length(sk)); if ( sl != eSPL[j][f] ) { ret=0 }; break }; };
+        if (ret) { for (f in eSPR[j]) { sk=gensub(unxy,"","g",sep[i+f]); sl=substr(sk,1,1);        if ( sl != eSPR[j][f] ) { ret=0 }; break }; };
+        if (ret) { for (k in eSEP[j]) { if(gensub(unxy,"","g",sep[i+k]) != eSEP[j][k] ) { ret=0; break };};}; 
+        if (ret) { l[i]=eOMO[wrd][j];  break };};}; return ret}
 
 # функции обработки слов: сбор слов для записи в отдельный файл
 function getBF(n,file,   itmz, k) {                      # выдать базовую форму слова по адресу n и записать ее в file, омограф при этом в файл не пишется
@@ -154,11 +170,13 @@ function sQ(n, m, pu,   k, ret) {                   # разделители в 
                 for (k=n; k<=m; k++) { if (sep[i+k] ~ pu ) {ret=0; break} else {ret=1};}; return ret }
 # функции обработки диапазона сепараторов
 function qsf(n, m, sym,   k, stps, ret) {           # поиск ВПЕРЕД разделителя в диапазоне n-m, который содержит sym и выдать его адрес в sfn
-                sfn=ret=""; stps="[….,:;!?—]"; gsub(sym,"",stps); for(k=n; k<=m; k++) { if(sep[i+k] !~ stps) {if(sep[i+k] ~ sym) {ret=1; sfn=k; break};}else{break};}; return ret }
+                sfn=ret="";  stps="[….,:;!?—]"; gsub(sym,"",stps); for(k=n; k<=m; k++) { if(sep[i+k] !~ stps) {if(sep[i+k] ~ sym) {ret=1; sfn=k; break};}else{break};}; return ret }
 function qsF(n, m, sym,   k, stps, ret) {           # поиск ВПЕРЕД разделителя в диапазоне n-m, который содержит sym и выдать его адрес в sfn
-                sfn="";ret=1; stps="[….,:;!?—]"; gsub(sym,"",stps); for(k=n; k<=m; k++) { if(sep[i+k] !~ stps) {if(sep[i+k] ~ sym) {sfn=k; break};}else{break};}; return ret }
+                sfn="";ret=1;stps="[….,:;!?—]"; gsub(sym,"",stps); for(k=n; k<=m; k++) { if(sep[i+k] !~ stps) {if(sep[i+k] ~ sym) {sfn=k; break};}else{ret="";break};}; return ret }
 function qsb(n, m, sym,   k, ret) {                 # поиск НАЗАД разделителя в диапазоне n-m, который содержит sym и выдать его адрес в sbn
-                sbn=ret=""; stps="[….,:;!?—]"; gsub(sym,"",stps); for(k=m; k>=n; k--) { if(sep[i+k] !~ stps) {if(sep[i+k] ~ sym) {ret=1; sbn=k; break};}else{break};}; return ret }
+                sbn=ret="";  stps="[….,:;!?—]"; gsub(sym,"",stps); for(k=m; k>=n; k--) { if(sep[i+k] !~ stps) {if(sep[i+k] ~ sym) {ret=1; sbn=k; break};}else{break};}; return ret }
+function qsB(n, m, sym,   k, ret) {                 # поиск НАЗАД разделителя в диапазоне n-m, который содержит sym и выдать его адрес в sbn
+                sbn="";ret=1;stps="[….,:;!?—]"; gsub(sym,"",stps); for(k=m; k>=n; k--) { if(sep[i+k] !~ stps) {if(sep[i+k] ~ sym) {sbn=k; break};}else{ret="";break};}; return ret }
 function sos(n, m,   stps,k,ret) {                  # найти адрес разделителя в начале текущего предложения, и выдать его адрес в son
                 son=ret=""; stps="[….:;!?]"; for(k=m; k>=n; k--) { if(sep[i+k]~stps||sep[i+k]~/<[pv]>/||sep[i+k]=="") {ret=1; son=k; break};}; return ret }
 function eos(n, m,   stps,k,ret) {                  # найти адрес разделителя в конце текущего предложения, и выдать его адрес в eon
@@ -207,9 +225,9 @@ function id_(n, wl,   itmz,k, ret) {                     # связанное с
 function id(n, wl,    ret) {                        # связанное слово в позиции и с морфологической функцией wl
                 if ( wl in omoid[iwrd][lc(n)] ) {ret=1} else {ret=0}; return ret }
 function idf(n,m, wl,    k, ret) {                  # связанное слово в позиции и с морфологической функцией на n позиций вперёд
-                ret=idn=""; if(n>m)m=n; for (k=n; k<=m; k++) { if ( wl in omoid[iwrd][lc(k)] ) {ret=1; idn=k; break}; }; return ret }
+                ret=idn=""; if(n>m)m=n;rfix(n,m); for (k=n; k<=m; k++) { if ( wl in omoid[iwrd][lc(k)] ) {ret=1; idn=k; break}; }; return ret }
 function idb(n,m, wl,    k, ret) {                  # связанное слово в позиции и с морфологической функцией на n позиций назад
-                ret=idn=""; if(n>m)n=m; for (k=m; k>=n; k--) { if ( wl in omoid[iwrd][lc(k)] ) {ret=1; idn=k; break}; }; return ret }
+                ret=idn=""; if(n>m)n=m;rfix(n,m); for (k=m; k>=n; k--) { if ( wl in omoid[iwrd][lc(k)] ) {ret=1; idn=k; break}; }; return ret }
 function qm(n, isclass, wl,    ret) {               # обертка для нескольких функций и ba
                 if ( q(n,isclass) && bam(n,wl) ) {ret=1} else {ret=0}; return ret}
 function qq(n, m,    ret) {                         # слово m равно слово n?
@@ -217,7 +235,7 @@ function qq(n, m,    ret) {                         # слово m равно с
 function bqq(n, m,   k,itmz1,itmz2, ret) {          # базовая форма равна для m и n?
                 stotar(wordbf(n),itmz1,"#");stotar(wordbf(m),itmz2,"#");for(k in itmz1){if(k in itmz2){ret=1;break}else{ret=0};}; return ret}
 function qb(n,m, isclass,    k, ret) {              # поиск на n шагов назад наличия слова в классе
-                ret=qbn=""; if(n>m)n=m; for (k=m; k>=n; k--) { if ( q(k,isclass) ) {ret=1; qbn=k; break}; }; return ret }
+                ret=qbn=""; if(n>m)n=m;rfix(n,m); for (k=m; k>=n; k--) { if ( q(k,isclass) ) {ret=1; qbn=k; break}; }; return ret }
 function qb_ist(n,m, isclass,    k, ret) {              # поиск на n шагов назад наличия слова в классе
                 ret=qbn=""; if(n>m)n=m; for (k=m; k>=n; k--) { if ( q_ist(k,isclass) ) {ret=1; qbn=k; break}; }; return ret }
 function qib(n,m, isclass,    k, ret) {             # поиск на n шагов назад наличия слова в классе
@@ -229,7 +247,7 @@ function seek(n,m, isclass, notclass,    k, ret) {  # поиск на n шаго
                 if (n < 0){if(n>m)n=m;for(k=m;k>=n;k--){if( q(k,isclass )){ret=1; skn=k; break} else {if( q(k,notclass )&& k>=n &&k<m ){ret=0; break};};};}
                 else      {if(n>m)m=n;for(k=n;k<=m;k++){if( q(k,isclass )){ret=1; skn=k; break} else {if( q(k,notclass) && k>=n &&k<m ){ret=0; break};};};}; return ret}
 function qf(n,m, isclass,    k, ret) {              # поиск на n шагов вперёд наличия слова в классе
-                ret=qfn=""; if(n>m)m=n; for (k=n; k<=m; k++) { if ( q(k,isclass) ) {ret=1; qfn=k; break}; }; return ret }
+                ret=qfn=""; if(n>m)m=n;rfix(n,m); for (k=n; k<=m; k++) { if ( q(k,isclass) ) {ret=1; qfn=k; break}; }; return ret }
 function qir(n,m, isclass,    k, ret) {            # в промежутке ТОЛЬКО слова из класса или ничего, в заданном промежутке: при n>=m = true
                 ret=1; for (k=n; k<=m; k++) { if ( Q(k,isclass) ) {ret=0; break}; }; return ret }
 function qia(n,m, isclass1, isclass,    el,k,ret) { # в промежутке ТОЛЬКО слова из класса или ничего, 1-й элемент только в начале: при n>=m = true
@@ -247,11 +265,11 @@ function wiq(n,m, wl, isclass,    el,k,ret) { # в промежутке ТОЛЬ
 function qiw(n,m, isclass, wl,    el,k,ret) { # в промежутке ТОЛЬКО слова из класса или ничего, 2-й элемент-СЛОВО только в конце: при n>=m = true
                 ret=1; for(k=n  ;k< m;k++) { if( Q(k,isclass) ) {ret=0; break};}; if(ret==1 && n<=m && W(m,wl) ) {ret=0}; return ret }
 function qF(n,m, isclass, notclass,    k, ret) {    # поиск на n шагов вперёд наличия слова в классе и отсутсвия его же в другом классе
-                ret=qfn=""; for (k=n; k<=m; k++) { if ( q(k,isclass) && Q(k,notclass) ) {ret=1; qfn=k; break}; }; return ret }
+                ret=qfn="";rfix(n,m); for (k=n; k<=m; k++) { if ( q(k,isclass) && Q(k,notclass) ) {ret=1; qfn=k; break}; }; return ret }
 function Qb(n,m, isclass,    k, ret) {              # поиск на n шагов назад отсутствия слова в классе
-                ret=1; for (k=m; k>=n; k--)   { if ( q(k,isclass) && s(k,m) ) {ret=0; break}; }; return ret }
+                ret=1;rfix(n,m); for (k=m; k>=n; k--)   { if ( q(k,isclass) && s(k,m) ) {ret=0; break}; }; return ret }
 function Qf(n,m, isclass,    k, ret) {              # поиск на n шагов вперёд отсутствия слова в классе
-                ret=1; for (k=n; k<=m; k++)   { if ( q(k,isclass) && s(n,k-1) ) {ret=0; break}; }; return ret }
+                ret=1;rfix(n,m); for (k=n; k<=m; k++)   { if ( q(k,isclass) && s(n,k-1) ) {ret=0; break}; }; return ret }
 function Qb_(n, array,    k, ret) {                 # поиск на n шагов назад отсутствия слова в БАЗОВОМ массиве
                 ret=1; for (k=-1; k>=n; k--)   { if (lc(k) in array) {ret=0; break}; }; return ret }
 function Qf_(n, array,    k, ret) {                 # поиск на n шагов вперёд отсутствия слова в БАЗОВОМ массиве
@@ -259,7 +277,7 @@ function Qf_(n, array,    k, ret) {                 # поиск на n шаго
 function Q_(n, array,    ret) {                     # слово НЕ в БАЗОВОМ массиве?
                 if (lc(n) in array) {ret=0} else {ret=1}; return ret }
 function isname(n,    wd, el, en, es, ret) {            # Слово с Заглавной буквы?
-                el = "^" RUUC_ rulc "$"; en=gensub(unxyp,"","g",l[i+n]); es="^\\s+" LAUC_ lalc; if( en ~ el || sep[i+n-1] ~ es ) {ret=1} else {ret=0}; return ret }
+                el = "^" RUUC_ rulc; en=gensub(unxyp,"","g",l[i+n]); es="^\\s+" LAUC_ lalc; if( (en ~ el) || (sep[i+n-1] ~ es) ) {ret=1} else {ret=0}; return ret }
 function isacro(n,    wd, el, en, ret) {            # Слово - АКРОНИМ?
                 el = "^" RUUC "$"; en=gensub(unxyp,"","g",l[i+n]); if ( en ~ el ) {ret=1} else {ret=0}; return ret }
 function cap(n,    ret) {                           # Слово начинается с заглавной буквы?
@@ -278,25 +296,37 @@ function mwba(n,m,wl,  itmz,w1,k, ret) {               # match сочетани�
 function mwwa(n,m,wl,  itmz,w1,k, ret) {               # match сочетание частной формы(m) слова и частной формы(n) из пары в массиве wl: w_w
                w1=lc(n); if (w1 in omarr[wl]) {stotar(lc(m),itmz,"#");for(k in itmz){if(k in omarr[wl][w1]){ret=1;break}else{ret=0};};}; return ret }
 function bf(n,m,wl,   itmz,wls,j,k, ret) {                   # нахождение ВПЕРЁД базовых форм wl в диапазоне n-m из массивов BASE
-               bfn=ret="";if(n>m)m=n;stotar(wl,wls," ");for(j=n;j<=m;j++){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in wls){ret=1;bfn=j;break};};}; return ret }
+               bfn=BFn=ret="";if(n>m)m=n;rfix(n,m);stotar(wl,wls," ");for(j=n;j<=m;j++){if(ret)break;stotar(wordbf(j),itmz,"#");
+               for(k in itmz){if(k in wls){ret=1;bfn=j;BFn=k;break};};}; return ret }
 function bf2(n,m,wl,   itmz,wls,j,k, ret) {                   # нахождение ВПЕРЁД базовых форм wl в диапазоне n-m из массивов BASE
-               bfN=ret="";if(n>m)m=n;stotar(wl,wls," ");for(j=n;j<=m;j++){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in wls){ret=1;bfN=j;break};};}; return ret }
+               bfN=BFN=ret="";if(n>m)m=n;rfix(n,m);stotar(wl,wls," ");for(j=n;j<=m;j++){if(ret)break;;stotar(wordbf(j),itmz,"#");
+               for(k in itmz){if(k in wls){ret=1;bfN=j;BFN=k;break};};}; return ret }
 function bb(n,m,wl,   itmz,wls,j,k, ret) {                   # нахождение НАЗАД базовых форм wl в диапазоне n-m из массивов BASE
-               bbn=ret="";if(n>m)n=m;stotar(wl,wls," ");for(j=m;j>=n;j--){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in wls){ret=1;bbn=j;break};};}; return ret }
+               bbn=BBn=ret="";if(n>m)n=m;rfix(n,m);stotar(wl,wls," ");for(j=m;j>=n;j--){if(ret)break;;stotar(wordbf(j),itmz,"#");
+               for(k in itmz){if(k in wls){ret=1;bbn=j;BBn=k;break};};}; return ret }
 function bb2(n,m,wl,   itmz,wls,j,k, ret) {                   # нахождение НАЗАД базовых форм wl в диапазоне n-m из массивов BASE
-               bbN=ret="";if(n>m)n=m;stotar(wl,wls," ");for(j=m;j>=n;j--){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in wls){ret=1;bbN=j;break};};}; return ret }
+               bbN=BBN=ret="";if(n>m)n=m;rfix(n,m);stotar(wl,wls," ");for(j=m;j>=n;j--){if(ret)break;;stotar(wordbf(j),itmz,"#");
+               for(k in itmz){if(k in wls){ret=1;bbN=j;BBN=k;break};};}; return ret }
 function bam(n,wl,    itmz1,k, ret) {                     # принадлежность слова в n к одному из omarr массивов (wl = _идентификаторов_групп_слов) -- несколько функций ba
                 split(wl,itmz1," ");for(k in itmz1){if(ba(n,itmz1[k]) ){ret=1;break}else{ret=0};}; return ret }
 function ba(n,wl,     itmz,k, ret) {                     # имеет ли слово(n) базовую форму из массива omarr[wl] из массивов BASE
                ret="";stotar(wordbf(n),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;break};}; return ret }
 function bfa(n,m,wl,   itmz,j,k, ret) {                  # нахождение ВПЕРЁД базовых форм из массива omarr[wl] в диапазоне n-m из массивов BASE
-               bfn=ret="";if(n>m)m=n;for(j=n;j<=m;j++){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;bfn=j;break};};}; return ret }
-function bfa2(n,m,wl,   itmz,j,k, ret) {                  # нахождение ВПЕРЁД базовых форм из массива omarr[wl] в диапазоне n-m из массивов BASE
-               bfN=ret="";if(n>m)m=n;for(j=n;j<=m;j++){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;bfN=j;break};};}; return ret }
-function bba(n,m,wl,     itmz,k, ret) {                   # нахождение НАЗАД базовых форм из массива omarr[wl] в диапазоне n-m -- только 1 строка-идентификатор! из массивов BASE
-               bbn=ret="";if(n>m)n=m;for(j=m;j>=n;j--){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;bbn=j;break};};}; return ret }
-function bba2(n,m,wl,    itmz,k, ret) {                   # нахождение НАЗАД базовых форм из массива omarr[wl] в диапазоне n-m = bba - для возможности использовать 2 раза
-               bbN=ret="";if(n>m)n=m;for(j=m;j>=n;j--){if(ret){break};stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;bbN=j;break};};}; return ret }
+               bfn=BFn=ret="";if(n>m)m=n;rfix(n,m);for(j=n;j<=m;j++){if(ret)break;stotar(wordbf(j),itmz,"#");
+               for(k in itmz){if(k in omarr[wl]){ret=1;bfn=j;BFn=k;break};};}; return ret }
+function bfa2(n,m,wl,   itmz,j,k, ret) {             # нахождение ВПЕРЁД базовых форм из массива omarr[wl] в диапазоне n-m из массивов BASE
+               bfN=BFN=ret="";if(n>m)m=n;rfix(n,m);for(j=n;j<=m;j++){if(ret)break;stotar(wordbf(j),itmz,"#");
+               for(k in itmz){if(k in omarr[wl]){ret=1;bfN=j;BFN=k;break};};}; return ret }
+function bba(n,m,wl,     itmz,k, ret) {              # нахождение НАЗАД базовых форм из массива omarr[wl] в диапазоне n-m -- только 1 строка-идентификатор! из массивов BASE
+               bbn=BBn=ret="";if(n>m)n=m;rfix(n,m);for(j=m;j>=n;j--){if(ret)break;stotar(wordbf(j),itmz,"#");
+               for(k in itmz){if(k in omarr[wl]){ret=1;bbn=j;BBn=k;break};};}; return ret }
+function bba2(n,m,wl,    itmz,k, ret) {              # нахождение НАЗАД базовых форм из массива omarr[wl] в диапазоне n-m = bba - для возможности использовать 2 раза
+               bbN=BBN=ret="";if(n>m)n=m;rfix(n,m);for(j=m;j>=n;j--){if(ret)break;stotar(wordbf(j),itmz,"#");
+               for(k in itmz){if(k in omarr[wl]){ret=1;bbN=j;BBN=k;break};};}; return ret }
+function bsca(n,m,wl,     itmz,k, ret) {             # нахождение НАЗАД базовых форм из массива omarr[wl] в диапазоне n-m -- только 1 строка-идентификатор! из массивов BASE
+               delete bscan[wl];rfix(n,m);for(j=m;j>=n;j--){stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;bscan[wl][k]=j};};}; return ret }
+function fsca(n,m,wl,   itmz,j,k, ret) {             # нахождение ВПЕРЁД базовых форм из массива omarr[wl] в диапазоне n-m из массивов BASE
+               delete fscan[wl];rfix(n,m);for(j=n;j<=m;j++){stotar(wordbf(j),itmz,"#");for(k in itmz){if(k in omarr[wl]){ret=1;fscan[wl][k]=j};};}; return ret }
 function Xw(n,wl,           ret) {                   # слово(n) содержится в массиве исключений omarr[wl]: выдать 0
                if(lc(n) in omarr[wl]) {ret=0} else {ret=1}; return ret }
 function xw(n,wl,           ret) {                   # слово(n) содержится в массиве исключений omarr[wl]: выдать 1
@@ -307,6 +337,10 @@ function roman(n, ret) {                   # нахождение в списк�
                 if (sep[i+n] ~ /[IVXLMC]+/) {ret=1} else {ret=0}; return ret }
 function w(n, wl,    itmz, ret) {                   # нахождение в списке? = "одно из слов"
                 stotar(wl, itmz, "[ |]"); if (lc(n) in itmz) {ret=1} else {ret=0}; return ret }
+function weq(n, wl,    itmz, ret) {                  # нахождение в списке? = "одно из слов", для переменной, а не для слова в n
+                stotar(wl, itmz, "[ |]"); if (n in itmz) {ret=1} else {ret=0}; return ret }
+#function wiba(wl, arr,    k,itmz, ret) {               # нахождение в списке? = "одно из слов", для переменной, а не для слова в n
+#                stotar(wl, itmz, "[ |]"); if (k in itmz) {if(k in bscan[arr])                  }; return ret }
 function wy(n, wl,    itmz, ret) {                   # слово? = "1 или 0", wyn=сдвиг
                 wyn="";stotar(wl, itmz, "[ |]"); if (lc(n) in itmz) {wyn=1}; ret=1; return ret }
 function hwy(n, wl,    itmz, ret) {                   # -слово? = "1 или 0", hyn=сдвиг
@@ -341,19 +375,19 @@ function Ww_(n, wl,    itmz, ret) {                 # НЕнахождение �
 function W_w(n, wl,    itmz, ret) {                 # НЕнахождение в списке? != "одно из слов"
                 stotar(wl, itmz, "[ |]"); if (lc(n) in itmz && s(n-1)) {ret=0} else {ret=1}; return ret }
 function wb(n,m, wl,    itmz, k, ret) {             # поиск на n шагов назад слова из списка
-                ret=wbn=TW=""; if(n>m)n=m; stotar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if(lc(k) in itmz) {ret=1;wbn=TW=k;break};}; return ret }
+                ret=wbn=TW=""; if(n>m)n=m;rfix(n,m); stotar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if(lc(k) in itmz) {ret=1;wbn=TW=k;break};}; return ret }
 function wb2(n,m, wl,    itmz, k, ret) {            # поиск на n шагов назад слова из списка (если wb уже задействована)
-                ret=wbN=TW=""; if(n>m)n=m; stotar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if(lc(k) in itmz) {ret=1;wbN=TW=k;break};}; return ret }
+                ret=wbN=TW=""; if(n>m)n=m;rfix(n,m); stotar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if(lc(k) in itmz) {ret=1;wbN=TW=k;break};}; return ret }
 function wba(n,m, wl,    k, ret) {                  # поиск на n шагов назад слова из списка, но список в массиве omarr[wl] FLAT
                 ret=wbn=TA=""; if(n>m)n=m; for (k=m; k>=n; k--) { if(lc(k) in omarr[wl]) {ret=1;wbn=TA=k;break};}; return ret }
 function wb_raw(n,m, wl,    itmz, k, ret) {         # поиск на n шагов назад НЕОЧИЩЕННОГО слова из списка
-                ret=wbn=""; if(n>m)n=m; stotar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if (tolower(l[i+k]) in itmz) {ret=1; wbn=k; break};}; return ret }
+                ret=wbn=""; if(n>m)n=m;rfix(n,m); stotar(wl, itmz, "[ |]"); for (k=m; k>=n; k--) { if (tolower(l[i+k]) in itmz) {ret=1; wbn=k; break};}; return ret }
 function wf(n,m, wl,    itmz, k, ret) {             # поиск на n шагов вперёд наличия слова в массиве
-                ret=wfn=""; if(n>m)m=n; stotar(wl, itmz, "[ |]"); for (k=n; k<=m; k++) { if (lc(k) in itmz) {ret=1; wfn=TN=k; break};}; return ret }
+                ret=wfn=""; if(n>m)m=n;rfix(n,m); stotar(wl, itmz, "[ |]"); for (k=n; k<=m; k++) { if (lc(k) in itmz) {ret=1; wfn=TN=k; break};}; return ret }
 function wf2(n,m, wl,    itmz, k, ret) {             # поиск на n шагов вперёд наличия слова в массиве
-                ret=wfN=""; if(n>m)m=n; stotar(wl, itmz, "[ |]"); for (k=n; k<=m; k++) { if (lc(k) in itmz) {ret=1; wfN=TN=k; break};}; return ret }
+                ret=wfN=""; if(n>m)m=n;rfix(n,m); stotar(wl, itmz, "[ |]"); for (k=n; k<=m; k++) { if (lc(k) in itmz) {ret=1; wfN=TN=k; break};}; return ret }
 function wfa(n,m, wl,    k, ret) {                  # поиск на n шагов вперёд наличия слова из массивов FLAT
-                ret=wfn=""; if(n>m)m=n; for (k=n; k<=m; k++) { if (lc(k) in omarr[wl]) {ret=1; wfn=TN=k; break};}; return ret }
+                ret=wfn=""; if(n>m)m=n;rfix(n,m); for (k=n; k<=m; k++) { if (lc(k) in omarr[wl]) {ret=1; wfn=TN=k; break};}; return ret }
 function exf(n, wl,    itmz, wls, k, lk, ret) {   # точная фраза как строка от адреса вправо, последний разделитель НЕ проверяется
                 xfn="";ret=1;lk=patsplit(wl,itmz,patword,wls);for(k=1;k<lk;k++){if(!(gensub(unxy,"","g",l[i+k+n-1])==itmz[k]&&gensub(unxy,"","g",sep[i+k+n-1])==wls[k]))
                 {ret=0;break};}; if(ret && gensub(unxy,"","g",l[i+lk+n-1])==itmz[lk] ){xfn=n+lk-1} else {ret=0}; return ret}
@@ -366,10 +400,6 @@ function exb(n, wl,    itmz, wls, k, lk, ret) {   # точная фраза ка
 function exB(n, wl,    itmz, wls, k, lk, ret) {   # точная фраза как строка от адреса влево, последний разделитель ПРОВЕРЯЕТСЯ
                 xbn="";ret=1;lk=patsplit(wl,itmz,patword,wls);for(k=lk;k>=1;k--){if(!(gensub(unxy,"","g",l[i+k-lk+n])==itmz[k]&&gensub(unxy,"","g",sep[i+k-lk+n])==wls[k]))
                 {ret=0;break};}; if(ret) {xbn=n-lk+1}; return ret}
-function esca(    j,k,f,el, ret) {   # точная фраза как строка из файла pointesque.gz -- выставляет омограф сама, только найденные ранее строки b и текущий омограф
-                if ( b in eSCAN && length(eOMO[wrd]) ) { for (j in eOMO[wrd]) {ret=1; for (k in eWRD[j]) { el = cL(k); if ( el != eWRD[j][k] ) { ret=0; break};};
-                if (ret) { for (k in eSEP[j]) {if ( gensub(unxy,"","g",sep[i+k]) != eSEP[j][k] ) { ret=0; break };};};
-                if (ret) { l[i]=eOMO[wrd][j];  break };};}; return ret}
 function phs(n, wl,    itmz, k, lk, cnt, ret) {     # фраза как пастеризованная строка от адреса влево, проверка пробелов отдельно!
                 hsn="";lk=split(wl,itmz," "); for(k=1;k<=lk;k++) {if(lc(k+n-lk)==itmz[k]) {cnt++} else {cnt=0; break};};
                   if(cnt==lk) {ret=1; hsn=n-lk} else {ret=0}; return ret}
@@ -437,12 +467,12 @@ function qxd(n,a0,b0,c0,      a_,b_,c_,sw,ret) { # фраза от адреса 
                       default: ret=xdn=""; break };}; return ret}
 
 function rodeq_sw_pl(n,m,      sw,ret) { # определить род сущевительного по адресу n, сравнить его с родом прилагательного или местоимения по адресу m
-                if(suw_mu(n)) sw="mu"; if(suw_ze(n)) sw="ze"; if(suw_sr(n)) sw="sr"; if(suw_mn(n)) sw="mn";
+                if(suw_mu(n)) sw=1; if(suw_ze(n)) sw=2; if(suw_sr(n)) sw=3; if(suw_mn(n)) sw=4;
                   switch (sw) {
-                      case "mu": if( prl_mu(m)||muk_mu(m)                                                       ) {rdn="mu";ret=1} else {ret=0}; break
-                      case "ze": if( prl_ze(m)||muk_ze(m)                                                       ) {rdn="ze";ret=1} else {ret=0}; break
-                      case "sr": if( prl_sr(m)||muk_sr(m)                                                       ) {rdn="sr";ret=1} else {ret=0}; break
-                      case "mn": if( prl_mn(m)||muk_mn(m)                                                       ) {rdn="";ret=1} else {ret=0}; break
+                      case "1": if( prl_mu(m)||muk_mu(m)                                                       ) {rdn="mu";ret=1} else {ret=0}; break
+                      case "2": if( prl_ze(m)||muk_ze(m)                                                       ) {rdn="ze";ret=1} else {ret=0}; break
+                      case "3": if( prl_sr(m)||muk_sr(m)                                                       ) {rdn="sr";ret=1} else {ret=0}; break
+                      case "4": if( prl_mn(m)||muk_mn(m)                                                       ) {rdn="";ret=1} else {ret=0}; break
                       default: ret=rdn=""; break }; return ret}
 
 # логические функции проверки переменных -- для лучшей читаемости. Только, если переменная не равна "" (0)
@@ -2205,6 +2235,8 @@ function pre_pr(n,      wd,ret) { if(!wd)wd=lc(n); if (wd in pred_pr)           
 function pre_ro(n,      wd,ret) { if(!wd)wd=lc(n); if (wd in pred_ro)                                                                           {ret=1} else {ret=0}; return ret}
 function pre_tv(n,      wd,ret) { if(!wd)wd=lc(n); if (wd in pred_tv)                                                                           {ret=1} else {ret=0}; return ret}
 function pre_any(n,     wd,ret) { if(!wd)wd=lc(n); if (wd in pred_im||wd in pred_vi||wd in pred_da||wd in pred_pr||wd in pred_ro||wd in pred_tv){ret=1} else {ret=0}; return ret}
+function pre_s(n,       wd,ret) { if(!wd)wd=lc(n); if (wd in pred_s)                                                                            {ret=1} else {ret=0}; return ret}
+function pre_u(n,       wd,ret) { if(!wd)wd=lc(n); if (wd in pred_u)                                                                            {ret=1} else {ret=0}; return ret}
 
 # Одиночные классы
 function predik(n,      wd,ret) { if(!wd)wd=lc(n); if (wd in predk)                                                                             {ret=1} else {ret=0}; return ret}
@@ -2388,6 +2420,7 @@ function narph_kaq(n,   wd,                                                     
                           qxw(n,"не","нужно обязательно")  )                                                                                    {ret=1} else {ret=0}; return ret }
 function narph_spos(n,  wd,                                                                                                                     ret) {
                      if ( qxw(n,"близко","к","сердцу")||
+                          qxw(n,"в","два","счета")||
                           qxw(n,"в","общем","и","целом")||
                           qxw(n,"в","клочья прах спешке щепки")||
                           qxw(n,"в","дикой лютой страшной","спешке")||
@@ -2452,6 +2485,7 @@ function wordbf_(n,   el, ret) { el=lc(n); #_#alt#_# при поиске чер�
    if(el in BF)  { ret = BF[el] } else {ret=""}; return ret }
 
 function wordbf(n,   el, ret) { el=lc(n); #_#main#_#
+  while ( el ) {
    if(el in dpn_ne_na              ) { ret = ret "#" dpn_ne_na              [el]; };
    if(el in dpn_ne_pa              ) { ret = ret "#" dpn_ne_pa              [el]; };
    if(el in dpn_pe_na              ) { ret = ret "#" dpn_pe_na              [el]; };
@@ -3454,4 +3488,4 @@ function wordbf(n,   el, ret) { el=lc(n); #_#main#_#
 #  if(el in muc_mnro               ) { ret = ret "#" muc_mnro               [el]; };
 #  if(el in muc_mntv               ) { ret = ret "#" muc_mntv               [el]; };
 #  if(el in muc_mnvi               ) { ret = ret "#" muc_mnvi               [el]; };
-gsub(/ё/,"е",ret); return ret }
+   el="" }; gsub(/ё/,"е",ret); return ret }

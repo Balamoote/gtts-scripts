@@ -5921,7 +5921,7 @@ sz_iili(2) &&
  if ( q(1,"name_pr_sy isname") && s(0) )
  { l[i]=omo2; R[1261]++; if(dbg){print "R1261"}; continue };
  if ( q(-1,"pre_da preph_da") &&
-     q_(1,swn_edmze_pr) && s(-1,0) )
+     q_(1,swn_edze_pr) && s(-1,0) )
  { l[i]=omo1; R[1262]++; if(dbg){print "R1262"}; continue };
 
  if ( q(1,"prl_edzetv prq_edzetv") && s(0) && p(1) )

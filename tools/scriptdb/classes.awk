@@ -12,14 +12,16 @@ BEGIN {
     split(verheader, gnuawk, "[ .,]")
     if (gnuawk[1] == "GNU" && gnuawk[2] == "Awk" && gnuawk[3] >= 5 && gnuawk[4] >= 2 && gnuawk[5] >= 1) { gawk52 = 1 };
  # Если словари и этот скрипт не изменились и gawk>=5.2.1, восстановить состояние, иначе прочитать всё заново.
-   if ( gawk52 == 1 ) {
+   if ( gawk52 == 1 && !noredix ) {
      if (locdic ~ "^scriptdb\x2f$") { cmd = "md5sum -c --status " inax "classes.md5 >/dev/null 2>&1" }
      else { cmd = "md5sum -c --status " locdic "classes.md5 >/dev/null 2>&1" }
     redix = system(cmd); close(cmd);};
 
    if (locdic ~ "^scriptdb\x2f$") { classcache = inax "classes.bin" } else { classcache = locdic "classes.bin" };
 
-   if (redix == 0 && gawk52 == 1) { readall(classcache) } else {
+   if ( !noredix ) {
+
+   if ( redix == 0 && gawk52 == 1) { readall(classcache) } else {
 
    cmd = "zcat " locdic "dic_prq.gz";
    while ((cmd|getline) > 0) {
@@ -1854,7 +1856,29 @@ BEGIN {
                      indb "cstauto.awk " "> " locdic "classes.md5"
   }
   system(cmd); close(cmd)
-   } #gnuawk
+   }; # readall bases
+  } else { # noredix -- читаем только классы и омографы
+
+       # Список классов омографов с описательными тэгами. Неочевидные кодировки в позиции падежа: z=партитив, l=локатив, q=счетная форма
+         cmd = "zcat " indb "class.list.gz";
+         while ((cmd|getline) > 0) {
+           for (i=2; i<=NF; i++) { xclass[$1][i-1]=$i };
+         } close(cmd);
+
+         cmd = "zcat " indb "automo.gz | \
+                sed -r 's/([аеёиоуыэюя])\\x27/\\1\\xcc\\x81/g; \
+                        s/\\\\xcc\\\\xa0/\\xcc\\xa0/g; \
+                        s/\\\\xcc\\\\xa3/\\xcc\\xa3/g; \
+                        s/\\\\xcc\\\\xa4/\\xcc\\xa4/g; \
+                        s/\\\\xcc\\\\xad/\\xcc\\xad/g; \
+                        s/\\\\xcc\\\\xb0/\\xcc\\xb0/g; \
+                        s/^(x[0-9]+)\\s([^ ]+)\\s([^ ]+)\\s([^ ]+)(\\s.+)?/\\1 \\3 \\2 \\4 \\u\\2 \\u\\4 \\U\\2\\E \\U\\4\\E \\5/g'";
+                                                                          #  1   2   3   4      5      6      7         8      9
+         while ((cmd|getline) > 0) {
+               almo[$3]=almo[$5]=almo[$7]=$1; oms[$1][$2][$3]=$4; oms[$1][$2][$5]=$6; oms[$1][$2][$7]=$8; oms[$1]["info"][$3]=$9;
+         }; close(cmd);
+
+  } # noredix
 
  # Коррекции - удаление омографов из массивов производятся выставлений 3-го поля в NOP.
 

@@ -2,23 +2,26 @@ function stoar(string, arrto, sepr,    k) {         # добавить в мас
                 split(string, artmp, sepr); for (k in artmp) {if(artmp[k]) {arrto[artmp[k]]}; };}
 BEGIN {
 
-  RUUC    = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]+"
-  RUUC_   = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]"
-  patword = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb00-9]+"
-  rulc    = "[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]+"
-  rulcs   = "[ абвгдеёжзийклмнопрстуфхцчшщъыьэюя-]+"
-  rulcr   = "[][ ^$.+\x5c?*|xабвгдеёжзийклмнопрстуфхцчшщъыьэюя0-9-]+"
-  rulc_   = "[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]"
-  rulcst  = "((\"" rulcs "\")|(cst[0-9]?)|(cst_[a-z]+))"
+  RUUC     = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]+"
+  RUUC_    = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]"
+  patword  = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb00-9]+"
+  patword_ = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb00-9 ]+"
+  rulc     = "[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]+"
+  rulcs    = "[ абвгдеёжзийклмнопрстуфхцчшщъыьэюя-]+"
+  rulcr    = "[][ ^$.+\x5c?*|xабвгдеёжзийклмнопрстуфхцчшщъыьэюя0-9-]+"
+  rulc_    = "[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]"
+  rulcst   = "((\"" rulcs "\")|(cst[0-9]?)|(cst_[a-z]+))"
 
-  isfun   = "[a-zA-Z_0-9]+"
-  nofun   = "[^a-zA-Z_0-9]"
-  funpat  = nofun isfun "\\("
-  ids     = "(ispa_abst|ispa_any|ispa_food|ispa_liquid|ispa_liquid|ispa_loose|ispa_solid|hsw4edro|hsw4mnro|usw4edim|usw4edda|usw4edtv|usw4edvi|usw4edro|usw4edpr|gl4pa|gl4dOma)"
-  n=m     = "(([-0-9+_a-zN]+)|([A-Z]\\[\"[A-z_+-]+\"\\]([-+][0-9])?))"
-# n=m     = "([-0-9+_a-z]+)|([A-Z]\\[\"[a-z_+-]+\"\\]([-+][0-9])?)"
-  varpat  = "(([A-Z]\\[\"[A-z_+-]+\"\\])|([A-Z]?\\[[a-z_]+\\])|([a-z_+0-9-]+))"
-  strvals = "^((cst[0-9]?)|(cst_[a-z]+)|(pre_[a-z]+))$"
+  isfun    = "[a-zA-Z_0-9]+"
+  nofun    = "[^a-zA-Z_0-9]"
+  funpat   = nofun isfun "\\("
+  ids      = "(ispa_abst|ispa_any|ispa_food|ispa_liquid|ispa_liquid|ispa_loose|ispa_solid|hsw4edro|hsw4mnro|usw4edim|usw4edda|usw4edtv|usw4edvi|usw4edro|usw4edpr|gl4pa|gl4dOma)"
+  n=m      = "(([-0-9+_a-zN]+)|([A-Z]\\[\"[A-z_+-]+\"\\]([-+][0-9])?))"
+# n=m      = "([-0-9+_a-z]+)|([A-Z]\\[\"[a-z_+-]+\"\\]([-+][0-9])?)"
+  varpat   = "(([A-Z]\\[\"[A-z_+-]+\"\\])|([A-Z]\\[[a-z_]+\\])|([a-z_+0-9-]+))"
+  varpat1  = "(([-+_0-9a-z]+)|(\"[_a-z]+\")|([A-Z]\\[\"[A-z_+-]+\"\\]))"
+  varpat2  = "(([A-Z]\\[\"[A-z_+-]+\"\\])|([A-Z]\\[[a-z_]+\\])|([A-z_+0-9-]+)|(\"" rulcs "\"))"
+  strvals  = "^((cst[0-9]?)|(cst_[a-z]+)|(pre_[a-z]+))$"
 
 #funcs["readfile"]="file";
 #funcs["joinpat"]="array,seps,nuf"    #joinpat(array, seps, nuf,    ret, i, k)
@@ -138,7 +141,7 @@ funcs["hwy"]=n "," rulcst                                                    #hw
 funcs["wa"]=n ",\"[-A-z_]+\""                                                #wa(n, wl,    ret)
 funcs["ww_"]=n "," rulcst                                                    #ww_(n, wl,    itmz, ret)
 funcs["w_w"]=n ",\"" rulcst                                                  #w_w(n, wl,    itmz, ret)
-funcs["wist"]=n ",\"" patword "\""                                           #wist(n, wl,    itmz, ret)
+funcs["wist"]=n ",\"" patword_ "\""                                           #wist(n, wl,    itmz, ret)
 funcs["gist"]=n "," m                                                        #gist(n, m,    wd, istomo,  ret)
 funcs["wc"]=n ",((\"" rulcr "( " rulcr "){0,}\")|(cst[0-9]?))"               #wc(n, wl,    itmz, k, lk, ret)
 funcs["jme"]=n ",((\"" rulc "\")|(cst[0-9]?)),cst[0-9]?"                     #jme(n, p1, p2,    itmz1, itmz2, jwordz, jword, k, j, ret)
@@ -176,12 +179,13 @@ funcs["vge"]=varpat "," n                                                    #vg
 funcs["vle"]=varpat "," n                                                    #vle(var,  val,   ret)
 funcs["vgt"]=varpat "," n                                                    #vgt(var,  val,   ret)
 funcs["vlt"]=varpat "," n                                                    #vlt(var,  val,   ret)
-funcs["veq"]=varpat ",(([-+_0-9a-z]+)|(\"[_a-z]+\"))"                        #veq(var,  val,   ret)
+funcs["veq"]=varpat "," varpat1                                              #veq(var,  val,   ret)
 funcs["vgl"]=varpat "," n "," m                                              #vgl(var,v1,v2,   ret)
 funcs["vxt"]=varpat ",[-+_0-9a-z]+,[-+_0-9a-z]+"                             #vxt(var,v1,v2,   ret)
 funcs["vex"]=varpat                                                          #vex(var,         ret)
 funcs["vem"]=varpat                                                          #vem(var,         ret)
 funcs["v2v"]="[-+_0-9a-z]+,[-+_0-9a-z]+"                                     #v2v(v1,v2        ret)
+funcs["weq"]=varpat2 "," varpat2                                             #weq(var,  val,   ret)
 
 funcs["vsyo_sy"]=n
 funcs["vsje_sy"]=n
@@ -275,7 +279,7 @@ cst="deep deep_na deep_ne deep_pa deep_pe deep_pn geo_mn geo_sr gl_aux_be gl_bue
      suw_nomntv suw_nomnvi suw_odda suw_oded suw_odedda suw_odedim suw_odedmuda suw_odedpr suw_odedro suw_odedsrda suw_odedtv suw_odedvi suw_odim suw_odmn suw_odmnda \
      suw_odmnim suw_odmnro suw_odmnvi suw_odpr suw_odro suw_odtv suw_odvi suw_odzv suw_pr suw_ro suw_tv suw_vi sz sz_i sz_iili titul vvod digits vsyo_sy vsje_sy \
      name_im_sy name_vi_sy name_ro_sy name_da_sy name_tv_sy name_pr_sy name_any_sy sw_es_r_sy sw_mn_i_sy sw_mn_v_sy isSing_sy isPlur_sy preph_vi preph_da cap \
-     preph_ro preph_tv preph_any prl_pv_any qto";
+     preph_ro preph_tv preph_any prl_pv_any sz_qto sz_dge sz_kak sz_kogda pre_s";
  stoar(cst,funarr," "); #
 
 cst="ist_any ist_nar_mest ist_nar_napr ist_nar_spos ist_nar_vrem ist_prl_edmuim ist_prl_edmupr ist_prl_edmuvi ist_prl_edsrpr ist_prl_edzeda ist_prl_edzeim \
