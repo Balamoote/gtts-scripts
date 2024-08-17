@@ -6885,7 +6885,7 @@ xgrp="x2317";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)        #
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 
-###   x2318 !_#_! ==> m2_1sw_ez_r_2pl_kr_mn_		sw_em_iv_  полы  по́лы  полы́
+###   x2318 !_#_! ==> m2_1sw_ez_r_2pl_kr_mn_		sw_mn_iv_  полы  по́лы  полы́
 xgrp="x2318";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
@@ -6895,11 +6895,11 @@ xgrp="x2318";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)        #
  if ( sw_ez_r_f() )
  { l[i]=omo1; R[1478]++; if(dbg){print "R1478", "sw_ez_r_f"}; continue };
  #
- if ( sw_em_i_f() )
- { l[i]=omo2; R[1479]++; if(dbg){print "R1479", "sw_ez_i_f"}; continue };
+ if ( pl_krmn_f() )
+ { l[i]=omo1; R[1479]++; if(dbg){print "R1479", "pl_krmn_f"}; continue };
  #
- if ( sw_em_v_f() )
- { l[i]=omo2; R[1480]++; if(dbg){print "R1480", "sw_em_v_f"}; continue };
+ if ( sw_mn_i_f() )
+ { l[i]=omo2; R[1480]++; if(dbg){print "R1480", "sw_mn_i_f"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
 

@@ -42,7 +42,7 @@ pack="scriptdb/automo.gz scriptdb/beautify.awk scriptdb/class.list.gz scriptdb/c
       scriptdb/main.awk scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz \
       scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
       scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/sort_opt.awk \
-      scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt scriptdb/yomo-lc0.txt.gz \
+      scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc0.txt.gz \
       scriptdb/yomo-uc0.txt.gz scriptdb/zamok.awk scriptdb/dik_prop.gz"
 read -a minpack <<< $pack
 
@@ -268,10 +268,10 @@ else
 	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef1.txt.gz)   | gzip > scriptaux/yodef1.pat.gz
 	sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-lc0.txt.gz) | gzip > scriptaux/yomo-lc0.pat.gz
 	sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-uc0.txt.gz) | gzip > scriptaux/yomo-uc0.pat.gz
-	sed -r "s/=.+$/=/g" scriptdb/yolc.txt > scriptaux/yolc.pat
+  sed -r "s/=.+$/=/g" <(zcat scriptdb/yolc.txt.gz)     | gzip > scriptaux/yolc.pat.gz
 	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/yomo-lc0.pat.gz > scriptaux/ttspat.yoyt
 	sed -r 's/_(.)/_\l\1/' <(zcat scriptaux/yomo-uc0.pat.gz) | grep -Fof <(zcat scriptaux/tts.pat.gz) >> scriptaux/ttspat.yoyt
-	grep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/yolc.pat >> scriptaux/ttspat.yoyt
+	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/yolc.pat.gz >> scriptaux/ttspat.yoyt
   sort -u scriptaux/ttspat.yoyt | gzip > scriptaux/ttspat.yoy.gz
 	rm scriptaux/ttspat.yoyt
 	zgrep -Ff <(zcat scriptaux/ttspat.yoy.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.yoy.gz
@@ -279,7 +279,7 @@ else
   printf '\e[36m%s \e[93m%s ' "YOF:" "новые"
 	md5sum tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc0.txt.gz scriptaux/yomo-lc0.pat.gz \
          scriptdb/yodef.awk scriptdb/yomo-uc0.txt.gz scriptaux/yomo-uc0.pat.gz scriptaux/tts.pat.gz scriptaux/tts0.txt.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz \
-         scriptdb/yolc.txt scriptaux/yolc.pat > scriptaux/zjofik.md5
+         scriptdb/yolc.txt.gz scriptaux/yolc.pat.gz > scriptaux/zjofik.md5
 fi
 
 printf '\e[32;4;1m%s\e[0m\n' "Всё ОК!"

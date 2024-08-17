@@ -3957,7 +3957,7 @@ function pl_krmn_f(ret, stopp) { while ( !stopp ) {
  if ( q(-2,"mest_mnim suw_mnim") &&
       q(-1,"nar_spos nar_step prl_kred_sr") && s(-1) )
  { ret=stopp=1; D[964]++; if(dbg){print "D964"}; continue };
- if ( suw_mnim(-1) && s(-1) && p(-2) )
+ if ( suw_mnim(-1) && s(-1) && p(-2) && Q(-1,"prl_mnim") )
  { ret=stopp=1; D[965]++; if(dbg){print "D965"}; continue };
  if ( prl_kred_sr(-1) && s(-1))
  { ret=stopp=1; D[966]++; if(dbg){print "D966"}; continue };

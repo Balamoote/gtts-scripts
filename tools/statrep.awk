@@ -9,7 +9,7 @@ a[n] = a[n] + $3
 
 }
 END { 
-  for (i=1; i<=927; i++) {
+  for (i=1; i<=1402; i++) {
       if ( a[i] ) { print z i, "=", a[i]} else {print z i, "=", "empty" }
   }
  }

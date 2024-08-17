@@ -2,11 +2,11 @@
 
 # Служебная утилита
 # key:
-# -ord        перенумеровать все правила во всех рабочих скриптах и отсортировать строки
-# -omoid      сгенерировать базы omoid_auto.gz из omoid_ini.gz и omoid_pa_ini.gz
-# -spell_flat все слова словарей без ё и ударений
-# -spell_all  все слова словарей с именами, ё, ударениями и служебными символами
-# -ddic       поиск в dic_*.gz дублей с разной основой (предотвратить затирание в памяти первой формы)
+#  ord        перенумеровать все правила во всех рабочих скриптах и отсортировать строки
+#  omoid      сгенерировать базы omoid_auto.gz из omoid_ini.gz и omoid_pa_ini.gz
+#  spell_flat все слова словарей без ё и ударений
+#  spell_all  все слова словарей с именами, ё, ударениями и служебными символами
+#  ddic       поиск в dic_*.gz дублей с разной основой (предотвратить затирание в памяти первой формы)
 
 key="$1"
 # Установка редактора: vim или neovim
@@ -25,7 +25,7 @@ unxs=$(printf "\xe2\x80\xa4\xe2\x80\xa7")
 
 
 case $key in
-    -ord ) # перенумеровать все правила во всех рабочих скриптах и отсортировать строки
+    ord ) # перенумеровать все правила во всех рабочих скриптах и отсортировать строки
        awk '{    reg = "(^.* )[drvDRVZ](\\[)[0-9]+(\\]\\+\\+; if\\(dbg\\){print \x22)[DRV][0-9]+(\x22.*)$"
              if ($0 ~ reg) {
                  rule++
@@ -54,10 +54,13 @@ case $key in
                  $0 = rega[1] "Z" rega[2] rule rega[3] "Z" rule rega[4]
                  print $0 } else { print $0 };
             }' zamok.awk | awk -f beautify.awk > zamok.awk_ord; mv zamok.awk_ord zamok.awk;
-       awk -f beautify.awk cstring.awk > cstring.awk_ord      ; mv cstring.awk_ord cstring.awk;
-       awk -f beautify.awk cstauto.awk > cstauto.awk_ord      ; mv cstauto.awk_ord cstauto.awk;
-       awk -f beautify.awk classes.awk > classes.awk_ord      ; mv classes.awk_ord classes.awk;
-       awk -f beautify.awk parser.awk  > parser.awk_ord       ; mv parser.awk_ord  parser.awk;
+
+       awky="cstring.awk"; awk -f beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="cstauto.awk"; awk -f beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="classes.awk"; awk -f beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="parser.awk" ; awk -f beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="gen_prq.awk"; awk -f beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+
        awk -f parser.awk deomo.awk defunct.awk vsevso.awk yodef.awk zamok.awk;
 
        zcat omoid_ini.gz | awk '{delete chars; ret="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
@@ -71,7 +74,7 @@ case $key in
                          sort -u | gzip > omoid_flat_ord.gz; mv omoid_flat_ord.gz omoid_flat.gz
        exit 1; ;;
 
-    -omoid ) # сгенерировать базы omoid_auto.gz из omoid_ini.gz и omoid_pa_ini.gz
+    omoid ) # сгенерировать базы omoid_auto.gz из omoid_ini.gz и omoid_pa_ini.gz
 
        awk 'BEGIN {
                cmd = "zcat omoid_ini.gz";
@@ -108,7 +111,7 @@ case $key in
 
         exit 1; ;;
 
-    -spell_flat ) # все слова словарей без ё и ударений
+    spell_flat ) # все слова словарей без ё и ударений
                zcat dic_*.gz | awk '{print $1}' > ru.txt
                zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
                zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=']//g; s/ё/е/g; s/ /\r/g" >> ru.txt
@@ -127,7 +130,7 @@ case $key in
                printf "Список ruflat.txt: без ударений, ё, служебных символов. В vim: mkspell! ru ruflat.txt\n"
        exit 1; ;;
 
-    -spell_all ) # все слова словарей с именами, ё, ударениями и служебными символами
+    spell_all ) # все слова словарей с именами, ё, ударениями и служебными символами
                zcat dic_*.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u > ru.txt
                zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
                zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
@@ -157,15 +160,35 @@ case $key in
                  "$cdata" 'Установлен файл' $vimspelldir "/ru.utf-8.spl" 'с ударениями в омографах, ё, служебными символами.'
        exit 1; ;;
 
-    -ddic ) # поиск в dic_*.gz дублей с разной основой (предотвратить затирание в памяти первой формы)
+    ddic ) # поиск в dic_*.gz дублей с разной основой (предотвратить затирание в памяти первой формы)
                zcat dic_*.gz | awk '{ if ( f1 == $1 && f2 == $2 )  {printf("\033[91m%s\n\033[0m", $0); fnd=1}; f1=$1; f2=$2; }
                            END { if(!fnd) printf("\033[32m%s\n\033[0m", "Дублей с разной основой не надено.")}' ;
        exit 1; ;;
 
-    -pat4oc ) # создать полный список всех словоформ для фильтрации словаря opencorpora
+    pat4oc ) # создать полный список всех словоформ для фильтрации словаря opencorpora
               zcat dic_*.gz | awk '{ print "_" $1 "=" }' | sort -u | gzip > _stock.patt.gz
               zcat dik_*.gz | awk '{ $1=tolower($1); gsub("ё","е",$1); print "_" $1 "=" }' | sort -u | gzip >> _stock.patt.gz
               zcat _stock.patt.gz | sort -u | gzip > _stock.pat.gz; rm _stock.patt.gz
+       exit 1; ;;
+
+    pat4all ) # создать полный список всех словоформ для фильтрации словаря opencorpora
+              zcat dic_*.gz | awk '{ print "_" $1 "=" }' | sort -u | gzip > _stock.patt.gz
+              zcat dik_*.gz | awk '{ $1=tolower($1); gsub("ё","е",$1); print "_" $1 "=" }' | sort -u | gzip >> _stock.patt.gz
+              zcat _stock.patt.gz | sort -u | gzip > _stock.pat.gz; rm _stock.patt.gz
+              zcat dic_prl.gz  | awk '{ print   "_" $1 "="   }' | sort -u | gzip > _stock_prl.pat.gz
+              zcat dic_prl.gz  | awk '{ print "\\s" $2 "\\s" }' | sort -u | gzip > _class_prl.gz
+              zcat dic_prq.gz  | awk '{ print   "_" $1 "="   }' | sort -u | gzip > _stock_prq.pat.gz
+              zcat dic_prq.gz  | awk '{ print "\\s" $2 "\\s" }' | sort -u | gzip > _class_prq.gz
+              zcat dic_suw.gz  | awk '{ print   "_" $1 "="   }' | sort -u | gzip > _stock_suw.pat.gz
+              zcat dic_suw.gz  | awk '{ print "\\s" $2 "\\s" }' | sort -u | gzip > _class_suw.gz
+              zcat dic_gl.gz   | awk '{ print   "_" $1 "="   }' | sort -u | gzip > _stock_gl.pat.gz
+              zcat dic_gl.gz   | awk '{ print "\\s" $2 "\\s" }' | sort -u | gzip > _class_gl.gz
+              zcat dic_rest.gz | awk '{ print   "_" $1 "="   }' | sort -u | gzip > _stock_rest.pat.gz
+              zcat dic_rest.gz | awk '{ print "\\s" $2 "\\s" }' | sort -u | gzip > _class_rest.gz
+       exit 1; ;;
+
+    gen_prq ) # создать полный список всех словоформ причастий из словаря dix
+              zcat dix_prq.gz | awk -f gen_prq.awk | sort -u | gzip > dic_prq.gz
        exit 1; ;;
 
     * ) exit 0; ;;
