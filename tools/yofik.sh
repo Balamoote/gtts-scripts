@@ -80,7 +80,7 @@ if [[ $clxx -eq "1" ]]; then
 	else printf '\e[31;1m%s\e[0m \e[93m%s \e[31;1m%s\e[0m\n' "Выполнение скрипта" "./yofik.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
 
 # Массив со списком обязательных файлов
-pack="tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc0.txt.gz scriptaux/yomo-lc0.pat.gz scriptdb/yomo-uc0.txt.gz scriptaux/yomo-uc0.pat.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz scriptdb/yolc.txt.gz scriptdb/yodef.awk scriptaux/yolc.pat"
+pack="tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc0.txt.gz scriptaux/yomo-lc0.pat.gz scriptdb/yomo-uc0.txt.gz scriptaux/yomo-uc0.pat.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz scriptdb/yolc.txt.gz scriptdb/yodef.awk scriptaux/yolc.pat.gz"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего

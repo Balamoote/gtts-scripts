@@ -31,7 +31,7 @@ BEGIN {
          yodef[$1]=$2; yodef[$3]=$4;; yodef[$5]=$6;
 
    } close(cmd);
-   cmd = "cat " indb "yolc.txt | sed -r 's/^_//g; s/=/ /g'";
+   cmd = "zcat " indb "yolc.txt.gz | sed -r 's/^_//g; s/=/ /g'";
    while ((cmd|getline) > 0) {
 
         yodef[$1]=$2;
@@ -40,7 +40,7 @@ BEGIN {
 
  # Записать состояние словарных массивов
   if (gawk52 == 1) { writeall(yocache) };
-  cmd = "md5sum " indb "yodef.awk " inax "yodef.bin " indb "yodef0.txt.gz " indb "yodef1.txt.gz " indb "yolc.txt > " inax "yodef.md5"
+  cmd = "md5sum " indb "yodef.awk " inax "yodef.bin " indb "yodef0.txt.gz " indb "yodef1.txt.gz " indb "yolc.txt.gz > " inax "yodef.md5"
   system(cmd); close(cmd);
    } #gnuawk
 
