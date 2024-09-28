@@ -96,9 +96,10 @@ funcs["qq"]=n "," m                                                          #qq
 funcs["bqq"]=n "," m                                                         #bqq(n, m,   k,itmz1,itmz2, ret)
 funcs["qb"]=n "," m ",\"[a-z _3]+\""                                         #qb(n,m, isclass,    k, ret)
 funcs["qb_ist"]=n "," m ",\"[a-z _3]+\""                                     #qb_ist(n,m, isclass,    k, ret)
-funcs["qib"]=n "," m ",\"[a-z_ 3]+\""                                        #qib(n,m, isclass,    k, ret)
 funcs["qB"]=n "," m ",\"[a-z _3]+\",\"[a-z_3]+\""                            #qB(n,m, isclass, notclass,    k, ret)
 funcs["seek"]=n "," m ",\"[a-z _3]+\",\"[a-z _3]+\""                         #seek(n,m, isclass, notclass,    k, ret)
+funcs["qfba"]=n "," m ",\"[a-z _3]+\",\"[a-z _-]+\""                         #seek(n,m, isclass, notclass,    k, ret)
+funcs["qbba"]=n "," m ",\"[a-z _3]+\",\"[a-z _3-]+\""                         #seek(n,m, isclass, notclass,    k, ret)
 funcs["qf"]=n "," m ",\"[a-z _3]+\""                                         #qf(n,m, isclass,    k, ret)
 funcs["qir"]=n "," m ",((\"[a-z_ 3]+\")|(cst[0-9]?)|(cst_[a-z]+))"           #qir(n,m, isclass,    k, ret)
 funcs["qia"]=n "," m ",\"[a-z_ 3]+\",\"[a-z_ 3]+\""                          #qia(n,m, isclass1, isclass,    el,k,ret)
@@ -207,6 +208,8 @@ funcs["preph_da"]=n
 funcs["preph_ro"]=n
 funcs["preph_tv"]=n
 funcs["preph_any"]=n
+funcs["mqast_srav"]=n
+funcs["mqast"]=n
 
 for (i in funcs) { funcs[i] = "^" funcs[i] "$" }
 
@@ -227,16 +230,17 @@ fun_fl["Qb"]=3
 fun_fl["Qf"]=3
 fun_fl["qb"]=3
 fun_fl["qf"]=3
-fun_fl["qib"]=3
 fun_fl["qir"]=3
-fun_fl["qiw"]=3
+fun_fl["qiw"]=4
 fun_fl["wiq"]=4
 
-fun_fl["qB"]=34
-fun_fl["qF"]=34
-fun_fl["qia"]=34
-fun_fl["qiz"]=34
-fun_fl["seek"]=34
+fun_fl["qB"]=4
+fun_fl["qF"]=4
+fun_fl["qia"]=4
+fun_fl["qiz"]=4
+fun_fl["seek"]=4
+fun_fl["qfba"]=3
+fun_fl["qbba"]=3
 
 fun_fl["Qist"]=fun_is["Qist"]=2
 fun_fl["q_ist"]=fun_is["q_ist"]=2
@@ -279,7 +283,7 @@ cst="deep deep_na deep_ne deep_pa deep_pe deep_pn geo_mn geo_sr gl_aux_be gl_bue
      suw_nomntv suw_nomnvi suw_odda suw_oded suw_odedda suw_odedim suw_odedmuda suw_odedpr suw_odedro suw_odedsrda suw_odedtv suw_odedvi suw_odim suw_odmn suw_odmnda \
      suw_odmnim suw_odmnro suw_odmnvi suw_odpr suw_odro suw_odtv suw_odvi suw_odzv suw_pr suw_ro suw_tv suw_vi sz sz_i sz_iili titul vvod digits vsyo_sy vsje_sy \
      name_im_sy name_vi_sy name_ro_sy name_da_sy name_tv_sy name_pr_sy name_any_sy sw_es_r_sy sw_mn_i_sy sw_mn_v_sy isSing_sy isPlur_sy preph_vi preph_da cap \
-     preph_ro preph_tv preph_any prl_pv_any sz_qto sz_dge sz_kak sz_kogda pre_s";
+     preph_ro preph_tv preph_any prl_pv_any sz_qto sz_dge sz_kak sz_kogda pre_s mqast_srav";
  stoar(cst,funarr," "); #
 
 cst="ist_any ist_nar_mest ist_nar_napr ist_nar_spos ist_nar_vrem ist_prl_edmuim ist_prl_edmupr ist_prl_edmuvi ist_prl_edsrpr ist_prl_edzeda ist_prl_edzeim \

@@ -115,8 +115,7 @@ case $key in
                zcat dic_*.gz | awk '{print $1}' > ru.txt
                zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
                zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=']//g; s/ё/е/g; s/ /\r/g" >> ru.txt
-               zcat yodef0.txt.gz yodef1.txt.gz |sed -r "s/[_']//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
-               cat yolc.txt | sed -r "s/_//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
+               zcat yodef0.txt.gz yodef1.txt.gz yolc.txt.gz |sed -r "s/[_']//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
                sed -r "s/\\\xcc\\\x81//g
                        s/\\\xcc\\\xa0//g
 	                     s/\\\xcc\\\xa3//g
@@ -135,14 +134,13 @@ case $key in
                zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
                zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
                zcat mano-uc0.txt.gz yomo-uc0.txt.gz nomo.txt.gz |sed -r "s/[_=]//g; s/\b(.)/\l\1/g; s/ /\n/g" >> ru.txt
-               zcat yodef0.txt.gz yodef1.txt.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
+               zcat yodef0.txt.gz yodef1.txt.gz yolc.txt.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
                zcat namebase0.txt.gz nameoverride.txt.gz |\
                     sed -r "s/(=\\\\xcc\\\\x[ab][034d])([$rulc])/\1\u\2/g
                             s/([_=])([$rulc])/\1\u\2/g
                             s/[_g]//g
                             s/=/\n/g" >> ru.txt
                zcat stray.gz names_raw.gz >> ru.txt # stray = некондиция; names_raw = имена без ударений. Только для спеллинга.
-               cat yolc.txt |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
                sed -r "s/([$RVUC$rvlc])'/\1\xcc\x81/g
 	                     s/\\\xcc\\\xa0/\xcc\xa0/g
 	                     s/\\\xcc\\\xa3/\xcc\xa3/g
@@ -171,7 +169,7 @@ case $key in
               zcat _stock.patt.gz | sort -u | gzip > _stock.pat.gz; rm _stock.patt.gz
        exit 1; ;;
 
-    pat4all ) # создать полный список всех словоформ для фильтрации словаря opencorpora
+    pat4all ) # создать полный список всех словоформ для фильтрации словаря wiktionary
               zcat dic_*.gz | awk '{ print "_" $1 "=" }' | sort -u | gzip > _stock.patt.gz
               zcat dik_*.gz | awk '{ $1=tolower($1); gsub("ё","е",$1); print "_" $1 "=" }' | sort -u | gzip >> _stock.patt.gz
               zcat _stock.patt.gz | sort -u | gzip > _stock.pat.gz; rm _stock.patt.gz
@@ -191,7 +189,7 @@ case $key in
               zcat dix_prq.gz | awk -f gen_prq.awk | sort -u | gzip > dic_prq.gz
        exit 1; ;;
 
-    * ) exit 0; ;;
+     * ) printf "%s\n" "WRONG ARG!"; exit 0; ;;
 
 
 esac

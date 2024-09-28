@@ -40,6 +40,7 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
  #   Для сканирования группы омографов: ./momo.sh -sg book.fb2 x4707
 #_#_#txtmppra
 #   if (num in eSCAN) { for (i=1; i<=NF; i++) { if($i in eOMO && num!=o03[$i]) {omap["x0300"][$i] = omap["x0300"][$i] num " "; o03[$i] = num};};}; #_#_# escomo !_#_!
+#   if (num in eSCAP) { for (i=1; i<=NF; i++) { if($i in cOMO && num!=o04[$i]) {omap["x0301"][$i] = omap["x0301"][$i] num " "; o04[$i] = num};};}; #_#_# escaps !_#_!
 
     for (i=1; i<=NF; i++) {                                                                                                                #_#_# foricycle !_#_!
         if($i in vse  && num!=o01    ) {vseT [tolower($i)]  = vseT [tolower($i)]  num " "; o01     = num}; # "все" (но не вСЕ,вСе,всЕ)     #_#_# vsez !_#_!

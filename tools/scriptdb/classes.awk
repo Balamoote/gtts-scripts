@@ -1719,17 +1719,16 @@ BEGIN {
 	   for (i=2; i<=NF; i++) { xclass[$1][i-1]=$i };
    } close(cmd);
 
-   cmd = "zcat " indb "automo.gz | \
-          sed -r 's/([аеёиоуыэюя])\\x27/\\1\\xcc\\x81/g; \
-                  s/\\\\xcc\\\\xa0/\\xcc\\xa0/g; \
-                  s/\\\\xcc\\\\xa3/\\xcc\\xa3/g; \
-                  s/\\\\xcc\\\\xa4/\\xcc\\xa4/g; \
-                  s/\\\\xcc\\\\xad/\\xcc\\xad/g; \
-                  s/\\\\xcc\\\\xb0/\\xcc\\xb0/g; \
-                  s/^(x[0-9]+)\\s([^ ]+)\\s([^ ]+)\\s([^ ]+)(\\s.+)?/\\1 \\3 \\2 \\4 \\u\\2 \\u\\4 \\U\\2\\E \\U\\4\\E \\5/g'";
-                                                                    #  1   2   3   4      5      6      7         8      9
+   cmd = "zcat " indb "automo.gz"
    while ((cmd|getline) > 0) {
-         almo[$3]=almo[$5]=almo[$7]=$1; oms[$1][$2][$3]=$4; oms[$1][$2][$5]=$6; oms[$1][$2][$7]=$8; oms[$1]["info"][$3]=$9;
+         gsub("\\\\xcc\\\\xa0","\xcc\xa0",$4); gsub("\\\\xcc\\\\xa3","\xcc\xa3",$4); gsub("\\\\xcc\\\\xa4","\xcc\xa4",$4)
+         gsub("\\\\xcc\\\\xad","\xcc\xad",$4); gsub("\\\\xcc\\\\xb0","\xcc\xb0",$4); gsub("\x27","\xcc\x81",$4)
+
+         word=$2; Word=toupper(substr($2,1,1)) substr($2,2); WORD=toupper($2); # Формы "стандартных" омографов
+         omo =$4; Omo =toupper(substr($4,1,1)) substr($4,2); OMO =toupper($4); # Формы "стандартных" омогформ
+
+         almo[word]=almo[Word]=almo[WORD]=$1; oms[$1]["info"][word]=$9;
+         oms[$1][$3][word]=omo; oms[$1][$3][Word]=Omo; oms[$1][$3][WORD]=OMO;
    }; close(cmd);
 
    cmd = "zcat " indb "omoid_auto.gz";

@@ -249,16 +249,22 @@ fi;
 # Получить номера строк файла, где найдены эскейпы
  eSCAN=$($repper <(zcat scriptdb/rawstuff.gz | sed -r 's/^.[^#]+# \"(.+)\"$/\1/g') $bookwrkdir/text-book.bas|\
         awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
+ eSCAP=$($repper <(zcat scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz |awk '{for (i=2; i<=NF; i++) { sinda[i]=index(gensub(/[\\xcab0-9]/,"","g",$i),"\x27")-1 };
+                         gsub("\\\\xcc\\\\xa0","\xcc\xa0",$0); gsub("\\\\xcc\\\\xa3","\xcc\xa3",$0); gsub("\\\\xcc\\\\xa4","\xcc\xa4",$0)
+                         gsub("\\\\xcc\\\\xad","\xcc\xad",$0); gsub("\\\\xcc\\\\xb0","\xcc\xb0",$0); gsub("\x27","\xcc\x81",$0); gsub(/[_=]/,"",$0)
+                         for (i=2; i<=NF; i++) { if (sinda[i] > 1) { w0rd=substr($1,1,sinda[i]-1) toupper(substr($1,sinda[i],1)) substr($1,sinda[i]+1);
+                           print w0rd };}; }') $bookwrkdir/text-book.bas | awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
 
-  if [[ -n $eSCAN ]]; then
+  if [[ -n $eSCAN ]] || [[ -n $eSCAP ]] ; then
     sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
             s/^#(.+#_#_# escomo !_#_!)$/\1/g;
+            s/^#(.+#_#_# escaps !_#_!)$/\1/g;
             s/^(.+#_#_# foricycle !_#_!)$/#\1/g;
             s/^(.+#_#_# vsez !_#_!)$/#\1/g;
             s/^(.+#_#_# all_omos !_#_!)$/#\1/g}' scriptdb/main.awk > $bookstadir/main_esc.awk
 
     awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-        -vescan="$eSCAN" -vnoredix=1 -f $bookstadir/main_esc.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+        -vescan="$eSCAN" -vescap="$eSCAP" -vnoredix=1 -f $bookstadir/main_esc.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.bas
     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
