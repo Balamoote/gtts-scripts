@@ -68,7 +68,7 @@ esac
 printf '\e[32m%s \e[32;4;1m%s\e[0m\n' "Скрипт" "\"Ёфикация\""
 printf '\e[36m%s \e[93m%s\e[0m\n' "Строк в словаре однозначной ёфикации:" $(zgrep -c ^ scriptdb/yodef0.txt.gz)
 printf '\e[36m%s \e[93m%s\e[0m\n' "Строк там же, слова с начальной 'ё' :" $(zgrep -c ^ scriptdb/yodef1.txt.gz)
-printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Строк в словаре:" $(zgrep -c ^ scriptdb/yomo-uc0.txt.gz) "Ё-омографов и" $(zgrep -c ^ scriptdb/yomo-lc0.txt.gz) "ё-омографов."
+printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Строк в словаре:" $(zgrep -c ^ scriptdb/yomo-uc.txt.gz) "Ё-омографов и" $(zgrep -c ^ scriptdb/yomo-lc.txt.gz) "ё-омографов."
 if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
 
 if [[ -s scriptaux/zjofik.md5 ]] && md5sum -c --status scriptaux/zjofik.md5 >/dev/null 2>&1; then
@@ -80,7 +80,7 @@ if [[ $clxx -eq "1" ]]; then
 	else printf '\e[31;1m%s\e[0m \e[93m%s \e[31;1m%s\e[0m\n' "Выполнение скрипта" "./yofik.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
 
 # Массив со списком обязательных файлов
-pack="tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc0.txt.gz scriptaux/yomo-lc0.pat.gz scriptdb/yomo-uc0.txt.gz scriptaux/yomo-uc0.pat.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz scriptdb/yolc.txt.gz scriptdb/yodef.awk scriptaux/yolc.pat.gz"
+pack="tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc.txt.gz scriptaux/yomo-lc.pat.gz scriptdb/yomo-uc.txt.gz scriptaux/yomo-uc.pat.gz scriptaux/yomo-cc.pat.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz scriptdb/yolc.txt.gz scriptdb/yodef.awk scriptaux/yolc.pat.gz"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -97,9 +97,11 @@ if [[ -d $tmpdir ]]; then rm -rf $tmpdir/ && mkdir $tmpdir; else mkdir $tmpdir; 
 sed "/<binary/Q" "$book" | sed -r "s/\xc2\xa0/ /g" > $tmpdir/text-book.txt
 sed -n '/<binary/,$p' "$book" > $tmpdir/binary-book.txt
 
-# Список слов всех, в нижнем регистре, затем в верхем
+# Список слов всех, в нижнем регистре, затем в верхем и КАПСЫ
 
 grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+"             $tmpdir/text-book.txt | grep -v "[$unxc]" | sed -r 's/^.+$/_\0=/g' | sort -u > $tmpdir/words-all-lc.pat
+
+grep -Po "(?<=[^$RUUC$unxc])[$RUUC$unxc]+"                  $tmpdir/text-book.txt | grep -v "[$unxc]" | sed -r 's/^.+$/_\0=/g' | sort -u > $tmpdir/words-all-cc.pat
 
 grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" $tmpdir/text-book.txt | grep -v "[$unxc]" | sed -r 's/^.+$/_\0=/g' | sort -u > $tmpdir/words-all-uc.pat
 
@@ -138,20 +140,23 @@ fi # fixomochk 1
 # Список ё-омонимов yodirchk 0
 if [[ ! -d $bookwrkdir ]]; then
 	mkdir $bookwrkdir
-	grep -Ff <(zcat scriptaux/yomo-lc0.pat.gz) $tmpdir/words-all-lc.pat | sort -u > $bookwrkdir/yo-omo0-lc.pat
-	grep -Ff <(zcat scriptaux/yomo-uc0.pat.gz) $tmpdir/words-all-uc.pat | sort -u > $bookwrkdir/yo-omo0-uc.pat
-	zgrep -Ff $bookwrkdir/yo-omo0-uc.pat scriptdb/yomo-uc0.txt.gz >  $bookwrkdir/yomo-luc.txt
-	zgrep -Ff $bookwrkdir/yo-omo0-lc.pat scriptdb/yomo-lc0.txt.gz >> $bookwrkdir/yomo-luc.txt
+	grep -Ff <(zcat scriptaux/yomo-lc.pat.gz) $tmpdir/words-all-lc.pat > $bookwrkdir/yo-omo-lc.pat
+	grep -Ff <(zcat scriptaux/yomo-uc.pat.gz) $tmpdir/words-all-uc.pat > $bookwrkdir/yo-omo-uc.pat
+  grep -Ff <(zcat scriptaux/yomo-cc.pat.gz) $tmpdir/words-all-cc.pat > $bookwrkdir/yo-omo-cc.pat
+
+	zgrep -Ff $bookwrkdir/yo-omo-lc.pat scriptdb/yomo-lc.txt.gz                                                                  > $bookwrkdir/yomo-luc.txt
+  zcat scriptdb/yomo-lc.txt.gz scriptdb/yomo-uc.txt.gz |sed -r "s/([_ ])(.)/\1\u\2/g"    | grep -Ff $bookwrkdir/yo-omo-uc.pat >> $bookwrkdir/yomo-luc.txt
+  zcat scriptdb/yomo-lc.txt.gz scriptdb/yomo-uc.txt.gz |sed -r "s/([$RUUC$rulc]+)/\U\0/g"| grep -Ff $bookwrkdir/yo-omo-cc.pat >> $bookwrkdir/yomo-luc.txt
 
     sed -r "
-        s/^_(.+)=/\1/g
-		s/\x27/\xcc\x81/g
-		s/\\xcc\\xa0/\xcc\xa0/g
-		s/\\xcc\\xa3/\xcc\xa3/g
-		s/\\xcc\\xa4/\xcc\xa4/g
-		s/\\xcc\\xad/\xcc\xad/g
-		s/\\xcc\\xb0/\xcc\xb0/g
-        " $bookwrkdir/yomo-luc.txt > $bookwrkdir/omo-luc.lst
+       s/^_(.+)=/\1/g
+       s/\x27/\xcc\x81/g
+       s/\\\xcc\\\xa0/\xcc\xa0/g
+       s/\\\xcc\\\xa3/\xcc\xa3/g
+       s/\\\xcc\\\xa4/\xcc\xa4/g
+       s/\\\xcc\\\xad/\xcc\xad/g
+       s/\\\xcc\\\xb0/\xcc\xb0/g
+        " $bookwrkdir/yomo-luc.txt |sort -u > $bookwrkdir/omo-luc.lst
 	rm $bookwrkdir/*.pat $bookwrkdir/*.txt
 
 if [[ -s $bookwrkdir/omo-luc.lst ]]; then # Проверка найдены ли ё-омографы для ручной обработки yoomchk 0
@@ -162,7 +167,7 @@ if [[ -s $bookwrkdir/omo-luc.lst ]]; then # Проверка найдены ли
 # Работает только при установленном плагине vim PatternsOnText (https://github.com/inkarkat/vim-PatternsOnText)
 
 # Формируем дискретные скрипты пословно
-printf '\e[32m%s\n' "Создание дискретных скриптов обработки ё-омографов:"
+printf '\e[32m%s' "Создание дискретных скриптов обработки ё-омографов:"
 twd=$(tput cols)
 
 zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\

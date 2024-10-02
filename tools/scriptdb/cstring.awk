@@ -5,17 +5,22 @@ BEGIN {
     # FLAT = список слов в определённых формах (падеж, лицо, время и т.д.) = wa wba wfa
     # X_метка: Пример: X_gl_v_castle-iv escape: отдельные словоформы, которые не должны срабатывать. Например совпадение словоформ глагола и существительного
 
-  if ( escan ) { cmd = "zcat " indb "rawstuff.gz";#nem=""; # прочесть список некондиции
+  # прочесть список некондиции
+  if ( escan ) { cmd = "zcat " indb "rawstuff.gz";#nem="";
                  while ((cmd|getline) > 0) { rawstuff(nem++); }; close(cmd); stoar(escan,eSCAN,"_"); };
-  if ( escap ) { cmd = "zcat " indb "mano-lc0.txt.gz " indb "mano-uc0.txt.gz";
+
+  # обработка ударений, обознаценный капсом, кроме ударения на первую букву слова
+  if ( escap ) {
+   cmd = "zcat " indb "mano-lc.txt.gz " indb "mano-uc.txt.gz";
    while ((cmd|getline) > 0) {
 
          for (i=2; i<=NF; i++) { sinda[i]=index(gensub(/[\\xcab0-9]/,"","g",$i),"\x27")-1 };
          gsub("\\\\xcc\\\\xa0","\xcc\xa0",$0); gsub("\\\\xcc\\\\xa3","\xcc\xa3",$0); gsub("\\\\xcc\\\\xa4","\xcc\xa4",$0)
          gsub("\\\\xcc\\\\xad","\xcc\xad",$0); gsub("\\\\xcc\\\\xb0","\xcc\xb0",$0); gsub("\x27","\xcc\x81",$0); gsub(/[_=]/,"",$0)
 
-         for (i=2; i<=NF; i++) { if(sinda[i]>1) { w0rd=substr($1,1,sinda[i]-1) toupper(substr($1,sinda[i],1)) substr($1,sinda[i]+1); cOMO[w0rd]=$i };};
-   }; close(cmd); stoar(escap,eSCAP,"_"); };
+         for (i=2; i<=NF; i++) { if(sinda[i]>1) { w0rd=substr($1,1,sinda[i]-1) toupper(substr($1,sinda[i],1)) substr($1,sinda[i]+1); cOMO[w0rd]=$i
+                                                  w0rd=Zag(w0rd); cOMO[w0rd]=Zag($i) };};
+   }; close(cmd); stoar(escap,eSCAP,"_");};
 
 
 # for (i in eOMO) printf("eOMO: %s %s\n", i, length(eOMO[i]) )

@@ -39,11 +39,11 @@ esac; fi
 pack="scriptdb/automo.gz scriptdb/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk \
       scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz \
       scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz \
-      scriptdb/main.awk scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz \
+      scriptdb/main.awk scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz \
       scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
       scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/sort_opt.awk \
-      scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc0.txt.gz \
-      scriptdb/yomo-uc0.txt.gz scriptdb/zamok.awk scriptdb/dik_prop.gz"
+      scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc.txt.gz \
+      scriptdb/yomo-uc.txt.gz scriptdb/zamok.awk scriptdb/dik_prop.gz"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -245,8 +245,10 @@ fi
 if [[ $aomo -eq 1 ]]; then
        	printf '\e[36m%s \e[32m%s ' "MOM:" "старые"
 else
-	sed -r "s/=.+$/=/g" <(zcat scriptdb/mano-uc0.txt.gz) | gzip > scriptaux/mano-uc.pat.gz
-	sed -r "s/=.+$/=/g" <(zcat scriptdb/mano-lc0.txt.gz) | gzip > scriptaux/mano-lc.pat.gz
+	sed -r "s/=.+$/=/g"                  <(zcat scriptdb/mano-lc.txt.gz)                                 |gzip > scriptaux/mano-lc.pat.gz
+  sed -r "s/_(.)([^=]+=).+$/_\u\1\2/g" <(zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz) |sort -u|gzip > scriptaux/mano-uc.pat.gz
+  sed -r "s/^(_[^=]+=).+$/\U\1/g"      <(zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz) |sort -u|gzip > scriptaux/mano-cc.pat.gz
+
 	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/mano-lc.pat.gz | gzip > scriptaux/ttspat.mant.gz
 	sed -r 's/_(.)/_\l\1/' <(zcat scriptaux/mano-uc.pat.gz) | grep -Fof <(zcat scriptaux/tts.pat.gz) | gzip >> scriptaux/ttspat.mant.gz
 	zcat scriptaux/ttspat.mant.gz | sort -u | gzip > scriptaux/ttspat.man.gz
@@ -254,8 +256,8 @@ else
 	zgrep -Ff <(zcat scriptaux/ttspat.man.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.man.gz
 
   printf '\e[36m%s \e[93m%s ' "MOM:" "новые"
-  md5sum tts.txt scriptdb/mano-uc0.txt.gz scriptaux/mano-uc.pat.gz scriptdb/mano-lc0.txt.gz scriptaux/mano-lc.pat.gz scriptaux/ttspat.man.gz \
-         scriptaux/tts0.man.gz scriptdb/omo-index.sed > scriptaux/zaomo.md5
+  md5sum tts.txt scriptdb/mano-uc.txt.gz scriptaux/mano-uc.pat.gz scriptdb/mano-lc.txt.gz scriptaux/mano-lc.pat.gz scriptaux/ttspat.man.gz \
+         scriptaux/tts0.man.gz scriptdb/omo-index.sed scriptaux/mano-cc.pat.gz > scriptaux/zaomo.md5
 fi
 
 # Выполняем проверку вспомогательных файлов из ./yofik.sh
@@ -264,22 +266,24 @@ fi
 if [[ $jofik -eq 1 ]]; then
        	printf '\e[36m%s \e[32m%s ' "YOF:" "старые"
 else
-	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef0.txt.gz)   | gzip > scriptaux/yodef0.pat.gz
-	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef1.txt.gz)   | gzip > scriptaux/yodef1.pat.gz
-	sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-lc0.txt.gz) | gzip > scriptaux/yomo-lc0.pat.gz
-	sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-uc0.txt.gz) | gzip > scriptaux/yomo-uc0.pat.gz
-  sed -r "s/=.+$/=/g" <(zcat scriptdb/yolc.txt.gz)     | gzip > scriptaux/yolc.pat.gz
-	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/yomo-lc0.pat.gz > scriptaux/ttspat.yoyt
-	sed -r 's/_(.)/_\l\1/' <(zcat scriptaux/yomo-uc0.pat.gz) | grep -Fof <(zcat scriptaux/tts.pat.gz) >> scriptaux/ttspat.yoyt
+	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef0.txt.gz)  | gzip > scriptaux/yodef0.pat.gz
+	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef1.txt.gz)  | gzip > scriptaux/yodef1.pat.gz
+	sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-lc.txt.gz) | gzip > scriptaux/yomo-lc.pat.gz
+  sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-lc.txt.gz scriptdb/yomo-uc.txt.gz) | sed -r "s/_(.)/_\u\1/g" |sort -u| gzip > scriptaux/yomo-uc.pat.gz
+  sed -r "s/=.+$/=/g" <(zcat scriptdb/yolc.txt.gz)    | gzip > scriptaux/yolc.pat.gz
+  sed -r "s/^(_[^=]+=).+$/\U\1/g" <(zcat scriptdb/yomo-lc.txt.gz scriptdb/yomo-uc.txt.gz) |sort -u| gzip > scriptaux/yomo-cc.pat.gz
+
+	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/yomo-lc.pat.gz > scriptaux/ttspat.yoyt
+	sed -r 's/_(.)/_\l\1/' <(zcat scriptaux/yomo-uc.pat.gz) | grep -Fof <(zcat scriptaux/tts.pat.gz) >> scriptaux/ttspat.yoyt
 	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/yolc.pat.gz >> scriptaux/ttspat.yoyt
   sort -u scriptaux/ttspat.yoyt | gzip > scriptaux/ttspat.yoy.gz
 	rm scriptaux/ttspat.yoyt
 	zgrep -Ff <(zcat scriptaux/ttspat.yoy.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.yoy.gz
 
   printf '\e[36m%s \e[93m%s ' "YOF:" "новые"
-	md5sum tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc0.txt.gz scriptaux/yomo-lc0.pat.gz \
-         scriptdb/yodef.awk scriptdb/yomo-uc0.txt.gz scriptaux/yomo-uc0.pat.gz scriptaux/tts.pat.gz scriptaux/tts0.txt.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz \
-         scriptdb/yolc.txt.gz scriptaux/yolc.pat.gz > scriptaux/zjofik.md5
+	md5sum tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc.txt.gz scriptaux/yomo-lc.pat.gz \
+         scriptdb/yodef.awk scriptdb/yomo-uc.txt.gz scriptaux/yomo-uc.pat.gz scriptaux/tts.pat.gz scriptaux/tts0.txt.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz \
+         scriptdb/yolc.txt.gz scriptaux/yolc.pat.gz scriptaux/yomo-cc.pat.gz > scriptaux/zjofik.md5
 fi
 
 printf '\e[32;4;1m%s\e[0m\n' "Всё ОК!"
@@ -291,14 +295,14 @@ zgrep -Fvf <(zcat scriptaux/tts.pat.gz) scriptdb/nameoverride.txt.gz | sort > _e
 zgrep "'" scriptaux/namebase0.pat.gz >> _err_namebase0.txt
 zgrep "'" scriptaux/override.pat.gz  >> _err_nameoverride.txt
 
-zgrep -Ff <(zcat scriptaux/mano-uc.pat.gz  | sed -r "s/_(.)/_\l\1/g") scriptdb/namebase0.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >  _omo_namebase0_err.txt
-zgrep -Ff <(zcat scriptaux/yomo-uc0.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/namebase0.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >> _omo_namebase0_err.txt
+zgrep -Ff <(zcat scriptaux/mano-uc.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/namebase0.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >  _omo_namebase0_err.txt
+zgrep -Ff <(zcat scriptaux/yomo-uc.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/namebase0.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >> _omo_namebase0_err.txt
 zgrep -Ff <(zcat scriptaux/nomo.pat.gz) scriptdb/namebase0.txt.gz | sort >> _omo_namebase0_err.txt
 
 if [[ -s _omo_namebase0_err.txt ]]; then sort -u -o _omo_namebase0_err.txt _omo_namebase0_err.txt; fi
 
-zgrep -Ff <(zcat scriptaux/mano-uc.pat.gz  | sed -r "s/_(.)/_\l\1/g") scriptdb/nameoverride.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >  _omo_nameoverride_err.txt
-zgrep -Ff <(zcat scriptaux/yomo-uc0.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/nameoverride.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >> _omo_nameoverride_err.txt
+zgrep -Ff <(zcat scriptaux/mano-uc.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/nameoverride.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >  _omo_nameoverride_err.txt
+zgrep -Ff <(zcat scriptaux/yomo-uc.pat.gz | sed -r "s/_(.)/_\l\1/g") scriptdb/nameoverride.txt.gz | grep -Fvf <(zcat scriptaux/nomo.pat.gz) >> _omo_nameoverride_err.txt
 zgrep -Ff <(zcat scriptaux/nomo.pat.gz) scriptdb/nameoverride.txt.gz | sort >> _omo_nameoverride_err.txt
 
 if [[  -s _omo_nameoverride_err.txt ]]; then sort -u -o _omo_nameoverride_err.txt _omo_nameoverride_err.txt; fi

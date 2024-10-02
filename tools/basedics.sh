@@ -29,7 +29,7 @@ esac
 $grepper "$astromo" automo.gz |\
     awk 'BEGIN {FS="[ :]"} { gsub(/\x27/,"́",$5);
          printf ( "\033[36m%s \033[93m%s \033[33m%s \033[32m%s\033[0m %s %s\n", $1, $3, $2, $4, $5, $6 ) }'| sed "s/.́/`printf "\e[93m&\e[0m"`/g"
-$grepper "$mstromo" mano-lc0.txt.gz |\
+$grepper "$mstromo" mano-lc.txt.gz |\
     awk 'BEGIN {FS="[ =_:]+"} { gsub(/\x27/,"́",$3); gsub(/\x27/,"́",$4);
          printf ( "\033[36m%s \033[93m%s\033[0m %s %s \033[93m%s \033[32m%s\033[0m\n", $1, $2, $3, $4, $5, $6 ) }'| sed "s/.́/`printf "\e[32m&\e[0m"`/g"
 $grepper "$sstring" omoid_auto.gz omoid_pa_ini.gz omoid_ini.gz |\

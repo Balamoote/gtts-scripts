@@ -114,7 +114,7 @@ case $key in
     spell_flat ) # все слова словарей без ё и ударений
                zcat dic_*.gz | awk '{print $1}' > ru.txt
                zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
-               zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=']//g; s/ё/е/g; s/ /\r/g" >> ru.txt
+               zcat mano-lc.txt.gz yomo-lc.txt.gz |sed -r "s/[_=']//g; s/ё/е/g; s/ /\r/g" >> ru.txt
                zcat yodef0.txt.gz yodef1.txt.gz yolc.txt.gz |sed -r "s/[_']//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
                sed -r "s/\\\xcc\\\x81//g
                        s/\\\xcc\\\xa0//g
@@ -132,8 +132,8 @@ case $key in
     spell_all ) # все слова словарей с именами, ё, ударениями и служебными символами
                zcat dic_*.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u > ru.txt
                zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
-               zcat mano-lc0.txt.gz yomo-lc0.txt.gz |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
-               zcat mano-uc0.txt.gz yomo-uc0.txt.gz nomo.txt.gz |sed -r "s/[_=]//g; s/\b(.)/\l\1/g; s/ /\n/g" >> ru.txt
+               zcat mano-lc.txt.gz yomo-lc.txt.gz |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
+               zcat mano-uc.txt.gz yomo-uc.txt.gz nomo.txt.gz |sed -r "s/[_=]//g; s/\b(.)/\l\1/g; s/ /\n/g" >> ru.txt
                zcat yodef0.txt.gz yodef1.txt.gz yolc.txt.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
                zcat namebase0.txt.gz nameoverride.txt.gz |\
                     sed -r "s/(=\\\\xcc\\\\x[ab][034d])([$rulc])/\1\u\2/g
@@ -183,6 +183,7 @@ case $key in
               zcat dic_gl.gz   | awk '{ print "\\s" $2 "\\s" }' | sort -u | gzip > _class_gl.gz
               zcat dic_rest.gz | awk '{ print   "_" $1 "="   }' | sort -u | gzip > _stock_rest.pat.gz
               zcat dic_rest.gz | awk '{ print "\\s" $2 "\\s" }' | sort -u | gzip > _class_rest.gz
+              zcat wordbase0.gz | awk 'BEGIN{FS="="}{ print $1 "=" }' | sort -u | gzip > _stock_wb0.pat.gz
        exit 1; ;;
 
     gen_prq ) # создать полный список всех словоформ причастий из словаря dix

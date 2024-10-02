@@ -120,7 +120,7 @@ esac
 if [[ ! -d $bookwrkdir ]]; then mkdir $bookwrkdir
 else printf '\e[35m%s \e[93m%s \e[35m%s \e[93m%s\e[0m\n' "Директория для дискретных скриптов" "mano-$book" "существует. Удалите ее или запустите скрипт с ключом" "-f"; exit 1; fi
 
-printf '\e[36m%s \e[93m%s\e[36m%s \e[93m%s\e[0m ' "В словаре Омографов:" $(zgrep -c ^ scriptdb/mano-uc0.txt.gz) ", омографов:" $(zgrep -c ^ scriptdb/mano-lc0.txt.gz)
+printf '\e[36m%s \e[93m%s\e[36m%s \e[93m%s\e[0m ' "В словаре Омографов:" $(zgrep -c ^ scriptdb/mano-uc.txt.gz) ", омографов:" $(zgrep -c ^ scriptdb/mano-lc.txt.gz)
 if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
 if [[ -s scriptaux/zaomo.md5 ]] && md5sum -c --status scriptaux/zaomo.md5 >/dev/null 2>&1; then
 	printf '\e[36m%s \e[33m%-8s \e[32m%s\e[0m\n' "Файлы" scriptaux/zaomo.md5 "OK!";
@@ -131,7 +131,7 @@ if [[ $clxx -eq "1" ]]; then
 	else printf '\e[1;31m%s \e[93m%s \e[1;31m%s\e[0m\n' "Выполнение скрипта" "./momo.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
 
 # Массив со списком обязательных файлов
-pack="scriptdb/automo.gz scriptdb/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz scriptdb/main.awk scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/sort_opt.awk scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc0.txt.gz scriptdb/yomo-uc0.txt.gz scriptdb/zamok.awk"
+pack="scriptdb/automo.gz scriptdb/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz scriptdb/main.awk scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/sort_opt.awk scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc.txt.gz scriptdb/yomo-uc.txt.gz scriptdb/zamok.awk"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -249,11 +249,12 @@ fi;
 # Получить номера строк файла, где найдены эскейпы
  eSCAN=$($repper <(zcat scriptdb/rawstuff.gz | sed -r 's/^.[^#]+# \"(.+)\"$/\1/g') $bookwrkdir/text-book.bas|\
         awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
- eSCAP=$($repper <(zcat scriptdb/mano-lc0.txt.gz scriptdb/mano-uc0.txt.gz |awk '{for (i=2; i<=NF; i++) { sinda[i]=index(gensub(/[\\xcab0-9]/,"","g",$i),"\x27")-1 };
-                         gsub("\\\\xcc\\\\xa0","\xcc\xa0",$0); gsub("\\\\xcc\\\\xa3","\xcc\xa3",$0); gsub("\\\\xcc\\\\xa4","\xcc\xa4",$0)
-                         gsub("\\\\xcc\\\\xad","\xcc\xad",$0); gsub("\\\\xcc\\\\xb0","\xcc\xb0",$0); gsub("\x27","\xcc\x81",$0); gsub(/[_=]/,"",$0)
-                         for (i=2; i<=NF; i++) { if (sinda[i] > 1) { w0rd=substr($1,1,sinda[i]-1) toupper(substr($1,sinda[i],1)) substr($1,sinda[i]+1);
-                           print w0rd };}; }') $bookwrkdir/text-book.bas | awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
+ eSCAP=$($repper <(zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz |\
+   awk '{for (i=2; i<=NF; i++) { sinda[i]=index(gensub(/[\\xcab0-9]/,"","g",$i),"\x27")-1 };
+         gsub("\\\\xcc\\\\xa0","\xcc\xa0",$0); gsub("\\\\xcc\\\\xa3","\xcc\xa3",$0); gsub("\\\\xcc\\\\xa4","\xcc\xa4",$0)
+         gsub("\\\\xcc\\\\xad","\xcc\xad",$0); gsub("\\\\xcc\\\\xb0","\xcc\xb0",$0); gsub("\x27","\xcc\x81",$0); gsub(/[_=]/,"",$0)
+         for (i=2; i<=NF; i++) { if (sinda[i] > 1) { w0rd=substr($1,1,sinda[i]-1) toupper(substr($1,sinda[i],1)) substr($1,sinda[i]+1);
+         W0rd=toupper(substr(w0rd,1,1)) substr(w0rd,2); print w0rd "\n" W0rd };}; }') $bookwrkdir/text-book.bas | awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
 
   if [[ -n $eSCAN ]] || [[ -n $eSCAP ]] ; then
     sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
@@ -402,12 +403,17 @@ fi # fixomo?
 grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-lc.pat.gz) | \
 	sort -u > $bookwrkdir/manofi-lc.pat
 
+grep -Po "(?<=[^$RUUC$unxc])[$RUUC$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-cc.pat.gz) | \
+	sort -u > $bookwrkdir/manofi-cc.pat
+
 grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-uc.pat.gz) | \
 	sort -u > $bookwrkdir/manofi-uc.pat
 
 # Список всех омографов в обоих регистрах
-zgrep -Ff $bookwrkdir/manofi-uc.pat scriptdb/mano-uc0.txt.gz >  $bookwrkdir/mano-luc.txt
-zgrep -Ff $bookwrkdir/manofi-lc.pat scriptdb/mano-lc0.txt.gz >> $bookwrkdir/mano-luc.txt
+#zgrep -Ff $bookwrkdir/manofi-uc.pat scriptdb/mano-uc.txt.gz >  $bookwrkdir/mano-luc.txt
+zgrep -Ff $bookwrkdir/manofi-lc.pat scriptdb/mano-lc.txt.gz                                                                   > $bookwrkdir/mano-luc.txt
+zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz | sed -r "s/([_ ])(.)/\1\u\2/g"    | grep -Ff $bookwrkdir/manofi-uc.pat >> $bookwrkdir/mano-luc.txt
+zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz | sed -r "s/([$RUUC$rulc]+)/\U\0/g"| grep -Ff $bookwrkdir/manofi-cc.pat >> $bookwrkdir/mano-luc.txt
 
 if [[ -s $bookwrkdir/mano-luc.txt ]]; then # Проверяем найдено ли хоть что-то из омографов… discretchk 0
 sed -r "
@@ -418,7 +424,7 @@ sed -r "
        s/\\\xcc\\\xa4/\xcc\xa4/g
        s/\\\xcc\\\xad/\xcc\xad/g
        s/\\\xcc\\\xb0/\xcc\xb0/g
-       " $bookwrkdir/mano-luc.txt > $bookwrkdir/omo-luc.lst
+       " $bookwrkdir/mano-luc.txt | sort -u > $bookwrkdir/omo-luc.lst
 
 mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_time0 | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Всего обработка омографов заняла:" $durhum 

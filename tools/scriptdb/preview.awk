@@ -53,7 +53,7 @@ BEGIN {
             riphead = sprintf( "%s %s %s %s %s\n%s\n", "0)#", arr[1], "<=", arr[1], "очистить слово от служебных и ударения!", ripline );
             # Сборка заголовка для vim/neovim, переменная editor задаётся в scriptdb/settings.ini
         for (v = 3; v <= le; v++) { vpat = vpat "/" arr[v] };
-            vimline = sprintf( "   %s %s%s%s%s%s%s%s%s%s%s\n", editor, "-c \"set hls | %SubstituteChoice /", unxn, "\\zs\\<", arr[1], "\\>\\ze", unxn, "/", vpat, "/gc\" ../", obook );
+            vimline = sprintf( "   %s %s%s%s%s%s%s%s%s%s%s\n", editor, "-c \"set hls | %SubstituteChoice /", unxn, "\\zs\\<", arr[1], "\\>\\ze\\C", unxn, "/", vpat, "/gc\" ../", obook );
             vimhead = sprintf( "%s %s%s%s%s%s%" totallen "s\n", "*)# Изменить вручную в", editor, ": ./", arr[1], ".sh\n", vimline, ";; esac; exit 0" );
 
 
