@@ -9,7 +9,7 @@ BEGIN {
   if ( escan ) { cmd = "zcat " indb "rawstuff.gz";#nem="";
                  while ((cmd|getline) > 0) { rawstuff(nem++); }; close(cmd); stoar(escan,eSCAN,"_"); };
 
-  # обработка ударений, обознаценный капсом, кроме ударения на первую букву слова
+  # обработка ударений, обозначенных капсом, кроме ударения на первую букву слова
   if ( escap ) {
    cmd = "zcat " indb "mano-lc.txt.gz " indb "mano-uc.txt.gz";
    while ((cmd|getline) > 0) {
