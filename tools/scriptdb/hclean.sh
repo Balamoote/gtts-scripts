@@ -183,6 +183,7 @@ case $key in
               zcat dic_gl.gz   | awk '{ print "\\s" $2 "\\s" }' | sort -u | gzip > _class_gl.gz
               zcat dic_rest.gz | awk '{ print   "_" $1 "="   }' | sort -u | gzip > _stock_rest.pat.gz
               zcat dic_rest.gz | awk '{ print "\\s" $2 "\\s" }' | sort -u | gzip > _class_rest.gz
+              zcat dix_prq.gz  | awk '{ print   "_" $1 "="   }' | sort -u | gzip > _stock_dixprq.pat.gz
               zcat wordbase0.gz | awk 'BEGIN{FS="="}{ print $1 "=" }' | sort -u | gzip > _stock_wb0.pat.gz
        exit 1; ;;
 
