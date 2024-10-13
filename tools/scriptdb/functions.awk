@@ -204,23 +204,23 @@ function qb_(n,m, array,    k, ret) {               # поиск на n шаго
                 ret=qbn=""; if(n>m)n=m; for (k=m; k>=n; k--) { if ( lc(k) in array ) {ret=1; qbn=k; break}; }; return ret }
 function qf_(n,m, array,    k, ret) {               # поиск на n шагов вперёд наличия слова в базовом массиве
                 ret=qfn=""; if(n>m)m=n; for (k=n; k<=m; k++) { if ( lc(k) in array ) {ret=1; qfn=k; break}; }; return ret }
-function q(n, alist,   itmz,k,wd, ret) {                # обертка для нескольких функций
+function q(n, alist,   afun,itmz,k,wd, ret) {                # обертка для нескольких функций
                 ret=0; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd)) {ret=1; break} }; return ret}
-function q_ist(n, alist,   itmz,k,wd, ret) {                # обертка для нескольких функций
+function q_ist(n, alist,   afun,itmz,k,wd, ret) {                # обертка для нескольких функций
                 ret=0; wd=tolower(l[i+n]); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd)) {ret=1; break} }; return ret}
-function q_w(n, alist,    itmz,k,wd, ret) {              # обертка для нескольких функций - нахождение + пробел до
+function q_w(n, alist,    afun,itmz,k,wd, ret) {              # обертка для нескольких функций - нахождение + пробел до
                 ret=0; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd) && s(n-1) && sv(n-1,"-") ) {ret=1; break} }; return ret}
-function qw_(n, alist,    itmz,k,wd, ret) {              # обертка для нескольких функций - нахождение + пробел после
+function qw_(n, alist,    afun,itmz,k,wd, ret) {              # обертка для нескольких функций - нахождение + пробел после
                 ret=0; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd) && s(n) && sv(n,"-") ) {ret=1; break} }; return ret}
-function qy(n, alist,    itmz,k,wd, ret) {               # обертка для нескольких функций "?", qyn=сдвиг
+function qy(n, alist,    afun,itmz,k,wd, ret) {               # обертка для нескольких функций "?", qyn=сдвиг
                 qyn=0; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd)) {qyn=1; break} }; ret=1; return ret}
-function Qist(n, alist,    itmz,k,wd, ret) {             # обертка для нескольких функций
+function Qist(n, alist,    afun,itmz,k,wd, ret) {             # обертка для нескольких функций
                 ret=1; split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n)) {ret=0; break} }; return ret}
-function Q(n, alist,    itmz,k,wd, ret) {                # обертка для нескольких функций - НЕ нахождение
+function Q(n, alist,    afun,itmz,k,wd, ret) {                # обертка для нескольких функций - НЕ нахождение
                 ret=1; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd)) {ret=0; break}; }; return ret}
-function Qw_(n, alist,    itmz,k,wd, ret) {              # обертка для нескольких функций - НЕ нахождение + пробел после
+function Qw_(n, alist,    afun,itmz,k,wd, ret) {              # обертка для нескольких функций - НЕ нахождение + пробел после
                 ret=1; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd) && s(n) && sv(n,"-") ) {ret=0; break} }; return ret}
-function Q_w(n, alist,    itmz,k,wd, ret) {              # обертка для нескольких функций - НЕ нахождение + пробел до
+function Q_w(n, alist,    afun,itmz,k,wd, ret) {              # обертка для нескольких функций - НЕ нахождение + пробел до
                 ret=1; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd) && s(n-1) && sv(n-1,"-") ) {ret=0; break} }; return ret}
 function id_(n, wl,   itmz,k, ret) {                     # связанное слово в позиции и с морфологической функцией wl
                 stotar(wordbf(n),itmz,"#");ret=""; for(k in itmz) {if ( wl in omoids[iwrd][k] ) {ret=1;break}}; return ret }
@@ -238,6 +238,8 @@ function bqq(n, m,   k,itmz1,itmz2, ret) {          # базовая форма 
                 stotar(wordbf(n),itmz1,"#");stotar(wordbf(m),itmz2,"#");for(k in itmz1){if(k in itmz2){ret=1;break}else{ret=0};}; return ret}
 function qb(n,m, isclass,    k, ret) {              # поиск на n шагов назад наличия слова в классе
                 ret=qbn=""; if(n>m)n=m;rfix(n,m); for (k=m; k>=n; k--) { if ( q(k,isclass) ) {ret=1; qbn=k; break}; }; return ret }
+function qbv(n,m, isclass,wl,    k,itmz, ret) {  # поиск на n шагов назад наличия слова в классе
+                ret=qbn=""; if(n>m)n=m;rfix(n,m);stotar(wl,itmz,"[ |]"); for(k=m; k>=n; k--) { if(!(lc(k) in itmz) && q(k,isclass)){ret=1; qbn=k; break};}; return ret }
 function qb_ist(n,m, isclass,    k, ret) {              # поиск на n шагов назад наличия слова в классе
                 ret=qbn=""; if(n>m)n=m; for (k=m; k>=n; k--) { if ( q_ist(k,isclass) ) {ret=1; qbn=k; break}; }; return ret }
 function qB(n,m, isclass, notclass,    k, ret) {    # поиск на n шагов назад наличия слова в классе и отсутствия его же в другом классе
@@ -248,6 +250,8 @@ function seek(n,m, isclass, notclass,    k, ret) {  # поиск на n шаго
                 else      {if(n>m)m=n;for(k=n;k<=m;k++){if( q(k,isclass )){ret=1; skn=k; break} else {if( q(k,notclass) && k>=n &&k<m ){ret=0; break};};};}; return ret}
 function qf(n,m, isclass,    k, ret) {              # поиск на n шагов вперёд наличия слова в классе
                 ret=qfn=""; if(n>m)m=n;rfix(n,m); for (k=n; k<=m; k++) { if ( q(k,isclass) ) {ret=1; qfn=k; break}; }; return ret }
+function qfv(n,m, isclass,wl,    k,itmz, ret) {      # поиск на n шагов вперёд наличия слова в классе
+                ret=qfn=""; if(n>m)m=n;rfix(n,m);stotar(wl,itmz,"[ |]"); for(k=n; k<=m; k++){ if(!(lc(k) in itmz) && q(k,isclass)){ret=1; qfn=k; break};}; return ret }
 function qfba(n,m, isclass, wl,    k, ret) {          # поиск на n шагов вперёд наличия слова в классе
                 ret=nqf=""; if(n>m)m=n;rfix(n,m); for (k=n; k<=m; k++) { if ( q(k,isclass) && bam(k,wl) ) {ret=1; nqf=k; break}; }; return ret }
 function qbba(n,m, isclass, wl,    k, ret) {              # поиск на n шагов назад наличия слова в классе

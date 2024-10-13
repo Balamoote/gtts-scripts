@@ -1843,6 +1843,7 @@ BEGIN {
   } else {
      cmd = "md5sum " indb "classes.awk " \
                      locdic "classes.bin " \
+                     locdic "locdic.md5 " \
                      indb "dic_cust.gz " \
                      locdic "dic_gl.gz " \
                      locdic "dic_prl.gz " \

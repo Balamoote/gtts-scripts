@@ -221,6 +221,7 @@ if [[ $locdic == "1" ]]; then
 	locdicsize=$(cat $bookstadir/bookwords.list | wc -l)
         printf '\e[36m%s \e[33m%s \e[36m%s \e[93m%s\e[0m\n' "Файлы в" $bookstadir/locdic.md5 "OK: файлы локальных словарей уже созданы. Словоформ:" $locdicsize;
  else
+ rm $bookstadir/classes.*
  sed -r 's/^/ /g' $bookwrkdir/text-book.txt | grep -Eo "[$RUUC$rulc$unxc-]+" |\
      sed -r "s/[$unxc]+//g;
              s/^.*$/\L\0/g;

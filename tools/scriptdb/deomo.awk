@@ -1912,25 +1912,44 @@ xgrp="x2049";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)        #
 ###   x2050 !_#_! ==> gl_paedmu_    sw_em_iv_
 xgrp="x2050";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)        # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
- if(iwrd=="запах") {
+#if ( weq(iwrd,"берег") && q(1,"suw_ro") && Q(1,"suw_vi") && s(0) )
+#{ print l[i+1] >> "_sw.txt"; Z[10]++; if(dbg){print "Z10"}; }; continue
+ #
+ cst0="варю мою шлем рыло дождя коля минут начало дел дела дело мой тай при весь сей покой день переднюю берег разлив умело запас рубило коли водила осени для свей начала \
+     государя царя почту тони гвозди вести еду душу души";
+ if ( qfv(1,4,"gl_ed gl_mn gl_vzmn deep gl_po",cst0) && s(0,qfn-1) &&
+      !(se(0,"-")&&veq(qfn,1)) && Q(qfn,"isname") &&
+       qir(1,qfn-1,"prl_kred_sr nar_spos nar_mest nar_step qast_any mod_any suw_tv mest_tv prl_tv isname") && s(0,qfn-1) )
+ {  l[i]=omo2; R[991]++; if(dbg){print "D9911"}; continue };
+ if ( qbv(-4,-1,"gl_ed gl_mn gl_vzmn deep gl_po",cst0) && s(qbn,-1) && !(se(-1,"-")&&veq(qbn,-1)) && Q_w(qbn,"isname") &&
+       qir(qbn+1,-1,"prl_kred_sr nar_spos nar_mest nar_step qast_any mest_im prl_edmuim suw_tv mest_tv prl_tv isname") && s(qbn,-1) )
+ {  l[i]=omo2; R[991]++; if(dbg){print "D9912"}; continue };
+
+ cst0="знать честь вести";
+ if ( qf(1,4,"gl_in") && !(se(0,"-")&&veq(qfn,1)) && W(qfn,cst0) && Q(qfn,"isname") &&
+       qir(1,qfn-1,"prl_kred_sr nar_spos nar_mest nar_step qast_any mod_any") && s(0,qfn-1) )
+ {  l[i]=omo2; R[991]++; if(dbg){print "D9911"}; continue };
+ if ( qb(-4,-1,"gl_in") && !(se(-1,"-")&&veq(qbn,-1)) && W(qbn,cst0) &&
+       qir(qbn+1,-1,"prl_kred_sr nar_spos nar_mest nar_step qast_any mest_im prl_edmuim isname") && s(qbn,-1) )
+ {  l[i]=omo2; R[991]++; if(dbg){print "D9912"}; continue };
+
+ if ( qb(-4,-1,"prq_edmuim") &&
+       qir(qbn+1,-1,"prl_kred_sr nar_spos nar_mest nar_step qast_any mest_im prl_edmuim suw_tv prl_tv mest_tv") && s(qbn,-1) )
+ {  l[i]=omo2; R[991]++; if(dbg){print "D9913"}; continue };
+ #
+ cst="запах замер обмер перемер погреб";
+ if( weq(iwrd,cst) ) {
    if ( q(1,"suw_ro") && s(0) )
    { l[i]=omo2; R[365]++; if(dbg){print "R365"}; continue };
  };
- if(iwrd=="замер") {
-   if ( q(1,"suw_ro") && s(0) )
+ cst="берег отсек погреб";
+ if( weq(iwrd,cst) ) {
+    cst="недалеко близко рядом";
+   if ( w(1,cst) && s(0) )
    { l[i]=omo2; R[366]++; if(dbg){print "R366"}; continue };
- };
- if(iwrd=="обмер") {
-   if ( q(1,"suw_ro") && s(0) )
-   { l[i]=omo2; R[367]++; if(dbg){print "R367"}; continue };
- };
- if(iwrd=="перемер") {
-   if ( q(1,"suw_ro") && s(0) )
-   { l[i]=omo2; R[368]++; if(dbg){print "R368"}; continue };
- };
- if(iwrd=="погреб") {
-   if ( q(1,"suw_ro") && s(0) )
-   { l[i]=omo2; R[369]++; if(dbg){print "R369"}; continue };
+   if ( wfa(1,4,"_coast_suw-ro") && s(0,wfn-1) &&
+        qir(1,wfn-1,"prl_ro mest_ro prq_ro") )
+   { l[i]=omo2; R[366]++; if(dbg){print "R366"}; continue };
  };
  #
  if ( sw_em_i_f() )
@@ -5574,11 +5593,12 @@ xgrp="x2265";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)        #
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
  #
  cst="во на о обо при";
- if ( w(-1,cst) && s(-1) )
+ if ( wb(-3,-1,cst) && s(wbn,-1) &&
+      qir(wbn+1,-1,"mest_pr prl_pr") )
  { l[i]=omo2; R[1177]++; if(dbg){print "R1177"}; continue };
  #
  cst="во на о обо при";
- if ( !(w(-1,cst) && s(-1)) )
+ if ( !wbn )
  { l[i]=omo1; R[1178]++; if(dbg){print "R1178"}; continue };
 
  }; delete wpos; book[b]=joinpat(l,sep,nf) };};                                ##_footer
