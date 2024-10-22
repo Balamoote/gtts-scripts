@@ -9,7 +9,6 @@
 #   editor = используемый редактор: vim или neovim
 function finduni(string,  tmp) { # Функция определения кол-ва комбинирующих символов в подстроке
          tmp = gsub(/[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]/, "", string); return tmp }
-
 function readfile(file,  tmp, save_rs) { # Функция чтения файла в скаляр
          save_rs = RS; RS = "^$"; getline tmp < file; close(file); RS = save_rs; return tmp }
 
@@ -38,11 +37,21 @@ BEGIN {
     delete olex; delete olx;
     cmd = "zcat " indb "automo.gz"; while ((cmd|getline) > 0) { automo[$2] = $1 };
 
+
+    if ( ( swrd || sgrp ) && somo ) { somo=tolower(somo); singly = 1 }
+
     omoqty = split(readfile(omoluclst), omlst, "\n"); delete omlst[omoqty];
     for (i in omlst) { #b1
-        le = split(omlst[i], arr, " ");
-        omos[arr[1]]; lcm = tolower(arr[1]); oml = length(lcm); ompad = sprintf("%" oml+5 "s", "" );
-	headr = sprintf( "%s\n%s%s\n", "#!/bin/bash", ompad, "var=$1; case \"$var\" in");
+
+        le = split(omlst[i], arr, " "); lcm = tolower(arr[1]);
+
+        if ( singly ) {
+          if (swrd && somo != lcm) { continue };
+          if (sgrp && automo[lcm] != somo ) { continue };
+        };
+
+        omos[arr[1]]; oml = length(lcm); ompad = sprintf("%" oml+5 "s", "" );
+        headr = sprintf( "%s\n%s%s\n", "#!/bin/bash", ompad, "var=$1; case \"$var\" in");
         sedpart = ""; vimpart = ""; lexxpart = ""; riphead = ""; vpat = arr[2];
         for (s = 2; s <= le; s++ ) { #b2 Сборка опций для sed
             sedline = ompad sprintf( "%s%s%s%s%s%s%s%s%s%s%s %s\n", "sed -ri \"$2 s/(", unxn, ")\\b", arr[1], "\\b(", unxn, ")/\\1", arr[s], "\\2/g", "\" ../", obook, ";;" );
@@ -69,6 +78,7 @@ BEGIN {
             else { autopart = sprintf("%" autopad "s %s\n", "Автошаблон:", "нет") };
 
             shblock[arr[1]] = headr sedpart riphead vimhead lexxpart autopart;
+
         } #b1
         delete omos[""]
     savefs = FS;   FS = fsword;

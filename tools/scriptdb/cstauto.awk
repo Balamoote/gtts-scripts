@@ -2,19 +2,26 @@
 
 BEGIN {
 
-   unxy    = "[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
-   unxyp   = "[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]+"
-   unxn    = "[^\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
-   RUUC    = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]+"
-   RUUC_   = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]"
-   rulc    = "[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]+"
-   rulc_   = "[абвгдеёжзийклмнопрстуфхцчшщъыьэюя]"
-   LAUC_   = "[A-ZÀÁÂÃÄÅĀĂÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝ]"
-   lalc    = "[a-zàáâãäåāăæçèéêëìíîïðñòóôõöøùúûüýß]+"
-   patword = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb00-9]+"
-   regword = "[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
-   fsword  = "[^АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]"
-   capword = "^[АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ]+$"
+   _unxy   = "\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0"
+   _RUUC   = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+   _rulc   = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+   _LAUC   = "A-ZÀÁÂÃÄÅĀĂÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝ"
+   _lalc   = "a-zàáâãäåāăæçèéêëìíîïðñòóôõöøùúûüýß"
+
+   unxy    = "[" _unxy "]"
+   unxyp   = "[" _unxy "]+"
+   unxn    = "[^" _unxy "]"
+   RUUC    = "[" _RUUC "]+"
+   RUUC_   = "[" _RUUC "]"
+   rulc    = "[" _rulc "]+"
+   rulc_   = "[" _rulc "]"
+   LAUC_   = "[" _LAUC "]"
+   lalc    = "[" _lalc "]+"
+   patword = "[" _RUUC _rulc _unxy "0-9]+"
+   regword = "[" _RUUC _rulc _unxy "]"
+   fsword  = "[^" _RUUC _rulc _unxy "]"
+   capword = "^[" _RUUC "]+$"
+
    vvpat   = "[,—]"
    hysnip  = regword "[-]" regword
 

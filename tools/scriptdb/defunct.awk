@@ -4054,15 +4054,15 @@ function gl_paedmu_f(ret, stopp) { while ( !stopp ) {
  { ret=stopp=1; D[990]++; if(dbg){print "D990"}; continue };
  #
  if ( w(-1,"я ты он") && s(-1) &&
-      !(s(-2) && q(-2,"gl_peed gl_pemn") ) )
- { ret=stopp=1; D[993]++; if(dbg){print "D993"}; continue };
+    !(s(-2) && q(-2,"gl_peed gl_pemn") ) )
+ { ret=stopp=1; D[991]++; if(dbg){print "D991"}; continue };
  #
  if ( q(-1,"suw_edmuim prl_kred_sr") && Q(-1,"prl_edmuim") && s(-1) &&
-      !(qb(-4,-2,"gl_peed gl_pemn gl_in") && s(qbn,-2) ) )
- { ret=stopp=1; D[993]++; if(dbg){print "D993"}; continue };
+   !(qb(-4,-2,"gl_peed gl_pemn gl_in") && s(qbn,-2) ) )
+ { ret=stopp=1; D[992]++; if(dbg){print "D992"}; continue };
  #
  if ( (w(1,"я ты он")||q(1,"suw_edmuim prl_kred_sr")) && Q(1,"prl_edmuim") && s(0) )
- { ret=stopp=1; D[992]++; if(dbg){print "D992"}; continue };
+ { ret=stopp=1; D[993]++; if(dbg){print "D993"}; continue };
 break}; return ret }
 
 function gl_paedsr_f(ret, stopp) { while ( !stopp ) {

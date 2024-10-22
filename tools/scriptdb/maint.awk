@@ -16,8 +16,8 @@
 @include "scriptdb/defunct.awk"
 @include "scriptdb/demorphy.awk"
 @include "scriptdb/vsevso.awk"
-@include "scriptdb/zamok.awk"
 @include "scriptdb/deomo.awk"
+@include "scriptdb/ext/x4707.awk"
 
 
 BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"

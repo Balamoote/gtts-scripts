@@ -32,36 +32,36 @@ case $key in
                  match($0,reg,rega);
                  $0 = rega[1] "R" rega[2] rule rega[3] "R" rule rega[4]
                  print $0 } else { print $0 };
-            }' deomo.awk | awk -f beautify.awk > deomo.awk_ord; mv deomo.awk_ord deomo.awk;
+            }' deomo.awk | awk -f awx/beautify.awk > deomo.awk_ord; mv deomo.awk_ord deomo.awk;
        awk '{    reg = "(^.* )[drvDRV](\\[)[0-9]+(\\]\\+\\+; if\\(dbg\\){print \x22)[DRV][0-9]+(\x22.*)$"
              if ($0 ~ reg) {
                  rule++
                  match($0,reg,rega);
                  $0 = rega[1] "V" rega[2] rule rega[3] "V" rule rega[4]
                  print $0 } else { print $0 };
-            }' vsevso.awk | awk -f beautify.awk > vsevso.awk_ord; mv vsevso.awk_ord vsevso.awk;
+            }' vsevso.awk | awk -f awx/beautify.awk > vsevso.awk_ord; mv vsevso.awk_ord vsevso.awk;
        awk '{    reg = "(^.* )[drvDRVZ](\\[)[0-9]+(\\]\\+\\+; if\\(dbg\\){print \x22)[DRV][0-9]+(\x22.*)$"
              if ($0 ~ reg) {
                  rule++
                  match($0,reg,rega);
                  $0 = rega[1] "D" rega[2] rule rega[3] "D" rule rega[4]
                  print $0 } else { print $0 };
-            }' defunct.awk | awk -f beautify.awk > defunct.awk_ord; mv defunct.awk_ord defunct.awk;
+            }' defunct.awk | awk -f awx/beautify.awk > defunct.awk_ord; mv defunct.awk_ord defunct.awk;
        awk '{    reg = "(^.* )[drvDRVZ](\\[)[0-9]+(\\]\\+\\+; if\\(dbg\\){print \x22)[DRVZ][0-9]+(\x22.*)$"
              if ($0 ~ reg) {
                  rule++
                  match($0,reg,rega);
                  $0 = rega[1] "Z" rega[2] rule rega[3] "Z" rule rega[4]
                  print $0 } else { print $0 };
-            }' zamok.awk | awk -f beautify.awk > zamok.awk_ord; mv zamok.awk_ord zamok.awk;
+            }' ext/x4707.awk | awk -f awx/beautify.awk > x4707.awk_ord; mv x4707.awk_ord ext/x4707.awk;
 
-       awky="cstring.awk"; awk -f beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
-       awky="cstauto.awk"; awk -f beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
-       awky="classes.awk"; awk -f beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
-       awky="parser.awk" ; awk -f beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
-       awky="gen_prq.awk"; awk -f beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="cstring.awk"; awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="cstauto.awk"; awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="classes.awk"; awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="parser.awk" ; awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="gen_prq.awk"; awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
 
-       awk -f parser.awk deomo.awk defunct.awk vsevso.awk yodef.awk zamok.awk;
+       awk -f parser.awk deomo.awk defunct.awk vsevso.awk yodef.awk ext/x4707.awk;
 
        zcat omoid_ini.gz | awk '{delete chars; ret="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
                                 ret = $1 " " $2; for(j=1;j<=chnum;j++){ret=ret " " chars[j]}; print ret }' |\
@@ -72,6 +72,9 @@ case $key in
        zcat omoid_flat.gz | awk '{delete chars; ret="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
                                 ret = $1 " " $2; for(j=1;j<=chnum;j++){ret=ret " " chars[j]}; print ret }' |\
                          sort -u | gzip > omoid_flat_ord.gz; mv omoid_flat_ord.gz omoid_flat.gz
+
+       zcat cstrings.gz | awk -f awx/sort_gzstrings.awk | gzip > cstrings_ord.gz; mv cstrings_ord.gz cstrings.gz
+       zcat dix_prq.gz | awk -f gen_prq.awk | sort -u | gzip > dic_prq.gz
        exit 1; ;;
 
     omoid ) # сгенерировать базы omoid_auto.gz из omoid_ini.gz и omoid_pa_ini.gz

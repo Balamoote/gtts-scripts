@@ -23,9 +23,13 @@ repper="rg -Fnf"
 debug=0   # Если 1, то сделать отладку скриптов омографов: поиск искажений текста в "пастеризованных" версиях исходника и результата 
 nocaps=0  # Если 1, то капсов в "пастеризованных" не будет
 locdic=1
-morphy_is=1   # 1 = SpaCy; 2 = Natasha
+sed_do=0      # 1 = постобработка sed, мелочи для выделения инициалов и пр. работает только совместно с правилами в словаре tts (сейчас только для gtts+ttslexx+словарь)
+morphy_is=0   # 1 = SpaCy; 2 = Natasha
 morphy_yo=0   # 1 = скрипт vsevso.awk использует только данные SpaCy или Natasha; 0 = только "подбирает хвосты"
 morphy_do=0   # 1 = некоторые скрипты могут использовать только данные SpaCy или Natasha; 0 = только "подбирает хвосты" (не сделано)
+disc_do=1     # 1 = включить дискретные скрипты
+ruac=0        # 1 = включить обработку ruaccent -- выставит ударения везде, где сможет. Уже проставленные ударения сохраняются
+ruac_opt="-cpu"   # опиции для ruaccent
 
 do_parallel=1     # включить GNU Parallel. ВНИМАНИЕ: подобрать параметры по реальной производительности
    pblock_a=500K  # awk: размер куска текста на 1 задачу: постфиксы K, M, G, T, P, k, m, g, t, p. "-1" = авто
@@ -83,42 +87,53 @@ obook="$book" # омографы пишутся в $book, т.е. в основн
 
 case $key in 
 	-f) # удалить директорию mano-book
-		if [[ -d "mano-$book" ]]; then rm -rf "mano-$book"; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; exit 1
+		if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; exit 1
 		else printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директории" $bookwrkdir "не существует. Используйте другой ключ."; exit 1; fi ;;
 	-x) # Однозначные омографы+дискретные скрипты; существующую директорию mano- не удалять
-		fixomo=1; preview=0; morphy=0; progs=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы и дискретные скрипты." ;;
+		fixomo=1; preview=0; morphy=0; progs=0;
+    printf '\e[36m%s\e[0m\n' "Однозначные омографы и дискретные скрипты." ;;
 	-p) # Превью текста и дискретные скрипты; существующую директорию mano- не удалять
-		fixomo=0; preview=1; morphy=0; progs=0; printf '\e[36m%s\e[0m\n' "Превью текста и дискретные скрипты." ;;
+		fixomo=0; preview=1; morphy=0; progs=0;
+    printf '\e[36m%s\e[0m\n' "Превью текста и дискретные скрипты." ;;
 	-px | -xp | -g) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- не удалять
-		fixomo=1; preview=1; morphy=0; progs=0; printf '\e[36m%s\e[0m\n' "Однозначные омографы, превью и дискретные скрипты." ;;
+		fixomo=1; preview=1; morphy=0; progs=0;
+    printf '\e[36m%s\e[0m\n' "Однозначные омографы, превью и дискретные скрипты." ;;
 	-fpx | -fxp | -fg | -gg ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; +morphy (!!!)
-		fixomo=1; preview=1; morphy=1; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=1; preview=1; morphy=1; progs=0;
+    if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	-fpxo | -fxpo | -fgo | -ggo ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; +morphy (!!!) + список в слов консоль
-		fixomo=1; preview=1; morphy=1; progs=1; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=1; preview=1; morphy=1; progs=1;
+    if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	-fpc | -ggc ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; без morphy (!!!)
-		fixomo=1; preview=1; morphy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=1; preview=1; morphy=0; progs=0;
+    if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	-fps | -sw ) # один омограф, превью и дискретные скрипты; существующую директорию mano- удалить; без morphy (!!!)
 		fixomo=1; preview=1; morphy=0; progs=0; swrd=1; single=1
 		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельный омограф не задан."; exit 1; fi; 
-		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	-fpg | -sg ) # группа омографов, превью и дискретные скрипты; существующую директорию mano- удалить; без morphy (!!!)
-		fixomo=1; preview=0; morphy=0; progs=0; sgrp=1; single=1
+		fixomo=1; preview=1; morphy=0; progs=0; sgrp=1; single=1
 		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельная группа омографов не задана."; exit 1; fi; 
-		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	-fpe | -se ) # омограф = "все", превью и дискретные скрипты; существующую директорию mano- удалить; без morphy (!!!)
 		fixomo=1; preview=1; morphy=1; progs=0; vse=1; single=1
 		if [[ -z somo ]]; then printf '\e[36m%s\e[0m\n' "Отдельный омограф не задан."; exit 1; fi; 
-		if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	-xf | -fx) # Превью текста и дискретные скрипты; существующую директорию mano- удалить
-		fixomo=1; preview=0; morphy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=1; preview=0; morphy=0; progs=0;
+    if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	-fp | -pf) # Однозначные омографы Не делать, дискретные скрипты; существующую директорию mano- удалить
-		fixomo=0; preview=1; morphy=0; progs=0; if [[ -d "mano-$book" ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" "mano-$book" "удалена."; fi ;;
+		fixomo=0; preview=1; morphy=0; progs=0;
+    if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
+	-ruac) # 
+		locdic=0; fixomo=0; preview=0; disc_do=0; progs=0; ruac=1;
+    if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	*) # Нечто другое
 		printf '\e[32m%s \e[93m%s \e[32m%s \e[93m%s\e[0m\n' "Задайте ключ или книгу. Например:" "./momo.sh -xp book.fb2" "или" "./momo.fb2 book.fb2"; exit 0 ;;
 esac
 
 if [[ ! -d $bookwrkdir ]]; then mkdir $bookwrkdir
-else printf '\e[35m%s \e[93m%s \e[35m%s \e[93m%s\e[0m\n' "Директория для дискретных скриптов" "mano-$book" "существует. Удалите ее или запустите скрипт с ключом" "-f"; exit 1; fi
+else printf '\e[35m%s \e[93m%s \e[35m%s \e[93m%s\e[0m\n' "Директория для дискретных скриптов" $bookwrkdir "существует. Удалите ее или запустите скрипт с ключом" "-f"; exit 1; fi
 
 printf '\e[36m%s \e[93m%s\e[36m%s \e[93m%s\e[0m ' "В словаре Омографов:" $(zgrep -c ^ scriptdb/mano-uc.txt.gz) ", омографов:" $(zgrep -c ^ scriptdb/mano-lc.txt.gz)
 if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
@@ -131,7 +146,14 @@ if [[ $clxx -eq "1" ]]; then
 	else printf '\e[1;31m%s \e[93m%s \e[1;31m%s\e[0m\n' "Выполнение скрипта" "./momo.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
 
 # Массив со списком обязательных файлов
-pack="scriptdb/automo.gz scriptdb/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz scriptdb/main.awk scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/sort_opt.awk scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc.txt.gz scriptdb/yomo-uc.txt.gz scriptdb/zamok.awk"
+pack="scriptdb/automo.gz scriptdb/awx/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk \
+      scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz \
+      scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz \
+      scriptdb/main.awk scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz \
+      scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
+      scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini \
+      scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc.txt.gz \
+      scriptdb/yomo-uc.txt.gz scriptdb/ext/x4707.awk"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -155,8 +177,12 @@ if [[ $fixomo == "1" ]]; then
 
 if [[ $morphy == "1" ]] || [[ $locdic == "1" ]]; then
 # Создать директорию статических файлов для текущей книги
- if [[ ! -d $bookstadir ]]; then mkdir $bookstadir
- else printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория статических файлов для текущей книги" $bookstadir "существует."; fi; fi
+ if md5sum -c --status $bookstadir/book_backup.md5 >/dev/null 2>&1; then
+    printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория статических файлов для текущей книги" $bookstadir "существует.";
+ else rm -rf $bookstadir; fi;
+ if [[ ! -d $bookstadir ]]; then mkdir $bookstadir; md5sum $backup > $bookstadir/book_backup.md5; fi;
+
+fi
 
 if [[ $morphy == "1" ]]; then
 # Создать копию текст книги и морфологией с помощью morphy << начало блока morphy
@@ -221,7 +247,6 @@ if [[ $locdic == "1" ]]; then
 	locdicsize=$(cat $bookstadir/bookwords.list | wc -l)
         printf '\e[36m%s \e[33m%s \e[36m%s \e[93m%s\e[0m\n' "Файлы в" $bookstadir/locdic.md5 "OK: файлы локальных словарей уже созданы. Словоформ:" $locdicsize;
  else
- rm $bookstadir/classes.*
  sed -r 's/^/ /g' $bookwrkdir/text-book.txt | grep -Eo "[$RUUC$rulc$unxc-]+" |\
      sed -r "s/[$unxc]+//g;
              s/^.*$/\L\0/g;
@@ -239,7 +264,7 @@ if [[ $locdic == "1" ]]; then
  grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_suw.gz  | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_suw.gz
 
     md5sum $bookstadir/bookwords.list $bookwrkdir/text-book.txt scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz scriptdb/dic_suw.gz \
-           $bookstadir/dic_gl.gz $bookstadir/dic_prl.gz $bookstadir/dic_prq.gz $bookstadir/dic_rest.gz $bookstadir/dic_suw.gz > $bookstadir/locdic.md5
+           $bookstadir/dic_gl.gz $bookstadir/dic_prl.gz $bookstadir/dic_prq.gz $bookstadir/dic_rest.gz $bookstadir/dic_suw.gz scriptdb/dix_prq.gz > $bookstadir/locdic.md5
 
     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
     LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s \e[36m%s \e[93m%s\e[0m\n' "Подготовка локальных словарей из словоформ в книге:" $durhum "Словоформ:" $locdicsize; fi
@@ -376,6 +401,7 @@ else
   fi # 
 fi
 
+if [[ $sed_do -eq 1 ]]; then
 rexsed="scriptdb/omo-index.sed"
 
 #awk -vtmpdir=$bookwrkdir -vrexfile=$rexsed -f scriptdb/omopick.awk $bookwrkdir/text-book.txt >/dev/null 2>&1
@@ -393,12 +419,14 @@ rexsed="scriptdb/omo-index.sed"
  else
   sedroll $rexsed $bookwrkdir/text-book.txt
  fi # do_parallel
+fi # sed_do
 
 mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Постобработка sed:" $durhum 
 
 fi # fixomo?
 
+if [[ $disc_do -eq 1 ]]; then # disc_do
 # Списки слов всех омографов с маленькой и с Большой буквы
 
 grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-lc.pat.gz) | \
@@ -433,13 +461,15 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Всего об
 # Формируем дискретные скрипты пословно
 printf '\e[32m%s ' "Идет поиск омографов … подождите."
 if [[ $preview -eq 1 ]]; then printf '\e[32m%s' "Превью текста включено."
+else printf '\e[36m%s\n' "Превью текста выключено."; fi
 twd=$(tput cols)
 
 zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\
        	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
 sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $bookwrkdir/text-book.txt | \
-    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vprogs=$progs -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -vindb="scriptdb/" -f scriptdb/preview.awk 
+    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vprogs=$progs -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -vindb="scriptdb/" \
+        -vswrd=$swrd -vsgrp=$sgrp -vsomo=$somo -f scriptdb/preview.awk 
 
 totnum=$(cat $bookwrkdir/totnum)
 
@@ -449,7 +479,7 @@ mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_c
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Время:" $durhum 
 
 chmod +x $bookwrkdir/*.sh
-else printf '\e[36m%s\n' "Превью текста выключено."; fi
+
 # Собираем книгу и удаляем временные файлы
 cat $bookwrkdir/text-book.txt $bookwrkdir/binary-book.txt > "$book"
 #rm $bookwrkdir/*.txt $bookwrkdir/*.pat $bookwrkdir/*.sed
@@ -461,6 +491,20 @@ else # Если не нашли омографов для ручной обра�
 	printf '\e[36m%s \e[093m%s \e[36m%s\e[0m\n' "Однозначные обработаны, омографов для ручной обработки" "НЕ" "найдено."
 	rm -rf $bookwrkdir
 fi # discretchk 0
+fi #disc_do
+if [[ $ruac -eq 1 ]]; then # Если не нашли омографов для ручной обработки discretchk 0
+	noomo=1
+  debug=1
+	printf '\e[36m%s \e[36m%s\e[0m\n' "Обработка ruaccent’ом:"
+  python scriptdb/ruac.py $ruac_opt $bookwrkdir/text-book.txt > $bookwrkdir/text-book.rua.txt
+  mv $bookwrkdir/text-book.rua.txt $bookwrkdir/text-book.txt
+	cat $bookwrkdir/text-book.txt $bookwrkdir/binary-book.txt > "$book"
+  rm -rf $bookwrkdir
+  mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
+  LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Время:" $durhum 
+fi 
+
+mo_prev=$(date +%s.%N); duration=$( echo $mo_prev - $mo_time0 | bc ); durhum=$(ms2sec);
 
 # Отладка: поиск искажений текста в "пастеризованных" версиях исходника и результата dbgchk 0
 if [[ debug -eq 1 ]]; then
@@ -510,11 +554,10 @@ if [[ debug -eq 1 ]]; then
 			printf '\e[1;4;32m%s\e[0m \e[32m%s \e[36m%s\e[0m\n' "DEBUG:" "пастеризованные файлы идентичны." "Капсы оставлены";
 		fi
 	fi
+  mo_prev=$(date +%s.%N); duration=$( echo $mo_prev - $mo_time0 | bc ); durhum=$(ms2sec);
 fi # dbgchk 0
 
-mo_proc=$(date +%s.%N); duration=$( echo $mo_proc - $mo_time0 | bc ); durhum=$(ms2sec);
-
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Общее время работы скрипта:" $durhum 
-if [[ ! $noomo -eq 1 ]]; then printf '\e[36m%s \e[33m%s \e[36m%s \e[33m%s\e[0m\n' "Дискретные скрипты в" "mano-$book" "обрабатывают файл:" "$obook" ; fi
+if [[ ! $noomo -eq 1 ]]; then printf '\e[36m%s \e[33m%s \e[36m%s \e[33m%s\e[0m\n' "Дискретные скрипты в" $bookwrkdir "обрабатывают файл:" "$obook" ; fi
 printf '\e[32;4;1m%s\e[0m \e[36m%s \e[33m%s \e[36m%s \e[36m%s \e[33m%s\e[0m\n' "\"Ручные омографы:\"" "Файл" "$book" "обработан." "Бэкап:" "$backup"
 

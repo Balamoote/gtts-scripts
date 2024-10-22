@@ -283,7 +283,7 @@ cst="deep deep_na deep_ne deep_pa deep_pe deep_pn geo_mn geo_sr gl_aux_be gl_bue
      suw_nomntv suw_nomnvi suw_odda suw_oded suw_odedda suw_odedim suw_odedmuda suw_odedpr suw_odedro suw_odedsrda suw_odedtv suw_odedvi suw_odim suw_odmn suw_odmnda \
      suw_odmnim suw_odmnro suw_odmnvi suw_odpr suw_odro suw_odtv suw_odvi suw_odzv suw_pr suw_ro suw_tv suw_vi sz sz_i sz_iili titul vvod digits vsyo_sy vsje_sy \
      name_im_sy name_vi_sy name_ro_sy name_da_sy name_tv_sy name_pr_sy name_any_sy sw_es_r_sy sw_mn_i_sy sw_mn_v_sy isSing_sy isPlur_sy preph_vi preph_da cap \
-     preph_ro preph_tv preph_any prl_pv_any sz_qto sz_dge sz_kak sz_kogda pre_s mqast_srav";
+     preph_ro preph_tv preph_any prl_pv_any sz_qto sz_dge sz_kak sz_kogda pre_s mqast_srav suw_mn";
  stoar(cst,funarr," "); #
 
 cst="ist_any ist_nar_mest ist_nar_napr ist_nar_spos ist_nar_vrem ist_prl_edmuim ist_prl_edmupr ist_prl_edmuvi ist_prl_edsrpr ist_prl_edzeda ist_prl_edzeim \

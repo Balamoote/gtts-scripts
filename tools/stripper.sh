@@ -34,6 +34,12 @@ case $key in
 	-w | --word) # удалить служебные символы и ударения в указанном слове, регистрозависимо. Бэкап НЕ делать.
 		if [[ -n $3 ]]; then wrd=$3; dobackup=0; #printf '\e[36m%s \e[93m%s\e[0m\n' "Очистить слово" $wrd ;
 	       		else printf '\e[36m%s\e[0m\n' "Не задано слово для очистки."; fi ;;
+	-wn | --wordnot) # удалить служебные символы и ударения везде, кроме всех вариантов омографа. Бэкап делать.
+		if [[ -n $3 ]]; then somo=$3; indb="scriptdb/"; dobackup=1; #printf '\e[36m%s \e[93m%s\e[0m\n' "Очистить слово" $wrd ;
+	       		else printf '\e[36m%s\e[0m\n' "Не задано слово для оставления в тексте."; fi ;;
+	-xn | --groupnot) # удалить служебные символы и ударения везде, кроме всех вариантов омографа. Бэкап делать.
+		if [[ -n $3 ]]; then xomo=$3; indb="scriptdb/"; dobackup=1; #printf '\e[36m%s \e[93m%s\e[0m\n' "Очистить слово" $wrd ;
+	       		else printf '\e[36m%s\e[0m\n' "Не задано слово для оставления в тексте."; fi ;;
 	-wb | --wordb) # удалить служебные символы и ударения в указанном слове, регистрозависимо. Сделать бэкап.
 		if [[ -n $3 ]]; then wrd=$3; dobackup=1; printf '\e[36m%s \e[93m%s\e[0m\n' "Очистить слово" $wrd ; else printf '\e[36m%s\n' "Не задано слово для очистки."; fi ;;
 	-na | --names) # удалить служебные символы и ударения во всех именах, кроме имён-омографов. Сделать бэкап.
@@ -62,6 +68,18 @@ if [[ -n $wrd ]]; then
 	seden=[$st]?$(echo $wrd | sed -r "s/./\0[$st]*/g")
 	sed -ri "s=([^$RUCl])$seden([^$rulc])=\1$wrd\2=g" trip-"$book"/text-book.txt
 	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Слово" $wrd "очищено."
+fi
+
+if [[ -n $somo ]]; then
+	awk -vsomo=$somo -vindb=$indb -f scriptdb/awx/stip_not_omo.awk trip-"$book"/text-book.txt > trip-"$book"/text-book.txt.awk
+  mv trip-"$book"/text-book.txt.awk trip-"$book"/text-book.txt
+	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Все, кроме слова" $somo ", очищено."
+fi
+
+if [[ -n $xomo ]]; then
+	awk -vxomo=$xomo -vindb=$indb -f scriptdb/awx/stip_not_omo.awk trip-"$book"/text-book.txt > trip-"$book"/text-book.txt.awk
+  mv trip-"$book"/text-book.txt.awk trip-"$book"/text-book.txt
+	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Все, кроме группы" $xomo ", очищено."
 fi
 
 if [[ -n $names ]]; then

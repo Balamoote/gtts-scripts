@@ -18,14 +18,18 @@ function tuptoar(string, arrto,   artmp, al, k) { # добавить в масс
                 arrto[artmp[k]]=artmp[k+1]; arrto[toupper(artmp[k])]=toupper(artmp[k+1]); arrto[Zag(artmp[k])]=Zag(artmp[k+1]) }; };}
 function stotar(string, arrto, sepr,    artmp, k, ret) { # добавить во ВРЕМЕННЫЙ массив arrto элементы строки string
                 delete arrto;ret=split(string, artmp, sepr); for (k in artmp) {if(artmp[k]) {arrto[artmp[k]]}; }; return ret}
-function sto2xw(string, arrto,   artmp,j,k) {             # добавить в массив arrto элементы строки для 2-х связанных слов w1:w2 arrto[w1][w2]
+function sto2xw(string, arrto,   artmp,arr1,j,k) {             # добавить в массив arrto элементы строки для 2-х связанных слов w1:w2 arrto[w1][w2]
                 split(string, artmp, " "); for (k in artmp) { if(artmp[k]) { split(artmp[k], arr1, "_"); arrto[arr1[1]][arr1[2]] }; }; }
-function sto3xw(string, arrto,   artmp,j,k) {             # добавить в массив arrto элементы строки для 3-х связанных слов w1:w2,w3 arrto[w1][w2][w3]
+function sto3xw(string, arrto,   artmp,arr1,j,k) {             # добавить в массив arrto элементы строки для 3-х связанных слов w1:w2,w3 arrto[w1][w2][w3]
                 split(string, artmp, " "); for (k in artmp) { if(artmp[k]) { split(artmp[k], arr1, "_"); arrto[arr1[1]][arr1[2]][arr1[3]] }; }; }
-function stoid(string1, string2,wid,    k,j) {      # добавить в omoid[омограф из строки][омоид из строки][функция]
+function stoid(string1, string2,wid,   art1, k,j) {      # добавить в omoid[омограф из строки][омоид из строки][функция]
                 split(string1, arr1," ");split(string2, arr2," "); for (k in arr1) {for(j in arr2){omoid[arr1[k]][arr2[j]][wid]};};}
 function atoid(string, arr,wid,    k,j) {           # добавить в omoid[омограф из массива][омоид из строки][функция]
                 split(string, arr1," "); for (k in arr1) {for(j in arr){omoid[j][arr1[k]][wid]};};}
+function addw2x(el, arrto,   artmp,j,k) {          # добавить в массив arrto два_слова
+                split(el, artmp, "_"); if( el && length(artmp)==2 ) {arrto[artmp[1]][artmp[2]]} } 
+function addw3x(el, arrto,   artmp,j,k) {          # добавить в массив arrto три_таких_слова
+                split(el, artmp, "_"); if( el && length(artmp)==3 ) {arrto[artmp[1]][artmp[2]][artmp[3]]} } 
 function sanit(string, sepin, sepout,   artmp,j,k,ret) {  # строку с разделителями отсортировать и удалить повторения
                 delete sant; split(string,artmp,sepin); for(k in artmp){if(artmp[k]){sant[artmp[k]]}; }; for(j in sant) {if(ret) {ret = ret sepout j}else{ret=j} }; return ret}
 function hyphback(hystring,     l0,l1,l2,sw,hyw) {    # Склеить слова с дефисом, присутствующие в словаре
@@ -67,10 +71,10 @@ function hyphbphy_(hystring,    l0,l1,l2,sw,hyw) {      # Склеить сло�
                   if ( sepphy[i] ~ /(-<#@_[^@]+@#>)|(<#@_[^@]+@#>-)/ ) {l0=tolower(lphy[i]); l1=tolower(lphy[i+1]); if (l0 != iwrd && l1 != iwrd) { hyw = l0 "-" l1;
                   if ( hyw in dichyph ) { lphy[i] = lphy[i] "-" lphy[i+1]; sepphy[i+1] = sepphy[i] sepphy[i+1]; delete sepphy[i]; delete lphy[i+1];
                   nfphy=arrpack(i+1, lphy); arrpack(i, sepphy) }; };};   };};}
-function splitline(instring,    ret) {              # Разбить строку на слова
-                ret=patsplit(instring,l,patword,sep); return ret }
-function splitlinephy(instring,    ret) {             # Разбить строку на слова
-                ret=patsplit(instring,lphy,patword,sepphy); return ret }
+function splitline(string,    ret) {              # Разбить строку на слова
+                ret=patsplit(string,l,patword,sep); return ret }
+function splitlinephy(string,    ret) {             # Разбить строку на слова
+                ret=patsplit(string,lphy,patword,sepphy); return ret }
 function regwpart(word, part,    ret) {             # Получить заменяемую часть слова в нужном регистре
                 ret=substr(word,index(tolower(word),part),length(part)); return ret }
 function getwpos(word,    n) {                      # Получить адрес слова в строке, Без учёта регистра
