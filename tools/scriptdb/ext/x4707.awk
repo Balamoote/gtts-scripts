@@ -39,7 +39,7 @@ xgrp="x4707";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)         
  # названия замков и имена владельцев:end
 
  # очистка переменных
- delete Y;
+ delete Y; if(dbg){print "==> x4707_f()"};
 
  # названия замков и имена владельцев:start
  if ( w3x(1,"_castle_w_w_w") && s(0,2) )
