@@ -8,7 +8,7 @@ bfword="(\s\b|#)"$S1"(#|\b)"
 sstring="\b"$S1"\b"
 astromo="\s"$S1"\s"
 mstromo="_"$S1"="
-alldics="dic_gl.gz dic_prl.gz dic_prq.gz dic_rest.gz dic_suw.gz dic_cust.gz dik_prop.gz"
+alldics="dic_gl.gz dic_prl.gz dix_prq.gz dic_rest.gz dic_suw.gz dic_cust.gz dik_prop.gz"
 # выбрать одину из утилит для поиска: zgrep или rg (он же ripgrep)
 grepper="rg -zNS --no-heading"
 #grepper="zgrep -EH"

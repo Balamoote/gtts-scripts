@@ -149,6 +149,8 @@ case $key in
        exit 1; ;;
 
     pat4all ) # создать полный список всех словоформ для фильтрации словаря wiktionary
+              zcat dix_prq.gz | awk -f gen_prq.awk | sort -u | gzip > dic_prq.gz
+
               zcat dic_*.gz | awk '{ print "_" $1 "=" }' | sort -u | gzip > _stock.patt.gz
               zcat dik_*.gz | awk '{ $1=tolower($1); gsub("ё","е",$1); print "_" $1 "=" }' | sort -u | gzip >> _stock.patt.gz
               zcat _stock.patt.gz | sort -u | gzip > _stock.pat.gz; rm _stock.patt.gz
