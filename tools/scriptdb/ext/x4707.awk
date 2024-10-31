@@ -6,6 +6,7 @@ function x4707_f() {
 
 xgrp="x4707";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)         # header1
 {makebookvars();for(i in wpos){makewposvars();if(tolower(l[i])!=iwrd)continue; # header2
+ # очистка переменных
 
 ## собрать слова
 #cst1="ие ий им ими их ого ом ому";
@@ -37,9 +38,6 @@ xgrp="x4707";for(wrd in omap[xgrp]){omakevars(xgrp);for(y=1;y<=wln;y++)         
 #if ( q(1,"isname") && s(0) )
 #{ print l[i+1] >> "_isname.txt"; Z[12]++; if(dbg){print "Z12"}; }; continue
  # названия замков и имена владельцев:end
-
- # очистка переменных
- delete Y; if(dbg){print "==> x4707_f()"};
 
  # названия замков и имена владельцев:start
  if ( w3x(1,"_castle_w_w_w") && s(0,2) )

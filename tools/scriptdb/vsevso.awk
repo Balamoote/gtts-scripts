@@ -2731,7 +2731,7 @@ prq_krmn(qfn+1) && s(0,qfn) )
  if ( vsje_sy(0) )
  { l[i]=is_vsje; V[701]++; if(dbg){print "V701"}; continue };
 
-             }; delete wpos;
+             };
 
  # всё/все́ в предыдущей строке
  if (nf-i <= 7 && l[i] in vsyos) {prevyo = b};

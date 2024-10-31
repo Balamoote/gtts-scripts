@@ -41,9 +41,9 @@ pack="scriptdb/automo.gz scriptdb/awx/beautify.awk scriptdb/class.list.gz script
       scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz \
       scriptdb/main.awk scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz \
       scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
-      scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/ruac.py scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini \
+      scriptdb/omoid_pa_ini.gz scriptdb/preview.awk scriptdb/ruac.py scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/dix_prq.gz \
       scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc.txt.gz \
-      scriptdb/yomo-uc.txt.gz scriptdb/ext/x4707.awk scriptdb/dik_prop.gz"
+      scriptdb/yomo-uc.txt.gz scriptdb/ext/x4707.awk scriptdb/ext/x4709.awk scriptdb/dik_prop.gz scriptdb/cstrings.gz"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего

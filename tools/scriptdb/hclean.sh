@@ -23,21 +23,34 @@ unxc=$(printf "\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0")
 unxa=$(printf "\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0")
 unxs=$(printf "\xe2\x80\xa4\xe2\x80\xa7")
 
+# Массив со списком обязательных файлов
+pack="automo.gz awx/beautify.awk class.list.gz classes.awk cstauto.awk cstring.awk defunct.awk deomo.awk demorphy.awk dic_cust.gz \
+      dic_gl.gz dic_prl.gz dic_prq.gz dic_rest.gz dic_suw.gz exclusion.pat.gz fb2 functions.awk gw_caplists.awk hclean.sh ist.gz \
+      main.awk mano-lc.txt.gz mano-uc.txt.gz namebase0.txt.gz namedef.awk nameoverride.txt.gz nomo.txt.gz omo-index.sed omo_list.phy.gz \
+      omoid.me omoid_auto.gz omoid_flat.gz omoid_ini.gz omoid_pa_ini.gz preview.awk ruac.py rulg_all.py rulg_omo.py settings.ini \
+      vsevso.awk wordbase0.gz yodef.awk yodef0.txt.gz yodef1.txt.gz yolc.txt.gz yomo-lc.txt.gz yomo-uc.txt.gz ext/x4707.awk ext/x4709.awk \
+      dik_prop.gz awx/rules_sort.awk cstrings.gz awx/sort_gzstrings.awk gen_prq.awk dix_prq.gz awx/parser.awk"
+read -a minpack <<< $pack
+
+# Проверка не потерялось ли чего
+for f in "${minpack[@]}"; do
+	if [[ ! -s $f ]]; then printf '\e[31;5;1m%s\e[0m \e[93m%s\e[0m\n' "Отсутствует файл:" $f; exit 1; fi; done
 
 case $key in
     ord ) # перенумеровать все правила во всех рабочих скриптах и отсортировать строки
-       awk -vLETT="R" -f awx/rule_no_sort.awk deomo.awk     | awk -f awx/beautify.awk > deomo.awk_ord;   mv deomo.awk_ord   deomo.awk;
-       awk -vLETT="V" -f awx/rule_no_sort.awk vsevso.awk    | awk -f awx/beautify.awk > vsevso.awk_ord;  mv vsevso.awk_ord  vsevso.awk;
-       awk -vLETT="D" -f awx/rule_no_sort.awk defunct.awk   | awk -f awx/beautify.awk > defunct.awk_ord; mv defunct.awk_ord defunct.awk;
-       awk -vLETT="Z" -f awx/rule_no_sort.awk ext/x4707.awk | awk -f awx/beautify.awk > x4707.awk_ord;   mv x4707.awk_ord   ext/x4707.awk;
+       awky="deomo.awk";     awk -vLETT="R" -f awx/rules_sort.awk $awky | awk -f awx/beautify.awk > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="vsevso.awk";    awk -vLETT="V" -f awx/rules_sort.awk $awky | awk -f awx/beautify.awk > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="defunct.awk";   awk -vLETT="D" -f awx/rules_sort.awk $awky | awk -f awx/beautify.awk > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="ext/x4707.awk"; awk -vLETT="Z" -f awx/rules_sort.awk $awky | awk -f awx/beautify.awk > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="ext/x4709.awk"; awk -vLETT="X" -f awx/rules_sort.awk $awky | awk -f awx/beautify.awk > $awky"_ord"; mv $awky"_ord" $awky;
 
-       awky="cstring.awk"; awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
-       awky="cstauto.awk"; awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
-       awky="classes.awk"; awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
-       awky="parser.awk" ; awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
-       awky="gen_prq.awk"; awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="cstring.awk";    awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="cstauto.awk";    awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="classes.awk";    awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="awx/parser.awk"; awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
+       awky="gen_prq.awk";    awk -f awx/beautify.awk $awky > $awky"_ord"; mv $awky"_ord" $awky;
 
-       awk -f parser.awk deomo.awk defunct.awk vsevso.awk yodef.awk ext/x4707.awk;
+       awk -f awx/parser.awk deomo.awk defunct.awk vsevso.awk yodef.awk ext/x4707.awk ext/x4709.awk;
 
        zcat omoid_ini.gz | awk '{delete chars; ret="";for(i=3;i<=NF;i++){chars[$i]=$i}; chnum = asort(chars);
                                 ret = $1 " " $2; for(j=1;j<=chnum;j++){ret=ret " " chars[j]}; print ret }' |\

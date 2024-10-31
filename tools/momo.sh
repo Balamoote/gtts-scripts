@@ -27,9 +27,10 @@ sed_do=0      # 1 = постобработка sed, мелочи для выде
 morphy_is=0   # 1 = SpaCy; 2 = Natasha
 morphy_yo=0   # 1 = скрипт vsevso.awk использует только данные SpaCy или Natasha; 0 = только "подбирает хвосты"
 morphy_do=0   # 1 = некоторые скрипты могут использовать только данные SpaCy или Natasha; 0 = только "подбирает хвосты" (не сделано)
-disc_do=1     # 1 = включить дискретные скрипты
+main_do=1     # 1 = включить основную обработку
+disc_do=0     # 1 = включить дискретные скрипты
 ruac=0        # 1 = включить обработку ruaccent -- выставит ударения везде, где сможет. Уже проставленные ударения сохраняются
-ruac_opt="-cpu"   # опиции для ruaccent
+ruac_opt="-cuda"   # опиции для ruaccent
 
 do_parallel=1     # включить GNU Parallel. ВНИМАНИЕ: подобрать параметры по реальной производительности
    pblock_a=500K  # awk: размер куска текста на 1 задачу: постфиксы K, M, G, T, P, k, m, g, t, p. "-1" = авто
@@ -75,8 +76,8 @@ cdata=$(date)
 printf '\e[32m%s \e[32;4;1m%s\e[0m \e[93m%s\e[0m\n' "Скрипт" "\"Ручные омографы\"" "$cdata"
 
 if [[ -s "$1" ]]; then book=$1; backup="$book".$suf; key="-xp"; printf '\e[33m%s \e[93m%s\e[0m\n' "Ключи не заданы, но книга указана. Используем ключ:" "-xp"
-elif [[ -e "$2" ]]; then printf '\e[36m%s \e[33m%s\e[0m\n' "Обрабатывается книга:" "$book"
-else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./momo.sh [ключ] book.fb2"; exit 1; fi
+  elif [[ -e "$2" ]]; then printf '\e[36m%s \e[33m%s\e[0m\n' "Обрабатывается книга:" "$book"
+  else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./momo.sh [ключ] book.fb2"; exit 1; fi
 
 # Дискретные скрипты пишутся в файл, который задан переменной obook
 # Эта переменная имеет смысл ТОЛЬКО, если заново создаются скрипты в mano-$book, т.е. перед запуском скрипта её нужно удалить вручную. Если нужно.
@@ -99,10 +100,10 @@ case $key in
 		fixomo=1; preview=1; morphy=0; progs=0;
     printf '\e[36m%s\e[0m\n' "Однозначные омографы, превью и дискретные скрипты." ;;
 	-fpx | -fxp | -fg | -gg ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; +morphy (!!!)
-		fixomo=1; preview=1; morphy=1; progs=0;
+		fixomo=1; preview=1; morphy=0; progs=0;
     if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	-fpxo | -fxpo | -fgo | -ggo ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; +morphy (!!!) + список в слов консоль
-		fixomo=1; preview=1; morphy=1; progs=1;
+		fixomo=1; preview=1; morphy=0; progs=1;
     if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	-fpc | -ggc ) # Однозначные омографы, превью и дискретные скрипты; существующую директорию mano- удалить; без morphy (!!!)
 		fixomo=1; preview=1; morphy=0; progs=0;
@@ -126,7 +127,7 @@ case $key in
 		fixomo=0; preview=1; morphy=0; progs=0;
     if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	-ruac) # 
-		locdic=0; fixomo=0; preview=0; disc_do=0; progs=0; ruac=1;
+		locdic=0; fixomo=0; disc_do=0; main_do=0; progs=0; ruac=1;
     if [[ -d $bookwrkdir ]]; then rm -rf $bookwrkdir; printf '\e[36m%s \e[33m%s \e[36m%s\e[0m\n' "Директория" $bookwrkdir "удалена."; fi ;;
 	*) # Нечто другое
 		printf '\e[32m%s \e[93m%s \e[32m%s \e[93m%s\e[0m\n' "Задайте ключ или книгу. Например:" "./momo.sh -xp book.fb2" "или" "./momo.fb2 book.fb2"; exit 0 ;;
@@ -142,25 +143,25 @@ if [[ -s scriptaux/zaomo.md5 ]] && md5sum -c --status scriptaux/zaomo.md5 >/dev/
 else printf '\n'; clxx=1; fi
 
 if [[ $clxx -eq "1" ]]; then
-	if ./check-lexx.sh -fm; then printf '\e[32m%s\e[0m\n' "Проверка файлов завершена успешно…";
+	if ./check-lexx.sh -f; then printf '\e[32m%s\e[0m\n' "Проверка файлов завершена успешно…";
 	else printf '\e[1;31m%s \e[93m%s \e[1;31m%s\e[0m\n' "Выполнение скрипта" "./momo.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
 
 # Массив со списком обязательных файлов
-pack="scriptdb/automo.gz scriptdb/awx/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk \
-      scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz \
-      scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz \
-      scriptdb/main.awk scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz \
-      scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
-      scriptdb/omoid_pa_ini.gz scriptdb/omopick.awk scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini \
-      scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc.txt.gz \
-      scriptdb/yomo-uc.txt.gz scriptdb/ext/x4707.awk"
-read -a minpack <<< $pack
+#pack="scriptdb/automo.gz scriptdb/awx/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk \
+#     scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz \
+#     scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz \
+#     scriptdb/main.awk scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz \
+#     scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
+#     scriptdb/omoid_pa_ini.gz scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini \
+#     scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc.txt.gz \
+#     scriptdb/yomo-uc.txt.gz scriptdb/ext/x4707.awk scriptdb/ext/x4709.awk"
+#read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
-for f in "${minpack[@]}"; do
-	if [[ ! -s $f ]]; then
-	if [[ -e scriptaux/zaomo.md5 ]]; then rm scriptaux/zaomo.md5; fi
-	printf '\e[1;31;5m%s \e[0;93m%s \e[1;31;5m%s\e[0m\n' "Отсутствует файл:" $f "Запустите еще раз или найдите потерянный файл."; exit 1; fi; done
+#for f in "${minpack[@]}"; do
+#	if [[ ! -s $f ]]; then
+#  	if [[ -e scriptaux/zaomo.md5 ]]; then rm scriptaux/zaomo.md5; fi
+#  	printf '\e[1;31;5m%s \e[0;93m%s \e[1;31;5m%s\e[0m\n' "Отсутствует файл:" $f "Запустите еще раз или найдите потерянный файл."; exit 1; fi; done
 
 d2u;
 
@@ -404,15 +405,6 @@ fi
 if [[ $sed_do -eq 1 ]]; then
 rexsed="scriptdb/omo-index.sed"
 
-#awk -vtmpdir=$bookwrkdir -vrexfile=$rexsed -f scriptdb/omopick.awk $bookwrkdir/text-book.txt >/dev/null 2>&1
-
-##При подсчете блоков омографов вычитаем стационарные блоки шаблонов
-#statblock=4
-#locomo=$(( $( grep -c "###" $bookwrkdir/book-index.sed ) - $statblock ))
-#printf '\e[36m%s \e[93m%s %s%s%s\e[0m … ' "Омографов для sed-обработки:" $locomo "(" $statblock ")"
-
-#sedroll $bookwrkdir/book-index.sed $bookwrkdir/text-book.txt
- 
  if [[ $do_parallel -eq 1 ]]; then
    parallel --env $paraopts_sed $bookwrkdir/text-book.txt sed -rf $rexsed > $bookwrkdir/text-book.sed.txt
    mv $bookwrkdir/text-book.sed.txt $bookwrkdir/text-book.txt
@@ -426,7 +418,7 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Постобр�
 
 fi # fixomo?
 
-if [[ $disc_do -eq 1 ]]; then # disc_do
+if [[ $main_do -eq 1 ]]; then # main_do
 # Списки слов всех омографов с маленькой и с Большой буквы
 
 grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-lc.pat.gz) | \
@@ -444,7 +436,7 @@ zgrep -Ff $bookwrkdir/manofi-lc.pat scriptdb/mano-lc.txt.gz                     
 zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz | sed -r "s/([_ ])(.)/\1\u\2/g"    | grep -Ff $bookwrkdir/manofi-uc.pat >> $bookwrkdir/mano-luc.txt
 zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz | sed -r "s/([$RUUC$rulc]+)/\U\0/g"| grep -Ff $bookwrkdir/manofi-cc.pat >> $bookwrkdir/mano-luc.txt
 
-if [[ -s $bookwrkdir/mano-luc.txt ]]; then # Проверяем найдено ли хоть что-то из омографов… discretchk 0
+if [[ $disc_do -eq 1 ]] && [[ -s $bookwrkdir/mano-luc.txt ]]; then # Проверяем найдено ли хоть что-то из омографов… discretchk 0
 sed -r "
        s/^_(.+)=/\1/g
        s/\x27/\xcc\x81/g
@@ -459,19 +451,21 @@ mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_time0 | bc ); mo_prev=$mo_
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Всего обработка омографов заняла:" $durhum 
 
 # Формируем дискретные скрипты пословно
-printf '\e[32m%s ' "Идет поиск омографов … подождите."
+printf '\e[32m%s ' "Идет поиск омографов для дискретных скриптов … подождите."
+
 if [[ $preview -eq 1 ]]; then printf '\e[32m%s' "Превью текста включено."
 else printf '\e[36m%s\n' "Превью текста выключено."; fi
 twd=$(tput cols)
 
+# Определяем дефолтный результат словаря lexx
 zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\
        	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
-sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $bookwrkdir/text-book.txt | \
+  sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $bookwrkdir/text-book.txt | \
     awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vprogs=$progs -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -vindb="scriptdb/" \
         -vswrd=$swrd -vsgrp=$sgrp -vsomo=$somo -f scriptdb/preview.awk 
 
-totnum=$(cat $bookwrkdir/totnum)
+  totnum=$(cat $bookwrkdir/totnum)
 
 printf '\e[36m%s \e[093m%s \e[36m%s \e[093m%s \e[0m' "Создано дискретных скриптов:" $(ls -l $bookwrkdir/*.sh | wc -l) "Всего остаток омографов:" $totnum
 
@@ -491,7 +485,8 @@ else # Если не нашли омографов для ручной обра�
 	printf '\e[36m%s \e[093m%s \e[36m%s\e[0m\n' "Однозначные обработаны, омографов для ручной обработки" "НЕ" "найдено."
 	rm -rf $bookwrkdir
 fi # discretchk 0
-fi #disc_do
+fi #main_do
+
 if [[ $ruac -eq 1 ]]; then # Если не нашли омографов для ручной обработки discretchk 0
 	noomo=1
   debug=1

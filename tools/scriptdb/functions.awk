@@ -1,5 +1,6 @@
 # Библиотека различных функций обработки текста
 # Последняя версия файла тут: https://github.com/Balamoote/gtts-scripts
+
 # служебные фунции
 function readfile(file,  tmp, save_rs) {            # Функция чтения файла в скаляр
                 save_rs = RS; RS = "^$"; getline tmp < file; close(file); RS = save_rs; return tmp }
@@ -78,9 +79,9 @@ function splitlinephy(string,    ret) {             # Разбить строк�
 function regwpart(word, part,    ret) {             # Получить заменяемую часть слова в нужном регистре
                 ret=substr(word,index(tolower(word),part),length(part)); return ret }
 function getwpos(word,    n) {                      # Получить адрес слова в строке, Без учёта регистра
-                for(n=1;n<=nf;n++) {if(tolower(l[n])==word) wpos[n]} }
+                delete wpos; for(n=1;n<=nf;n++) {if(tolower(l[n])==word) wpos[n]} }
 function regwpos(word,    n) {                      # Получить адрес слова в строке, с учётом регистра
-                for(n=1;n<=nf;n++) {if(l[n]==word) wpos[n]} }
+                delete wpos; for(n=1;n<=nf;n++) {if(l[n]==word) wpos[n]} }
 function arrpack(n, array,   i, ret) {              # устранить пропуск в массиве
                 ret = length(array); for (i=n; i<=ret; i++) {array[i] = array[i+1]}; delete array[ret+1]; return ret }
 function omakevars(xklass) {                        # определить переменные iwrd, winfo, omoX
@@ -91,7 +92,8 @@ function makebookvars() {                           # разбить строк�
 function makebookvars_nohyphback() {                # разбить строку, но словарные слова с дефисом не склеивать
                 b=strtonum(omlin[y]);nf=splitline(book[b]);splitlinephy(bphy[b]);regwpos(wrd); }
 function makewposvars() {                           # определить переменные внутри цикла для слова в позиции i
-                i=strtonum(i); prex=edro2mnim=edro2mnvi=nizm=mn2e2pomn=loc2emd=loc2ezd=NORULE=tn=hyn=qyn=wyn=do_tn="" }
+                i=strtonum(i); delete Y;
+                prex=edro2mnim=edro2mnvi=nizm=mn2e2pomn=loc2emd=loc2ezd=NORULE=tn=hyn=qyn=wyn=do_tn="" }
 function DO_DEBUG(array,a_prefix,   outfile, k,cmd) {
                 outfile = "_" a_prefix ".txt"; for (k in array) { if ( array[k] ) {printf ("%s%s %s %s\n", a_prefix, k, "=", array[k]) >> outfile }; }; }
 function rfix(n,m) {             # ограничить диапазон размерами строки
@@ -123,8 +125,8 @@ function ecap(    j,k,f,el,sk,sl, ret) {   # выделение ударения
         if ( b in eSCAP && wrd in cOMO ) { ret=1; l[i]=cOMO[wrd]; }; return ret}
 
 # функции обработки слов: сбор слов для записи в отдельный файл
-function getBF(n,file,   itmz, k) {                      # выдать базовую форму слова по адресу n и записать ее в file, омограф при этом в файл не пишется
-                stotar(wordbf(n),itmz,"#"); for(k in itmz) { print k >> file };}
+function getBF(n,class,file,   itmz, k) {                      # выдать базовую форму слова по адресу n и записать ее в file, омограф при этом в файл не пишется
+                catch_file=file; stotar(wordbf(n),itmz,"#"); for(k in itmz) { if( q_str(k,class) )  wCAT[k] };}
 function getBFb(n,m,file,    k, ret) {              # выдать базовые формы слов в диапазоне {-n,-m} и записать их в file (только словарные базовые формы, без препинаний)
                 for (k=m; k>=n; k--) {if(l[i+k]) ret = sanit(wordbf(k),"#","\x2f") " " ret }; ret = ret iwrd; print ret >> file }
 function getBFf(n,m,file,    k, ret) {              # выдать базовые формы слов в диапазоне {+n,+m} и записать их в file (только словарные базовые формы, без препинаний)
@@ -210,6 +212,8 @@ function qf_(n,m, array,    k, ret) {               # поиск на n шаго
                 ret=qfn=""; if(n>m)m=n; for (k=n; k<=m; k++) { if ( lc(k) in array ) {ret=1; qfn=k; break}; }; return ret }
 function q(n, alist,   afun,itmz,k,wd, ret) {                # обертка для нескольких функций
                 ret=0; wd=lc(n); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd)) {ret=1; break} }; return ret}
+function q_str(wd, alist,  n, afun,itmz,k, ret) {                # обертка для нескольких функций
+                ret=n=0; split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd)) {ret=1; break} }; return ret}
 function q_ist(n, alist,   afun,itmz,k,wd, ret) {                # обертка для нескольких функций
                 ret=0; wd=tolower(l[i+n]); split(alist,itmz," "); for(k in itmz) { afun=itmz[k]; if(@afun(n,wd)) {ret=1; break} }; return ret}
 function q_w(n, alist,    afun,itmz,k,wd, ret) {              # обертка для нескольких функций - нахождение + пробел до

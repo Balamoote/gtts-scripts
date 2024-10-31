@@ -27,9 +27,9 @@ BEGIN {
   # Часть массивов omarr перенесены в cstrings.gz, это эквивалент вызова функции omarr в данном файле
   cmd = "zcat " indb "cstrings.gz";
   while ((cmd|getline) > 0) {
-    if($2 == "1x" && $NF == "[") { cstgrp = $1} else { for (i=1; i<=NF; i++) { if($i!= "]" && $i!="") { omarr[cstgrp][$i] }; }; };
-    if($2 == "2x" && $NF == "[") { cstgrp = $1} else { for (i=1; i<=NF; i++) { if($i!= "]" && $i!="") addw2x($i,omarr[cstgrp]) }; };
-    if($2 == "3x" && $NF == "[") { cstgrp = $1} else { for (i=1; i<=NF; i++) { if($i!= "]" && $i!="") addw3x($i,omarr[cstgrp]) }; };
+    if($2 == "1x" && $NF == "[=") { cstgrp = $1} else { for (i=1; i<=NF; i++) { if($i!= "=]" && $i!="") { omarr[cstgrp][$i] }; }; };
+    if($2 == "2x" && $NF == "[=") { cstgrp = $1} else { for (i=1; i<=NF; i++) { if($i!= "=]" && $i!="") addw2x($i,omarr[cstgrp]) }; };
+    if($2 == "3x" && $NF == "[=") { cstgrp = $1} else { for (i=1; i<=NF; i++) { if($i!= "=]" && $i!="") addw3x($i,omarr[cstgrp]) }; };
   }; close(cmd);
 
  # geo
@@ -61,6 +61,19 @@ BEGIN {
  # !!! Ниже дополнение для основного метода загрузки этих массивов из cstrings.gz
  pusha(omarr["_castle_suw-ro"],omarr["_castle_suw-ro2"])
  pusha(omarr["_castle_suw-ro1"],omarr["_castle_suw-ro2"])
+ # ================================================================================================================
+
+ # _gl_v_sky BASE
+ cst="";
+ mrk="_gl_v_sky-iv"; stoar(cst,omarr[mrk]," "); #
+
+ # _sky_pe BASE
+ cst="бороздить";
+ mrk="_sky_pe"; stoar(cst,omarr[mrk]," "); #
+
+ # _palate_suw-ro FLAT
+ cst="монстра чудовища";
+ mrk="_palate_suw-ro"; stoar(cst,omarr[mrk]," "); #
 
 ## Возможные варианты добавления:
 ##
