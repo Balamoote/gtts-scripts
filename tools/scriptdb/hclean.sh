@@ -62,8 +62,13 @@ case $key in
                                 ret = $1 " " $2; for(j=1;j<=chnum;j++){ret=ret " " chars[j]}; print ret }' |\
                          sort -u | gzip > omoid_flat_ord.gz; mv omoid_flat_ord.gz omoid_flat.gz
 
+       # сортировка cstrings.gz
        zcat cstrings.gz | awk -f awx/sort_gzstrings.awk | gzip > cstrings_ord.gz; mv cstrings_ord.gz cstrings.gz
+       # gen_prq -- генерируем полный словарь причастий
        zcat dix_prq.gz | awk -f gen_prq.awk | sort -u | gzip > dic_prq.gz
+       # ddic -- поиск дублей с разной основой
+       zcat dic_*.gz | awk '{ if ( f1 == $1 && f2 == $2 )  {printf("\033[91m%s\n\033[0m", $0); fnd=1}; f1=$1; f2=$2; }
+                            END { if(!fnd) printf("\033[32m%s\n\033[0m", "ord: дублей с разной основой не надено.")}' ;
        exit 1; ;;
 
     omoid ) # сгенерировать базы omoid_auto.gz из omoid_ini.gz и omoid_pa_ini.gz

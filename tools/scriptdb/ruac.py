@@ -107,7 +107,7 @@ def patsplit(string, seps_pattern):
 # Функция для разбиения длинных строк
 def split_long_line(lin):
 
-    seps_priority = (". ", "! ", "? ", "... ", "; ", ": ", ", ", " ")
+    seps_priority = ("[^.][.!?] ", "; ", "... ", ": ", ", ", " ")
 
     if len(lin) <= max_length:
         return [lin]
