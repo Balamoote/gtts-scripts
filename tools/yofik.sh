@@ -66,8 +66,7 @@ case $key in
 esac
 
 printf '\e[32m%s \e[32;4;1m%s\e[0m\n' "Скрипт" "\"Ёфикация\""
-printf '\e[36m%s \e[93m%s\e[0m\n' "Строк в словаре однозначной ёфикации:" $(zgrep -c ^ scriptdb/yodef0.txt.gz)
-printf '\e[36m%s \e[93m%s\e[0m\n' "Строк там же, слова с начальной 'ё' :" $(zgrep -c ^ scriptdb/yodef1.txt.gz)
+printf '\e[36m%s \e[93m%s\e[0m\n' "Строк в словаре однозначной ёфикации:" $(zgrep -c ^ scriptdb/yodef.txt.gz)
 printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Строк в словаре:" $(zgrep -c ^ scriptdb/yomo-uc.txt.gz) "Ё-омографов и" $(zgrep -c ^ scriptdb/yomo-lc.txt.gz) "ё-омографов."
 if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
 
@@ -80,7 +79,8 @@ if [[ $clxx -eq "1" ]]; then
 	else printf '\e[31;1m%s\e[0m \e[93m%s \e[31;1m%s\e[0m\n' "Выполнение скрипта" "./yofik.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
 
 # Массив со списком обязательных файлов
-pack="tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc.txt.gz scriptaux/yomo-lc.pat.gz scriptdb/yomo-uc.txt.gz scriptaux/yomo-uc.pat.gz scriptaux/yomo-cc.pat.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz scriptdb/yolc.txt.gz scriptdb/yodef.awk scriptaux/yolc.pat.gz"
+pack="tts.txt scriptdb/yodef.txt.gz scriptaux/yodef.pat.gz scriptdb/yomo-lc.txt.gz scriptaux/yomo-lc.pat.gz scriptdb/yomo-uc.txt.gz scriptaux/yomo-uc.pat.gz \
+      scriptaux/yomo-cc.pat.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz scriptdb/yolc.txt.gz scriptdb/yodef.awk scriptaux/yolc.pat.gz"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего

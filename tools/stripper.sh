@@ -31,6 +31,8 @@ case $key in
 		sset=$unxs$unxc; dobackup=1; printf '\e[36m%s\e[0m\n' "Удалить все служебные символы, а также все ударения, восстановить символ точки." ;;
 	-dc | --delcor) # удалить служебные символы и восстановить символ точки, ударение не трогать
 		sset=$unxc;  dobackup=1; printf '\e[36m%s\e[0m\n' "Удалить служебные символы и восстановить символ точки" ;;
+	-sy | --stripyo) # удалить ударение на "ё".
+		syo=1; dobackup=1; printf '\e[36m%s\e[0m\n' "Удалить ударения на букву ё." ;;
 	-w | --word) # удалить служебные символы и ударения в указанном слове, регистрозависимо. Бэкап НЕ делать.
 		if [[ -n $3 ]]; then wrd=$3; dobackup=0; #printf '\e[36m%s \e[93m%s\e[0m\n' "Очистить слово" $wrd ;
 	       		else printf '\e[36m%s\e[0m\n' "Не задано слово для очистки."; fi ;;
@@ -61,6 +63,11 @@ sed -n '/<binary/,$p' "$book" > trip-"$book"/binary-book.txt
 if [[ -n $sset ]]; then
 	sed -ri "s=[$sset]+==g" trip-"$book"/text-book.txt
 	sed -ri "s=[$unxd]=.=g" trip-"$book"/text-book.txt
+	printf '\e[36m%s\e[0m\n' "Файл очищен."
+fi
+
+if [[ -n $syo ]]; then
+  sed -ri "s=([Ёё])\xcc\x81=\1=g" trip-"$book"/text-book.txt
 	printf '\e[36m%s\e[0m\n' "Файл очищен."
 fi
 

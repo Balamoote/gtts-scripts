@@ -44,7 +44,7 @@ pack="scriptdb/automo.gz scriptdb/awx/beautify.awk scriptdb/class.list.gz script
       scriptdb/main.awk scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz \
       scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
       scriptdb/omoid_pa_ini.gz scriptdb/preview.awk scriptdb/ruac.py scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/dix_prq.gz \
-      scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef0.txt.gz scriptdb/yodef1.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc.txt.gz \
+      scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc.txt.gz \
       scriptdb/yomo-uc.txt.gz scriptdb/ext/x4707.awk scriptdb/ext/x4709.awk scriptdb/dik_prop.gz scriptdb/cstrings.gz"
 read -a minpack <<< $pack
 
@@ -269,8 +269,7 @@ fi
 if [[ $jofik -eq 1 ]]; then
        	printf '\e[36m%s \e[32m%s ' "YOF:" "старые"
 else
-	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef0.txt.gz)  | gzip > scriptaux/yodef0.pat.gz
-	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef1.txt.gz)  | gzip > scriptaux/yodef1.pat.gz
+	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef.txt.gz)  | gzip > scriptaux/yodef.pat.gz
 	sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-lc.txt.gz) | gzip > scriptaux/yomo-lc.pat.gz
   sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-lc.txt.gz scriptdb/yomo-uc.txt.gz) | sed -r "s/_(.)/_\u\1/g" |sort -u| gzip > scriptaux/yomo-uc.pat.gz
   sed -r "s/=.+$/=/g" <(zcat scriptdb/yolc.txt.gz)    | gzip > scriptaux/yolc.pat.gz
@@ -284,7 +283,7 @@ else
 	zgrep -Ff <(zcat scriptaux/ttspat.yoy.gz) scriptaux/tts0.txt.gz | sort -u | gzip > scriptaux/tts0.yoy.gz
 
   printf '\e[36m%s \e[93m%s ' "YOF:" "новые"
-	md5sum tts.txt scriptdb/yodef0.txt.gz scriptaux/yodef0.pat.gz scriptdb/yodef1.txt.gz scriptaux/yodef1.pat.gz scriptdb/yomo-lc.txt.gz scriptaux/yomo-lc.pat.gz \
+	md5sum tts.txt scriptdb/yodef.txt.gz scriptaux/yodef.pat.gz scriptdb/yomo-lc.txt.gz scriptaux/yomo-lc.pat.gz \
          scriptdb/yodef.awk scriptdb/yomo-uc.txt.gz scriptaux/yomo-uc.pat.gz scriptaux/tts.pat.gz scriptaux/tts0.txt.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz \
          scriptdb/yolc.txt.gz scriptaux/yolc.pat.gz scriptaux/yomo-cc.pat.gz > scriptaux/zjofik.md5
 fi

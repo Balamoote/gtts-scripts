@@ -28,7 +28,7 @@ pack="automo.gz awx/beautify.awk class.list.gz classes.awk cstauto.awk cstring.a
       dic_gl.gz dic_prl.gz dic_prq.gz dic_rest.gz dic_suw.gz exclusion.pat.gz fb2 functions.awk gw_caplists.awk hclean.sh ist.gz \
       main.awk mano-lc.txt.gz mano-uc.txt.gz namebase.txt.gz namedef.awk nomo.txt.gz omo-index.sed omo_list.phy.gz \
       omoid.me omoid_auto.gz omoid_flat.gz omoid_ini.gz omoid_pa_ini.gz preview.awk ruac.py rulg_all.py rulg_omo.py settings.ini \
-      vsevso.awk wordbase0.gz yodef.awk yodef0.txt.gz yodef1.txt.gz yolc.txt.gz yomo-lc.txt.gz yomo-uc.txt.gz ext/x4707.awk ext/x4709.awk \
+      vsevso.awk wordbase0.gz yodef.awk yodef.txt.gz yolc.txt.gz yomo-lc.txt.gz yomo-uc.txt.gz ext/x4707.awk ext/x4709.awk \
       dik_prop.gz awx/rules_sort.awk cstrings.gz awx/sort_gzstrings.awk gen_prq.awk dix_prq.gz awx/parser.awk"
 read -a minpack <<< $pack
 
@@ -112,7 +112,7 @@ case $key in
                zcat dic_*.gz | awk '{print $1}' > ru.txt
                zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
                zcat mano-lc.txt.gz yomo-lc.txt.gz |sed -r "s/[_=']//g; s/ё/е/g; s/ /\r/g" >> ru.txt
-               zcat yodef0.txt.gz yodef1.txt.gz yolc.txt.gz |sed -r "s/[_']//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
+               zcat yodef.txt.gz yolc.txt.gz |sed -r "s/[_']//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
                sed -r "s/\\\xcc\\\x81//g
                        s/\\\xcc\\\xa0//g
 	                     s/\\\xcc\\\xa3//g
@@ -131,7 +131,7 @@ case $key in
                zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
                zcat mano-lc.txt.gz yomo-lc.txt.gz |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
                zcat mano-uc.txt.gz yomo-uc.txt.gz nomo.txt.gz |sed -r "s/[_=]//g; s/\b(.)/\l\1/g; s/ /\n/g" >> ru.txt
-               zcat yodef0.txt.gz yodef1.txt.gz yolc.txt.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
+               zcat yodef.txt.gz yolc.txt.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
                zcat namebase0.txt.gz nameoverride.txt.gz |\
                     sed -r "s/(=\\\\xcc\\\\x[ab][034d])([$rulc])/\1\u\2/g
                             s/([_=])([$rulc])/\1\u\2/g
