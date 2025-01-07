@@ -37,7 +37,7 @@ d2u () { if [[ -e "$backup" ]]; then printf '\e[36m%s \e[33m%s\e[0m\n' "Найд
 sedroll () { local lico=$(wc -l < "$1"); local i=0; local j=0; for i in $(seq 1 $inc $lico); do j=$(($i+$(($inc-1))));	sed -i -rf <(sed -n "$i,$j p" < "$1") "$2"; done; }
 
 if [[ -s "$1" ]]; then book=$1; backup="$book".$suf; key="-xp"; printf '\e[36m%s\e[0m\n' "Ключи не заданы, но книга указана. Используем ключ: -xp"
-elif [[ -s "$2" ]]; then printf '\e[36m%s \e[93m%s\n' "Обрабатывается книга:" "$book"
+elif [[ -s "$2" ]] || [[ -s $backup ]]; then printf '\e[36m%s \e[93m%s\n' "Обрабатывается книга:" "$book"
 else printf '\e[35m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./yofik.sh [ключ] book.fb2"; exit 1; fi
 
 # Ёфикация омографов производится в файле, который задан переменной obook

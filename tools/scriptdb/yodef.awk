@@ -25,7 +25,9 @@ BEGIN {
 
    if (redix == 0 && gawk52 == 1) { readall(yocache) } else {
 
-   cmd = "zcat " indb "yodef0.txt.gz " indb "yodef1.txt.gz | sed -r 's/_(.)(.+)=(.)(.+)\\b/\\1\\2 \\3\\4 \\u\\1\\2 \\u\\3\\4 \\U\\1\\2\\E \\U\\3\\4\\E/g'";
+   cmd = "zcat " indb "yodef0.txt.gz " indb "yodef1.txt.gz | \
+          sed -r 's/_(.)(.+)=(.)(.+)\\b/\\1\\2 \\3\\4 \\u\\1\\2 \\u\\3\\4 \\U\\1\\2\\E \\U\\3\\4\\E/g; \
+                  s/\\x27/\xcc\x81/g;'";
    while ((cmd|getline) > 0) {
 
          yodef[$1]=$2; yodef[$3]=$4;; yodef[$5]=$6;
