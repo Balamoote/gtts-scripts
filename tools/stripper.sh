@@ -71,13 +71,13 @@ if [[ -n $wrd ]]; then
 fi
 
 if [[ -n $somo ]]; then
-	awk -vsomo=$somo -vindb=$indb -f scriptdb/awx/stip_not_omo.awk trip-"$book"/text-book.txt > trip-"$book"/text-book.txt.awk
+	awk -vsomo=$somo -vindb=$indb -f scriptdb/awx/strip_not_omo.awk trip-"$book"/text-book.txt > trip-"$book"/text-book.txt.awk
   mv trip-"$book"/text-book.txt.awk trip-"$book"/text-book.txt
 	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Все, кроме слова" $somo ", очищено."
 fi
 
 if [[ -n $xomo ]]; then
-	awk -vxomo=$xomo -vindb=$indb -f scriptdb/awx/stip_not_omo.awk trip-"$book"/text-book.txt > trip-"$book"/text-book.txt.awk
+	awk -vxomo=$xomo -vindb=$indb -f scriptdb/awx/strip_not_omo.awk trip-"$book"/text-book.txt > trip-"$book"/text-book.txt.awk
   mv trip-"$book"/text-book.txt.awk trip-"$book"/text-book.txt
 	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Все, кроме группы" $xomo ", очищено."
 fi

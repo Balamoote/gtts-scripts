@@ -78,7 +78,7 @@ sedroll () { local lico=$(wc -l < "$1"); local i=0; local j=0; for i in $(seq 1 
 
 printf '\e[32m%s \e[32;4;1m%s\e[0m\n' "Скрипт" "\"Имена\""
 
-if [[ -s "$1" ]]; then book=$1; backup="$book".$suf; key="-xp"; printf '\e[33m%s \e[93m%s\e[0m\n' "Ключи не заданы, но книга указана. Используем ключ:" "-xp"
+if [[ -f "$1" ]] && [[ -s "$1" ]]; then book=$1; backup="$book".$suf; key="-gg"; printf '\e[33m%s \e[93m%s\e[0m\n' "Ключи не заданы, но книга указана. Используем ключ:" "-gg"
 elif [[ -s "$2" ]]; then printf '\e[33m%s \e[93m%s\e[0m\n' "Обрабатывается книга:" "$book"
 else printf '\e[33m%s \e[93m%s\e[0m\n' "Книга не задана или не существует. Использование:" "./get-words.sh [ключ] book.fb2"; exit 1; fi
 

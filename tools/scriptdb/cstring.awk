@@ -8,6 +8,8 @@ BEGIN {
   # прочесть список некондиции
   if ( escan ) { cmd = "zcat " indb "rawstuff.gz";#nem="";
                  while ((cmd|getline) > 0) { rawstuff(nem++); }; close(cmd); stoar(escan,eSCAN,"_"); };
+  # Вывести список ключевых слов из rawstuff.gz
+# for (i in eOMO) printf("eOMO: %s %s\n", i, length(eOMO[i]) )
 
   # обработка ударений, обозначенных капсом, кроме ударения на первую букву слова
   if ( escap ) {
@@ -21,8 +23,6 @@ BEGIN {
          for (i=2; i<=NF; i++) { if(sinda[i]>1) { w0rd=substr($1,1,sinda[i]-1) toupper(substr($1,sinda[i],1)) substr($1,sinda[i]+1); cOMO[w0rd]=$i
                                                   w0rd=Zag(w0rd); cOMO[w0rd]=Zag($i) };};
    }; close(cmd); stoar(escap,eSCAP,"_");};
-
-# for (i in eOMO) printf("eOMO: %s %s\n", i, length(eOMO[i]) )
 
   # Часть массивов omarr перенесены в cstrings.gz, это эквивалент вызова функции omarr в данном файле
   cmd = "zcat " indb "cstrings.gz";
@@ -63,8 +63,12 @@ BEGIN {
  pusha(omarr["_castle_suw-ro1"],omarr["_castle_suw-ro2"])
  # ================================================================================================================
 
- # _gl_v_sky BASE
+ # _gl_v_palate BASE
  cst="";
+ mrk="_gl_v_palate-iv"; stoar(cst,omarr[mrk]," "); #
+
+ # _gl_v_sky BASE
+ cst="вонзать вонзаться";
  mrk="_gl_v_sky-iv"; stoar(cst,omarr[mrk]," "); #
 
  # _sky_pe BASE

@@ -17,8 +17,8 @@ bookstadir=mano-"$book".stat
 suf=man
 backup="$book".$suf
 
-#repper="grep -Fnf"
-repper="rg -Fnf"
+#repper="grep"
+ repper="rg"
 
 debug=0   # Если 1, то сделать отладку скриптов омографов: поиск искажений текста в "пастеризованных" версиях исходника и результата 
 nocaps=0  # Если 1, то капсов в "пастеризованных" не будет
@@ -28,9 +28,10 @@ morphy_is=0   # 1 = SpaCy; 2 = Natasha
 morphy_yo=0   # 1 = скрипт vsevso.awk использует только данные SpaCy или Natasha; 0 = только "подбирает хвосты"
 morphy_do=0   # 1 = некоторые скрипты могут использовать только данные SpaCy или Natasha; 0 = только "подбирает хвосты" (не сделано)
 main_do=1     # 1 = включить основную обработку
-disc_do=0     # 1 = включить дискретные скрипты
+disc_do=1     # 1 = включить дискретные скрипты
 ruac=0        # 1 = включить обработку ruaccent -- выставит ударения везде, где сможет. Уже проставленные ударения сохраняются
-ruac_opt="-cuda"   # опиции для ruaccent
+ ruac_opt="-cuda"   # опиции для ruaccent
+#ruac_opt="-cpu"   # опиции для ruaccent
 
 do_parallel=1     # включить GNU Parallel. ВНИМАНИЕ: подобрать параметры по реальной производительности
    pblock_a=500K  # awk: размер куска текста на 1 задачу: постфиксы K, M, G, T, P, k, m, g, t, p. "-1" = авто
@@ -202,7 +203,8 @@ if [[ $morphy == "1" ]]; then
     
         md5sum $bookstadir/text-book.scy $bookwrkdir/text-book.txt scriptdb/rulg_omo.py scriptdb/rulg_all.py > $bookstadir/text.phy.md5
         mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
-        LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк по SpaCy:" $durhum ; fi
+        LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк по SpaCy:" $durhum
+     fi;
   fi;
   if [[ $morphy_is == "2" ]]; then
 
@@ -217,7 +219,8 @@ if [[ $morphy == "1" ]]; then
     
         md5sum $bookstadir/text-book.nat $bookwrkdir/text-book.txt scriptdb/natru_omo.py > $bookstadir/text.phy.md5
         mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
-        LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк по Natasha:" $durhum ; fi
+        LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк по Natasha:" $durhum
+     fi;
   fi;
 fi;
 # << Конец блока morphy
@@ -268,21 +271,24 @@ if [[ $locdic == "1" ]]; then
            $bookstadir/dic_gl.gz $bookstadir/dic_prl.gz $bookstadir/dic_prq.gz $bookstadir/dic_rest.gz $bookstadir/dic_suw.gz scriptdb/dix_prq.gz > $bookstadir/locdic.md5
 
     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
-    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s \e[36m%s \e[93m%s\e[0m\n' "Подготовка локальных словарей из словоформ в книге:" $durhum "Словоформ:" $locdicsize; fi
+    LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s \e[36m%s \e[93m%s\e[0m\n' "Подготовка локальных словарей из словоформ в книге:" $durhum "Словоформ:" $locdicsize;
+ fi;
 fi;
 # << Конец блока создания локальных словарей
 
 # Обработка некондиционных фраз из scriptdb/rawstuff.gz
-# Получить номера строк файла, где найдены эскейпы
- eSCAN=$($repper <(zcat scriptdb/rawstuff.gz | sed -r 's/^.[^#]+# \"(.+)\"$/\1/g') $bookwrkdir/text-book.bas|\
-        awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
- eSCAP=$($repper <(zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz |\
-   awk '{for (i=2; i<=NF; i++) { sinda[i]=index(gensub(/[\\xcab0-9]/,"","g",$i),"\x27")-1 };
-         gsub("\\\\xcc\\\\xa0","\xcc\xa0",$0); gsub("\\\\xcc\\\\xa3","\xcc\xa3",$0); gsub("\\\\xcc\\\\xa4","\xcc\xa4",$0)
-         gsub("\\\\xcc\\\\xad","\xcc\xad",$0); gsub("\\\\xcc\\\\xb0","\xcc\xb0",$0); gsub("\x27","\xcc\x81",$0); gsub(/[_=]/,"",$0)
-         for (i=2; i<=NF; i++) { if (sinda[i] > 1) { w0rd=substr($1,1,sinda[i]-1) toupper(substr($1,sinda[i],1)) substr($1,sinda[i]+1);
-         W0rd=toupper(substr(w0rd,1,1)) substr(w0rd,2); print w0rd "\n" W0rd };}; }') $bookwrkdir/text-book.bas | awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
+# Получить номера строк файла, где найдены такие фразы
+        eSCAN=$($repper -Fnf <(zcat scriptdb/rawstuff.gz | sed -r "s/^.[^#]+# \"(.+)\"$/\1/g; s/ё/е/g; s/Ё/Е/g; s/[$unxc]+//g") \
+          <(cat $bookwrkdir/text-book.bas | sed -r "s/ё/е/g; s/Ё/Е/g; s/[$unxc]+//g" ) | awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
+#       mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
+#       LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Загрузка rawstuff.gz:" $durhum
 
+# Получить номера строк, где найдены выделенные капсом ударения в омографах.
+         eSCAP=$(grep -Fnf <(zcat scriptaux/mano-ca.pat.gz) $bookwrkdir/text-book.bas | awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
+#        mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
+#        LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Загрузка списка омографов:" $durhum
+
+  # Запустить скрипт только для групп x0300 и x0301
   if [[ -n $eSCAN ]] || [[ -n $eSCAP ]] ; then
     sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
             s/^#(.+#_#_# escomo !_#_!)$/\1/g;
@@ -411,10 +417,11 @@ rexsed="scriptdb/omo-index.sed"
  else
   sedroll $rexsed $bookwrkdir/text-book.txt
  fi # do_parallel
-fi # sed_do
 
 mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Постобработка sed:" $durhum 
+
+fi # sed_do
 
 fi # fixomo?
 

@@ -115,7 +115,7 @@ function rawstuff(nem,    stn,len,ph,phr,lk,wrda,sepa,j,hystring,l0,l1,l2,sw,hyw
         case "SR": for(j=0; j< lk; j++) {eSEP[nem][j-$4]=sepa[j]}; eSPR[nem][lk-$4]=substr(sepa[lk],1,1); break
         case "LR": for(j=1; j< lk; j++) {eSEP[nem][j-$4]=sepa[j]}; eSPL[nem][-$4]=substr(sepa[0],length(sepa[0])); eSPR[nem][lk-$4]=substr(sepa[lk],1,1); break
         default: break } }
-function esca(    j,k,f,el,sk,sl, ret) {   # точная фраза как строка из файла pointesque.gz -- выставляет омограф сама, только найденные ранее строки b и текущий омограф
+function esca(    j,k,f,el,sk,sl, ret) {   # точная фраза как строка из файла rawstuff.gz -- выставляет омограф сама, только найденные ранее строки b и текущий омограф
         if ( b in eSCAN && length(eOMO[wrd]) ) { for (j in eOMO[wrd]) {ret=1; for (k in eWRD[j]) { el = cL(k); if ( el != eWRD[j][k] ) { ret=0; break};};
         if (ret) { for (f in eSPL[j]) { sk=gensub(unxy,"","g",sep[i+f]); sl=substr(sk,length(sk)); if ( sl != eSPL[j][f] ) { ret=0 }; break }; };
         if (ret) { for (f in eSPR[j]) { sk=gensub(unxy,"","g",sep[i+f]); sl=substr(sk,1,1);        if ( sl != eSPR[j][f] ) { ret=0 }; break }; };
@@ -489,8 +489,19 @@ function rodeq_sw_pl(n,m,      sw,ret) { # определить род суще�
                       case "1": if( prl_mu(m)||muk_mu(m)                                                       ) {rdn="mu";ret=1} else {ret=0}; break
                       case "2": if( prl_ze(m)||muk_ze(m)                                                       ) {rdn="ze";ret=1} else {ret=0}; break
                       case "3": if( prl_sr(m)||muk_sr(m)                                                       ) {rdn="sr";ret=1} else {ret=0}; break
-                      case "4": if( prl_mn(m)||muk_mn(m)                                                       ) {rdn="";ret=1} else {ret=0}; break
+                      case "4": if( prl_mn(m)||muk_mn(m)                                                       ) {rdn="mn";ret=1} else {ret=0}; break
                       default: ret=rdn=""; break }; return ret}
+
+function caseq_sw_sw(n,m,      sw,ret) { # определить падеж сущевительного по адресу n, сравнить его с родом существительного по адресу m
+                if(suw_im(n)) sw=1; if(suw_ro(n)) sw=2; if(suw_vi(n)) sw=3; if(suw_da(n)) sw=4; if(suw_tv(n)) sw=5; if(suw_pr(n)) sw=6;
+                  switch (sw) {
+                      case "1": if( suw_im(m)                                                                  ) {csn="im";ret=1} else {ret=0}; break
+                      case "2": if( suw_ro(m)                                                                  ) {csn="ro";ret=1} else {ret=0}; break
+                      case "3": if( suw_vi(m)                                                                  ) {csn="vi";ret=1} else {ret=0}; break
+                      case "4": if( suw_da(m)                                                                  ) {csn="da";ret=1} else {ret=0}; break
+                      case "5": if( suw_tv(m)                                                                  ) {csn="tv";ret=1} else {ret=0}; break
+                      case "6": if( suw_pr(m)                                                                  ) {csn="pr";ret=1} else {ret=0}; break
+                      default: ret=csn=""; break }; return ret}
 
 # логические функции проверки переменных -- для лучшей читаемости. Только, если переменная не равна "" (0)
 function v2s(var,         ret) { if (typeof(var)=="untyped") {ret=""} else {ret=var}; return ret } # если переменная не инициализирована, создать ее перед проверкой (для > 5.2)

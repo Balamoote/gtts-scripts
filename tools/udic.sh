@@ -22,7 +22,7 @@ printf '\e[32m%s \e[96m%s \e[93m%s \e[96m%s\e[0m\n' "Looking up:" ">>>" $wrd "<<
 # Ударения отмечены знаком ударения и цветом или только цветом
 
 if [[ -z "$str" ]]; then
-$grepper "$wrd" scriptdb/stress_uni.gz scriptdb/stress_can.gz scriptdb/stress_conf.gz scriptdb/stress_omo.gz scriptdb/stress_yo.gz |\
+$grepper "$wrd" scriptdb/stress_uni.gz scriptdb/stress_a.gz scriptdb/stress_b.gz scriptdb/stress_yo.gz |\
   sed -r "s/:_/ /;
           s:scriptdb/::g" |\
     sed "s/.'/`printf "\e[32m&\e[0m"`/g" | sed "s/'/\xcc\x81/g" | \
@@ -31,7 +31,7 @@ $grepper "$wrd" scriptdb/stress_uni.gz scriptdb/stress_can.gz scriptdb/stress_co
 else
 	printf '\e[91m%s \e[96m%s \e[92m%s \e[96m%s \e[93m%s \e[96m%s\e[0m\n' "Variants:" "NOT >>>" $str\' "<<< IN >>>" $wrd "<<<"
 
-$grepper "$wrd" scriptdb/stress_uni.gz scriptdb/stress_can.gz scriptdb/stress_conf.gz scriptdb/stress_omo.gz scriptdb/stress_yo.gz |\
+$grepper "$wrd" scriptdb/stress_uni.gz scriptdb/stress_a.gz scriptdb/stress_b.gz scriptdb/stress_yo.gz |\
   sed "s/:_/ /;
           s:scriptdb/::g" |\
   grep -v $str\' | sed "s/.'/`printf "\e[91m&\e[0m"`/g" | sed "s/'/\xcc\x81/g" | \

@@ -26,7 +26,7 @@ unxs=$(printf "\xe2\x80\xa4\xe2\x80\xa7")
 # Массив со списком обязательных файлов
 pack="automo.gz awx/beautify.awk class.list.gz classes.awk cstauto.awk cstring.awk defunct.awk deomo.awk demorphy.awk dic_cust.gz \
       dic_gl.gz dic_prl.gz dic_prq.gz dic_rest.gz dic_suw.gz exclusion.pat.gz fb2 functions.awk gw_caplists.awk hclean.sh ist.gz \
-      main.awk mano-lc.txt.gz mano-uc.txt.gz namebase0.txt.gz namedef.awk nameoverride.txt.gz nomo.txt.gz omo-index.sed omo_list.phy.gz \
+      main.awk mano-lc.txt.gz mano-uc.txt.gz namebase.txt.gz namedef.awk nomo.txt.gz omo-index.sed omo_list.phy.gz \
       omoid.me omoid_auto.gz omoid_flat.gz omoid_ini.gz omoid_pa_ini.gz preview.awk ruac.py rulg_all.py rulg_omo.py settings.ini \
       vsevso.awk wordbase0.gz yodef.awk yodef0.txt.gz yodef1.txt.gz yolc.txt.gz yomo-lc.txt.gz yomo-uc.txt.gz ext/x4707.awk ext/x4709.awk \
       dik_prop.gz awx/rules_sort.awk cstrings.gz awx/sort_gzstrings.awk gen_prq.awk dix_prq.gz awx/parser.awk"

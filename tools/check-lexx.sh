@@ -13,6 +13,8 @@
 #set -e
 export LC_COLLATE=C
 
+namechk=1 # Вкл/выкл проверки ошибок в базах имен. Может зависать на некоторых системах 
+
 if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
 
 if [[ ! -z "$1" ]]; then
@@ -248,6 +250,7 @@ else
 	sed -r "s/=.+$/=/g"                  <(zcat scriptdb/mano-lc.txt.gz)                                 |gzip > scriptaux/mano-lc.pat.gz
   sed -r "s/_(.)([^=]+=).+$/_\u\1\2/g" <(zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz) |sort -u|gzip > scriptaux/mano-uc.pat.gz
   sed -r "s/^(_[^=]+=).+$/\U\1/g"      <(zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz) |sort -u|gzip > scriptaux/mano-cc.pat.gz
+  awk -f scriptdb/awx/capomo.awk       <(zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz) |sort -u|gzip > scriptaux/mano-ca.pat.gz
 
 	zgrep -Fof <(zcat scriptaux/tts.pat.gz) scriptaux/mano-lc.pat.gz | gzip > scriptaux/ttspat.mant.gz
 	sed -r 's/_(.)/_\l\1/' <(zcat scriptaux/mano-uc.pat.gz) | grep -Fof <(zcat scriptaux/tts.pat.gz) | gzip >> scriptaux/ttspat.mant.gz
@@ -257,7 +260,7 @@ else
 
   printf '\e[36m%s \e[93m%s ' "MOM:" "новые"
   md5sum tts.txt scriptdb/mano-uc.txt.gz scriptaux/mano-uc.pat.gz scriptdb/mano-lc.txt.gz scriptaux/mano-lc.pat.gz scriptaux/ttspat.man.gz \
-         scriptaux/tts0.man.gz scriptdb/omo-index.sed scriptaux/mano-cc.pat.gz > scriptaux/zaomo.md5
+         scriptaux/tts0.man.gz scriptdb/omo-index.sed scriptaux/mano-cc.pat.gz scriptaux/mano-ca.pat.gz > scriptaux/zaomo.md5
 fi
 
 # Выполняем проверку вспомогательных файлов из ./yofik.sh
@@ -290,6 +293,8 @@ printf '\e[32;4;1m%s\e[0m\n' "Всё ОК!"
 
 # Проверка баз имён на обрабатываемость основным словарём
 
+if [[ $namechk == "1" ]]; then
+
 zgrep -Ff  <(zcat scriptaux/tts.pat.gz) scriptdb/namebase0.txt.gz    | sort > _err_namebase0.txt
 zgrep -Fvf <(zcat scriptaux/tts.pat.gz) scriptdb/nameoverride.txt.gz | sort > _err_nameoverride.txt
 zgrep "'" scriptaux/namebase0.pat.gz >> _err_namebase0.txt
@@ -316,6 +321,7 @@ if [[ -s _omo_namebase0_err.txt ]]; then printf '\e[93m%s \e[36m%3s \e[93m%s \e[
 if [[ -s _omo_nameoverride_err.txt ]]; then printf '\e[93m%s \e[36m%3s \e[93m%s \e[33m%s\e[0m\n' \
 	"ВНИМАНИЕ:" "в базе override найдены омографы:" $(wc -l _omo_nameoverride_err.txt); else rm _omo_nameoverride_err.txt; fi
 
+fi;
 # Cозданиe локального словаря. Работает только при сообщении скрипту имени файла книги. Например:
 # ./check-lexx.sh book.fb2
 

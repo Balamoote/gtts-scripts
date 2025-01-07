@@ -7,10 +7,10 @@
 #   preview = печатать или нет превью: 1 или не 1
 #   termcor = величина корректировки ширины терминала: любое целое число
 #   editor = используемый редактор: vim или neovim
-function finduni(string,  tmp) { # Функция определения кол-ва комбинирующих символов в подстроке
-         tmp = gsub(/[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]/, "", string); return tmp }
-function readfile(file,  tmp, save_rs) { # Функция чтения файла в скаляр
-         save_rs = RS; RS = "^$"; getline tmp < file; close(file); RS = save_rs; return tmp }
+function finduni(string,  ret) { # Функция определения кол-ва комбинирующих символов в подстроке
+         ret = gsub(/[\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0]/, "", string); return ret }
+function readfile(file,  ret, save_rs) { # Функция чтения файла в скаляр
+         save_rs = RS; RS = "^$"; getline ret < file; close(file); RS = save_rs; return ret }
 
 BEGIN {
     # Выставить длину левой подстроки до поискового слова (lookback) и отступ справа (rightpad), остальное выставляется само в зависимости от ширина терминала и длины слова
@@ -73,7 +73,7 @@ BEGIN {
                 };  
             if ( lexxpart == "" ) { lexxpart = sprintf("%s", "Шаблон в lexx: нет" ) };
 
-            autopad = totallen-length(lexxpart)-finduni(lexxpart)-4
+            autopad = totallen-length(lexxpart)-finduni(lexxpart)-5
             if ( lcm in automo ) { autopart = sprintf("%" autopad "s %s\n", "Автошаблон:", automo[lcm]) }
             else { autopart = sprintf("%" autopad "s %s\n", "Автошаблон:", "нет") };
 

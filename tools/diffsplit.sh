@@ -1,4 +1,5 @@
 #!/bin/bash
+# Сравнить два файла и записать раздельно вывод diff
 
 diff $1 $2 | egrep "^< " | sed -r "s/^< //g; s/$/\n/g" > _dif_cmp.txt
 diff $1 $2 | egrep "^> " | sed -r "s/^> //g; s/$/\n/g" > _dif.txt

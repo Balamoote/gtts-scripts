@@ -33,17 +33,14 @@ final_report = 1    # вывод финального отчета, выключ
 plused       = 0    # 0 = ста́вить ударе́ния, 1 = ст+авить удар+ения, включить: -plus
 save_accent  = 1    # восстанавливать уже имеющиеся ударения из исходного текста, выключить: -nosave
 see_no_error = 1    # скрыть дефектные результаты обработки в errata.txt; в конечной строке дефекты устраняются всегда, включить: -errors
-cpus         = "32" # Установите это значение в соответствии с вашим оборудованием
 onnx_log_lvl = 3    # Настройка лога onnx, может быть нужна, если используем CUDA
+
+ort.set_default_logger_severity(onnx_log_lvl)
 
 # ANSI escape codes для цветного вывода
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
 RESET = "\033[0m"
-
-#os.environ["OMP_NUM_THREADS"] = cpus
-#os.environ["MKL_NUM_THREADS"] = cpus
-ort.set_default_logger_severity(onnx_log_lvl)
 
 # Паттерны разделителей
 pat_plus = re.compile("[^а-яА-ЯёЁ+\u0320\u0323\u0324\u032d\u0330]+")
@@ -255,7 +252,7 @@ for line_num, line in enumerate(lines, start=1):
             if clean_orig_word != clean_proc_word:
                 proc_words[i] = word
 
-    # Восстановление исходных ударений из первичной строки и усиранением ошибок обработки
+    # Восстановление исходных ударений из первичной строки и устранением ошибок обработки
     if save_accent:
         if any(acc_seq.search(word) for word in words_orig):
             for i, word in enumerate(words_orig):
