@@ -11,7 +11,7 @@ str=$2
 twid=$(tput cols)
 
 #diccat="zcat scriptdb/wordbase0.gz"
-diccat="zcat scriptdb/stress_uni.gz scriptdb/stress_a.gz scriptdb/stress_b.gz"
+diccat="zcat scriptdb/stress_uni.gz scriptdb/stress_x.gz"
 
 if [[ $twid -lt 67 ]]; then
 	pad=$((($twid/2)-1))

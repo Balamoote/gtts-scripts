@@ -23,11 +23,11 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
   cache = inax "wdb.bin"
   if (wdb == 0 && gawk52 == 1) { readall(cache) } else { savefs = FS; FS = "[_= ]";
       cmd = "zcat " inax "stress.pat.gz"; while ((cmd|getline) > 0) { stubase[$2] }; close(cmd);
-      cmd = "zcat " inax "yodef*.pat.gz"; while ((cmd|getline) > 0) { yobase[$2]  }; close(cmd);
+      cmd = "zcat " inax "yodef.pat.gz";  while ((cmd|getline) > 0) { yobase[$2]  }; close(cmd);
       cmd = "zcat " inax "dic.pat.gz";    while ((cmd|getline) > 0) { dicbase[$2] }; close(cmd);
       FS = savefs;
   if (gawk52 == 1) {writeall(cache);
-      cmd = "md5sum " cache " " inax "stress.pat.gz " inax "yodef*.pat.gz " inax "dic.pat.gz > " inax "wdb.md5";
+      cmd = "md5sum " cache " " inax "stress.pat.gz " inax "yodef.pat.gz " inax "dic.pat.gz > " inax "wdb.md5";
       system(cmd); close(cmd)};};
 
   #

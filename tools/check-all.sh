@@ -34,11 +34,11 @@ esac; fi
 pack="scriptdb/automo.gz scriptdb/awx/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk \
       scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz \
       scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz \
-      scriptdb/main.awk scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz scriptdb/namebase.txt.gz scriptdb/namedef.awk scriptdb/stress_a.gz scriptdb/stress_yo.gz \
+      scriptdb/main.awk scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz scriptdb/namebase.txt.gz scriptdb/namedef.awk scriptdb/stress_x.gz scriptdb/stress_yo.gz \
       scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
       scriptdb/omoid_pa_ini.gz scriptdb/preview.awk scriptdb/ruac.py scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/dix_prq.gz \
       scriptdb/vsevso.awk scriptdb/stress_uni.gz scriptdb/yodef.awk scriptdb/yodef.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc.txt.gz \
-      scriptdb/yomo-uc.txt.gz scriptdb/ext/x4707.awk scriptdb/ext/x4709.awk scriptdb/dik_prop.gz scriptdb/cstrings.gz scriptdb/stress_b.gz"
+      scriptdb/yomo-uc.txt.gz scriptdb/ext/x4707.awk scriptdb/ext/x4709.awk scriptdb/dik_prop.gz scriptdb/cstrings.gz"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -59,9 +59,9 @@ if [[ -s scriptaux/classes.md5 ]] && md5sum -c --status scriptaux/classes.md5 >/
 if [[ $stu -eq 1 ]]; then
 	printf '\e[36m%s \e[32m%s ' "STU:" "старый" 
 else
-	sed -r 's/=.+$/=/g' <(zcat scriptdb/stress_uni.gz scriptdb/stress_a.gz scriptdb/stress_b.gz scriptdb/stress_yo.gz) |sort -u| gzip > scriptaux/stress.pat.gz
+	sed -r 's/=.+$/=/g' <(zcat scriptdb/stress_uni.gz scriptdb/stress_x.gz scriptdb/stress_yo.gz) |sort -u| gzip > scriptaux/stress.pat.gz
 	printf '\e[36m%s \e[93m%s ' "STU:" "новый" 
-	md5sum scriptdb/stress_uni.gz scriptdb/stress_a.gz scriptdb/stress_b.gz scriptdb/stress_yo.gz scriptaux/stress.pat.gz > scriptaux/zstu.md5; fi
+	md5sum scriptdb/stress_uni.gz scriptdb/stress_x.gz scriptdb/stress_yo.gz scriptaux/stress.pat.gz > scriptaux/zstu.md5; fi
 
 if [[ $ndb -eq 1 ]]; then
        	printf '\e[36m%s \e[32m%s ' "NDB:" "старые"
