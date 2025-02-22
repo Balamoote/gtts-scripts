@@ -6,6 +6,7 @@
 # 1) vim-ingo-library, брать тут https://github.com/inkarkat/vim-ingo-library
 # 2) vim-PatternsOnText, брать тут https://github.com/inkarkat/vim-PatternsOnText
 #set -e
+#source ~/.bashrc
 # Ключи запуска: -f, -x, -p или их комбинация. Например: ./momo.sh -xp book.fb2 или ./momo.fb2 book.fb2 или ./momo.fb2 -gg book.fb2
 export LC_COLLATE=C
 mo_time0=$(date +%s.%N); mo_prev=$mo_time0
@@ -137,32 +138,15 @@ esac
 if [[ ! -d $bookwrkdir ]]; then mkdir $bookwrkdir
 else printf '\e[35m%s \e[93m%s \e[35m%s \e[93m%s\e[0m\n' "Директория для дискретных скриптов" $bookwrkdir "существует. Удалите ее или запустите скрипт с ключом" "-f"; exit 1; fi
 
-printf '\e[36m%s \e[93m%s\e[36m%s \e[93m%s\e[0m ' "В словаре Омографов:" $(zgrep -c ^ scriptdb/mano-uc.txt.gz) ", омографов:" $(zgrep -c ^ scriptdb/mano-lc.txt.gz)
+printf '\e[36m%s \e[93m%s\e[36m%s \e[93m%s\e[0m ' "В словаре Омографов:" $(zgrep -c ^ scriptdb/mano-uc.gz) ", омографов:" $(zgrep -c ^ scriptdb/mano-lc.gz)
 if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
 if [[ -s scriptaux/zaomo.md5 ]] && md5sum -c --status scriptaux/zaomo.md5 >/dev/null 2>&1; then
 	printf '\e[36m%s \e[33m%-8s \e[32m%s\e[0m\n' "Файлы" scriptaux/zaomo.md5 "OK!";
 else printf '\n'; clxx=1; fi
 
 if [[ $clxx -eq "1" ]]; then
-	if ./check-lexx.sh -f; then printf '\e[32m%s\e[0m\n' "Проверка файлов завершена успешно…";
+	if ./check-all.sh -f; then printf '\e[32m%s\e[0m\n' "Проверка файлов завершена успешно…";
 	else printf '\e[1;31m%s \e[93m%s \e[1;31m%s\e[0m\n' "Выполнение скрипта" "./momo.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
-
-# Массив со списком обязательных файлов
-#pack="scriptdb/automo.gz scriptdb/awx/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk \
-#     scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz \
-#     scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz \
-#     scriptdb/main.awk scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz scriptdb/namebase0.txt.gz scriptdb/namedef.awk scriptdb/nameoverride.txt.gz \
-#     scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
-#     scriptdb/omoid_pa_ini.gz scriptdb/preview.awk scriptdb/rulg_all.py scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini \
-#     scriptdb/vsevso.awk scriptdb/wordbase0.gz scriptdb/yodef.awk scriptdb/yodef.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc.txt.gz \
-#     scriptdb/yomo-uc.txt.gz scriptdb/ext/x4707.awk scriptdb/ext/x4709.awk"
-#read -a minpack <<< $pack
-
-# Проверка не потерялось ли чего
-#for f in "${minpack[@]}"; do
-#	if [[ ! -s $f ]]; then
-#  	if [[ -e scriptaux/zaomo.md5 ]]; then rm scriptaux/zaomo.md5; fi
-#  	printf '\e[1;31;5m%s \e[0;93m%s \e[1;31;5m%s\e[0m\n' "Отсутствует файл:" $f "Запустите еще раз или найдите потерянный файл."; exit 1; fi; done
 
 d2u;
 
@@ -244,7 +228,7 @@ case $morphy_is in
 esac
 
 if [[ $locdic == "1" ]]; then
-# Создать локальные для книги локальные словари для уменьшения используемой памяти << locdic
+# Создать локальные для книги словари для уменьшения используемой памяти << locdic
 
  # Список слов
  if [[ -s $bookstadir/bookwords.list ]] && md5sum -c --status $bookstadir/locdic.md5 >/dev/null 2>&1; then
@@ -438,10 +422,10 @@ grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" $bookwrkdir/text-boo
 	sort -u > $bookwrkdir/manofi-uc.pat
 
 # Список всех омографов в обоих регистрах
-#zgrep -Ff $bookwrkdir/manofi-uc.pat scriptdb/mano-uc.txt.gz >  $bookwrkdir/mano-luc.txt
-zgrep -Ff $bookwrkdir/manofi-lc.pat scriptdb/mano-lc.txt.gz                                                                   > $bookwrkdir/mano-luc.txt
-zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz | sed -r "s/([_ ])(.)/\1\u\2/g"    | grep -Ff $bookwrkdir/manofi-uc.pat >> $bookwrkdir/mano-luc.txt
-zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz | sed -r "s/([$RUUC$rulc]+)/\U\0/g"| grep -Ff $bookwrkdir/manofi-cc.pat >> $bookwrkdir/mano-luc.txt
+#zgrep -Ff $bookwrkdir/manofi-uc.pat scriptdb/mano-uc.gz >  $bookwrkdir/mano-luc.txt
+zgrep -Ff $bookwrkdir/manofi-lc.pat scriptdb/mano-lc.gz                                                               > $bookwrkdir/mano-luc.txt
+zcat scriptdb/mano-lc.gz scriptdb/mano-uc.gz | sed -r "s/([_ ])(.)/\1\u\2/g"    | grep -Ff $bookwrkdir/manofi-uc.pat >> $bookwrkdir/mano-luc.txt
+zcat scriptdb/mano-lc.gz scriptdb/mano-uc.gz | sed -r "s/([$RUUC$rulc]+)/\U\0/g"| grep -Ff $bookwrkdir/manofi-cc.pat >> $bookwrkdir/mano-luc.txt
 
 if [[ $disc_do -eq 1 ]] && [[ -s $bookwrkdir/mano-luc.txt ]]; then # Проверяем найдено ли хоть что-то из омографов… discretchk 0
 sed -r "
@@ -465,8 +449,10 @@ else printf '\e[36m%s\n' "Превью текста выключено."; fi
 twd=$(tput cols)
 
 # Определяем дефолтный результат словаря lexx
-zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\
-       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
+#zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\
+#       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
+
+echo "" > $bookwrkdir/omo-lexx.txt # заглушка
 
   sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $bookwrkdir/text-book.txt | \
     awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vprogs=$progs -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -vindb="scriptdb/" \

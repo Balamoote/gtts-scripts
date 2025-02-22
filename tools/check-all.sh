@@ -27,18 +27,18 @@ case "$1" in
 	*) # Проверить, существует ли файл книги
 		if [[ -s "$1" ]]; then book="$1"
 		else printf '\e[35m%s \e[93m%s \e[35m%s \e[93m%s \e[93m%s \e[35m%s\e[0m\n' \
-			"Использование:" "./check-all.sh" "или" "./check-lexx.sh [fa|fg|fy|fm]"; fi ;;
+			"Использование:" "./check-all.sh" "или" "./check-all.sh [fa|fg|fy|fm]"; fi ;;
 esac; fi
 
 # Массив со списком обязательных файлов
 pack="scriptdb/automo.gz scriptdb/awx/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk \
       scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz \
-      scriptdb/dic_suw.gz scriptdb/exclusion.pat.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz \
-      scriptdb/main.awk scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz scriptdb/namebase.txt.gz scriptdb/namedef.awk scriptdb/stress_x.gz scriptdb/stress_yo.gz \
-      scriptdb/nomo.txt.gz scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
+      scriptdb/dic_suw.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/awx/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz \
+      scriptdb/main.awk scriptdb/mano-lc.gz scriptdb/mano-uc.gz scriptdb/namebase.gz scriptdb/namedef.awk scriptdb/stress_x.gz scriptdb/yoyo_alt.gz \
+      scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
       scriptdb/omoid_pa_ini.gz scriptdb/preview.awk scriptdb/ruac.py scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/dix_prq.gz \
-      scriptdb/vsevso.awk scriptdb/stress_uni.gz scriptdb/yodef.awk scriptdb/yodef.txt.gz scriptdb/yolc.txt.gz scriptdb/yomo-lc.txt.gz \
-      scriptdb/yomo-uc.txt.gz scriptdb/ext/x4707.awk scriptdb/ext/x4709.awk scriptdb/dik_prop.gz scriptdb/cstrings.gz"
+      scriptdb/vsevso.awk scriptdb/unistress.gz scriptdb/yodef.awk scriptdb/yodef.gz \
+      scriptdb/ext/x4707.awk scriptdb/ext/x4709.awk scriptdb/dik_prop.gz scriptdb/cstrings.gz"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -55,21 +55,39 @@ if [[ -s scriptaux/yodef.md5   ]] && md5sum -c --status scriptaux/yodef.md5   >/
 if [[ -s scriptaux/classes.md5 ]] && md5sum -c --status scriptaux/classes.md5 >/dev/null 2>&1; then tst=1;   else tst=0   ; fi
 
 
+# Выполняем проверку вспомогательных файлов из ./momo.sh
+
+if [[ $aomo -eq 1 ]] && [[ $tst -eq 1 ]]; then
+       	printf '\e[36m%s \e[32m%s ' "MOM:" "старые"
+else
+  yod=0
+  sed -r "s/=.+$/=/g" <(zcat scriptdb/malc.gz) | gzip > scriptaux/malc.pat.gz
+  # Формируем в scriptaux/ файлы mano-lc.pat.gz mano-uc.pat.gz mano-cc.pat.gz mano-ca.pat.gz
+  awk -vomtype="mano" -f scriptdb/awx/omopat.awk
+
+  ./testrule.sh > /dev/null
+
+  md5sum scriptdb/mano-uc.gz scriptaux/mano-uc.pat.gz scriptdb/mano-lc.gz scriptaux/mano-lc.pat.gz scriptdb/malc.gz \
+         scriptdb/omo-index.sed scriptaux/mano-cc.pat.gz scriptaux/mano-ca.pat.gz scriptaux/malc.pat.gz > scriptaux/zaomo.md5
+  printf '\e[36m%s \e[93m%s ' "MOM:" "новые"
+fi
+
 # Выполняем проверку вспомогательных файлов из ./get-words.sh
 if [[ $stu -eq 1 ]]; then
 	printf '\e[36m%s \e[32m%s ' "STU:" "старый" 
 else
-	sed -r 's/=.+$/=/g' <(zcat scriptdb/stress_uni.gz scriptdb/stress_x.gz scriptdb/stress_yo.gz) |sort -u| gzip > scriptaux/stress.pat.gz
-	printf '\e[36m%s \e[93m%s ' "STU:" "новый" 
-	md5sum scriptdb/stress_uni.gz scriptdb/stress_x.gz scriptdb/stress_yo.gz scriptaux/stress.pat.gz > scriptaux/zstu.md5; fi
+# sed -r 's/=.+$/=/g' <(zcat scriptdb/unistress.gz scriptdb/stress_x.gz scriptdb/yoyo_alt.gz) |sort -u| gzip > scriptaux/unistress.pat.gz
+  sed -r 's/=.+$/=/g' <(zcat scriptdb/unistress.gz scriptdb/yoyo.gz scriptdb/yoyo_alt.gz) |sort -u| gzip > scriptaux/unistress.pat.gz
+  printf '\e[36m%s \e[93m%s ' "STU:" "новый" 
+  md5sum scriptdb/unistress.gz scriptdb/stress_x.gz scriptdb/yoyo.gz scriptdb/yoyo_alt.gz scriptaux/unistress.pat.gz > scriptaux/zstu.md5; fi
 
 if [[ $ndb -eq 1 ]]; then
        	printf '\e[36m%s \e[32m%s ' "NDB:" "старые"
 else
-	sed -r 's/=.+$/=/g' <(zcat scriptdb/namebase.txt.gz) | gzip > scriptaux/namebase.pat.gz
-	sed -r 's/_(.+)=.+$/_\l\1=/g' <(zcat scriptdb/nomo.txt.gz) | sort -u | gzip > scriptaux/nomo.pat.gz
-	zcat scriptaux/namebase.pat.gz scriptaux/nomo.pat.gz | sort -u | gzip > scriptaux/names-all.pat.gz
-  md5sum scriptdb/namebase.txt.gz scriptdb/nomo.txt.gz scriptaux/namebase.pat.gz scriptaux/nomo.pat.gz scriptaux/names-all.pat.gz > scriptaux/zndb.md5
+	sed -r 's/=.+$/=/g' <(zcat scriptdb/namebase.gz) | gzip > scriptaux/namebase.pat.gz
+# sed -r 's/(_.+=).+$/\1/g' <(zcat scriptdb/mano-uc.gz) | sort -u | gzip > scriptaux/mano-uc.pat.gz
+	zcat scriptaux/namebase.pat.gz scriptaux/mano-uc.pat.gz | sort -u | gzip > scriptaux/names-all.pat.gz
+  md5sum scriptdb/namebase.gz scriptaux/namebase.pat.gz scriptaux/names-all.pat.gz > scriptaux/zndb.md5
   printf '\e[36m%s \e[93m%s ' "NDB:" "новые"
 fi
 
@@ -81,39 +99,32 @@ else
   printf '\e[36m%s \e[93m%s ' "DIC:" "новые"
 fi
 
-# Выполняем проверку вспомогательных файлов из ./momo.sh
-
-if [[ $aomo -eq 1 ]] && [[ $tst -eq 1 ]]; then
-       	printf '\e[36m%s \e[32m%s ' "MOM:" "старые"
-else
-	sed -r "s/=.+$/=/g"                  <(zcat scriptdb/mano-lc.txt.gz)                                 |gzip > scriptaux/mano-lc.pat.gz
-  sed -r "s/_(.)([^=]+=).+$/_\u\1\2/g" <(zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz) |sort -u|gzip > scriptaux/mano-uc.pat.gz
-  sed -r "s/^(_[^=]+=).+$/\U\1/g"      <(zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz) |sort -u|gzip > scriptaux/mano-cc.pat.gz
-  awk -f scriptdb/awx/capomo.awk       <(zcat scriptdb/mano-lc.txt.gz scriptdb/mano-uc.txt.gz) |sort -u|gzip > scriptaux/mano-ca.pat.gz
-
-  ./testrule.sh > /dev/null
-
-  printf '\e[36m%s \e[93m%s ' "MOM:" "новые"
-  md5sum scriptdb/mano-uc.txt.gz scriptaux/mano-uc.pat.gz scriptdb/mano-lc.txt.gz scriptaux/mano-lc.pat.gz \
-         scriptdb/omo-index.sed scriptaux/mano-cc.pat.gz scriptaux/mano-ca.pat.gz > scriptaux/zaomo.md5
-fi
-
 # Выполняем проверку вспомогательных файлов из ./yofik.sh
 
 if [[ $jofik -eq 1 ]] && [[ $yod -eq 1 ]]; then
        	printf '\e[36m%s \e[32m%s ' "YOF:" "старые"
 else
-	sed -r "s/=.+$/=/g" <(zcat scriptdb/yodef.txt.gz)  | gzip > scriptaux/yodef.pat.gz
-	sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-lc.txt.gz) | gzip > scriptaux/yomo-lc.pat.gz
-  sed -r "s/=.+$/=/g" <(zcat scriptdb/yomo-lc.txt.gz scriptdb/yomo-uc.txt.gz) | sed -r "s/_(.)/_\u\1/g" |sort -u| gzip > scriptaux/yomo-uc.pat.gz
-  sed -r "s/=.+$/=/g" <(zcat scriptdb/yolc.txt.gz)    | gzip > scriptaux/yolc.pat.gz
-  sed -r "s/^(_[^=]+=).+$/\U\1/g" <(zcat scriptdb/yomo-lc.txt.gz scriptdb/yomo-uc.txt.gz) |sort -u| gzip > scriptaux/yomo-cc.pat.gz
+	zcat scriptdb/yodef.gz | sed -r "s/=.+$/=/g" | gzip > scriptaux/yodef.pat.gz
+  zgrep "ё"      scriptdb/mano-lc.gz           | gzip > scriptdb/yomo-lc.gz
+  zgrep "ё"      scriptdb/mano-uc.gz           | gzip > scriptdb/yomo-uc.gz
+# sed -r "s/=.+$/=/g" <(zcat scriptdb/yolc.gz)    | gzip > scriptaux/yolc.pat.gz
 
+  # Формируем в scriptaux/ файлы yomo-lc.pat.gz yomo-uc.pat.gz yomo-cc.pat.gz yomo-ca.pat.gz
+  awk -vomtype="yomo" -f scriptdb/awx/omopat.awk
+
+  # Формируем в scriptdb/  : yoyo.gz yoyo_lc.gz
+  #           в scriptaux/ : yoyo.pat.gz yoyo_lc.pat.gz yoye.pat.gz yoye_lc.pat.gz
+  awk -f scriptdb/awx/yopat.awk
+  sed -r "s/=.+$/=/g" <(zcat scriptdb/yoyo_lc.gz) | gzip >> scriptaux/yolc.pat.gz
+
+  # Создаём yodef.bin
   echo "" | awk -vindb="scriptdb/" -vinax="scriptaux/" -f scriptdb/yodef.awk >/dev/null
 
   printf '\e[36m%s \e[93m%s ' "YOF:" "новые"
-	md5sum scriptdb/yodef.txt.gz scriptaux/yodef.pat.gz scriptdb/yomo-lc.txt.gz scriptaux/yomo-lc.pat.gz scriptdb/yodef.awk scriptdb/yomo-uc.txt.gz \
-         scriptaux/yomo-uc.pat.gz scriptdb/yolc.txt.gz scriptaux/yolc.pat.gz scriptaux/yomo-cc.pat.gz > scriptaux/zjofik.md5
+	md5sum scriptdb/yodef.gz scriptaux/yodef.pat.gz scriptdb/yomo-lc.gz scriptaux/yomo-lc.pat.gz scriptdb/yodef.awk scriptdb/yomo-uc.gz \
+         scriptaux/yomo-uc.pat.gz scriptdb/yolc.gz scriptaux/yolc.pat.gz scriptaux/yomo-cc.pat.gz scriptdb/yoyo.gz scriptdb/yoyo.gz \
+         scriptaux/yoyo.pat.gz scriptaux/yoyo_lc.pat.gz scriptaux/yoye.pat.gz scriptaux/yoye_lc.pat.gz \
+         > scriptaux/zjofik.md5
 fi
 
 printf '\e[32;4;1m%s\e[0m\n' "Всё ОК!"

@@ -7,6 +7,8 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
     # indb inax book
     #
 
+   inax = inax "/"
+
  # Проверяем версию gawk, если меньше 5.2.1, то выключаем функции сохранения и восстановления массивов и переменных: базы тогда читаются всегда заново.
     lexpat=wdb=gawk52="42"
     cmd = "awk -Wversion | head -1"
@@ -22,23 +24,25 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
  # Читаем базовый список слов
   cache = inax "wdb.bin"
   if (wdb == 0 && gawk52 == 1) { readall(cache) } else { savefs = FS; FS = "[_= ]";
-      cmd = "zcat " inax "stress.pat.gz"; while ((cmd|getline) > 0) { stubase[$2] }; close(cmd);
-      cmd = "zcat " inax "yodef.pat.gz";  while ((cmd|getline) > 0) { yobase[$2]  }; close(cmd);
-      cmd = "zcat " inax "dic.pat.gz";    while ((cmd|getline) > 0) { dicbase[$2] }; close(cmd);
+      cmd = "zcat " inax "unistress.gz " inax "yoyo.gz";     while ((cmd|getline) > 0) { stubase[$2] }; close(cmd);
+      cmd = "zcat " inax "yodef.gz "     inax "yoyo.gz";     while ((cmd|getline) > 0) { yobase[$2]  }; close(cmd);
+      cmd = "zcat " inax "dic.pat.gz "   inax "yoyo.pat.gz"; while ((cmd|getline) > 0) { dicbase[$2] }; close(cmd);
       FS = savefs;
   if (gawk52 == 1) {writeall(cache);
-      cmd = "md5sum " cache " " inax "stress.pat.gz " inax "yodef.pat.gz " inax "dic.pat.gz > " inax "wdb.md5";
+      cmd = "md5sum " cache " " inax "unistress.gz " inax "yodef.gz " inax "yoyo.gz " inax "yoyo.pat.gz " inax "dic.pat.gz > " inax "wdb.md5";
       system(cmd); close(cmd)};};
 
   #
       savefs = FS; FS = "[_= ]";
-      cmd = "cat gwt-" book "/anycap-may.pat"; while ((cmd|getline) > 0) { anycap_may[$2] }; close(cmd);
-      cmd = "cat gwt-" book "/surcap-raw.pat"; while ((cmd|getline) > 0) { surcap_raw[$2] }; close(cmd);
+      cmd = "cat " inax "anycap-may.pat"; while ((cmd|getline) > 0) { anycap_may[$2] }; close(cmd);
+      cmd = "cat " inax "surcap-raw.pat"; while ((cmd|getline) > 0) { surcap_raw[$2] }; close(cmd);
       FS = savefs;
+      cmd = "rm " inax "anycap-lex.pat " inax "anycap-bas.pat " inax "surcap-lex.pat " inax "surcap-bas.pat 2>/dev/null";
+      system(cmd); close(cmd);
 
-      for (i in anycap_may) { if (!(i in stubase)) anycap_lex_pat[i]; print "_" i "=" >> "gwt-" book "/anycap-lex.pat" }; fflush();
-      for (i in anycap_may) { if (  i in stubase ) anycap_bas_pat[i]; print "_" i "=" >> "gwt-" book "/anycap-bas.pat" }; fflush();
-      for (i in surcap_raw) { if (!(i in stubase)) surcap_lex_pat[i]; print "_" i "=" >> "gwt-" book "/surcap-lex.pat" }; fflush();
-      for (i in surcap_raw) { if (  i in stubase ) surcap_bas_pat[i]; print "_" i "=" >> "gwt-" book "/surcap-bas.pat" }; fflush();
+      for (i in anycap_may) { if (!(i in stubase)) anycap_lex_pat[i]; print "_" i "=" >> inax "anycap-lex.pat" }; fflush();
+      for (i in anycap_may) { if (  i in stubase ) anycap_bas_pat[i]; print "_" i "=" >> inax "anycap-bas.pat" }; fflush();
+      for (i in surcap_raw) { if (!(i in stubase)) surcap_lex_pat[i]; print "_" i "=" >> inax "surcap-lex.pat" }; fflush();
+      for (i in surcap_raw) { if (  i in stubase ) surcap_bas_pat[i]; print "_" i "=" >> inax "surcap-bas.pat" }; fflush();
 
 }

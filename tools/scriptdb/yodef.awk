@@ -25,15 +25,19 @@ BEGIN {
 
    if (redix == 0 && gawk52 == 1) { readall(yocache) } else {
 
-   cmd = "zcat " indb "yodef.txt.gz | \
+   cmd = "zcat " indb "yodef.gz | \
           sed -r 's/_(.)(.+)=(.)(.+)\\b/\\1\\2 \\3\\4 \\u\\1\\2 \\u\\3\\4 \\U\\1\\2\\E \\U\\3\\4\\E/g; \
                   s/\\x27/\xcc\x81/g;'";
    while ((cmd|getline) > 0) {
+         yok=gensub("\\xcc\\x81","","g",$2)
+         Yok=gensub("\\xcc\\x81","","g",$4)
+         YOK=gensub("\\xcc\\x81","","g",$6)
 
-         yodef[$1]=$2; yodef[$3]=$4; yodef[$5]=$6;
+         yodef[$1] =$2; yodef[$3] =$4; yodef[$5] =$6;
+         yodef[yok]=$2; yodef[Yok]=$4; yodef[YOK]=$6;
 
    } close(cmd);
-   cmd = "zcat " indb "yolc.txt.gz | sed -r 's/^_//g; s/=/ /g; s/\\x27/\xcc\x81/g'";
+   cmd = "zcat " indb "yolc.gz | sed -r 's/^_//g; s/=/ /g; s/\\x27/\xcc\x81/g'";
    while ((cmd|getline) > 0) {
 
         yodef[$1]=$2;
@@ -42,7 +46,7 @@ BEGIN {
 
  # Записать состояние словарных массивов
   if (gawk52 == 1) { writeall(yocache) };
-  cmd = "md5sum " indb "yodef.awk " inax "yodef.bin " indb "yodef.txt.gz " indb "yolc.txt.gz > " inax "yodef.md5"
+  cmd = "md5sum " indb "yodef.awk " inax "yodef.bin " indb "yodef.gz " indb "yolc.gz > " inax "yodef.md5"
   system(cmd); close(cmd);
    } #gnuawk
 

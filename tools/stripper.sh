@@ -91,7 +91,7 @@ fi
 
 if [[ -n $names ]]; then
 	readarray -t narr < <(grep -Po "(?<![$RUCl$unxs$unxc])[$RUUC][$RUCl$unxs$unxc]+" trip-"$book"/text-book.txt | sed -r "s/[^$RUCl]//g; s/^.+$/_\L\0=/g" | \
-		grep -Ff <(zcat scriptaux/namebase0.pat.gz scriptaux/override.pat.gz) | sort -u | sed -r "s/[_=]//g; s/^./\u\0/g")
+		grep -Ff <(zcat scriptaux/namebase.pat.gz) | sort -u | sed -r "s/[_=]//g; s/^./\u\0/g")
 
 	for wrd in ${narr[@]}; do
 		seden=[$st]?$(echo $wrd | sed -r "s/./\0[$st]?/g")

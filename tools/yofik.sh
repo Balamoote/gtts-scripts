@@ -34,7 +34,7 @@ inc=50	  # Количество строк для для обработки фа
 d2u () { if [[ -e "$backup" ]]; then printf '\e[36m%s \e[33m%s\e[0m\n' "Найден и восстановлен бэкап:" "$backup"; crlf=$(file $backup | grep -o "CRLF"; );
             if [[ -n $crlf ]]; then dos2unix "$backup" &>/dev/null; fi; cp "$backup" "$book";
         else crlf=$(file "$book" | grep -o "CRLF"); if [[ -n $crlf ]]; then dos2unix "$book" &>/dev/null; fi; cp "$book" "$backup"; fi; }
-sedroll () { local lico=$(wc -l < "$1"); local i=0; local j=0; for i in $(seq 1 $inc $lico); do j=$(($i+$(($inc-1))));	sed -i -rf <(sed -n "$i,$j p" < "$1") "$2"; done; }
+#sedroll () { local lico=$(wc -l < "$1"); local i=0; local j=0; for i in $(seq 1 $inc $lico); do j=$(($i+$(($inc-1))));	sed -i -rf <(sed -n "$i,$j p" < "$1") "$2"; done; }
 
 if [[ -s "$1" ]]; then book=$1; backup="$book".$suf; key="-xp"; printf '\e[36m%s\e[0m\n' "Ключи не заданы, но книга указана. Используем ключ: -xp"
 elif [[ -s "$2" ]] || [[ -s $backup ]]; then printf '\e[36m%s \e[93m%s\n' "Обрабатывается книга:" "$book"
@@ -66,8 +66,8 @@ case $key in
 esac
 
 printf '\e[32m%s \e[32;4;1m%s\e[0m\n' "Скрипт" "\"Ёфикация\""
-printf '\e[36m%s \e[93m%s\e[0m\n' "Строк в словаре однозначной ёфикации:" $(zgrep -c ^ scriptdb/yodef.txt.gz)
-printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Строк в словаре:" $(zgrep -c ^ scriptdb/yomo-uc.txt.gz) "Ё-омографов и" $(zgrep -c ^ scriptdb/yomo-lc.txt.gz) "ё-омографов."
+printf '\e[36m%s \e[93m%s\e[0m\n' "Строк в словаре однозначной ёфикации:" $(zgrep -c ^ scriptdb/yodef.gz)
+printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Строк в словаре:" $(zgrep -c ^ scriptdb/yomo-uc.gz) "Ё-омографов и" $(zgrep -c ^ scriptdb/yomo-lc.gz) "ё-омографов."
 if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
 
 if [[ -s scriptaux/zjofik.md5 ]] && md5sum -c --status scriptaux/zjofik.md5 >/dev/null 2>&1; then
@@ -75,12 +75,12 @@ if [[ -s scriptaux/zjofik.md5 ]] && md5sum -c --status scriptaux/zjofik.md5 >/de
 else clxx=1; fi
 
 if [[ $clxx -eq "1" ]]; then
-	if ./check-lexx.sh -f; then printf '\e[32m%s\e[0m\n' "Проверка файлов завершена успешно…"
+	if ./check-all.sh -f; then printf '\e[32m%s\e[0m\n' "Проверка файлов завершена успешно…"
 	else printf '\e[31;1m%s\e[0m \e[93m%s \e[31;1m%s\e[0m\n' "Выполнение скрипта" "./yofik.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
 
 # Массив со списком обязательных файлов
-pack="tts.txt scriptdb/yodef.txt.gz scriptaux/yodef.pat.gz scriptdb/yomo-lc.txt.gz scriptaux/yomo-lc.pat.gz scriptdb/yomo-uc.txt.gz scriptaux/yomo-uc.pat.gz \
-      scriptaux/yomo-cc.pat.gz scriptaux/ttspat.yoy.gz scriptaux/tts0.yoy.gz scriptdb/yolc.txt.gz scriptdb/yodef.awk scriptaux/yolc.pat.gz"
+pack="scriptdb/yodef.gz scriptaux/yodef.pat.gz scriptdb/yomo-lc.gz scriptaux/yomo-lc.pat.gz scriptdb/yomo-uc.gz scriptaux/yomo-uc.pat.gz \
+      scriptaux/yomo-cc.pat.gz scriptdb/yolc.gz scriptdb/yodef.awk scriptaux/yolc.pat.gz"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
@@ -144,9 +144,9 @@ if [[ ! -d $bookwrkdir ]]; then
 	grep -Ff <(zcat scriptaux/yomo-uc.pat.gz) $tmpdir/words-all-uc.pat > $bookwrkdir/yo-omo-uc.pat
   grep -Ff <(zcat scriptaux/yomo-cc.pat.gz) $tmpdir/words-all-cc.pat > $bookwrkdir/yo-omo-cc.pat
 
-	zgrep -Ff $bookwrkdir/yo-omo-lc.pat scriptdb/yomo-lc.txt.gz                                                                  > $bookwrkdir/yomo-luc.txt
-  zcat scriptdb/yomo-lc.txt.gz scriptdb/yomo-uc.txt.gz |sed -r "s/([_ ])(.)/\1\u\2/g"    | grep -Ff $bookwrkdir/yo-omo-uc.pat >> $bookwrkdir/yomo-luc.txt
-  zcat scriptdb/yomo-lc.txt.gz scriptdb/yomo-uc.txt.gz |sed -r "s/([$RUUC$rulc]+)/\U\0/g"| grep -Ff $bookwrkdir/yo-omo-cc.pat >> $bookwrkdir/yomo-luc.txt
+	zgrep -Ff $bookwrkdir/yo-omo-lc.pat scriptdb/yomo-lc.gz                                                              > $bookwrkdir/yomo-luc.txt
+  zcat scriptdb/yomo-lc.gz scriptdb/yomo-uc.gz |sed -r "s/([_ ])(.)/\1\u\2/g"    | grep -Ff $bookwrkdir/yo-omo-uc.pat >> $bookwrkdir/yomo-luc.txt
+  zcat scriptdb/yomo-lc.gz scriptdb/yomo-uc.gz |sed -r "s/([$RUUC$rulc]+)/\U\0/g"| grep -Ff $bookwrkdir/yo-omo-cc.pat >> $bookwrkdir/yomo-luc.txt
 
     sed -r "
        s/^_(.+)=/\1/g
@@ -170,8 +170,9 @@ if [[ -s $bookwrkdir/omo-luc.lst ]]; then # Проверка найдены ли
 printf '\e[32m%s' "Создание дискретных скриптов обработки ё-омографов:"
 twd=$(tput cols)
 
-zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\
-       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
+touch $bookwrkdir/omo-lexx.txt # заглушка
+#zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\
+#       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
 sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $tmpdir/text-book.txt | \
     awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -vindb="scriptdb/" -f scriptdb/preview.awk

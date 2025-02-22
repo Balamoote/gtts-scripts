@@ -25,10 +25,10 @@ unxs=$(printf "\xe2\x80\xa4\xe2\x80\xa7")
 
 # Массив со списком обязательных файлов
 pack="automo.gz awx/beautify.awk class.list.gz classes.awk cstauto.awk cstring.awk defunct.awk deomo.awk demorphy.awk dic_cust.gz \
-      dic_gl.gz dic_prl.gz dic_prq.gz dic_rest.gz dic_suw.gz exclusion.pat.gz fb2 functions.awk gw_caplists.awk hclean.sh ist.gz \
-      main.awk mano-lc.txt.gz mano-uc.txt.gz namebase.txt.gz namedef.awk nomo.txt.gz omo-index.sed omo_list.phy.gz \
+      dic_gl.gz dic_prl.gz dic_prq.gz dic_rest.gz dic_suw.gz fb2 functions.awk awx/gw_caplists.awk hclean.sh ist.gz \
+      main.awk mano-lc.gz mano-uc.gz namebase.gz namedef.awk omo-index.sed omo_list.phy.gz yoyo.gz yoyo_alt.gz \
       omoid.me omoid_auto.gz omoid_flat.gz omoid_ini.gz omoid_pa_ini.gz preview.awk ruac.py rulg_all.py rulg_omo.py settings.ini \
-      vsevso.awk wordbase0.gz yodef.awk yodef.txt.gz yolc.txt.gz yomo-lc.txt.gz yomo-uc.txt.gz ext/x4707.awk ext/x4709.awk \
+      vsevso.awk unistress.gz yodef.awk yodef.gz yolc.gz yomo-lc.gz yomo-uc.gz ext/x4707.awk ext/x4709.awk \
       dik_prop.gz awx/rules_sort.awk cstrings.gz awx/sort_gzstrings.awk gen_prq.awk dix_prq.gz awx/parser.awk"
 read -a minpack <<< $pack
 
@@ -111,8 +111,8 @@ case $key in
     spell_flat ) # все слова словарей без ё и ударений
                zcat dic_*.gz | awk '{print $1}' > ru.txt
                zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
-               zcat mano-lc.txt.gz yomo-lc.txt.gz |sed -r "s/[_=']//g; s/ё/е/g; s/ /\r/g" >> ru.txt
-               zcat yodef.txt.gz yolc.txt.gz |sed -r "s/[_']//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
+               zcat mano-lc.gz yomo-lc.gz |sed -r "s/[_=']//g; s/ё/е/g; s/ /\r/g" >> ru.txt
+               zcat yodef.gz yolc.gz |sed -r "s/[_']//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
                sed -r "s/\\\xcc\\\x81//g
                        s/\\\xcc\\\xa0//g
 	                     s/\\\xcc\\\xa3//g
@@ -129,10 +129,10 @@ case $key in
     spell_all ) # все слова словарей с именами, ё, ударениями и служебными символами
                zcat dic_*.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u > ru.txt
                zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
-               zcat mano-lc.txt.gz yomo-lc.txt.gz |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
-               zcat mano-uc.txt.gz yomo-uc.txt.gz nomo.txt.gz |sed -r "s/[_=]//g; s/\b(.)/\l\1/g; s/ /\n/g" >> ru.txt
-               zcat yodef.txt.gz yolc.txt.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
-               zcat namebase0.txt.gz nameoverride.txt.gz |\
+               zcat mano-lc.gz mano-uc.gz  |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
+               zcat yodef.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
+               zcat unistress.gz yoyo.gz yoyo_lc.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
+               zcat namebase.gz |\
                     sed -r "s/(=\\\\xcc\\\\x[ab][034d])([$rulc])/\1\u\2/g
                             s/([_=])([$rulc])/\1\u\2/g
                             s/[_g]//g
@@ -183,7 +183,7 @@ case $key in
               zcat dic_rest.gz | awk '{ print   "_" $1 "="   }' | sort -u | gzip > _stock_rest.pat.gz
               zcat dic_rest.gz | awk '{ print "\\s" $2 "\\s" }' | sort -u | gzip > _class_rest.gz
               zcat dix_prq.gz  | awk '{ print   "_" $1 "="   }' | sort -u | gzip > _stock_dixprq.pat.gz
-              zcat wordbase0.gz | awk 'BEGIN{FS="="}{ print $1 "=" }' | sort -u | gzip > _stock_wb0.pat.gz
+#             zcat unistress.gz| awk 'BEGIN{FS="="}{ print $1 "=" }' | sort -u | gzip > _stock_wb0.pat.gz
        exit 1; ;;
 
     gen_prq ) # создать полный список всех словоформ причастий из словаря dix
