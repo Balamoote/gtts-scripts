@@ -51,7 +51,7 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
 
       for (i in yodef) { yopat = yopat "\n_" i "="; yodic = yodic "\n_" i "=" yodef[i] };
       for (i in yolca) { lcpat = lcpat "\n_" i "="; lcdic = lcdic "\n_" i "=" yolca[i] };
-      for (i in yolcg) { if ( i in yoda) {
+      for (i in yolcg) { if (i in yoda) {
         yolcpat = yolcpat "\n_" i "="; yolcdic = yolcdic "\n_" i "=" yolcg[i] };};
 
       printf(substr(yodic,2), lcdic) | "gzip > " indb "yoyo.gz";

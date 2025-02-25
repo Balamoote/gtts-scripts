@@ -34,7 +34,7 @@ esac; fi
 pack="scriptdb/automo.gz scriptdb/awx/beautify.awk scriptdb/class.list.gz scriptdb/classes.awk scriptdb/cstauto.awk scriptdb/cstring.awk scriptdb/defunct.awk \
       scriptdb/deomo.awk scriptdb/demorphy.awk scriptdb/dic_cust.gz scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz \
       scriptdb/dic_suw.gz scriptdb/fb2 scriptdb/functions.awk scriptdb/awx/gw_caplists.awk scriptdb/hclean.sh scriptdb/ist.gz \
-      scriptdb/main.awk scriptdb/mano-lc.gz scriptdb/mano-uc.gz scriptdb/namebase.gz scriptdb/namedef.awk scriptdb/stress_x.gz scriptdb/yoyo_alt.gz \
+      scriptdb/main.awk scriptdb/mano-lc.gz scriptdb/mano-uc.gz scriptdb/namebase.gz scriptdb/namedef.awk scriptdb/yoyo_alt.gz \
       scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
       scriptdb/omoid_pa_ini.gz scriptdb/preview.awk scriptdb/ruac.py scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/dix_prq.gz \
       scriptdb/vsevso.awk scriptdb/unistress.gz scriptdb/yodef.awk scriptdb/yodef.gz \
@@ -76,10 +76,9 @@ fi
 if [[ $stu -eq 1 ]]; then
 	printf '\e[36m%s \e[32m%s ' "STU:" "старый" 
 else
-# sed -r 's/=.+$/=/g' <(zcat scriptdb/unistress.gz scriptdb/stress_x.gz scriptdb/yoyo_alt.gz) |sort -u| gzip > scriptaux/unistress.pat.gz
-  sed -r 's/=.+$/=/g' <(zcat scriptdb/unistress.gz scriptdb/yoyo.gz scriptdb/yoyo_alt.gz) |sort -u| gzip > scriptaux/unistress.pat.gz
+  sed -r 's/=.+$/=/g' <(zcat scriptdb/unistress.gz scriptdb/yodef.gz scriptdb/yoyo.gz scriptdb/yoyo_alt.gz) |sort -u| gzip > scriptaux/unistress.pat.gz
   printf '\e[36m%s \e[93m%s ' "STU:" "новый" 
-  md5sum scriptdb/unistress.gz scriptdb/stress_x.gz scriptdb/yoyo.gz scriptdb/yoyo_alt.gz scriptaux/unistress.pat.gz > scriptaux/zstu.md5; fi
+  md5sum scriptdb/unistress.gz scriptdb/yodef.gz scriptdb/yoyo.gz scriptdb/yoyo_alt.gz scriptaux/unistress.pat.gz > scriptaux/zstu.md5; fi
 
 if [[ $ndb -eq 1 ]]; then
        	printf '\e[36m%s \e[32m%s ' "NDB:" "старые"
@@ -90,7 +89,7 @@ else
   md5sum scriptdb/namebase.gz scriptaux/namebase.pat.gz scriptaux/names-all.pat.gz > scriptaux/zndb.md5
   printf '\e[36m%s \e[93m%s ' "NDB:" "новые"
 fi
-
+ 
 if [[ $dic -eq 1 ]]; then
        	printf '\e[36m%s \e[32m%s ' "DIC:" "старые"
 else

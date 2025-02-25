@@ -190,6 +190,12 @@ case $key in
               zcat dix_prq.gz | awk -f gen_prq.awk | sort -u | gzip > dic_prq.gz
        exit 1; ;;
 
+    stress ) # Пересобрать базы ударений
+             zgrep unistress.gz yodef.gz | grep -Fvf <(zcat mano-lc.gz mano-uc.gz|sed -r "s/=.*/=/g") | gzip > T_uni.gz
+
+#            rm T_*
+             exit 1; ;;
+
      * ) printf "%s\n" "WRONG ARG!"; exit 0; ;;
 
 
