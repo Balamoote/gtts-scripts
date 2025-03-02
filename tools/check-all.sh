@@ -55,13 +55,14 @@ if [[ -s scriptaux/yodef.md5   ]] && md5sum -c --status scriptaux/yodef.md5   >/
 if [[ -s scriptaux/classes.md5 ]] && md5sum -c --status scriptaux/classes.md5 >/dev/null 2>&1; then tst=1;   else tst=0   ; fi
 
 
-# Выполняем проверку вспомогательных файлов из ./momo.sh
+### Выполняем проверку вспомогательных файлов из ./momo.sh
 
 if [[ $aomo -eq 1 ]] && [[ $tst -eq 1 ]]; then
        	printf '\e[36m%s \e[32m%s ' "MOM:" "старые"
 else
   yod=0
   sed -r "s/=.+$/=/g" <(zcat scriptdb/malc.gz) | gzip > scriptaux/malc.pat.gz
+
   # Формируем в scriptaux/ файлы mano-lc.pat.gz mano-uc.pat.gz mano-cc.pat.gz mano-ca.pat.gz
   awk -vomtype="mano" -f scriptdb/awx/omopat.awk
 
@@ -72,33 +73,7 @@ else
   printf '\e[36m%s \e[93m%s ' "MOM:" "новые"
 fi
 
-# Выполняем проверку вспомогательных файлов из ./get-words.sh
-if [[ $stu -eq 1 ]]; then
-	printf '\e[36m%s \e[32m%s ' "STU:" "старый" 
-else
-  sed -r 's/=.+$/=/g' <(zcat scriptdb/unistress.gz scriptdb/yodef.gz scriptdb/yoyo.gz scriptdb/yoyo_alt.gz) |sort -u| gzip > scriptaux/unistress.pat.gz
-  printf '\e[36m%s \e[93m%s ' "STU:" "новый" 
-  md5sum scriptdb/unistress.gz scriptdb/yodef.gz scriptdb/yoyo.gz scriptdb/yoyo_alt.gz scriptaux/unistress.pat.gz > scriptaux/zstu.md5; fi
-
-if [[ $ndb -eq 1 ]]; then
-       	printf '\e[36m%s \e[32m%s ' "NDB:" "старые"
-else
-	sed -r 's/=.+$/=/g' <(zcat scriptdb/namebase.gz) | gzip > scriptaux/namebase.pat.gz
-# sed -r 's/(_.+=).+$/\1/g' <(zcat scriptdb/mano-uc.gz) | sort -u | gzip > scriptaux/mano-uc.pat.gz
-	zcat scriptaux/namebase.pat.gz scriptaux/mano-uc.pat.gz | sort -u | gzip > scriptaux/names-all.pat.gz
-  md5sum scriptdb/namebase.gz scriptaux/namebase.pat.gz scriptaux/names-all.pat.gz > scriptaux/zndb.md5
-  printf '\e[36m%s \e[93m%s ' "NDB:" "новые"
-fi
- 
-if [[ $dic -eq 1 ]]; then
-       	printf '\e[36m%s \e[32m%s ' "DIC:" "старые"
-else
-  zcat scriptdb/dic_*.gz | awk '{ print "_" $1 "=" }' | sort -u | gzip > scriptaux/dic.pat.gz
-  md5sum scriptaux/dic.pat.gz > scriptaux/zdic.md5
-  printf '\e[36m%s \e[93m%s ' "DIC:" "новые"
-fi
-
-# Выполняем проверку вспомогательных файлов из ./yofik.sh
+### Выполняем проверку вспомогательных файлов из ./yofik.sh
 
 if [[ $jofik -eq 1 ]] && [[ $yod -eq 1 ]]; then
        	printf '\e[36m%s \e[32m%s ' "YOF:" "старые"
@@ -124,6 +99,35 @@ else
          scriptaux/yomo-uc.pat.gz scriptdb/yolc.gz scriptaux/yolc.pat.gz scriptaux/yomo-cc.pat.gz scriptdb/yoyo.gz scriptdb/yoyo.gz \
          scriptaux/yoyo.pat.gz scriptaux/yoyo_lc.pat.gz scriptaux/yoye.pat.gz scriptaux/yoye_lc.pat.gz \
          > scriptaux/zjofik.md5
+fi
+
+### Выполняем проверку вспомогательных файлов из ./get-words.sh
+if [[ $stu -eq 1 ]]; then
+	printf '\e[36m%s \e[32m%s ' "STU:" "старый" 
+else
+  zcat scriptdb/unistress.gz | sed -r 's/=.+$/=/g' | gzip > scriptaux/unistress.pat.gz
+  zcat scriptdb/unistress.gz scriptdb/mano-lc.gz scriptdb/malc.gz scriptdb/yodef.gz scriptdb/yoyo.gz scriptdb/yoyo_alt.gz |\
+       sed -r 's/=.+$/=/g' | gzip > scriptaux/unistress-all.pat.gz
+  printf '\e[36m%s \e[93m%s ' "STU:" "новый" 
+  md5sum scriptdb/unistress.gz scriptdb/mano-lc.gz scriptdb/malc.gz scriptdb/yodef.gz scriptdb/yoyo.gz scriptdb/yoyo_alt.gz \
+         scriptaux/unistress-all.pat.gz > scriptaux/zstu.md5;
+fi
+
+if [[ $ndb -eq 1 ]]; then
+       	printf '\e[36m%s \e[32m%s ' "NDB:" "старые"
+else
+	sed -r 's/=.+$/=/g' <(zcat scriptdb/namebase.gz) | gzip > scriptaux/namebase.pat.gz
+	zcat scriptaux/namebase.pat.gz scriptaux/mano-uc.pat.gz | sort -u | gzip > scriptaux/names-all.pat.gz
+  md5sum scriptdb/namebase.gz scriptaux/namebase.pat.gz scriptaux/names-all.pat.gz > scriptaux/zndb.md5
+  printf '\e[36m%s \e[93m%s ' "NDB:" "новые"
+fi
+ 
+if [[ $dic -eq 1 ]]; then
+       	printf '\e[36m%s \e[32m%s ' "DIC:" "старые"
+else
+  zcat scriptdb/dic_*.gz | awk '{ print "_" $1 "=" }' | sort -u | gzip > scriptaux/dic.pat.gz
+  md5sum scriptaux/dic.pat.gz > scriptaux/zdic.md5
+  printf '\e[36m%s \e[93m%s ' "DIC:" "новые"
 fi
 
 printf '\e[32;4;1m%s\e[0m\n' "Всё ОК!"

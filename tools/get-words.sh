@@ -189,24 +189,24 @@ find . -type f -name "[01][0-9]_*\.list" -exec rm '{}'  \;
              s/^(.*)-(.*)$/\0\n\1=\n_\2/g" | sed -r "s/^_-/_/; s/-=$/=/" | sort -u > $stadir/bookwords.list
     locdicsize=$(cat $stadir/bookwords.list | wc -l )
 
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/dic.pat.gz)       | gzip > $stadir/dic.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/unistress.pat.gz) | gzip > $stadir/unistress.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/malc.pat.gz)      | gzip > $stadir/malc.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/yodef.pat.gz)     | gzip > $stadir/yodef.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/yolc.pat.gz)      | gzip > $stadir/yolc.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/yoyo.pat.gz)      | gzip > $stadir/yoyo.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/yoyo_lc.pat.gz)   | gzip > $stadir/yoyo_lc.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/names-all.pat.gz) | gzip > $stadir/names-all.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptaux/dic.pat.gz)           | gzip > $stadir/dic.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptaux/unistress-all.pat.gz) | gzip > $stadir/unistress-all.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptaux/malc.pat.gz)          | gzip > $stadir/malc.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptaux/yodef.pat.gz)         | gzip > $stadir/yodef.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptaux/yolc.pat.gz)          | gzip > $stadir/yolc.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptaux/yoyo.pat.gz)          | gzip > $stadir/yoyo.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptaux/yoyo_lc.pat.gz)       | gzip > $stadir/yoyo_lc.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptaux/names-all.pat.gz)     | gzip > $stadir/names-all.pat.gz
 
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/unistress.gz)      | gzip > $stadir/unistress.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/malc.gz)           | gzip > $stadir/malc.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/yodef.gz)          | gzip > $stadir/yodef.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/yolc.gz)           | gzip > $stadir/yolc.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/yoyo.gz)           | gzip > $stadir/yoyo.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/yoyo_lc.gz)        | gzip > $stadir/yoyo_lc.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/namebase.gz)       | gzip > $stadir/namebase.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptdb/unistress.gz)          | gzip > $stadir/unistress.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptdb/malc.gz)               | gzip > $stadir/malc.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptdb/yodef.gz)              | gzip > $stadir/yodef.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptdb/yolc.gz)               | gzip > $stadir/yolc.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptdb/yoyo.gz)               | gzip > $stadir/yoyo.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptdb/yoyo_lc.gz)            | gzip > $stadir/yoyo_lc.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptdb/namebase.gz)           | gzip > $stadir/namebase.gz
 
-    md5sum $stadir/bookwords.list $stadir/text-book.txt $stadir/dic.pat.gz $stadir/unistress.pat.gz $stadir/malc.pat.gz $stadir/yodef.pat.gz \
+    md5sum $stadir/bookwords.list $stadir/text-book.txt $stadir/dic.pat.gz $stadir/unistress-all.pat.gz $stadir/malc.pat.gz $stadir/yodef.pat.gz \
            $stadir/yolc.pat.gz $stadir/yoyo.pat.gz $stadir/yoyo_lc.pat.gz $stadir/names-all.pat.gz $stadir/unistress.gz $stadir/malc.gz \
            $stadir/yodef.gz $stadir/yolc.gz $stadir/yoyo.gz $stadir/yoyo_lc.gz $stadir/namebase.gz \
            > $stadir/locdic.md5
@@ -223,7 +223,7 @@ find . -type f -name "[01][0-9]_*\.list" -exec rm '{}'  \;
 
 # Список обычных слов (только с маленькой буквы) -- слова, отсутствующие в словарях ударений
  sed -r 's/^/ /g' $stadir/text-book.txt | grep -Po "(?<![$RUUC$rulc$unxc])[$rulc$unxc]+" | grep -Ev "[$unxc]" | sed -r "s/^.+$/_\0=/g" | \
-  grep -Fvf <(zcat $stadir/unistress.pat.gz $stadir/yoyo.pat.gz) | sort -u | sed -r "s/^_(.+)=$/_\1=\1=/g" > 01_wrd_newbas.list
+  grep -Fvf <(zcat $stadir/unistress-all.pat.gz $stadir/yoyo.pat.gz) | sort -u | sed -r "s/^_(.+)=$/_\1=\1=/g" > 01_wrd_newbas.list
 
 # Список слов с заглавной буквы НЕ в начале предложения
 grep -Po "(?<=[A-Za-zА-Яа-яёЁ0-9,}):;$unxc$unxs])[ ’(«$qtsd–—-]+[$unxc]?[$RUUC][$rulc$unxc]+" $stadir/text-book.txt | grep -Ev "[$unxc]" | \
@@ -253,12 +253,12 @@ gw_cur=$(date +%s.%N); duration=$( echo $gw_cur - $gw_prev | bc ); gw_prev=$gw_c
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s, \e[0m' "Слов:" $duration "сек"
 
 # Список возможных неизвестных имён
- grep -Fvf <(zcat $stadir/yoyo.pat.gz $stadir/unistress.pat.gz) $stadir/surcap-bas.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 02_nom_newsur.list
- grep -Fvf <(zcat $stadir/yoyo.pat.gz $stadir/unistress.pat.gz) $stadir/anycap-bas.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 03_nom_newany.list
+ grep -Fvf <(zcat $stadir/yoyo.pat.gz $stadir/unistress-all.pat.gz) $stadir/surcap-bas.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 02_nom_newsur.list
+ grep -Fvf <(zcat $stadir/yoyo.pat.gz $stadir/unistress-all.pat.gz) $stadir/anycap-bas.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 03_nom_newany.list
 
  # Списки потенциальных имён, уже присутствующих в словере общей лексики
- grep -Ff <(zcat $stadir/yoyo.pat.gz $stadir/unistress.pat.gz)  $stadir/surcap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 04_nom_surlex.list
- grep -Ff <(zcat $stadir/yoyo.pat.gz $stadir/unistress.pat.gz)  $stadir/anycap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 05_nom_anylex.list
+ grep -Ff <(zcat $stadir/yoyo.pat.gz $stadir/unistress-all.pat.gz)  $stadir/surcap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 04_nom_surlex.list
+ grep -Ff <(zcat $stadir/yoyo.pat.gz $stadir/unistress-all.pat.gz)  $stadir/anycap-lex.pat | sed -r 's/^_(.*=)$/_\1\1g/g' > 05_nom_anylex.list
 
 # Некоторые выделяют ударения тэгами… по умолчанию выключено: лучше обработать руками
 #s=(\w)<emphasis>([$RVUC$rvlc])<\/emphasis>=\1\2\xcc\x81=g
