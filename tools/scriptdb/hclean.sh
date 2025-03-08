@@ -28,7 +28,7 @@ pack="automo.gz awx/beautify.awk class.list.gz classes.awk cstauto.awk cstring.a
       dic_gl.gz dic_prl.gz dic_prq.gz dic_rest.gz dic_suw.gz fb2 functions.awk awx/gw_caplists.awk hclean.sh ist.gz \
       main.awk mano-lc.gz mano-uc.gz namebase.gz namedef.awk omo-index.sed omo_list.phy.gz yoyo.gz yoyo_alt.gz \
       omoid.me omoid_auto.gz omoid_flat.gz omoid_ini.gz omoid_pa_ini.gz preview.awk ruac.py rulg_all.py rulg_omo.py settings.ini \
-      vsevso.awk unistress.gz yodef.awk yodef.gz yolc.gz yomo-lc.gz yomo-uc.gz ext/x4707.awk ext/x4709.awk \
+      vsevso.awk unistress.gz unistrehy.gz yodef.awk yodef.gz yodhy.gz yolc.gz yomo-lc.gz yomo-uc.gz ext/x4707.awk ext/x4709.awk \
       dik_prop.gz awx/rules_sort.awk cstrings.gz awx/sort_gzstrings.awk gen_prq.awk dix_prq.gz awx/parser.awk"
 read -a minpack <<< $pack
 
@@ -112,7 +112,7 @@ case $key in
                zcat dic_*.gz | awk '{print $1}' > ru.txt
                zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
                zcat mano-lc.gz yomo-lc.gz |sed -r "s/[_=']//g; s/ё/е/g; s/ /\r/g" >> ru.txt
-               zcat yodef.gz yolc.gz |sed -r "s/[_']//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
+               zcat yodef.gz yodhy.gz yolc.gz |sed -r "s/[_']//g; s/ё/е/g; s/=/\r/g;" >> ru.txt
                sed -r "s/\\\xcc\\\x81//g
                        s/\\\xcc\\\xa0//g
 	                     s/\\\xcc\\\xa3//g
@@ -130,8 +130,8 @@ case $key in
                zcat dic_*.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u > ru.txt
                zcat dik_prop.gz | awk '{ if ( ! $4 ) printf("%s\n", $1)}' | sort -u >> ru.txt
                zcat mano-lc.gz mano-uc.gz  |sed -r "s/[_=]//g; s/ /\n/g" >> ru.txt
-               zcat yodef.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
-               zcat unistress.gz yoyo.gz yoyo_lc.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
+               zcat yodef.gz yodhy.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
+               zcat unistress.gz unistrehy.gz yoyo.gz yoyo_lc.gz |sed -r "s/_//g; s/=/\n/g;" >> ru.txt
                zcat namebase.gz |\
                     sed -r "s/(=\\\\xcc\\\\x[ab][034d])([$rulc])/\1\u\2/g
                             s/([_=])([$rulc])/\1\u\2/g
@@ -191,7 +191,7 @@ case $key in
        exit 1; ;;
 
     stress ) # Пересобрать базы ударений
-             zgrep unistress.gz yodef.gz | grep -Fvf <(zcat mano-lc.gz mano-uc.gz|sed -r "s/=.*/=/g") | gzip > T_uni.gz
+             zgrep unistress.gz unistrehy.gz yodef.gz yodhy.gz yodhy.gz | grep -Fvf <(zcat mano-lc.gz mano-uc.gz|sed -r "s/=.*/=/g") | gzip > T_uni.gz
 
 #            rm T_*
              exit 1; ;;

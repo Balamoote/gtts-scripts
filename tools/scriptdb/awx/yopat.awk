@@ -6,7 +6,7 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
   save_FS = FS
 
    FS = "[ _=]+"
-   cmd = "zcat " indb "yoyo_alt.gz " indb "yodef.gz";
+   cmd = "zcat " indb "yoyo_alt.gz " indb "yodef.gz " indb "yodhy.gz";
    while ((cmd|getline) > 0) {
          yok=gensub("'","","g",$3)
          yodef[yok]=$3;

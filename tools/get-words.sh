@@ -199,8 +199,10 @@ find . -type f -name "[01][0-9]_*\.list" -exec rm '{}'  \;
  grep -Ff $stadir/bookwords.list <(zcat scriptaux/names-all.pat.gz)     | gzip > $stadir/names-all.pat.gz
 
  grep -Ff $stadir/bookwords.list <(zcat scriptdb/unistress.gz)          | gzip > $stadir/unistress.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptdb/unistrehy.gz)          | gzip > $stadir/unistrehy.gz
  grep -Ff $stadir/bookwords.list <(zcat scriptdb/malc.gz)               | gzip > $stadir/malc.gz
  grep -Ff $stadir/bookwords.list <(zcat scriptdb/yodef.gz)              | gzip > $stadir/yodef.gz
+ grep -Ff $stadir/bookwords.list <(zcat scriptdb/yodhy.gz)              | gzip > $stadir/yodhy.gz
  grep -Ff $stadir/bookwords.list <(zcat scriptdb/yolc.gz)               | gzip > $stadir/yolc.gz
  grep -Ff $stadir/bookwords.list <(zcat scriptdb/yoyo.gz)               | gzip > $stadir/yoyo.gz
  grep -Ff $stadir/bookwords.list <(zcat scriptdb/yoyo_lc.gz)            | gzip > $stadir/yoyo_lc.gz
@@ -208,7 +210,7 @@ find . -type f -name "[01][0-9]_*\.list" -exec rm '{}'  \;
 
     md5sum $stadir/bookwords.list $stadir/text-book.txt $stadir/dic.pat.gz $stadir/unistress-all.pat.gz $stadir/malc.pat.gz $stadir/yodef.pat.gz \
            $stadir/yolc.pat.gz $stadir/yoyo.pat.gz $stadir/yoyo_lc.pat.gz $stadir/names-all.pat.gz $stadir/unistress.gz $stadir/malc.gz \
-           $stadir/yodef.gz $stadir/yolc.gz $stadir/yoyo.gz $stadir/yoyo_lc.gz $stadir/namebase.gz \
+           $stadir/yodef.gz $stadir/yodhy.gz $stadir/yolc.gz $stadir/yoyo.gz $stadir/yoyo_lc.gz $stadir/namebase.gz $stadir/unistrehy.gz \
            > $stadir/locdic.md5
 
     gw_cur=$(date +%s.%N); duration=$( echo $gw_cur - $gw_prev | bc ); gw_prev=$gw_cur; duration=$(ms2sec);

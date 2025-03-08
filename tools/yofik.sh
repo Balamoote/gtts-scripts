@@ -66,7 +66,7 @@ case $key in
 esac
 
 printf '\e[32m%s \e[32;4;1m%s\e[0m\n' "Скрипт" "\"Ёфикация\""
-printf '\e[36m%s \e[93m%s\e[0m\n' "Строк в словаре однозначной ёфикации:" $(zgrep -c ^ scriptdb/yodef.gz)
+printf '\e[36m%s \e[93m%s\e[0m\n' "Строк в словаре однозначной ёфикации:" $(zgrep -c ^ scriptdb/yodef.gz scriptdb/yodhy.gz)
 printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Строк в словаре:" $(zgrep -c ^ scriptdb/yomo-uc.gz) "Ё-омографов и" $(zgrep -c ^ scriptdb/yomo-lc.gz) "ё-омографов."
 if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
 
@@ -80,7 +80,7 @@ if [[ $clxx -eq "1" ]]; then
 
 # Массив со списком обязательных файлов
 pack="scriptdb/yodef.gz scriptaux/yodef.pat.gz scriptdb/yomo-lc.gz scriptaux/yomo-lc.pat.gz scriptdb/yomo-uc.gz scriptaux/yomo-uc.pat.gz \
-      scriptaux/yomo-cc.pat.gz scriptdb/yolc.gz scriptdb/yodef.awk scriptaux/yolc.pat.gz"
+      scriptaux/yomo-cc.pat.gz scriptdb/yolc.gz scriptdb/yodef.awk scriptaux/yolc.pat.gz scriptaux/yodhy.gz"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего

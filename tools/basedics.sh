@@ -64,7 +64,7 @@ printf '\n\e[32m%s \e[96m%s \e[93m%s \e[96m%s\e[0m\n' "Looking up:" ">>>" $S1 "<
 
 # Ударения отмечены знаком ударения и цветом или только цветом
 if [[ -z "$str" ]]; then
- $grepper "$wrd" unistress.gz yodef.gz  yoyo_alt.gz namebase.gz mano-uc.gz mano-lc.gz |\
+ $grepper "$wrd" unistress.gz unistrehy.gz yodef.gz yodhy.gz yoyo_alt.gz namebase.gz mano-uc.gz mano-lc.gz |\
     awk -v pad=$pad -F"[ _=:]+" '{
               $0 = gensub(/(.)\x27/,"\033[32m\\1\xcc\x81\033[0m","g",$0)
               len1=length($1);
@@ -83,7 +83,7 @@ if [[ -z "$str" ]]; then
 else
 	printf '\e[91m%s \e[96m%s \e[92m%s \e[96m%s \e[93m%s \e[96m%s\e[0m\n' "Variants:" "NOT >>>" $str\' "<<< IN >>>" $wrd "<<<"
 
-$grepper "$wrd" unistress.gz yodef.gz yoyo_alt.gz | grep -v $str\' |\
+$grepper "$wrd" unistress.gz unistrehy.gz yodef.gz yodhy.gz yoyo_alt.gz | grep -v $str\' |\
 	awk -v pad=$pad -F"[ =_:]+" '{
          $0 = gensub(/(.)\x27/,"\033[32m\\1\xcc\x81\033[0m","g",$0)
          format = "%-" pad "s %-" pad "s %s\n"; printf(format, $2, $3, $1)}';

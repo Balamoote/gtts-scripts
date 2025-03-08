@@ -24,12 +24,13 @@ BEGIN { PROCINFO["sorted_in"]="@ind_num_asc"
  # Читаем базовый список слов
   cache = inax "wdb.bin"
   if (wdb == 0 && gawk52 == 1) { readall(cache) } else { savefs = FS; FS = "[_= ]";
-      cmd = "zcat " inax "unistress.gz " inax "yoyo.gz";     while ((cmd|getline) > 0) { stubase[$2] }; close(cmd);
-      cmd = "zcat " inax "yodef.gz "     inax "yoyo.gz";     while ((cmd|getline) > 0) { yobase[$2]  }; close(cmd);
-      cmd = "zcat " inax "dic.pat.gz "   inax "yoyo.pat.gz"; while ((cmd|getline) > 0) { dicbase[$2] }; close(cmd);
+      cmd = "zcat " inax "unistress.gz " inax "unistrehy.gz " inax "yoyo.gz"; while ((cmd|getline) > 0) { stubase[$2] }; close(cmd);
+      cmd = "zcat " inax "yodef.gz " inax "yodhy.gz " inax "yoyo.gz";         while ((cmd|getline) > 0) { yobase[$2]  }; close(cmd);
+      cmd = "zcat " inax "dic.pat.gz " inax "yoyo.pat.gz";                    while ((cmd|getline) > 0) { dicbase[$2] }; close(cmd);
       FS = savefs;
   if (gawk52 == 1) {writeall(cache);
-      cmd = "md5sum " cache " " inax "unistress.gz " inax "yodef.gz " inax "yoyo.gz " inax "yoyo.pat.gz " inax "dic.pat.gz > " inax "wdb.md5";
+      cmd = "md5sum " cache " " inax "unistress.gz " inax "unistrehy.gz " inax "yodef.gz " inax "yodhy.gz " inax "yoyo.gz " \
+                                inax "yoyo.pat.gz " inax "dic.pat.gz > " inax "wdb.md5";
       system(cmd); close(cmd)};};
 
   #

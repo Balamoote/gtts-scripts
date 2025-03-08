@@ -37,7 +37,7 @@ pack="scriptdb/automo.gz scriptdb/awx/beautify.awk scriptdb/class.list.gz script
       scriptdb/main.awk scriptdb/mano-lc.gz scriptdb/mano-uc.gz scriptdb/namebase.gz scriptdb/namedef.awk scriptdb/yoyo_alt.gz \
       scriptdb/omo-index.sed scriptdb/omo_list.phy.gz scriptdb/omoid.me scriptdb/omoid_auto.gz scriptdb/omoid_flat.gz scriptdb/omoid_ini.gz \
       scriptdb/omoid_pa_ini.gz scriptdb/preview.awk scriptdb/ruac.py scriptdb/rulg_all.py scriptdb/rulg_omo.py scriptdb/settings.ini scriptdb/dix_prq.gz \
-      scriptdb/vsevso.awk scriptdb/unistress.gz scriptdb/yodef.awk scriptdb/yodef.gz \
+      scriptdb/vsevso.awk scriptdb/unistress.gz scriptdb/unistrehy.gz scriptdb/yodef.awk scriptdb/yodef.gz \
       scriptdb/ext/x4707.awk scriptdb/ext/x4709.awk scriptdb/dik_prop.gz scriptdb/cstrings.gz"
 read -a minpack <<< $pack
 
@@ -89,7 +89,7 @@ else
   # Формируем в scriptdb/  : yoyo.gz yoyo_lc.gz
   #           в scriptaux/ : yoyo.pat.gz yoyo_lc.pat.gz yoye.pat.gz yoye_lc.pat.gz
   awk -f scriptdb/awx/yopat.awk
-  sed -r "s/=.+$/=/g" <(zcat scriptdb/yoyo_lc.gz) | gzip >> scriptaux/yolc.pat.gz
+  sed -r "s/=.+$/=/g" <(zcat scriptdb/yoyo_lc.gz) | gzip >> scriptaux/yoyo.pat.gz
 
   # Создаём yodef.bin
   echo "" | awk -vindb="scriptdb/" -vinax="scriptaux/" -f scriptdb/yodef.awk >/dev/null
@@ -97,7 +97,7 @@ else
   printf '\e[36m%s \e[93m%s ' "YOF:" "новые"
 	md5sum scriptdb/yodef.gz scriptaux/yodef.pat.gz scriptdb/yomo-lc.gz scriptaux/yomo-lc.pat.gz scriptdb/yodef.awk scriptdb/yomo-uc.gz \
          scriptaux/yomo-uc.pat.gz scriptdb/yolc.gz scriptaux/yolc.pat.gz scriptaux/yomo-cc.pat.gz scriptdb/yoyo.gz scriptdb/yoyo.gz \
-         scriptaux/yoyo.pat.gz scriptaux/yoyo_lc.pat.gz scriptaux/yoye.pat.gz scriptaux/yoye_lc.pat.gz \
+         scriptaux/yoyo.pat.gz scriptaux/yoyo_lc.pat.gz scriptaux/yoye.pat.gz scriptaux/yoye_lc.pat.gz scriptdb/yodhy.gz \
          > scriptaux/zjofik.md5
 fi
 
@@ -105,12 +105,12 @@ fi
 if [[ $stu -eq 1 ]]; then
 	printf '\e[36m%s \e[32m%s ' "STU:" "старый" 
 else
-  zcat scriptdb/unistress.gz | sed -r 's/=.+$/=/g' | gzip > scriptaux/unistress.pat.gz
+  zcat scriptdb/unistress.gz scriptdb/unistrehy.gz | sed -r 's/=.+$/=/g' | gzip > scriptaux/unistress.pat.gz
   zcat scriptdb/unistress.gz scriptdb/mano-lc.gz scriptdb/malc.gz scriptdb/yodef.gz scriptdb/yoyo.gz scriptdb/yoyo_alt.gz |\
        sed -r 's/=.+$/=/g' | gzip > scriptaux/unistress-all.pat.gz
   printf '\e[36m%s \e[93m%s ' "STU:" "новый" 
   md5sum scriptdb/unistress.gz scriptdb/mano-lc.gz scriptdb/malc.gz scriptdb/yodef.gz scriptdb/yoyo.gz scriptdb/yoyo_alt.gz \
-         scriptaux/unistress-all.pat.gz > scriptaux/zstu.md5;
+         scriptaux/unistress-all.pat.gz scriptdb/unistrehy.gz > scriptaux/zstu.md5;
 fi
 
 if [[ $ndb -eq 1 ]]; then

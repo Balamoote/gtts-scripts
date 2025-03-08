@@ -25,7 +25,7 @@ BEGIN {
 
    if (redix == 0 && gawk52 == 1) { readall(yocache) } else {
 
-   cmd = "zcat " indb "yodef.gz | \
+   cmd = "zcat " indb "yodef.gz " indb "yodhy.gz | \
           sed -r 's/_(.)(.+)=(.)(.+)\\b/\\1\\2 \\3\\4 \\u\\1\\2 \\u\\3\\4 \\U\\1\\2\\E \\U\\3\\4\\E/g; \
                   s/\\x27/\xcc\x81/g;'";
    while ((cmd|getline) > 0) {
@@ -46,7 +46,7 @@ BEGIN {
 
  # Записать состояние словарных массивов
   if (gawk52 == 1) { writeall(yocache) };
-  cmd = "md5sum " indb "yodef.awk " inax "yodef.bin " indb "yodef.gz " indb "yolc.gz > " inax "yodef.md5"
+  cmd = "md5sum " indb "yodef.awk " inax "yodef.bin " indb "yodef.gz " indb "yodhy.gz " indb "yolc.gz > " inax "yodef.md5"
   system(cmd); close(cmd);
    } #gnuawk
 
