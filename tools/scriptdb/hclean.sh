@@ -14,6 +14,8 @@ edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' settings.ini)
 vimspelldir="$HOME/.config/nvim/spell"
 cdata=$(date)
 
+grepper="rg"
+
 # Переменные алфавита и служебных
 RUUC=АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ
 rulc=абвгдеёжзийклмнопрстуфхцчшщъыьэюя
@@ -190,10 +192,45 @@ case $key in
               zcat dix_prq.gz | awk -f gen_prq.awk | sort -u | gzip > dic_prq.gz
        exit 1; ;;
 
-    stress ) # Пересобрать базы ударений
-             zgrep unistress.gz unistrehy.gz yodef.gz yodhy.gz yodhy.gz | grep -Fvf <(zcat mano-lc.gz mano-uc.gz|sed -r "s/=.*/=/g") | gzip > T_uni.gz
+    prune_omo ) # создать полный список всех словоформ причастий из словаря dix
+             zcat mano-lc.gz | awk -f awx/prune_omo.awk | gzip > _mano-lc.gz; mv _mano-lc.gz mano-lc.gz
+             zcat mano-uc.gz | awk -f awx/prune_omo.awk | gzip > _mano-uc.gz; mv _mano-uc.gz mano-uc.gz
 
-#            rm T_*
+             rg -zH " [^- ']( |$)" mano-lc.gz mano-uc.gz
+
+       exit 1; ;;
+
+    stress ) # Пересобрать базы ударений
+
+             ignore_hy=1
+
+             if [[ -s _U_una ]]; then rm _U_una; fi
+             if [[ -s _U_uni ]]; then rm _U_uni; fi
+             if [[ -s _U_omo ]]; then rm _U_omo; fi
+            
+             zcat unistress.gz unistrehy.gz yodef.gz yodhy.gz uniomo.gz | sed -r "s/_//g; s/=/ /g" |\
+               awk -vignore_hy=$ignore_hy -f awx/prune_stress.awk
+             
+             grep -Fvf <(zcat mano-lc.gz mano-uc.gz|sed -r "s/=.*/=/g") _U_una       > _U_uni
+             grep -Ff  <(zcat mano-lc.gz mano-uc.gz|sed -r "s/=.*/=/g") _U_una |gzip > uniomo.gz
+            
+             grep    "ё" _U_uni | grep -v "-" | gzip > yodef.gz
+             grep    "ё" _U_uni | grep    "-" | gzip > yodhy.gz
+             grep -v "ё" _U_uni | grep -v "-" | gzip > unistress.gz
+             grep -v "ё" _U_uni | grep    "-" | gzip > unistrehy.gz
+            
+             zgrep -v "'" unistress.gz yodef.gz
+            
+             zcat unistrehy.gz yodhy.gz |sed -r "s/^.*=//g"|\
+               awk -F"-" '{ for(i=1; i <=NF; i++) { ci=$i; va=gsub(/[аяеэыиуюоё]/,"",ci)
+                              if($i !~ "\x27" && va > 1 ) print $0 } }'
+            
+             rm _U_uni _U_una
+            
+             zgrep -FvHf <(zcat mano-lc.gz mano-uc.gz|sed -r "s/=.*/=/g") uniomo.gz
+             zgrep -FvHf <(zcat uniomo.gz|sed -r "s/=.*/=/g") mano-lc.gz mano-uc.gz
+             rg -zH " [^- ']( |$)" mano-lc.gz mano-uc.gz
+
              exit 1; ;;
 
      * ) printf "%s\n" "WRONG ARG!"; exit 0; ;;

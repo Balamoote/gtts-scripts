@@ -47,6 +47,8 @@ key="$1"
 book="$2"
 suf=nam
 
+aux="scriptaux"
+sdb="scriptdb"
 
 printf '\e[32m%s \e[32;4;1m%s\e[0m\n' "Скрипт" "\"Имена\""
 
@@ -65,10 +67,10 @@ stadir=nomo-"$book".stat
 backup="$book".$suf
 
 # Установка редактора: vim или neovim
-edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' scriptdb/settings.ini)
+edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' $sdb/settings.ini)
 
 # Установка корректировки ширины вывода превью в дискретных скриптах
-termcor=$(sed -rn 's/^\s*termcorrection\s*=\s*([-0-9]*)\s*$/\1/ p' scriptdb/settings.ini)
+termcor=$(sed -rn 's/^\s*termcorrection\s*=\s*([-0-9]*)\s*$/\1/ p' $sdb/settings.ini)
 
 # Переменные алфавита и служебных
 RUUC=АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ
@@ -97,7 +99,7 @@ ms2sec () { awk -vms=$duration 'BEGIN {
 obook="$book" # омографы пишутся в $book, т.е. в результат после одного из других скриптов
 #obook="$book".nam # омографы пишутся в $book.nam, т.е. в файл ДО работы скрипта ./get-words.sh
 
-#if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
+#if [[ ! -d $aux ]]; then mkdir $aux; fi
 
 d2u
 
@@ -115,11 +117,11 @@ case $key in
 esac
 
 # Служебный список поисковых строк из базы имён
-if [[ -s scriptaux/zstu.md5 ]] && md5sum -c --status scriptaux/zstu.md5 >/dev/null 2>&1; then
- printf '\e[36m%s \e[33m%-8s \e[32m%s \e[0m' "Файлы" scriptaux/zstu.md5 "OK!"; else chka=1; fi
+if [[ -s $aux/zstu.md5 ]] && md5sum -c --status $aux/zstu.md5 >/dev/null 2>&1; then
+ printf '\e[36m%s \e[33m%-8s \e[32m%s \e[0m' "Файлы" $aux/zstu.md5 "OK!"; else chka=1; fi
 
-if [[ -s scriptaux/zndb.md5 ]] && md5sum -c --status scriptaux/zndb.md5 >/dev/null 2>&1; then
- printf '\e[36m%s \e[33m%-8s \e[32m%s \e[0m' "Файлы" scriptaux/zndb.md5 "OK!"; else chka=1; fi
+if [[ -s $aux/zndb.md5 ]] && md5sum -c --status $aux/zndb.md5 >/dev/null 2>&1; then
+ printf '\e[36m%s \e[33m%-8s \e[32m%s \e[0m' "Файлы" $aux/zndb.md5 "OK!"; else chka=1; fi
 
 if [[ $chka -eq "1" ]]; then
  if ./check-all.sh fg; then printf '\e[32m%s\e[0m\n' "Проверка файлов завершена успешно…"
@@ -189,24 +191,24 @@ find . -type f -name "[01][0-9]_*\.list" -exec rm '{}'  \;
              s/^(.*)-(.*)$/\0\n\1=\n_\2/g" | sed -r "s/^_-/_/; s/-=$/=/" | sort -u > $stadir/bookwords.list
     locdicsize=$(cat $stadir/bookwords.list | wc -l )
 
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/dic.pat.gz)           | gzip > $stadir/dic.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/unistress-all.pat.gz) | gzip > $stadir/unistress-all.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/malc.pat.gz)          | gzip > $stadir/malc.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/yodef.pat.gz)         | gzip > $stadir/yodef.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/yolc.pat.gz)          | gzip > $stadir/yolc.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/yoyo.pat.gz)          | gzip > $stadir/yoyo.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/yoyo_lc.pat.gz)       | gzip > $stadir/yoyo_lc.pat.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptaux/names-all.pat.gz)     | gzip > $stadir/names-all.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat $aux/dic.pat.gz)           | gzip > $stadir/dic.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat $aux/unistress-all.pat.gz) | gzip > $stadir/unistress-all.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat $aux/malc.pat.gz)          | gzip > $stadir/malc.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat $aux/yodef.pat.gz)         | gzip > $stadir/yodef.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat $aux/yolc.pat.gz)          | gzip > $stadir/yolc.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat $aux/yoyo.pat.gz)          | gzip > $stadir/yoyo.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat $aux/yoyo_lc.pat.gz)       | gzip > $stadir/yoyo_lc.pat.gz
+ grep -Ff $stadir/bookwords.list <(zcat $aux/names-all.pat.gz)     | gzip > $stadir/names-all.pat.gz
 
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/unistress.gz)          | gzip > $stadir/unistress.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/unistrehy.gz)          | gzip > $stadir/unistrehy.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/malc.gz)               | gzip > $stadir/malc.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/yodef.gz)              | gzip > $stadir/yodef.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/yodhy.gz)              | gzip > $stadir/yodhy.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/yolc.gz)               | gzip > $stadir/yolc.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/yoyo.gz)               | gzip > $stadir/yoyo.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/yoyo_lc.gz)            | gzip > $stadir/yoyo_lc.gz
- grep -Ff $stadir/bookwords.list <(zcat scriptdb/namebase.gz)           | gzip > $stadir/namebase.gz
+ grep -Ff $stadir/bookwords.list <(zcat $sdb/unistress.gz)         | gzip > $stadir/unistress.gz
+ grep -Ff $stadir/bookwords.list <(zcat $sdb/unistrehy.gz)         | gzip > $stadir/unistrehy.gz
+ grep -Ff $stadir/bookwords.list <(zcat $sdb/malc.gz)              | gzip > $stadir/malc.gz
+ grep -Ff $stadir/bookwords.list <(zcat $sdb/yodef.gz)             | gzip > $stadir/yodef.gz
+ grep -Ff $stadir/bookwords.list <(zcat $sdb/yodhy.gz)             | gzip > $stadir/yodhy.gz
+ grep -Ff $stadir/bookwords.list <(zcat $sdb/yolc.gz)              | gzip > $stadir/yolc.gz
+ grep -Ff $stadir/bookwords.list <(zcat $sdb/yoyo.gz)              | gzip > $stadir/yoyo.gz
+ grep -Ff $stadir/bookwords.list <(zcat $sdb/yoyo_lc.gz)           | gzip > $stadir/yoyo_lc.gz
+ grep -Ff $stadir/bookwords.list <(zcat $sdb/namebase.gz)          | gzip > $stadir/namebase.gz
 
     md5sum $stadir/bookwords.list $stadir/text-book.txt $stadir/dic.pat.gz $stadir/unistress-all.pat.gz $stadir/malc.pat.gz $stadir/yodef.pat.gz \
            $stadir/yolc.pat.gz $stadir/yoyo.pat.gz $stadir/yoyo_lc.pat.gz $stadir/names-all.pat.gz $stadir/unistress.gz $stadir/malc.gz \
@@ -249,7 +251,7 @@ grep -Fvf $stadir/surcap-raw.pat $stadir/anycap-raw.pat > $stadir/anycap-may.pat
 gw_cur=$(date +%s.%N); duration=$( echo $gw_cur - $gw_prev | bc ); gw_prev=$gw_cur;
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s, \e[0m' "Списки слов:" $duration "сек"
 
- awk -vindb="scriptdb/" -vinax="$stadir" -vbook=$book -f scriptdb/awx/gw_caplists.awk
+ awk -vindb="$sdb/" -vinax="$stadir" -vbook=$book -f $sdb/awx/gw_caplists.awk
 
 gw_cur=$(date +%s.%N); duration=$( echo $gw_cur - $gw_prev | bc ); gw_prev=$gw_cur;
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s, \e[0m' "Слов:" $duration "сек"
@@ -274,7 +276,7 @@ LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Имён:" $d
 # Применяем шаблоны
 printf '\e[36m%s\e[0m ' "Расстановка ударений в именах собственных …"
 
-awk -v indb="scriptdb/" -v inax="$stadir" -f scriptdb/namedef.awk "$stadir"/text-book.txt > "$wrkdir"/text-book.txt
+awk -v indb="$sdb/" -v inax="$stadir" -f $sdb/namedef.awk "$stadir"/text-book.txt > "$wrkdir"/text-book.txt
 
 gw_cur=$(date +%s.%N); duration=$( echo $gw_cur - $gw_prev | bc ); gw_prev=$gw_cur;
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "выполнена за" $duration "сек"
@@ -296,11 +298,11 @@ for i in [01][0-9]_*.list; do nb=$(wc -l < $i); nu=$(echo $i | sed -r "s/^(.+)(\
 if [[ $preview -eq 1 ]]; then
  printf '\e[36m%s \e[33m%s\e[0m\n' "Скрипты для обработки имён-омографов сохранены в" $wrkdir
 
- grep -Ff <(zcat scriptaux/mano-uc.pat.gz) $stadir/anycap-all.pat >  $wrkdir/mano-uc-all.pat
- grep -Ff <(zcat scriptaux/mano-uc.pat.gz) $stadir/surcap-all.pat >> $wrkdir/mano-uc-all.pat
+ grep -Ff <(zcat $aux/mano-uc.pat.gz) $stadir/anycap-all.pat >  $wrkdir/mano-uc-all.pat
+ grep -Ff <(zcat $aux/mano-uc.pat.gz) $stadir/surcap-all.pat >> $wrkdir/mano-uc-all.pat
  sort -u -o $wrkdir/mano-uc-all.pat $wrkdir/mano-uc-all.pat
 
- zgrep -Ff $wrkdir/mano-uc-all.pat <(zcat scriptdb/mano-uc.gz) | sed -r "
+ zgrep -Ff $wrkdir/mano-uc-all.pat <(zcat $sdb/mano-uc.gz) | sed -r "
  s/^_(.)(.+)=/\u\1\2/g
   s/([АЕЁИОУЫЭЮЯаеёиоуыэюя])\x27/\1\xcc\x81/g
 # s/\\\xcc\\\xa0/\xcc\xa0/g
@@ -325,7 +327,7 @@ twd=$(tput cols)
 touch $wrkdir/omo-lexx.txt
 
 sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $stadir/text-book.txt | \
-    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vtermcor=$termcor -veditor=$edi -vindb="scriptdb/" -vbkwrkdir="$wrkdir/" -f scriptdb/preview.awk
+    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vtermcor=$termcor -veditor=$edi -vindb="$sdb/" -vbkwrkdir="$wrkdir/" -f $sdb/preview.awk
 
 printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Найдено имён-омографов         :" $(ls -l $wrkdir/*.sh | wc -l) "шт."
 

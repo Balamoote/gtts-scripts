@@ -18,6 +18,9 @@ bookstadir=mano-"$book".stat
 suf=man
 backup="$book".$suf
 
+aux="scriptaux"
+sdb="scriptdb"
+
 #repper="grep"
  repper="rg"
 
@@ -46,10 +49,10 @@ do_parallel=1     # включить GNU Parallel. ВНИМАНИЕ: подоб�
    paraopts_sed="--jobs=$pjobs --load=$pload --block=$pblock_s --memfree $pmem --nice=$pnice --noswap --pipe-part -ka"
 
 # Установка редактора: vim или neovim
-edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' scriptdb/settings.ini)
+edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' $sdb/settings.ini)
 
 # Установка корректировки ширины вывода превью в дискретных скриптах
-termcor=$(sed -rn 's/^\s*termcorrection\s*=\s*([-0-9]*)\s*$/\1/ p' scriptdb/settings.ini)
+termcor=$(sed -rn 's/^\s*termcorrection\s*=\s*([-0-9]*)\s*$/\1/ p' $sdb/settings.ini)
 
 # Переменные алфавита и служебных
 RUUC=АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ
@@ -138,10 +141,10 @@ esac
 if [[ ! -d $bookwrkdir ]]; then mkdir $bookwrkdir
 else printf '\e[35m%s \e[93m%s \e[35m%s \e[93m%s\e[0m\n' "Директория для дискретных скриптов" $bookwrkdir "существует. Удалите ее или запустите скрипт с ключом" "-f"; exit 1; fi
 
-printf '\e[36m%s \e[93m%s\e[36m%s \e[93m%s\e[0m ' "В словаре Омографов:" $(zgrep -c ^ scriptdb/mano-uc.gz) ", омографов:" $(zgrep -c ^ scriptdb/mano-lc.gz)
-if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
-if [[ -s scriptaux/zaomo.md5 ]] && md5sum -c --status scriptaux/zaomo.md5 >/dev/null 2>&1; then
-	printf '\e[36m%s \e[33m%-8s \e[32m%s\e[0m\n' "Файлы" scriptaux/zaomo.md5 "OK!";
+printf '\e[36m%s \e[93m%s\e[36m%s \e[93m%s\e[0m ' "В словаре Омографов:" $(zgrep -c ^ $sdb/mano-uc.gz) ", омографов:" $(zgrep -c ^ $sdb/mano-lc.gz)
+if [[ ! -d $aux ]]; then mkdir $aux; fi
+if [[ -s $aux/zaomo.md5 ]] && md5sum -c --status $aux/zaomo.md5 >/dev/null 2>&1; then
+	printf '\e[36m%s \e[33m%-8s \e[32m%s\e[0m\n' "Файлы" $aux/zaomo.md5 "OK!";
 else printf '\n'; clxx=1; fi
 
 if [[ $clxx -eq "1" ]]; then
@@ -182,10 +185,10 @@ if [[ $morphy == "1" ]]; then
                 s/[$unxs]/./g;
                 s/([$RUUC])([$RUUC]+)/\1\L\2/g;
                 s/<[-a-zA-Z_/.,;:#?! ]+>//g" $bookwrkdir/text-book.txt | \
-        python3 scriptdb/rulg_omo.py scriptdb/omo_list.phy.gz > $bookstadir/text-book.scy
-        #python3 scriptdb/rulg_all.py scriptdb/omo_list.phy > $bookstadir/text-book.scy
+        python3 $sdb/rulg_omo.py $sdb/omo_list.phy.gz > $bookstadir/text-book.scy
+        #python3 $sdb/rulg_all.py $sdb/omo_list.phy > $bookstadir/text-book.scy
     
-        md5sum $bookstadir/text-book.scy $bookwrkdir/text-book.txt scriptdb/rulg_omo.py scriptdb/rulg_all.py > $bookstadir/text.phy.md5
+        md5sum $bookstadir/text-book.scy $bookwrkdir/text-book.txt $sdb/rulg_omo.py $sdb/rulg_all.py > $bookstadir/text.phy.md5
         mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
         LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк по SpaCy:" $durhum
      fi;
@@ -199,9 +202,9 @@ if [[ $morphy == "1" ]]; then
                 s/[$unxs]/./g;
                 s/([$RUUC])([$RUUC]+)/\1\L\2/g;
                 s/<[-a-zA-Z_/.,;:#?! ]+>//g" $bookwrkdir/text-book.txt | \
-        python3 scriptdb/natru_omo.py scriptdb/omo_list.phy.gz > $bookstadir/text-book.nat
+        python3 $sdb/natru_omo.py $sdb/omo_list.phy.gz > $bookstadir/text-book.nat
     
-        md5sum $bookstadir/text-book.nat $bookwrkdir/text-book.txt scriptdb/natru_omo.py > $bookstadir/text.phy.md5
+        md5sum $bookstadir/text-book.nat $bookwrkdir/text-book.txt $sdb/natru_omo.py > $bookstadir/text.phy.md5
         mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
         LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Создана копия книги с морфологией строк по Natasha:" $durhum
      fi;
@@ -245,14 +248,14 @@ if [[ $locdic == "1" ]]; then
              s/^(.*)-(.*)$/\0\n\1=\n_\2/g" | sed -r "s/^_-/_/; s/-=$/=/" | sort -u > $bookstadir/bookwords.list
     locdicsize=$(cat $bookstadir/bookwords.list | wc -l )
 
- grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_gl.gz   | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_gl.gz
- grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_prl.gz  | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_prl.gz
- grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_prq.gz  | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_prq.gz
- grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_rest.gz | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_rest.gz
- grep -Ff $bookstadir/bookwords.list <(zcat scriptdb/dic_suw.gz  | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_suw.gz
+ grep -Ff $bookstadir/bookwords.list <(zcat $sdb/dic_gl.gz   | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_gl.gz
+ grep -Ff $bookstadir/bookwords.list <(zcat $sdb/dic_prl.gz  | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_prl.gz
+ grep -Ff $bookstadir/bookwords.list <(zcat $sdb/dic_prq.gz  | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_prq.gz
+ grep -Ff $bookstadir/bookwords.list <(zcat $sdb/dic_rest.gz | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_rest.gz
+ grep -Ff $bookstadir/bookwords.list <(zcat $sdb/dic_suw.gz  | sed -r "s/^([^ ]+)/_\1=/") | sed -r "s/^_([^=]+)=/\1/" | gzip > $bookstadir/dic_suw.gz
 
-    md5sum $bookstadir/bookwords.list $bookwrkdir/text-book.txt scriptdb/dic_gl.gz scriptdb/dic_prl.gz scriptdb/dic_prq.gz scriptdb/dic_rest.gz scriptdb/dic_suw.gz \
-           $bookstadir/dic_gl.gz $bookstadir/dic_prl.gz $bookstadir/dic_prq.gz $bookstadir/dic_rest.gz $bookstadir/dic_suw.gz scriptdb/dix_prq.gz > $bookstadir/locdic.md5
+    md5sum $bookstadir/bookwords.list $bookwrkdir/text-book.txt $sdb/dic_gl.gz $sdb/dic_prl.gz $sdb/dic_prq.gz $sdb/dic_rest.gz $sdb/dic_suw.gz \
+           $bookstadir/dic_gl.gz $bookstadir/dic_prl.gz $bookstadir/dic_prq.gz $bookstadir/dic_rest.gz $bookstadir/dic_suw.gz $sdb/dix_prq.gz > $bookstadir/locdic.md5
 
     mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
     LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s \e[36m%s \e[93m%s\e[0m\n' "Подготовка локальных словарей из словоформ в книге:" $durhum "Словоформ:" $locdicsize;
@@ -260,15 +263,15 @@ if [[ $locdic == "1" ]]; then
 fi;
 # << Конец блока создания локальных словарей
 
-# Обработка некондиционных фраз из scriptdb/rawstuff.gz
+# Обработка некондиционных фраз из $sdb/rawstuff.gz
 # Получить номера строк файла, где найдены такие фразы
-        eSCAN=$($repper -Fnf <(zcat scriptdb/rawstuff.gz | sed -r "s/^.[^#]+# \"(.+)\"$/\1/g; s/ё/е/g; s/Ё/Е/g; s/[$unxc]+//g") \
+        eSCAN=$($repper -Fnf <(zcat $sdb/rawstuff.gz | sed -r "s/^.[^#]+# \"(.+)\"$/\1/g; s/ё/е/g; s/Ё/Е/g; s/[$unxc]+//g") \
           <(cat $bookwrkdir/text-book.bas | sed -r "s/ё/е/g; s/Ё/Е/g; s/[$unxc]+//g" ) | awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
 #       mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
 #       LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Загрузка rawstuff.gz:" $durhum
 
 # Получить номера строк, где найдены выделенные капсом ударения в омографах.
-         eSCAP=$(grep -Fnf <(zcat scriptaux/mano-ca.pat.gz) $bookwrkdir/text-book.bas | awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
+         eSCAP=$(grep -Fnf <(zcat $aux/mano-ca.pat.gz) $bookwrkdir/text-book.bas | awk 'BEGIN{FS=":"}{a=a "_" $1}END{ print substr(a,2)}');
 #        mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
 #        LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Загрузка списка омографов:" $durhum
 
@@ -279,9 +282,9 @@ fi;
             s/^#(.+#_#_# escaps !_#_!)$/\1/g;
             s/^(.+#_#_# foricycle !_#_!)$/#\1/g;
             s/^(.+#_#_# vsez !_#_!)$/#\1/g;
-            s/^(.+#_#_# all_omos !_#_!)$/#\1/g}' scriptdb/main.awk > $bookstadir/main_esc.awk
+            s/^(.+#_#_# all_omos !_#_!)$/#\1/g}' $sdb/main.awk > $bookstadir/main_esc.awk
 
-    awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+    awk -vindb="$sdb/" -vinax="$aux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
         -vescan="$eSCAN" -vescap="$eSCAP" -vnoredix=1 -f $bookstadir/main_esc.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
 
     mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.bas
@@ -297,11 +300,11 @@ if [[ ! $single -eq 1 ]]; then
      if [[ $do_parallel -eq 1 ]]; then
        printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
        parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-           -f scriptdb/main.awk > $bookwrkdir/text-book.awk.txt
+       awk -vindb="$sdb/" -vinax="$aux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+           -f $sdb/main.awk > $bookwrkdir/text-book.awk.txt
      else
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
-           -f scriptdb/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
+       awk -vindb="$sdb/" -vinax="$aux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+           -f $sdb/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
      fi # do_parallel
 
      mv $bookwrkdir/text-book.awk.txt $bookwrkdir/text-book.txt
@@ -310,15 +313,15 @@ if [[ ! $single -eq 1 ]]; then
      mo_cur=$(date +%s.%N); duration=$( echo $mo_cur - $mo_prev | bc ); mo_prev=$mo_cur; durhum=$(ms2sec);
      LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%s \e[36m%s \e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Основная обработка:" $durhum "Остаток 'все':" $yope "из" $yops "."
   else
-     sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+#_#_# vsez !_#_!)$/#\1/g' scriptdb/main.awk > $bookstadir/main.awk
+     sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^(.+#_#_# vsez !_#_!)$/#\1/g' $sdb/main.awk > $bookstadir/main.awk
 
      if [[ $do_parallel -eq 1 ]]; then
        printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
        parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+       awk -vindb="$sdb/" -vinax="$aux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
            -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
      else
-       awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+       awk -vindb="$sdb/" -vinax="$aux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
            -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
      fi # do_parallel
 
@@ -333,15 +336,15 @@ else
     sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
             s/^(.+#_#_# vsez !_#_!)$/#\1/g;
             s/^(.+#_#_# all_omos !_#_!)$/#\1/g;
-            s/^#([^"]+")dummy(".+#_#_# single_word !_#_!)$/\1'$somo'\2/g}' scriptdb/main.awk > $bookstadir/main.awk
+            s/^#([^"]+")dummy(".+#_#_# single_word !_#_!)$/\1'$somo'\2/g}' $sdb/main.awk > $bookstadir/main.awk
 
     if [[ $do_parallel -eq 1 ]]; then
       printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
       parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+      awk -vindb="$sdb/" -vinax="$aux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
           -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+      awk -vindb="$sdb/" -vinax="$aux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
           -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
     fi # do_parallel
 
@@ -354,15 +357,15 @@ else
     sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
             s/^(.+#_#_# vsez !_#_!)$/#\1/g;
             s/^(.+#_#_# all_omos !_#_!)$/#\1/g;
-            s/^#([^"]+")dummy(".+#_#_# single_group !_#_!)$/\1'$somo'\2/g}' scriptdb/main.awk > $bookstadir/main.awk
+            s/^#([^"]+")dummy(".+#_#_# single_group !_#_!)$/\1'$somo'\2/g}' $sdb/main.awk > $bookstadir/main.awk
 
     if [[ $do_parallel -eq 1 ]]; then
       printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
       parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+      awk -vindb="$sdb/" -vinax="$aux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
           -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+      awk -vindb="$sdb/" -vinax="$aux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
           -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
    fi # do_parallel
 
@@ -372,15 +375,15 @@ else
   fi # 
   if [[ $vse -eq 1 ]]; then
     sed -r '/^#_#_#txtmppra/,/^#_#_#txtmpprb/ {
-            s/^(.+#_#_# all_omos !_#_!)$/#\1/g}' scriptdb/main.awk > $bookstadir/main.awk
+            s/^(.+#_#_# all_omos !_#_!)$/#\1/g}' $sdb/main.awk > $bookstadir/main.awk
 
     if [[ $do_parallel -eq 1 ]]; then
       printf '\e[32m%s \e[33m%s\e[0m\n' "GNU Parallel:" "$paraopts_awk"
       parallel --env $paraopts_awk $bookwrkdir/text-book.bas \
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+      awk -vindb="$sdb/" -vinax="$aux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
           -f $bookstadir/main.awk > $bookwrkdir/text-book.awk.txt
     else
-      awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
+      awk -vindb="$sdb/" -vinax="$aux/" -vbkphydir="$bookstadir/" -vlocdic="$bookstadir/" -vmorphy_on="$morphy" -vmorphy_yo="$morphy_yo" \
           -f $bookstadir/main.awk $bookwrkdir/text-book.bas > $bookwrkdir/text-book.awk.txt
     fi # do_parallel
 
@@ -393,7 +396,7 @@ else
 fi
 
 if [[ $sed_do -eq 1 ]]; then
-rexsed="scriptdb/omo-index.sed"
+rexsed="$sdb/omo-index.sed"
 
  if [[ $do_parallel -eq 1 ]]; then
    parallel --env $paraopts_sed $bookwrkdir/text-book.txt sed -rf $rexsed > $bookwrkdir/text-book.sed.txt
@@ -412,20 +415,20 @@ fi # fixomo?
 if [[ $main_do -eq 1 ]]; then # main_do
 # Списки слов всех омографов с маленькой и с Большой буквы
 
-grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-lc.pat.gz) | \
+grep -Po "(?<=[^$RUUC$rulc$unxc])[$rulc$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat $aux/mano-lc.pat.gz) | \
 	sort -u > $bookwrkdir/manofi-lc.pat
 
-grep -Po "(?<=[^$RUUC$unxc])[$RUUC$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-cc.pat.gz) | \
+grep -Po "(?<=[^$RUUC$unxc])[$RUUC$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat $aux/mano-cc.pat.gz) | \
 	sort -u > $bookwrkdir/manofi-cc.pat
 
-grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat scriptaux/mano-uc.pat.gz) | \
+grep -Po "(?<=[^$RUUC$rulc$unxc])[$RUUC$unxc][$rulc$unxc]+" $bookwrkdir/text-book.txt | grep -Ev "[$unxc]" | sed -r 's/^.+$/_\0=/g' | grep -Ff <(zcat $aux/mano-uc.pat.gz) | \
 	sort -u > $bookwrkdir/manofi-uc.pat
 
 # Список всех омографов в обоих регистрах
-#zgrep -Ff $bookwrkdir/manofi-uc.pat scriptdb/mano-uc.gz >  $bookwrkdir/mano-luc.txt
-zgrep -Ff $bookwrkdir/manofi-lc.pat scriptdb/mano-lc.gz                                                               > $bookwrkdir/mano-luc.txt
-zcat scriptdb/mano-lc.gz scriptdb/mano-uc.gz | sed -r "s/([_ ])(.)/\1\u\2/g"    | grep -Ff $bookwrkdir/manofi-uc.pat >> $bookwrkdir/mano-luc.txt
-zcat scriptdb/mano-lc.gz scriptdb/mano-uc.gz | sed -r "s/([$RUUC$rulc]+)/\U\0/g"| grep -Ff $bookwrkdir/manofi-cc.pat >> $bookwrkdir/mano-luc.txt
+#zgrep -Ff $bookwrkdir/manofi-uc.pat $sdb/mano-uc.gz >  $bookwrkdir/mano-luc.txt
+zgrep -Ff $bookwrkdir/manofi-lc.pat $sdb/mano-lc.gz                                                               > $bookwrkdir/mano-luc.txt
+zcat $sdb/mano-lc.gz $sdb/mano-uc.gz | sed -r "s/([_ ])(.)/\1\u\2/g"    | grep -Ff $bookwrkdir/manofi-uc.pat >> $bookwrkdir/mano-luc.txt
+zcat $sdb/mano-lc.gz $sdb/mano-uc.gz | sed -r "s/([$RUUC$rulc]+)/\U\0/g"| grep -Ff $bookwrkdir/manofi-cc.pat >> $bookwrkdir/mano-luc.txt
 
 if [[ $disc_do -eq 1 ]] && [[ -s $bookwrkdir/mano-luc.txt ]]; then # Проверяем найдено ли хоть что-то из омографов… discretchk 0
 sed -r "
@@ -449,14 +452,14 @@ else printf '\e[36m%s\n' "Превью текста выключено."; fi
 twd=$(tput cols)
 
 # Определяем дефолтный результат словаря lexx
-#zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\
+#zgrep -Ff <(grep -Fof <(zcat $aux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) $aux/tts0.$suf.gz |\
 #       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
 echo "" > $bookwrkdir/omo-lexx.txt # заглушка
 
   sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $bookwrkdir/text-book.txt | \
-    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vprogs=$progs -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -vindb="scriptdb/" \
-        -vswrd=$swrd -vsgrp=$sgrp -vsomo=$somo -f scriptdb/preview.awk 
+    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vprogs=$progs -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -vindb="$sdb/" \
+        -vswrd=$swrd -vsgrp=$sgrp -vsomo=$somo -f $sdb/preview.awk 
 
   totnum=$(cat $bookwrkdir/totnum)
 
@@ -484,7 +487,7 @@ if [[ $ruac -eq 1 ]]; then # Если не нашли омографов для 
 	noomo=1
   debug=1
 	printf '\e[36m%s \e[36m%s\e[0m\n' "Обработка ruaccent’ом:"
-  python scriptdb/ruac.py $ruac_opt $bookwrkdir/text-book.txt > $bookwrkdir/text-book.rua.txt
+  python $sdb/ruac.py $ruac_opt $bookwrkdir/text-book.txt > $bookwrkdir/text-book.rua.txt
   mv $bookwrkdir/text-book.rua.txt $bookwrkdir/text-book.txt
 	cat $bookwrkdir/text-book.txt $bookwrkdir/binary-book.txt > "$book"
   rm -rf $bookwrkdir

@@ -16,11 +16,14 @@ tmpdir=jot-"$book"
 suf=yoy
 backup="$book".$suf
 
+aux="scriptaux"
+sdb="scriptdb"
+
 # Установка редактора: vim или neovim
-edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' scriptdb/settings.ini)
+edi=$(sed -rn 's/^\s*editor\s*=\s*(vim|nvim)\s*$/\1/ p' $sdb/settings.ini)
 
 # Установка корректировки ширины вывода превью в дискретных скриптах
-termcor=$(sed -rn 's/^\s*termcorrection\s*=\s*([-0-9]*)\s*$/\1/ p' scriptdb/settings.ini)
+termcor=$(sed -rn 's/^\s*termcorrection\s*=\s*([-0-9]*)\s*$/\1/ p' $sdb/settings.ini)
 
 # Переменные алфавита и служебных
 RUUC=АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ
@@ -66,12 +69,12 @@ case $key in
 esac
 
 printf '\e[32m%s \e[32;4;1m%s\e[0m\n' "Скрипт" "\"Ёфикация\""
-printf '\e[36m%s \e[93m%s\e[0m\n' "Строк в словаре однозначной ёфикации:" $(zgrep -c ^ scriptdb/yodef.gz scriptdb/yodhy.gz)
-printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Строк в словаре:" $(zgrep -c ^ scriptdb/yomo-uc.gz) "Ё-омографов и" $(zgrep -c ^ scriptdb/yomo-lc.gz) "ё-омографов."
-if [[ ! -d scriptaux ]]; then mkdir scriptaux; fi
+printf '\e[36m%s \e[93m%s\e[0m\n' "Строк в словаре однозначной ёфикации:" $(zgrep -c ^ $sdb/yodef.gz $sdb/yodhy.gz)
+printf '\e[36m%s \e[93m%s \e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Строк в словаре:" $(zgrep -c ^ $sdb/yomo-uc.gz) "Ё-омографов и" $(zgrep -c ^ $sdb/yomo-lc.gz) "ё-омографов."
+if [[ ! -d $aux ]]; then mkdir $aux; fi
 
-if [[ -s scriptaux/zjofik.md5 ]] && md5sum -c --status scriptaux/zjofik.md5 >/dev/null 2>&1; then
-	printf '\e[32m%s \e[33m%s \e[32m%s\e[0m\n' "Вспомогательные файлы ёфикатора в" "scriptaux/" ": OK";
+if [[ -s $aux/zjofik.md5 ]] && md5sum -c --status $aux/zjofik.md5 >/dev/null 2>&1; then
+	printf '\e[32m%s \e[33m%s \e[32m%s\e[0m\n' "Вспомогательные файлы ёфикатора в" "$aux/" ": OK";
 else clxx=1; fi
 
 if [[ $clxx -eq "1" ]]; then
@@ -79,14 +82,14 @@ if [[ $clxx -eq "1" ]]; then
 	else printf '\e[31;1m%s\e[0m \e[93m%s \e[31;1m%s\e[0m\n' "Выполнение скрипта" "./yofik.sh" "прервано! Исправьте ошибки в базах и повторите действие!"; exit 1; fi; fi
 
 # Массив со списком обязательных файлов
-pack="scriptdb/yodef.gz scriptaux/yodef.pat.gz scriptdb/yomo-lc.gz scriptaux/yomo-lc.pat.gz scriptdb/yomo-uc.gz scriptaux/yomo-uc.pat.gz \
-      scriptaux/yomo-cc.pat.gz scriptdb/yolc.gz scriptdb/yodef.awk scriptaux/yolc.pat.gz scriptaux/yodhy.gz"
+pack="$sdb/yodef.gz $aux/yodef.pat.gz $sdb/yomo-lc.gz $aux/yomo-lc.pat.gz $sdb/yomo-uc.gz $aux/yomo-uc.pat.gz \
+      $aux/yomo-cc.pat.gz $sdb/yolc.gz $sdb/yodef.awk $aux/yolc.pat.gz $aux/yodhy.gz"
 read -a minpack <<< $pack
 
 # Проверка не потерялось ли чего
 for f in "${minpack[@]}"; do
 	if [[ ! -s $f ]]; then
-	if [[ -e scriptaux/zjofik.md5 ]]; then rm scriptaux/zjofik.md5; fi
+	if [[ -e $aux/zjofik.md5 ]]; then rm $aux/zjofik.md5; fi
 	printf '\e[31;5;1m%s\e[0m \e[93m%s \e[31;5;1m%s\e[0m\n' "Отсутствует файл:" $f "Запустите еще раз или найдите потерянный файл."; exit 1; fi; done
 
 if [[ -d $tmpdir ]]; then rm -rf $tmpdir/ && mkdir $tmpdir; else mkdir $tmpdir; fi; d2u;
@@ -112,13 +115,13 @@ if [[ $fixomo -eq "1" ]]; then # fimomochk 0
 yo_time1=$(date +%s.%N); duration=$( echo $yo_time1 - $yo_time0 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Предварительная подготовка скриптов ёфикации заняла:" $duration "сек"
 
- awk -vindb="scriptdb/" -vinax="scriptaux/" -f scriptdb/yodef.awk $tmpdir/text-book.txt > $tmpdir/text-book.awk.txt
+ awk -vindb="$sdb/" -vinax="$aux/" -f $sdb/yodef.awk $tmpdir/text-book.txt > $tmpdir/text-book.awk.txt
  mv $tmpdir/text-book.awk.txt $tmpdir/text-book.txt
 
 yo_time2=$(date +%s.%N); duration=$( echo $yo_time2 - $yo_time1 | bc )
 LC_ALL="en_US.UTF-8" printf '\e[36m%s \e[93m%.2f \e[36m%s\e[0m\n' "Ёфикация однозначных случаев заняла:" $duration "сек"
 ## выключить все сканирующие строки, кроме "все"
-#awk -vindb="scriptdb/" -vinax="scriptaux/" -vbkphydir="$bookstadir/" -f <(sed -r "/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^/#/g; s/^#(.+)(#_#_# vsez !_#_!)$/\1\2/g" scriptdb/main.awk) \
+#awk -vindb="$sdb/" -vinax="$aux/" -vbkphydir="$bookstadir/" -f <(sed -r "/^#_#_#txtmppra/,/^#_#_#txtmpprb/ s/^/#/g; s/^#(.+)(#_#_# vsez !_#_!)$/\1\2/g" $sdb/main.awk) \
 #   $tmpdir/text-book.txt > $tmpdir/text-book.awk.txt
 #mv $tmpdir/text-book.awk.txt $tmpdir/text-book.txt
 
@@ -140,13 +143,13 @@ fi # fixomochk 1
 # Список ё-омонимов yodirchk 0
 if [[ ! -d $bookwrkdir ]]; then
 	mkdir $bookwrkdir
-	grep -Ff <(zcat scriptaux/yomo-lc.pat.gz) $tmpdir/words-all-lc.pat > $bookwrkdir/yo-omo-lc.pat
-	grep -Ff <(zcat scriptaux/yomo-uc.pat.gz) $tmpdir/words-all-uc.pat > $bookwrkdir/yo-omo-uc.pat
-  grep -Ff <(zcat scriptaux/yomo-cc.pat.gz) $tmpdir/words-all-cc.pat > $bookwrkdir/yo-omo-cc.pat
+	grep -Ff <(zcat $aux/yomo-lc.pat.gz) $tmpdir/words-all-lc.pat > $bookwrkdir/yo-omo-lc.pat
+	grep -Ff <(zcat $aux/yomo-uc.pat.gz) $tmpdir/words-all-uc.pat > $bookwrkdir/yo-omo-uc.pat
+  grep -Ff <(zcat $aux/yomo-cc.pat.gz) $tmpdir/words-all-cc.pat > $bookwrkdir/yo-omo-cc.pat
 
-	zgrep -Ff $bookwrkdir/yo-omo-lc.pat scriptdb/yomo-lc.gz                                                              > $bookwrkdir/yomo-luc.txt
-  zcat scriptdb/yomo-lc.gz scriptdb/yomo-uc.gz |sed -r "s/([_ ])(.)/\1\u\2/g"    | grep -Ff $bookwrkdir/yo-omo-uc.pat >> $bookwrkdir/yomo-luc.txt
-  zcat scriptdb/yomo-lc.gz scriptdb/yomo-uc.gz |sed -r "s/([$RUUC$rulc]+)/\U\0/g"| grep -Ff $bookwrkdir/yo-omo-cc.pat >> $bookwrkdir/yomo-luc.txt
+	zgrep -Ff $bookwrkdir/yo-omo-lc.pat $sdb/yomo-lc.gz                                                              > $bookwrkdir/yomo-luc.txt
+  zcat $sdb/yomo-lc.gz $sdb/yomo-uc.gz |sed -r "s/([_ ])(.)/\1\u\2/g"    | grep -Ff $bookwrkdir/yo-omo-uc.pat >> $bookwrkdir/yomo-luc.txt
+  zcat $sdb/yomo-lc.gz $sdb/yomo-uc.gz |sed -r "s/([$RUUC$rulc]+)/\U\0/g"| grep -Ff $bookwrkdir/yo-omo-cc.pat >> $bookwrkdir/yomo-luc.txt
 
     sed -r "
        s/^_(.+)=/\1/g
@@ -171,11 +174,11 @@ printf '\e[32m%s' "Создание дискретных скриптов обр
 twd=$(tput cols)
 
 touch $bookwrkdir/omo-lexx.txt # заглушка
-#zgrep -Ff <(grep -Fof <(zcat scriptaux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) scriptaux/tts0.$suf.gz |\
+#zgrep -Ff <(grep -Fof <(zcat $aux/ttspat.$suf.gz) <(sed -r 's/^([^ ]+) .*/_\l\1=/g' $bookwrkdir/omo-luc.lst | sort -u)) $aux/tts0.$suf.gz |\
 #       	sed -r 's/_([^"=]+)(\"=\"\s.+\")$/\1#\" \1\2/' | sed -r 's/_([^=]+)(=.+)$/\1=#\1\2/'| sed "s/\x27/\xcc\x81/" > $bookwrkdir/omo-lexx.txt
 
 sed -r "s/\xe2\x80\xa4/./g; s/\xe2\x80\xa7//g" $tmpdir/text-book.txt | \
-    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -vindb="scriptdb/" -f scriptdb/preview.awk
+    awk -vobook=$obook -vtwd=$twd -vpreview=$preview -vtermcor=$termcor -veditor=$edi -vbkwrkdir="$bookwrkdir/" -vindb="$sdb/" -f $sdb/preview.awk
 
 # Допечатываем превьюшку из текста книги для поискового слова
 printf '\e[36m%s \e[093m%s\e[36m%s\e[0m\n' "Найдено ё-омографов:" $(ls -l $bookwrkdir/*.sh | wc -l)

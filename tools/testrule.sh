@@ -1,6 +1,9 @@
 #!/bin/bash
 
 IN="$@"
+aux="scriptaux"
+sdb="scriptdb"
+
 
 if [[ ! -n "$IN" ]]; then
   clip_IN="$(xsel -o)"
@@ -20,10 +23,10 @@ if [[ -n "$clip_IN" ]] && [[ "$clip_IN" != "$IN" ]]; then
 fi
 
  echo $IN | sed -r "s/^.*$/<p>\0<\/p>/g" |\
-     awk -vindb=scriptdb/ -vinax=scriptaux/ -vlocdic=scriptdb/ -ddebug.txt -vescan=1 -vescap=1 -vdbg=1 -f scriptdb/maint.awk |\
+     awk -vindb=$sdb/ -vinax=$aux/ -vlocdic=$sdb/ -ddebug.txt -vescan=1 -vescap=1 -vdbg=1 -f $sdb/maint.awk |\
      sed -r "s/.\xcc\x81/`printf "\e[32m&\e[0m"`/g"
 
 #echo $IN | sed -r "s/^.*$/<p>\0<\/p>/g" |\
-#    awk -vindb=scriptdb/ -vinax=scriptaux/ -ddebug.txt -f scriptdb/yodef.awk |\
+#    awk -vindb=$sdb/ -vinax=$aux/ -ddebug.txt -f $sdb/yodef.awk |\
 #    sed -r "s/(.\xcc\x81)|[ёЁ]/`printf "\e[32m&\e[0m"`/g"
 

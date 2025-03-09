@@ -5,6 +5,9 @@ prq_full=0
 # Выводить $1, если оно изменено
 echo_S1=0
 
+aux="scriptaux"
+sdb="scriptdb"
+
 S1=$(echo "$1" | sed -r "s/ё/[её]/g; s/\*/.*/g")
 if [[ $S1 != $1 ]] && [[ $echo_S1 -eq 1 ]]; then printf "%s\n" $S1; fi
 
@@ -36,7 +39,7 @@ awk_omo () { awk -vomfi=$omfi 'BEGIN {FS="[ =_:]+"} {
     }'; }
 
 
-cd scriptdb/
+cd $sdb/
 
 case $2 in
   bf | бф | =) # для поиска под базовой форме слова

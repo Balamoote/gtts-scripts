@@ -19,6 +19,9 @@ unxc=$(printf "\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0\xe2\x80\xa7")
 unxd=$(printf "\xe2\x80\xa4")
 st="\xcc\x81\xcc\xa0\xcc\xa3\xcc\xa4\xcc\xad\xcc\xb0\xe2\x80\xa4\xe2\x80\xa7"
 
+aux="scriptaux"
+sdb="scriptdb"
+
 printf '\e[32m%s\e[0m\n' "Скрипт \"Очистка файла…\""
 
 if [[ -s "$1" ]]; then book=$1; backup="$book".str;
@@ -37,10 +40,10 @@ case $key in
 		if [[ -n $3 ]]; then wrd=$3; dobackup=0; #printf '\e[36m%s \e[93m%s\e[0m\n' "Очистить слово" $wrd ;
 	       		else printf '\e[36m%s\e[0m\n' "Не задано слово для очистки."; fi ;;
 	-wn | --wordnot) # удалить служебные символы и ударения везде, кроме всех вариантов омографа. Бэкап делать.
-		if [[ -n $3 ]]; then somo=$3; indb="scriptdb/"; dobackup=1; #printf '\e[36m%s \e[93m%s\e[0m\n' "Очистить слово" $wrd ;
+		if [[ -n $3 ]]; then somo=$3; indb="$sdb/"; dobackup=1; #printf '\e[36m%s \e[93m%s\e[0m\n' "Очистить слово" $wrd ;
 	       		else printf '\e[36m%s\e[0m\n' "Не задано слово для оставления в тексте."; fi ;;
 	-xn | --groupnot) # удалить служебные символы и ударения везде, кроме всех вариантов омографа. Бэкап делать.
-		if [[ -n $3 ]]; then xomo=$3; indb="scriptdb/"; dobackup=1; #printf '\e[36m%s \e[93m%s\e[0m\n' "Очистить слово" $wrd ;
+		if [[ -n $3 ]]; then xomo=$3; indb="$sdb/"; dobackup=1; #printf '\e[36m%s \e[93m%s\e[0m\n' "Очистить слово" $wrd ;
 	       		else printf '\e[36m%s\e[0m\n' "Не задано слово для оставления в тексте."; fi ;;
 	-wb | --wordb) # удалить служебные символы и ударения в указанном слове, регистрозависимо. Сделать бэкап.
 		if [[ -n $3 ]]; then wrd=$3; dobackup=1; printf '\e[36m%s \e[93m%s\e[0m\n' "Очистить слово" $wrd ; else printf '\e[36m%s\n' "Не задано слово для очистки."; fi ;;
@@ -78,20 +81,20 @@ if [[ -n $wrd ]]; then
 fi
 
 if [[ -n $somo ]]; then
-	awk -vsomo=$somo -vindb=$indb -f scriptdb/awx/strip_not_omo.awk trip-"$book"/text-book.txt > trip-"$book"/text-book.txt.awk
+	awk -vsomo=$somo -vindb=$indb -f $sdb/awx/strip_not_omo.awk trip-"$book"/text-book.txt > trip-"$book"/text-book.txt.awk
   mv trip-"$book"/text-book.txt.awk trip-"$book"/text-book.txt
 	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Все, кроме слова" $somo ", очищено."
 fi
 
 if [[ -n $xomo ]]; then
-	awk -vxomo=$xomo -vindb=$indb -f scriptdb/awx/strip_not_omo.awk trip-"$book"/text-book.txt > trip-"$book"/text-book.txt.awk
+	awk -vxomo=$xomo -vindb=$indb -f $sdb/awx/strip_not_omo.awk trip-"$book"/text-book.txt > trip-"$book"/text-book.txt.awk
   mv trip-"$book"/text-book.txt.awk trip-"$book"/text-book.txt
 	printf '\e[36m%s \e[93m%s \e[36m%s\e[0m\n' "Все, кроме группы" $xomo ", очищено."
 fi
 
 if [[ -n $names ]]; then
 	readarray -t narr < <(grep -Po "(?<![$RUCl$unxs$unxc])[$RUUC][$RUCl$unxs$unxc]+" trip-"$book"/text-book.txt | sed -r "s/[^$RUCl]//g; s/^.+$/_\L\0=/g" | \
-		grep -Ff <(zcat scriptaux/namebase.pat.gz) | sort -u | sed -r "s/[_=]//g; s/^./\u\0/g")
+		grep -Ff <(zcat $aux/namebase.pat.gz) | sort -u | sed -r "s/[_=]//g; s/^./\u\0/g")
 
 	for wrd in ${narr[@]}; do
 		seden=[$st]?$(echo $wrd | sed -r "s/./\0[$st]?/g")
