@@ -69,3 +69,5 @@ bash, grep, GNU sed, gawk>=5.2.1, dos2unix, uniq, sort, md5sum, zgrep, zcat, md5
 
 Рекомендации:</br>
 iconv, mc, vim/nvim, GNU parallel, ripgrep, ruaccent, (natasha), (spacy)
+
+- Название репозитария было изменено с gtts-scripts в связи с тем, что gtts перестал быть целевым движком для скриптов. Цель: простановка ударений для любого tts-движка.
