@@ -206,18 +206,29 @@ case $key in
 
              if [[ -s _U_una ]]; then rm _U_una; fi
              if [[ -s _U_uni ]]; then rm _U_uni; fi
-             if [[ -s _U_omo ]]; then rm _U_omo; fi
-            
+#            if [[ -s _U_omo ]]; then rm _U_omo; fi
+             if [[ -s _U_omo ]]; then
+                last_backup_num=$(ls _U_omo.* 2>/dev/null | grep -oE '[0-9]+' | sort -n | tail -1)
+                if [[ -z "$last_backup_num" ]]; then new_backup_num=1
+                else new_backup_num=$((last_backup_num + 1)); fi
+                mv _U_omo "_U_omo.$new_backup_num"
+                echo "Создан бэкап: _U_omo.$new_backup_num"
+             fi            
              zcat unistress.gz unistrehy.gz yodef.gz yodhy.gz uniomo.gz | sed -r "s/_//g; s/=/ /g" |\
                awk -vignore_hy=$ignore_hy -f awx/prune_stress.awk
              
              grep -Fvf <(zcat mano-lc.gz mano-uc.gz|sed -r "s/=.*/=/g") _U_una       > _U_uni
              grep -Ff  <(zcat mano-lc.gz mano-uc.gz|sed -r "s/=.*/=/g") _U_una |gzip > uniomo.gz
-            
+#            sed -r "s/=.*/=/g" _U_uni > _U_uni_pat
+#            zcat namebase.gz | sed -r "s/=.*/=/g" > _U_names_pat
+
              grep    "ё" _U_uni | grep -v "-" | gzip > yodef.gz
              grep    "ё" _U_uni | grep    "-" | gzip > yodhy.gz
              grep -v "ё" _U_uni | grep -v "-" | gzip > unistress.gz
              grep -v "ё" _U_uni | grep    "-" | gzip > unistrehy.gz
+
+#            zgrep -Ff _U_uni_pat namebase.gz > _U_uni_in_names
+#            grep -Ff _U_names_pat _U_una > _U_names_in_uni 
             
              zgrep -v "'" unistress.gz yodef.gz
             
@@ -225,6 +236,7 @@ case $key in
                awk -F"-" '{ for(i=1; i <=NF; i++) { ci=$i; va=gsub(/[аяеэыиуюоё]/,"",ci)
                               if($i !~ "\x27" && va > 1 ) print $0 } }'
             
+#            rm _U_uni _U_una _U_names_pat _U_uni_pat
              rm _U_uni _U_una
             
              zgrep -FvHf <(zcat mano-lc.gz mano-uc.gz|sed -r "s/=.*/=/g") uniomo.gz
